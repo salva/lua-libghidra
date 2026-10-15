@@ -265,3 +265,25 @@ native serialization across copies. This is an exposed product defect, not an
 expected-failure test or full M1 acceptance. Reverse-order/reuse assertions are
 present but not reached after the first exclusion failure. Repair belongs at the
 shared guard/serialization owning primitive, not loader-name special cases.
+
+Repair of the preceding failure moves BOTH the engine mutex and occupied flag
+into `libllg_process_guard.so.1`, a required shared support library, rather than
+relying on ELF weak/global interposition or module-path detection. Every binding
+copy has a DT_NEEDED dependency on that SONAME. Construction, native dispatch and
+release use the same support object; no Lua-running scope acquires its mutex.
+The dependency remains loaded while a dependent module/host remains loaded.
+Installations must ship the support DSO alongside `_native.so`; installed module
+RUNPATH is `$ORIGIN`. Static embedding of owner.cpp must also link this shared
+support library, never compile process_guard.cpp separately into each consumer.
+This is Linux's ordinary loader namespace contract, not dlmopen-isolated
+namespaces or independently managed engines. Mixing incompatible guard ABI major
+versions in one process is unsupported. Native engine closure itself is unchanged.
+
+The unchanged loaded-copy regression now passes in both orders, including reuse
+after release. Focused loaded-copy/concurrent-state/response-fault/reentry tests
+passed three repetitions each, and all 15 registered tests passed. This repairs
+the demonstrated cross-copy slot defect and unifies the serialization primitive;
+it does not substitute for native phase-overlap instrumentation, every-frame
+longjmp audit, allocator-driven finalizer scheduling or full M1 qualification.
+Historical failing commands above remain intentional provenance, not expected
+failures or assertions removed from the test.

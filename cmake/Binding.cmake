@@ -12,6 +12,13 @@ set_target_properties(lua_ghidra PROPERTIES PREFIX "" OUTPUT_NAME _native
 set(LUA_MODULE_DIR lib/lua/5.4 CACHE STRING "Lua native module installation directory")
 set(LUA_SOURCE_DIR share/lua/5.4 CACHE STRING "Lua source installation directory")
 install(TARGETS lua_ghidra LIBRARY DESTINATION "${LUA_MODULE_DIR}/libghidra")
+add_library(llg_process_guard SHARED ${PROJECT_SOURCE_DIR}/src/process_guard.cpp)
+# A DT_NEEDED dependency, not an inline/weak symbol: RTLD_LOCAL copies must
+# resolve the same SONAME and therefore the same mutex and occupied flag.
+set_target_properties(llg_process_guard PROPERTIES VERSION 1.0 SOVERSION 1)
+install(TARGETS llg_process_guard LIBRARY DESTINATION "${LUA_MODULE_DIR}/libghidra")
+set_target_properties(lua_ghidra PROPERTIES INSTALL_RPATH "$ORIGIN")
+target_link_libraries(binding_local_whole INTERFACE llg_process_guard)
 install(DIRECTORY "${PROJECT_SOURCE_DIR}/lua/libghidra" DESTINATION "${LUA_SOURCE_DIR}")
 include(CTest)
 if(BUILD_TESTING)

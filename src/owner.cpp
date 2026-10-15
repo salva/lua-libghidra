@@ -1,5 +1,6 @@
 // MIT Copyright 2026 Salvador Fandiño.
 #include "boundary.hpp"
+#include "process_guard.hpp"
 #include <libghidra/local.hpp>
 #include <mutex>
 #include <memory>
@@ -18,9 +19,8 @@ void observe_read_phase(int phase, uint32_t size) noexcept;
 namespace {
 namespace c = libghidra::client;
 constexpr const char* mt = "libghidra.owner";
-// One module instance per process. Never hold this lock during any Lua call.
-std::mutex engine;
-bool occupied = false;
+// Shared support DSO owns the process guard even for RTLD_LOCAL module copies.
+// Never hold its mutex during any Lua call.
 struct Handle { std::unique_ptr<c::IClient> client; uint64_t generation = 0; };
 struct Slot { Handle* p; };
 struct Packet {
@@ -47,8 +47,8 @@ int failure(lua_State* L, const char* op, const char* code, const char* msg, con
 Slot* slot(lua_State* L) { return static_cast<Slot*>(luaL_testudata(L,1,mt)); }
 void release(Slot* s) noexcept {
  if (!s || !s->p) return;
- std::lock_guard<std::mutex> guard(engine);
- if (s->p->client) { s->p->client.reset(); occupied = false; ++s->p->generation; }
+ std::lock_guard<std::mutex> guard(process_guard().engine);
+ if (s->p->client) { s->p->client.reset(); process_guard().occupied = false; ++s->p->generation; }
 }
 int close(lua_State* L) { release(slot(L)); lua_pushboolean(L,1); return 1; }
 int gc(lua_State* L) {
@@ -128,9 +128,9 @@ int construct(lua_State* L) {
   try {
    c::LocalClientOptions opts; opts.ghidra_root=copy(root); opts.state_path=copy(state); opts.default_arch=copy(arch);
    auto h = std::make_unique<Handle>();
-   std::lock_guard<std::mutex> guard(engine);
-   if(occupied) { seterror(p,"CLIENT_IN_USE","one binding-owned client per process"); }
-   else { h->client=c::CreateLocalClient(std::move(opts)); if(!h->client) throw std::runtime_error("native factory returned null"); occupied=true; s->p=h.release(); }
+   std::lock_guard<std::mutex> guard(process_guard().engine);
+   if(process_guard().occupied) { seterror(p,"CLIENT_IN_USE","one binding-owned client per process"); }
+   else { h->client=c::CreateLocalClient(std::move(opts)); if(!h->client) throw std::runtime_error("native factory returned null"); process_guard().occupied=true; s->p=h.release(); }
   } catch(const std::exception& e) { exception(p,e.what()); }
     catch(...) { exception(p,"unknown native exception"); }
   if(s->p) return 1; // No allocating Lua API after transfer.
@@ -174,7 +174,7 @@ int dispatch(lua_State* L) {
   try {
    c::OpenProgramRequest request;
    if(kind==1) { request.program_path=copy(path); request.project_path=copy(project); request.project_name=copy(name); request.language_id=copy(lang); request.compiler_spec_id=copy(compiler); request.format=copy(format); request.base_address=base; request.read_only=readonly; }
-   std::lock_guard<std::mutex> guard(engine);
+   std::lock_guard<std::mutex> guard(process_guard().engine);
    if(!s || !s->p || !s->p->client) { seterror(p,"CLOSED","owner closed"); p.backend="binding"; }
    else {
     c::IClient* client=s->p->client.get();
