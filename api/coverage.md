@@ -637,3 +637,18 @@ The request_audit explicitly enumerates direct argument review gaps rather than
 silently approving them based on type/default presence. This is source inventory,
 not runtime/binding-validation qualification. Factory fields remain a separate
 review obligation. Thirty-two tests pass including ignored-field consumption drift.
+
+## Direct page argument domains (twenty-ninth increment)
+
+Thirty-six limit/offset paths across eighteen page wrappers now have independent
+consumption/default/domain review. The shared paginate helper casts collection
+size to int, clamps start with min(offset,n), uses signed start+limit, and maps
+native nonpositive limits to all remaining. Lua deliberately rejects nonpositive
+page sizes and negative offsets before dispatch, defaults limit=100/offset=0,
+and requires each and their sum <=INT_MAX plus supported collections below
+INT_MAX. Offset is a zero-based pipeline candidate count, not stable identity;
+offset>=n yields empty. Signature post-page filtering still prevents empty
+output/count from proving exhaustion. Validation-only rejection does not advance
+binding generation. New helper-clamp drift probe is rejected. Thirty-three tests
+pass; direct request/factory/final grammar accounting remains incomplete and all
+runtime boundary/iterator evidence stays unqualified.

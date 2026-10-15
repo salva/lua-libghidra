@@ -50,6 +50,16 @@ class InventoryTests(unittest.TestCase):
                 for f in a['nested_fields']:
                     self.assertIn('must not be inferred',f['request_field_review']['native_absence'])
 
+    def test_page_argument_domains_are_not_native_unbounded_defaults(self):
+        self.assertEqual(len(self.data['request_audit']['direct_arguments_reviewed']),36)
+        for op in self.ops.values():
+            if 'page_wrapper_review' not in op:continue
+            args={a['name']:a for a in op['request']}
+            self.assertIn('reject zero/negative',args['limit']['semantics'])
+            self.assertIn('offset>=n yields empty',args['offset']['semantics'])
+            self.assertIn('offset+limit<=INT_MAX',args['offset']['semantics'])
+            self.assertIn('validation-only',args['limit']['semantics'])
+
     def test_preserved_red_reproducer(self):
         # Exact acceptance trigger from red; stronger checks below prevent treating
         # mere existence as exhaustive semantic acceptance.
@@ -292,6 +302,10 @@ class InventoryTests(unittest.TestCase):
                 module.inventory(root)
             local.write_text(local_original)
             local.write_text(local_original.replace('arch = opts_.default_arch;', 'arch = request.project_name;'))
+            with self.assertRaises(AssertionError):
+                module.inventory(root)
+            local.write_text(local_original)
+            local.write_text(local_original.replace('std::min(offset, n)', 'std::max(offset, n)'))
             with self.assertRaises(AssertionError):
                 module.inventory(root)
             local.write_text(local_original)

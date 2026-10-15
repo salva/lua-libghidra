@@ -16,7 +16,13 @@ def review_request_fields(u, operations):
         'base_address':'binary only exact uint64 forwarded to loadBinary; project route ignores; zero preserved, no zero-end range sentinel semantics',
     }
     expected={'OpenProgram':set(open_semantics),'AddPerfBenchmark':{'bench_id','query_family','dataset_profile','cold_ms_p50','cold_ms_p95','warm_ms_p50','warm_ms_p95','throughput_qps','regression_pct','status'},'PatchBytesBatch':{'address','data'}}
+    _,paginate=body(source,'Container paginate(const Container& all, int limit, int offset)')
+    assert 'int n = static_cast<int>(all.size())' in paginate
+    assert 'int start = std::min(offset, n)' in paginate
+    assert 'int end = (limit > 0) ? std::min(start + limit, n) : n' in paginate
+    assert 'Container(all.begin() + start, all.begin() + end)' in paginate
     ledger=[]
+    reviewed=[]
     for op in operations:
         if not op['implementation']:continue
         name=op['name']
@@ -24,6 +30,20 @@ def review_request_fields(u, operations):
         code=_code_mask(text)
         for arg in op['request']:
             nested=arg['nested_fields']
+            if not nested and 'page_wrapper_review' in op and arg['name'] in ['limit','offset']:
+                key=arg['name']
+                assert re.search(r'\b'+key+r'\b',code)
+                assert arg['native_type']=='int'
+                if key=='limit':
+                    assert arg['binding_default']=='100'
+                    sem='Lua default 100; positive bounded page length <=INT_MAX, reject zero/negative before dispatch (native limit<=0 means all remaining, deliberately not inherited); native end=min(start+limit,n) uses signed int arithmetic; offset+limit<=INT_MAX required'
+                else:
+                    assert arg['binding_default']=='0'
+                    sem='Lua default 0; zero-based count of pipeline candidates, not address or stable identity; nonnegative <=INT_MAX; native start=min(offset,n), offset>=n yields empty; negative native offset would form invalid iterator so reject before dispatch; offset+limit<=INT_MAX required'
+                arg['semantics']=sem+'; native collection size must remain below INT_MAX before cast; exact filter/page stage is operation page_wrapper_review/state_transitions, signatures filter after candidate page and empty output does not establish exhaustion; validation-only rejection must not advance binding generation'
+                arg['direct_argument_review']={'consumer':LOCAL,'helper':'paginate','qualification':'source and binding contract only; runtime boundary slots unqualified'}
+                reviewed.append({'operation':name,'path':key})
+                continue
             if not nested:
                 ledger.append({'operation':name,'path':arg['name'],'reason':'direct argument consumption/default/domain review not yet independently reconciled'})
                 continue
@@ -48,4 +68,4 @@ def review_request_fields(u, operations):
                     sem=('nonempty native string required (lowercase invalid_argument on empty); exact bench_id upsert key, erase matches then append so replacement moves to tail' if key=='bench_id' else 'caller-supplied field copied unchanged with complete record; not measured/computed/validated by native, including empty strings or double zero; no adapter finite/sign acceptance policy inferred')
                 f['semantics']=(f['semantics']+'; '+sem) if name=='AddPerfBenchmark' else sem
                 f['request_field_review']={'consumer':LOCAL,'operation':name,'native_absence':'model initializer '+f['native_default']+'; Lua input default/requiredness must not be inferred from native model alone','qualification':'source only; runtime and binding validation unqualified'}
-    return {'direct_argument_review_missing':ledger,'nested_field_review_count':sum(len(a['nested_fields']) for o in operations if o['implementation'] for a in o['request'])}
+    return {'direct_argument_review_missing':ledger,'direct_arguments_reviewed':reviewed,'nested_field_review_count':sum(len(a['nested_fields']) for o in operations if o['implementation'] for a in o['request'])}

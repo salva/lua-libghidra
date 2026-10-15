@@ -3754,19 +3754,31 @@
         },
         {
           "binding_default": "100",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "helper": "paginate",
+            "qualification": "source and binding contract only; runtime boundary slots unqualified"
+          },
           "ignored": false,
           "lua": "checked Lua integer (int)",
           "name": "limit",
           "native_type": "int",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "Lua default 100; positive bounded page length <=INT_MAX, reject zero/negative before dispatch (native limit<=0 means all remaining, deliberately not inherited); native end=min(start+limit,n) uses signed int arithmetic; offset+limit<=INT_MAX required; native collection size must remain below INT_MAX before cast; exact filter/page stage is operation page_wrapper_review/state_transitions, signatures filter after candidate page and empty output does not establish exhaustion; validation-only rejection must not advance binding generation"
         },
         {
           "binding_default": "0",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "helper": "paginate",
+            "qualification": "source and binding contract only; runtime boundary slots unqualified"
+          },
           "ignored": false,
           "lua": "checked Lua integer (int)",
           "name": "offset",
           "native_type": "int",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "Lua default 0; zero-based count of pipeline candidates, not address or stable identity; nonnegative <=INT_MAX; native start=min(offset,n), offset>=n yields empty; negative native offset would form invalid iterator so reject before dispatch; offset+limit<=INT_MAX required; native collection size must remain below INT_MAX before cast; exact filter/page stage is operation page_wrapper_review/state_transitions, signatures filter after candidate page and empty output does not establish exhaustion; validation-only rejection must not advance binding generation"
         }
       ],
       "response": {
@@ -6994,19 +7006,31 @@
         },
         {
           "binding_default": "100",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "helper": "paginate",
+            "qualification": "source and binding contract only; runtime boundary slots unqualified"
+          },
           "ignored": false,
           "lua": "checked Lua integer (int)",
           "name": "limit",
           "native_type": "int",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "Lua default 100; positive bounded page length <=INT_MAX, reject zero/negative before dispatch (native limit<=0 means all remaining, deliberately not inherited); native end=min(start+limit,n) uses signed int arithmetic; offset+limit<=INT_MAX required; native collection size must remain below INT_MAX before cast; exact filter/page stage is operation page_wrapper_review/state_transitions, signatures filter after candidate page and empty output does not establish exhaustion; validation-only rejection must not advance binding generation"
         },
         {
           "binding_default": "0",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "helper": "paginate",
+            "qualification": "source and binding contract only; runtime boundary slots unqualified"
+          },
           "ignored": false,
           "lua": "checked Lua integer (int)",
           "name": "offset",
           "native_type": "int",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "Lua default 0; zero-based count of pipeline candidates, not address or stable identity; nonnegative <=INT_MAX; native start=min(offset,n), offset>=n yields empty; negative native offset would form invalid iterator so reject before dispatch; offset+limit<=INT_MAX required; native collection size must remain below INT_MAX before cast; exact filter/page stage is operation page_wrapper_review/state_transitions, signatures filter after candidate page and empty output does not establish exhaustion; validation-only rejection must not advance binding generation"
         }
       ],
       "response": {
@@ -7591,19 +7615,31 @@
         },
         {
           "binding_default": "100",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "helper": "paginate",
+            "qualification": "source and binding contract only; runtime boundary slots unqualified"
+          },
           "ignored": false,
           "lua": "checked Lua integer (int)",
           "name": "limit",
           "native_type": "int",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "Lua default 100; positive bounded page length <=INT_MAX, reject zero/negative before dispatch (native limit<=0 means all remaining, deliberately not inherited); native end=min(start+limit,n) uses signed int arithmetic; offset+limit<=INT_MAX required; native collection size must remain below INT_MAX before cast; exact filter/page stage is operation page_wrapper_review/state_transitions, signatures filter after candidate page and empty output does not establish exhaustion; validation-only rejection must not advance binding generation"
         },
         {
           "binding_default": "0",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "helper": "paginate",
+            "qualification": "source and binding contract only; runtime boundary slots unqualified"
+          },
           "ignored": false,
           "lua": "checked Lua integer (int)",
           "name": "offset",
           "native_type": "int",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "Lua default 0; zero-based count of pipeline candidates, not address or stable identity; nonnegative <=INT_MAX; native start=min(offset,n), offset>=n yields empty; negative native offset would form invalid iterator so reject before dispatch; offset+limit<=INT_MAX required; native collection size must remain below INT_MAX before cast; exact filter/page stage is operation page_wrapper_review/state_transitions, signatures filter after candidate page and empty output does not establish exhaustion; validation-only rejection must not advance binding generation"
         }
       ],
       "response": {
@@ -7806,19 +7842,31 @@
         },
         {
           "binding_default": "100",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "helper": "paginate",
+            "qualification": "source and binding contract only; runtime boundary slots unqualified"
+          },
           "ignored": false,
           "lua": "checked Lua integer (int)",
           "name": "limit",
           "native_type": "int",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "Lua default 100; positive bounded page length <=INT_MAX, reject zero/negative before dispatch (native limit<=0 means all remaining, deliberately not inherited); native end=min(start+limit,n) uses signed int arithmetic; offset+limit<=INT_MAX required; native collection size must remain below INT_MAX before cast; exact filter/page stage is operation page_wrapper_review/state_transitions, signatures filter after candidate page and empty output does not establish exhaustion; validation-only rejection must not advance binding generation"
         },
         {
           "binding_default": "0",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "helper": "paginate",
+            "qualification": "source and binding contract only; runtime boundary slots unqualified"
+          },
           "ignored": false,
           "lua": "checked Lua integer (int)",
           "name": "offset",
           "native_type": "int",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "Lua default 0; zero-based count of pipeline candidates, not address or stable identity; nonnegative <=INT_MAX; native start=min(offset,n), offset>=n yields empty; negative native offset would form invalid iterator so reject before dispatch; offset+limit<=INT_MAX required; native collection size must remain below INT_MAX before cast; exact filter/page stage is operation page_wrapper_review/state_transitions, signatures filter after candidate page and empty output does not establish exhaustion; validation-only rejection must not advance binding generation"
         }
       ],
       "response": {
@@ -8085,19 +8133,31 @@
         },
         {
           "binding_default": "100",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "helper": "paginate",
+            "qualification": "source and binding contract only; runtime boundary slots unqualified"
+          },
           "ignored": false,
           "lua": "checked Lua integer (int)",
           "name": "limit",
           "native_type": "int",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "Lua default 100; positive bounded page length <=INT_MAX, reject zero/negative before dispatch (native limit<=0 means all remaining, deliberately not inherited); native end=min(start+limit,n) uses signed int arithmetic; offset+limit<=INT_MAX required; native collection size must remain below INT_MAX before cast; exact filter/page stage is operation page_wrapper_review/state_transitions, signatures filter after candidate page and empty output does not establish exhaustion; validation-only rejection must not advance binding generation"
         },
         {
           "binding_default": "0",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "helper": "paginate",
+            "qualification": "source and binding contract only; runtime boundary slots unqualified"
+          },
           "ignored": false,
           "lua": "checked Lua integer (int)",
           "name": "offset",
           "native_type": "int",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "Lua default 0; zero-based count of pipeline candidates, not address or stable identity; nonnegative <=INT_MAX; native start=min(offset,n), offset>=n yields empty; negative native offset would form invalid iterator so reject before dispatch; offset+limit<=INT_MAX required; native collection size must remain below INT_MAX before cast; exact filter/page stage is operation page_wrapper_review/state_transitions, signatures filter after candidate page and empty output does not establish exhaustion; validation-only rejection must not advance binding generation"
         },
         {
           "binding_default": "30000 (ignored)",
@@ -9227,19 +9287,31 @@
         },
         {
           "binding_default": "100",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "helper": "paginate",
+            "qualification": "source and binding contract only; runtime boundary slots unqualified"
+          },
           "ignored": false,
           "lua": "checked Lua integer (int)",
           "name": "limit",
           "native_type": "int",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "Lua default 100; positive bounded page length <=INT_MAX, reject zero/negative before dispatch (native limit<=0 means all remaining, deliberately not inherited); native end=min(start+limit,n) uses signed int arithmetic; offset+limit<=INT_MAX required; native collection size must remain below INT_MAX before cast; exact filter/page stage is operation page_wrapper_review/state_transitions, signatures filter after candidate page and empty output does not establish exhaustion; validation-only rejection must not advance binding generation"
         },
         {
           "binding_default": "0",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "helper": "paginate",
+            "qualification": "source and binding contract only; runtime boundary slots unqualified"
+          },
           "ignored": false,
           "lua": "checked Lua integer (int)",
           "name": "offset",
           "native_type": "int",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "Lua default 0; zero-based count of pipeline candidates, not address or stable identity; nonnegative <=INT_MAX; native start=min(offset,n), offset>=n yields empty; negative native offset would form invalid iterator so reject before dispatch; offset+limit<=INT_MAX required; native collection size must remain below INT_MAX before cast; exact filter/page stage is operation page_wrapper_review/state_transitions, signatures filter after candidate page and empty output does not establish exhaustion; validation-only rejection must not advance binding generation"
         }
       ],
       "response": {
@@ -9794,19 +9866,31 @@
         },
         {
           "binding_default": "100",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "helper": "paginate",
+            "qualification": "source and binding contract only; runtime boundary slots unqualified"
+          },
           "ignored": false,
           "lua": "checked Lua integer (int)",
           "name": "limit",
           "native_type": "int",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "Lua default 100; positive bounded page length <=INT_MAX, reject zero/negative before dispatch (native limit<=0 means all remaining, deliberately not inherited); native end=min(start+limit,n) uses signed int arithmetic; offset+limit<=INT_MAX required; native collection size must remain below INT_MAX before cast; exact filter/page stage is operation page_wrapper_review/state_transitions, signatures filter after candidate page and empty output does not establish exhaustion; validation-only rejection must not advance binding generation"
         },
         {
           "binding_default": "0",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "helper": "paginate",
+            "qualification": "source and binding contract only; runtime boundary slots unqualified"
+          },
           "ignored": false,
           "lua": "checked Lua integer (int)",
           "name": "offset",
           "native_type": "int",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "Lua default 0; zero-based count of pipeline candidates, not address or stable identity; nonnegative <=INT_MAX; native start=min(offset,n), offset>=n yields empty; negative native offset would form invalid iterator so reject before dispatch; offset+limit<=INT_MAX required; native collection size must remain below INT_MAX before cast; exact filter/page stage is operation page_wrapper_review/state_transitions, signatures filter after candidate page and empty output does not establish exhaustion; validation-only rejection must not advance binding generation"
         }
       ],
       "response": {
@@ -10279,19 +10363,31 @@
         },
         {
           "binding_default": "100",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "helper": "paginate",
+            "qualification": "source and binding contract only; runtime boundary slots unqualified"
+          },
           "ignored": false,
           "lua": "checked Lua integer (int)",
           "name": "limit",
           "native_type": "int",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "Lua default 100; positive bounded page length <=INT_MAX, reject zero/negative before dispatch (native limit<=0 means all remaining, deliberately not inherited); native end=min(start+limit,n) uses signed int arithmetic; offset+limit<=INT_MAX required; native collection size must remain below INT_MAX before cast; exact filter/page stage is operation page_wrapper_review/state_transitions, signatures filter after candidate page and empty output does not establish exhaustion; validation-only rejection must not advance binding generation"
         },
         {
           "binding_default": "0",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "helper": "paginate",
+            "qualification": "source and binding contract only; runtime boundary slots unqualified"
+          },
           "ignored": false,
           "lua": "checked Lua integer (int)",
           "name": "offset",
           "native_type": "int",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "Lua default 0; zero-based count of pipeline candidates, not address or stable identity; nonnegative <=INT_MAX; native start=min(offset,n), offset>=n yields empty; negative native offset would form invalid iterator so reject before dispatch; offset+limit<=INT_MAX required; native collection size must remain below INT_MAX before cast; exact filter/page stage is operation page_wrapper_review/state_transitions, signatures filter after candidate page and empty output does not establish exhaustion; validation-only rejection must not advance binding generation"
         }
       ],
       "response": {
@@ -10560,19 +10656,31 @@
         },
         {
           "binding_default": "100",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "helper": "paginate",
+            "qualification": "source and binding contract only; runtime boundary slots unqualified"
+          },
           "ignored": false,
           "lua": "checked Lua integer (int)",
           "name": "limit",
           "native_type": "int",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "Lua default 100; positive bounded page length <=INT_MAX, reject zero/negative before dispatch (native limit<=0 means all remaining, deliberately not inherited); native end=min(start+limit,n) uses signed int arithmetic; offset+limit<=INT_MAX required; native collection size must remain below INT_MAX before cast; exact filter/page stage is operation page_wrapper_review/state_transitions, signatures filter after candidate page and empty output does not establish exhaustion; validation-only rejection must not advance binding generation"
         },
         {
           "binding_default": "0",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "helper": "paginate",
+            "qualification": "source and binding contract only; runtime boundary slots unqualified"
+          },
           "ignored": false,
           "lua": "checked Lua integer (int)",
           "name": "offset",
           "native_type": "int",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "Lua default 0; zero-based count of pipeline candidates, not address or stable identity; nonnegative <=INT_MAX; native start=min(offset,n), offset>=n yields empty; negative native offset would form invalid iterator so reject before dispatch; offset+limit<=INT_MAX required; native collection size must remain below INT_MAX before cast; exact filter/page stage is operation page_wrapper_review/state_transitions, signatures filter after candidate page and empty output does not establish exhaustion; validation-only rejection must not advance binding generation"
         }
       ],
       "response": {
@@ -11043,19 +11151,31 @@
       "request": [
         {
           "binding_default": "100",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "helper": "paginate",
+            "qualification": "source and binding contract only; runtime boundary slots unqualified"
+          },
           "ignored": false,
           "lua": "checked Lua integer (int)",
           "name": "limit",
           "native_type": "int",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "Lua default 100; positive bounded page length <=INT_MAX, reject zero/negative before dispatch (native limit<=0 means all remaining, deliberately not inherited); native end=min(start+limit,n) uses signed int arithmetic; offset+limit<=INT_MAX required; native collection size must remain below INT_MAX before cast; exact filter/page stage is operation page_wrapper_review/state_transitions, signatures filter after candidate page and empty output does not establish exhaustion; validation-only rejection must not advance binding generation"
         },
         {
           "binding_default": "0",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "helper": "paginate",
+            "qualification": "source and binding contract only; runtime boundary slots unqualified"
+          },
           "ignored": false,
           "lua": "checked Lua integer (int)",
           "name": "offset",
           "native_type": "int",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "Lua default 0; zero-based count of pipeline candidates, not address or stable identity; nonnegative <=INT_MAX; native start=min(offset,n), offset>=n yields empty; negative native offset would form invalid iterator so reject before dispatch; offset+limit<=INT_MAX required; native collection size must remain below INT_MAX before cast; exact filter/page stage is operation page_wrapper_review/state_transitions, signatures filter after candidate page and empty output does not establish exhaustion; validation-only rejection must not advance binding generation"
         }
       ],
       "response": {
@@ -12259,19 +12379,31 @@
         },
         {
           "binding_default": "100",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "helper": "paginate",
+            "qualification": "source and binding contract only; runtime boundary slots unqualified"
+          },
           "ignored": false,
           "lua": "checked Lua integer (int)",
           "name": "limit",
           "native_type": "int",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "Lua default 100; positive bounded page length <=INT_MAX, reject zero/negative before dispatch (native limit<=0 means all remaining, deliberately not inherited); native end=min(start+limit,n) uses signed int arithmetic; offset+limit<=INT_MAX required; native collection size must remain below INT_MAX before cast; exact filter/page stage is operation page_wrapper_review/state_transitions, signatures filter after candidate page and empty output does not establish exhaustion; validation-only rejection must not advance binding generation"
         },
         {
           "binding_default": "0",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "helper": "paginate",
+            "qualification": "source and binding contract only; runtime boundary slots unqualified"
+          },
           "ignored": false,
           "lua": "checked Lua integer (int)",
           "name": "offset",
           "native_type": "int",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "Lua default 0; zero-based count of pipeline candidates, not address or stable identity; nonnegative <=INT_MAX; native start=min(offset,n), offset>=n yields empty; negative native offset would form invalid iterator so reject before dispatch; offset+limit<=INT_MAX required; native collection size must remain below INT_MAX before cast; exact filter/page stage is operation page_wrapper_review/state_transitions, signatures filter after candidate page and empty output does not establish exhaustion; validation-only rejection must not advance binding generation"
         }
       ],
       "response": {
@@ -12693,19 +12825,31 @@
         },
         {
           "binding_default": "100",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "helper": "paginate",
+            "qualification": "source and binding contract only; runtime boundary slots unqualified"
+          },
           "ignored": false,
           "lua": "checked Lua integer (int)",
           "name": "limit",
           "native_type": "int",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "Lua default 100; positive bounded page length <=INT_MAX, reject zero/negative before dispatch (native limit<=0 means all remaining, deliberately not inherited); native end=min(start+limit,n) uses signed int arithmetic; offset+limit<=INT_MAX required; native collection size must remain below INT_MAX before cast; exact filter/page stage is operation page_wrapper_review/state_transitions, signatures filter after candidate page and empty output does not establish exhaustion; validation-only rejection must not advance binding generation"
         },
         {
           "binding_default": "0",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "helper": "paginate",
+            "qualification": "source and binding contract only; runtime boundary slots unqualified"
+          },
           "ignored": false,
           "lua": "checked Lua integer (int)",
           "name": "offset",
           "native_type": "int",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "Lua default 0; zero-based count of pipeline candidates, not address or stable identity; nonnegative <=INT_MAX; native start=min(offset,n), offset>=n yields empty; negative native offset would form invalid iterator so reject before dispatch; offset+limit<=INT_MAX required; native collection size must remain below INT_MAX before cast; exact filter/page stage is operation page_wrapper_review/state_transitions, signatures filter after candidate page and empty output does not establish exhaustion; validation-only rejection must not advance binding generation"
         }
       ],
       "response": {
@@ -12941,19 +13085,31 @@
         },
         {
           "binding_default": "100",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "helper": "paginate",
+            "qualification": "source and binding contract only; runtime boundary slots unqualified"
+          },
           "ignored": false,
           "lua": "checked Lua integer (int)",
           "name": "limit",
           "native_type": "int",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "Lua default 100; positive bounded page length <=INT_MAX, reject zero/negative before dispatch (native limit<=0 means all remaining, deliberately not inherited); native end=min(start+limit,n) uses signed int arithmetic; offset+limit<=INT_MAX required; native collection size must remain below INT_MAX before cast; exact filter/page stage is operation page_wrapper_review/state_transitions, signatures filter after candidate page and empty output does not establish exhaustion; validation-only rejection must not advance binding generation"
         },
         {
           "binding_default": "0",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "helper": "paginate",
+            "qualification": "source and binding contract only; runtime boundary slots unqualified"
+          },
           "ignored": false,
           "lua": "checked Lua integer (int)",
           "name": "offset",
           "native_type": "int",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "Lua default 0; zero-based count of pipeline candidates, not address or stable identity; nonnegative <=INT_MAX; native start=min(offset,n), offset>=n yields empty; negative native offset would form invalid iterator so reject before dispatch; offset+limit<=INT_MAX required; native collection size must remain below INT_MAX before cast; exact filter/page stage is operation page_wrapper_review/state_transitions, signatures filter after candidate page and empty output does not establish exhaustion; validation-only rejection must not advance binding generation"
         }
       ],
       "response": {
@@ -13216,19 +13372,31 @@
         },
         {
           "binding_default": "100",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "helper": "paginate",
+            "qualification": "source and binding contract only; runtime boundary slots unqualified"
+          },
           "ignored": false,
           "lua": "checked Lua integer (int)",
           "name": "limit",
           "native_type": "int",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "Lua default 100; positive bounded page length <=INT_MAX, reject zero/negative before dispatch (native limit<=0 means all remaining, deliberately not inherited); native end=min(start+limit,n) uses signed int arithmetic; offset+limit<=INT_MAX required; native collection size must remain below INT_MAX before cast; exact filter/page stage is operation page_wrapper_review/state_transitions, signatures filter after candidate page and empty output does not establish exhaustion; validation-only rejection must not advance binding generation"
         },
         {
           "binding_default": "0",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "helper": "paginate",
+            "qualification": "source and binding contract only; runtime boundary slots unqualified"
+          },
           "ignored": false,
           "lua": "checked Lua integer (int)",
           "name": "offset",
           "native_type": "int",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "Lua default 0; zero-based count of pipeline candidates, not address or stable identity; nonnegative <=INT_MAX; native start=min(offset,n), offset>=n yields empty; negative native offset would form invalid iterator so reject before dispatch; offset+limit<=INT_MAX required; native collection size must remain below INT_MAX before cast; exact filter/page stage is operation page_wrapper_review/state_transitions, signatures filter after candidate page and empty output does not establish exhaustion; validation-only rejection must not advance binding generation"
         }
       ],
       "response": {
@@ -13501,19 +13669,31 @@
         },
         {
           "binding_default": "100",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "helper": "paginate",
+            "qualification": "source and binding contract only; runtime boundary slots unqualified"
+          },
           "ignored": false,
           "lua": "checked Lua integer (int)",
           "name": "limit",
           "native_type": "int",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "Lua default 100; positive bounded page length <=INT_MAX, reject zero/negative before dispatch (native limit<=0 means all remaining, deliberately not inherited); native end=min(start+limit,n) uses signed int arithmetic; offset+limit<=INT_MAX required; native collection size must remain below INT_MAX before cast; exact filter/page stage is operation page_wrapper_review/state_transitions, signatures filter after candidate page and empty output does not establish exhaustion; validation-only rejection must not advance binding generation"
         },
         {
           "binding_default": "0",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "helper": "paginate",
+            "qualification": "source and binding contract only; runtime boundary slots unqualified"
+          },
           "ignored": false,
           "lua": "checked Lua integer (int)",
           "name": "offset",
           "native_type": "int",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "Lua default 0; zero-based count of pipeline candidates, not address or stable identity; nonnegative <=INT_MAX; native start=min(offset,n), offset>=n yields empty; negative native offset would form invalid iterator so reject before dispatch; offset+limit<=INT_MAX required; native collection size must remain below INT_MAX before cast; exact filter/page stage is operation page_wrapper_review/state_transitions, signatures filter after candidate page and empty output does not establish exhaustion; validation-only rejection must not advance binding generation"
         }
       ],
       "response": {
@@ -13805,19 +13985,31 @@
         },
         {
           "binding_default": "100",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "helper": "paginate",
+            "qualification": "source and binding contract only; runtime boundary slots unqualified"
+          },
           "ignored": false,
           "lua": "checked Lua integer (int)",
           "name": "limit",
           "native_type": "int",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "Lua default 100; positive bounded page length <=INT_MAX, reject zero/negative before dispatch (native limit<=0 means all remaining, deliberately not inherited); native end=min(start+limit,n) uses signed int arithmetic; offset+limit<=INT_MAX required; native collection size must remain below INT_MAX before cast; exact filter/page stage is operation page_wrapper_review/state_transitions, signatures filter after candidate page and empty output does not establish exhaustion; validation-only rejection must not advance binding generation"
         },
         {
           "binding_default": "0",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "helper": "paginate",
+            "qualification": "source and binding contract only; runtime boundary slots unqualified"
+          },
           "ignored": false,
           "lua": "checked Lua integer (int)",
           "name": "offset",
           "native_type": "int",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "Lua default 0; zero-based count of pipeline candidates, not address or stable identity; nonnegative <=INT_MAX; native start=min(offset,n), offset>=n yields empty; negative native offset would form invalid iterator so reject before dispatch; offset+limit<=INT_MAX required; native collection size must remain below INT_MAX before cast; exact filter/page stage is operation page_wrapper_review/state_transitions, signatures filter after candidate page and empty output does not establish exhaustion; validation-only rejection must not advance binding generation"
         }
       ],
       "response": {
@@ -14075,19 +14267,31 @@
         },
         {
           "binding_default": "100",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "helper": "paginate",
+            "qualification": "source and binding contract only; runtime boundary slots unqualified"
+          },
           "ignored": false,
           "lua": "checked Lua integer (int)",
           "name": "limit",
           "native_type": "int",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "Lua default 100; positive bounded page length <=INT_MAX, reject zero/negative before dispatch (native limit<=0 means all remaining, deliberately not inherited); native end=min(start+limit,n) uses signed int arithmetic; offset+limit<=INT_MAX required; native collection size must remain below INT_MAX before cast; exact filter/page stage is operation page_wrapper_review/state_transitions, signatures filter after candidate page and empty output does not establish exhaustion; validation-only rejection must not advance binding generation"
         },
         {
           "binding_default": "0",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "helper": "paginate",
+            "qualification": "source and binding contract only; runtime boundary slots unqualified"
+          },
           "ignored": false,
           "lua": "checked Lua integer (int)",
           "name": "offset",
           "native_type": "int",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "Lua default 0; zero-based count of pipeline candidates, not address or stable identity; nonnegative <=INT_MAX; native start=min(offset,n), offset>=n yields empty; negative native offset would form invalid iterator so reject before dispatch; offset+limit<=INT_MAX required; native collection size must remain below INT_MAX before cast; exact filter/page stage is operation page_wrapper_review/state_transitions, signatures filter after candidate page and empty output does not establish exhaustion; validation-only rejection must not advance binding generation"
         }
       ],
       "response": {
@@ -14448,19 +14652,31 @@
         },
         {
           "binding_default": "100",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "helper": "paginate",
+            "qualification": "source and binding contract only; runtime boundary slots unqualified"
+          },
           "ignored": false,
           "lua": "checked Lua integer (int)",
           "name": "limit",
           "native_type": "int",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "Lua default 100; positive bounded page length <=INT_MAX, reject zero/negative before dispatch (native limit<=0 means all remaining, deliberately not inherited); native end=min(start+limit,n) uses signed int arithmetic; offset+limit<=INT_MAX required; native collection size must remain below INT_MAX before cast; exact filter/page stage is operation page_wrapper_review/state_transitions, signatures filter after candidate page and empty output does not establish exhaustion; validation-only rejection must not advance binding generation"
         },
         {
           "binding_default": "0",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "helper": "paginate",
+            "qualification": "source and binding contract only; runtime boundary slots unqualified"
+          },
           "ignored": false,
           "lua": "checked Lua integer (int)",
           "name": "offset",
           "native_type": "int",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "Lua default 0; zero-based count of pipeline candidates, not address or stable identity; nonnegative <=INT_MAX; native start=min(offset,n), offset>=n yields empty; negative native offset would form invalid iterator so reject before dispatch; offset+limit<=INT_MAX required; native collection size must remain below INT_MAX before cast; exact filter/page stage is operation page_wrapper_review/state_transitions, signatures filter after candidate page and empty output does not establish exhaustion; validation-only rejection must not advance binding generation"
         }
       ],
       "response": {
@@ -29657,16 +29873,6 @@
         "reason": "direct argument consumption/default/domain review not yet independently reconciled"
       },
       {
-        "operation": "GetComments",
-        "path": "limit",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "GetComments",
-        "path": "offset",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
         "operation": "GetDecompilation",
         "path": "address",
         "reason": "direct argument consumption/default/domain review not yet independently reconciled"
@@ -29712,16 +29918,6 @@
         "reason": "direct argument consumption/default/domain review not yet independently reconciled"
       },
       {
-        "operation": "ListBasicBlocks",
-        "path": "limit",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "ListBasicBlocks",
-        "path": "offset",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
         "operation": "ListCFGEdges",
         "path": "range_start",
         "reason": "direct argument consumption/default/domain review not yet independently reconciled"
@@ -29729,16 +29925,6 @@
       {
         "operation": "ListCFGEdges",
         "path": "range_end",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "ListCFGEdges",
-        "path": "limit",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "ListCFGEdges",
-        "path": "offset",
         "reason": "direct argument consumption/default/domain review not yet independently reconciled"
       },
       {
@@ -29752,16 +29938,6 @@
         "reason": "direct argument consumption/default/domain review not yet independently reconciled"
       },
       {
-        "operation": "ListDataItems",
-        "path": "limit",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "ListDataItems",
-        "path": "offset",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
         "operation": "ListDecompilations",
         "path": "range_start",
         "reason": "direct argument consumption/default/domain review not yet independently reconciled"
@@ -29769,16 +29945,6 @@
       {
         "operation": "ListDecompilations",
         "path": "range_end",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "ListDecompilations",
-        "path": "limit",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "ListDecompilations",
-        "path": "offset",
         "reason": "direct argument consumption/default/domain review not yet independently reconciled"
       },
       {
@@ -29817,16 +29983,6 @@
         "reason": "direct argument consumption/default/domain review not yet independently reconciled"
       },
       {
-        "operation": "ListFunctionSignatures",
-        "path": "limit",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "ListFunctionSignatures",
-        "path": "offset",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
         "operation": "ListFunctions",
         "path": "range_start",
         "reason": "direct argument consumption/default/domain review not yet independently reconciled"
@@ -29834,16 +29990,6 @@
       {
         "operation": "ListFunctions",
         "path": "range_end",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "ListFunctions",
-        "path": "limit",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "ListFunctions",
-        "path": "offset",
         "reason": "direct argument consumption/default/domain review not yet independently reconciled"
       },
       {
@@ -29857,16 +30003,6 @@
         "reason": "direct argument consumption/default/domain review not yet independently reconciled"
       },
       {
-        "operation": "ListInstructions",
-        "path": "limit",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "ListInstructions",
-        "path": "offset",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
         "operation": "ListLeafFunctions",
         "path": "range_start",
         "reason": "direct argument consumption/default/domain review not yet independently reconciled"
@@ -29877,26 +30013,6 @@
         "reason": "direct argument consumption/default/domain review not yet independently reconciled"
       },
       {
-        "operation": "ListLeafFunctions",
-        "path": "limit",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "ListLeafFunctions",
-        "path": "offset",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "ListMemoryBlocks",
-        "path": "limit",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "ListMemoryBlocks",
-        "path": "offset",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
         "operation": "ListSymbols",
         "path": "range_start",
         "reason": "direct argument consumption/default/domain review not yet independently reconciled"
@@ -29904,31 +30020,11 @@
       {
         "operation": "ListSymbols",
         "path": "range_end",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "ListSymbols",
-        "path": "limit",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "ListSymbols",
-        "path": "offset",
         "reason": "direct argument consumption/default/domain review not yet independently reconciled"
       },
       {
         "operation": "ListTypeAliases",
         "path": "query",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "ListTypeAliases",
-        "path": "limit",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "ListTypeAliases",
-        "path": "offset",
         "reason": "direct argument consumption/default/domain review not yet independently reconciled"
       },
       {
@@ -29937,28 +30033,8 @@
         "reason": "direct argument consumption/default/domain review not yet independently reconciled"
       },
       {
-        "operation": "ListTypeEnumMembers",
-        "path": "limit",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "ListTypeEnumMembers",
-        "path": "offset",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
         "operation": "ListTypeEnums",
         "path": "query",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "ListTypeEnums",
-        "path": "limit",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "ListTypeEnums",
-        "path": "offset",
         "reason": "direct argument consumption/default/domain review not yet independently reconciled"
       },
       {
@@ -29967,43 +30043,13 @@
         "reason": "direct argument consumption/default/domain review not yet independently reconciled"
       },
       {
-        "operation": "ListTypeMembers",
-        "path": "limit",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "ListTypeMembers",
-        "path": "offset",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
         "operation": "ListTypeUnions",
         "path": "query",
         "reason": "direct argument consumption/default/domain review not yet independently reconciled"
       },
       {
-        "operation": "ListTypeUnions",
-        "path": "limit",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "ListTypeUnions",
-        "path": "offset",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
         "operation": "ListTypes",
         "path": "query",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "ListTypes",
-        "path": "limit",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "ListTypes",
-        "path": "offset",
         "reason": "direct argument consumption/default/domain review not yet independently reconciled"
       },
       {
@@ -30014,16 +30060,6 @@
       {
         "operation": "ListXrefs",
         "path": "range_end",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "ListXrefs",
-        "path": "limit",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "ListXrefs",
-        "path": "offset",
         "reason": "direct argument consumption/default/domain review not yet independently reconciled"
       },
       {
@@ -30275,6 +30311,152 @@
         "operation": "WriteBytes",
         "path": "data",
         "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      }
+    ],
+    "direct_arguments_reviewed": [
+      {
+        "operation": "GetComments",
+        "path": "limit"
+      },
+      {
+        "operation": "GetComments",
+        "path": "offset"
+      },
+      {
+        "operation": "ListBasicBlocks",
+        "path": "limit"
+      },
+      {
+        "operation": "ListBasicBlocks",
+        "path": "offset"
+      },
+      {
+        "operation": "ListCFGEdges",
+        "path": "limit"
+      },
+      {
+        "operation": "ListCFGEdges",
+        "path": "offset"
+      },
+      {
+        "operation": "ListDataItems",
+        "path": "limit"
+      },
+      {
+        "operation": "ListDataItems",
+        "path": "offset"
+      },
+      {
+        "operation": "ListDecompilations",
+        "path": "limit"
+      },
+      {
+        "operation": "ListDecompilations",
+        "path": "offset"
+      },
+      {
+        "operation": "ListFunctionSignatures",
+        "path": "limit"
+      },
+      {
+        "operation": "ListFunctionSignatures",
+        "path": "offset"
+      },
+      {
+        "operation": "ListFunctions",
+        "path": "limit"
+      },
+      {
+        "operation": "ListFunctions",
+        "path": "offset"
+      },
+      {
+        "operation": "ListInstructions",
+        "path": "limit"
+      },
+      {
+        "operation": "ListInstructions",
+        "path": "offset"
+      },
+      {
+        "operation": "ListLeafFunctions",
+        "path": "limit"
+      },
+      {
+        "operation": "ListLeafFunctions",
+        "path": "offset"
+      },
+      {
+        "operation": "ListMemoryBlocks",
+        "path": "limit"
+      },
+      {
+        "operation": "ListMemoryBlocks",
+        "path": "offset"
+      },
+      {
+        "operation": "ListSymbols",
+        "path": "limit"
+      },
+      {
+        "operation": "ListSymbols",
+        "path": "offset"
+      },
+      {
+        "operation": "ListTypeAliases",
+        "path": "limit"
+      },
+      {
+        "operation": "ListTypeAliases",
+        "path": "offset"
+      },
+      {
+        "operation": "ListTypeEnumMembers",
+        "path": "limit"
+      },
+      {
+        "operation": "ListTypeEnumMembers",
+        "path": "offset"
+      },
+      {
+        "operation": "ListTypeEnums",
+        "path": "limit"
+      },
+      {
+        "operation": "ListTypeEnums",
+        "path": "offset"
+      },
+      {
+        "operation": "ListTypeMembers",
+        "path": "limit"
+      },
+      {
+        "operation": "ListTypeMembers",
+        "path": "offset"
+      },
+      {
+        "operation": "ListTypeUnions",
+        "path": "limit"
+      },
+      {
+        "operation": "ListTypeUnions",
+        "path": "offset"
+      },
+      {
+        "operation": "ListTypes",
+        "path": "limit"
+      },
+      {
+        "operation": "ListTypes",
+        "path": "offset"
+      },
+      {
+        "operation": "ListXrefs",
+        "path": "limit"
+      },
+      {
+        "operation": "ListXrefs",
+        "path": "offset"
       }
     ],
     "nested_field_review_count": 20
