@@ -3410,6 +3410,58 @@
       "tier": "core"
     },
     {
+      "capability_entries": [
+        {
+          "id": "health",
+          "note_expression": "\"\"",
+          "status": "supported"
+        },
+        {
+          "id": "session",
+          "note_expression": "\"\"",
+          "status": "supported"
+        },
+        {
+          "id": "decompiler",
+          "note_expression": "decompiler_note",
+          "status": "supported"
+        },
+        {
+          "id": "functions",
+          "note_expression": "\"basic blocks and CFG edges via decompilation; leaf functions from a \" \"project's reference index\"",
+          "status": "supported"
+        },
+        {
+          "id": "symbols",
+          "note_expression": "\"rename (functions), delete (all)\"",
+          "status": "supported"
+        },
+        {
+          "id": "types",
+          "note_expression": "\"full CRUD including aliases, member comments\"",
+          "status": "supported"
+        },
+        {
+          "id": "signatures",
+          "note_expression": "\"full mutation via prototype rebuild\"",
+          "status": "supported"
+        },
+        {
+          "id": "memory",
+          "note_expression": "\"read + write (copy-on-write overlay)\"",
+          "status": "supported"
+        },
+        {
+          "id": "listing",
+          "note_expression": "\"instructions, comments, data items, strings (no bookmarks)\"",
+          "status": "supported"
+        },
+        {
+          "id": "xrefs",
+          "note_expression": "\"call and data xrefs via decompiler analysis\"",
+          "status": "partial"
+        }
+      ],
       "declaration": {
         "arguments": "",
         "response_type": "std::vector<Capability>",
@@ -3485,7 +3537,7 @@
             "native_type": "std::string",
             "optional": false,
             "path": "id",
-            "semantics": "native field preserved; no truthiness substitution"
+            "semantics": "literal subsystem ID in fixed health/session/decompiler/functions/symbols/types/signatures/memory/listing/xrefs vector order, no pagination or discovered operation IDs"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -3495,7 +3547,7 @@
             "native_type": "std::string",
             "optional": false,
             "path": "status",
-            "semantics": "native field preserved; no truthiness substitution"
+            "semantics": "literal supported for nine subsystem rows and partial for xrefs; coarse native claim, not per-operation support or fixture/runtime qualification (strings remain constant-empty)"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -3505,13 +3557,19 @@
             "native_type": "std::string",
             "optional": false,
             "path": "note",
-            "semantics": "native field preserved; no truthiness substitution"
+            "semantics": "literal subsystem note (health/session empty) except decompiler note supported at size<=1, parallel (N engines) at size>1; pool_size=1 binding policy still required; text is not machine-authoritative completeness/ordering proof"
           }
         ],
         "lua": "dense 1-based array of Capability table/enum; resolve in types/enums",
         "native_type": "std::vector<Capability>"
       },
       "semantic_review": "LocalClient local/data/health branches reviewed; downstream mutation helper and runtime gates remain unqualified",
+      "special_result_review": {
+        "body_sha256": "f849d382317a68a410eeb099b3f1980539a4fd469beef60811cd6ed697a57f54",
+        "line": 68,
+        "path": "cpp/src/local_client.cpp",
+        "qualification": "source-only, positive/negative runtime slots unqualified"
+      },
       "state_transitions": "read only; does not change native revision or binding generation",
       "surface_contract": {
         "facade": {
@@ -7703,13 +7761,19 @@
             "native_type": "std::string",
             "optional": false,
             "path": "data_items.value_repr",
-            "semantics": "native field preserved; no truthiness substitution"
+            "semantics": "never assigned in wrapper; empty string initializer, not decoded memory/data rendering"
           }
         ],
         "lua": "ListDataItemsResponse table/enum; resolve in types/enums",
         "native_type": "ListDataItemsResponse"
       },
       "semantic_review": "page adapter and LocalClient dispatch reviewed; runtime unqualified; remaining field/facade obligations still open",
+      "special_result_review": {
+        "body_sha256": "38f359c3921083c7283522c7c184a3add82b88f137c24e0cac1458097f263627",
+        "line": 1273,
+        "path": "cpp/src/local_client.cpp",
+        "qualification": "source-only, positive/negative runtime slots unqualified"
+      },
       "state_transitions": "loaded required; enumerate then paginate native adapter records BEFORE one-to-one response conversion; conversion preserves candidate count; no native revision change",
       "surface_contract": {
         "facade": {
@@ -8383,7 +8447,7 @@
             "native_type": "std::vector<DefinedStringRecord>",
             "optional": false,
             "path": "strings",
-            "semantics": "native field preserved; no truthiness substitution"
+            "semantics": "always empty vector on loaded success; ignores ranges/page fields, no string discovery/database/scanner; facade returns empty dense array, no discovery iterator"
           },
           {
             "lua": "exact UInt64",
@@ -8393,7 +8457,7 @@
             "native_type": "std::uint64_t",
             "optional": false,
             "path": "strings.address",
-            "semantics": "native field preserved; no truthiness substitution"
+            "semantics": "unreachable nested schema: strings vector never populated; model initializer 0 is not an observed string field; no encoding/length/address inference from constant-empty success"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -8403,7 +8467,7 @@
             "native_type": "std::string",
             "optional": false,
             "path": "strings.value",
-            "semantics": "native field preserved; no truthiness substitution"
+            "semantics": "unreachable nested schema: strings vector never populated; model initializer empty is not an observed string field; no encoding/length/address inference from constant-empty success"
           },
           {
             "lua": "checked Lua integer (std::uint32_t)",
@@ -8413,7 +8477,7 @@
             "native_type": "std::uint32_t",
             "optional": false,
             "path": "strings.length",
-            "semantics": "native field preserved; no truthiness substitution"
+            "semantics": "unreachable nested schema: strings vector never populated; model initializer 0 is not an observed string field; no encoding/length/address inference from constant-empty success"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -8423,7 +8487,7 @@
             "native_type": "std::string",
             "optional": false,
             "path": "strings.data_type",
-            "semantics": "native field preserved; no truthiness substitution"
+            "semantics": "unreachable nested schema: strings vector never populated; model initializer empty is not an observed string field; no encoding/length/address inference from constant-empty success"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -8433,13 +8497,19 @@
             "native_type": "std::string",
             "optional": false,
             "path": "strings.encoding",
-            "semantics": "native field preserved; no truthiness substitution"
+            "semantics": "unreachable nested schema: strings vector never populated; model initializer empty is not an observed string field; no encoding/length/address inference from constant-empty success"
           }
         ],
         "lua": "ListDefinedStringsResponse table/enum; resolve in types/enums",
         "native_type": "ListDefinedStringsResponse"
       },
       "semantic_review": "lookup/wrapper branch review; runtime positive/negative fixture slots remain unqualified",
+      "special_result_review": {
+        "body_sha256": "d7009928c318c61e98a5464dead4cc40edb7465fe8f65272da63a458753fe047",
+        "line": 1299,
+        "path": "cpp/src/local_client.cpp",
+        "qualification": "source-only, positive/negative runtime slots unqualified"
+      },
       "state_transitions": "loaded required; unconditional empty response success, ranges/pages ignored natively; binding still validates supplied options before dispatch; compatibility fidelity exception, no discovery iterator",
       "surface_contract": {
         "facade": {
@@ -15370,13 +15440,19 @@
             "native_type": "std::vector<std::uint8_t>",
             "optional": false,
             "path": "data",
-            "semantics": "native field preserved; no truthiness substitution"
+            "semantics": "moved adapter byte vector to binary Lua string, preserve NUL and exact length; zero length or caught loader/allocation failure gives empty success, not nil/error; requested length must be bounded 0..INT32_MAX before native allocation/dispatch; no partial bytes after caught failure"
           }
         ],
         "lua": "ReadBytesResponse table/enum; resolve in types/enums",
         "native_type": "ReadBytesResponse"
       },
       "semantic_review": "lookup/wrapper branch review; runtime positive/negative fixture slots remain unqualified",
+      "special_result_review": {
+        "body_sha256": "d3d8ca07d477e57af2a394a11be8999330e8e145f4a408cebb054383951a3f9a",
+        "line": 1165,
+        "path": "cpp/src/local_client.cpp",
+        "qualification": "source-only, positive/negative runtime slots unqualified"
+      },
       "state_transitions": "loaded required; zero length -> empty success; loader/allocation exception caught/logged in adapter -> empty data success, not native read error; no partial returned bytes on caught failure",
       "surface_contract": {
         "facade": {
@@ -29139,21 +29215,6 @@
     ],
     "response_field_semantics_unreviewed": [
       {
-        "native_type": "std::string",
-        "operation": "GetCapabilities",
-        "path": "id"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "GetCapabilities",
-        "path": "status"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "GetCapabilities",
-        "path": "note"
-      },
-      {
         "native_type": "std::vector<CommentRecord>",
         "operation": "GetComments",
         "path": "comments"
@@ -29204,44 +29265,9 @@
         "path": "data_items"
       },
       {
-        "native_type": "std::string",
-        "operation": "ListDataItems",
-        "path": "data_items.value_repr"
-      },
-      {
         "native_type": "std::vector<DecompilationRecord>",
         "operation": "ListDecompilations",
         "path": "decompilations"
-      },
-      {
-        "native_type": "std::vector<DefinedStringRecord>",
-        "operation": "ListDefinedStrings",
-        "path": "strings"
-      },
-      {
-        "native_type": "std::uint64_t",
-        "operation": "ListDefinedStrings",
-        "path": "strings.address"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "ListDefinedStrings",
-        "path": "strings.value"
-      },
-      {
-        "native_type": "std::uint32_t",
-        "operation": "ListDefinedStrings",
-        "path": "strings.length"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "ListDefinedStrings",
-        "path": "strings.data_type"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "ListDefinedStrings",
-        "path": "strings.encoding"
       },
       {
         "native_type": "std::vector<FunctionSignatureRecord>",
@@ -29307,11 +29333,6 @@
         "native_type": "std::vector<XrefRecord>",
         "operation": "ListXrefs",
         "path": "xrefs"
-      },
-      {
-        "native_type": "std::vector<std::uint8_t>",
-        "operation": "ReadBytes",
-        "path": "data"
       }
     ],
     "scope": "Explicit accounting audit only; empty wrapper list would not establish full nested/default/domain review or runtime qualification",

@@ -573,3 +573,18 @@ acknowledgement does not imply atomicity, rollback or canonical readback.
 Fresh generation/check and twenty-eight tests pass, including independent altered
 delete/update flag probes. Direct/container response accounting, request/helper/
 domain audit and final grammar remain open. Runtime evidence stays unqualified.
+
+## Special results: schema is not observed data (twenty-fifth increment)
+
+Source-bound result review now accounts bytes, coarse capabilities, constant-empty
+strings and default-only data value_repr. Capability aggregate initializers have
+fixed subsystem IDs/order, nine supported rows and partial xrefs; notes are literal
+except pool-size-dependent decompiler text. They are not per-op/runtime evidence.
+ReadBytes transfers binary bytes unchanged, including NUL; empty success conflates
+zero length and caught failure, with binding pre-dispatch INT32_MAX bound retained.
+Defined-string nested fields are unreachable schema, not observed encoding/length/
+address defaults. Loaded constant-empty success remains fidelity exception; no
+scanner or iterator introduced. DataItem.value_repr remains empty initializer,
+not decoded rendering. Independent bytes-extraction and capability-status drift
+probes are rejected; twenty-nine tests pass. Container response, request/helper/
+domain and final grammar accounting remain open; runtime slots unqualified.

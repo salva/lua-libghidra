@@ -248,10 +248,29 @@ class InventoryTests(unittest.TestCase):
             with self.assertRaises(AssertionError):
                 module.inventory(root)
             local.write_text(local_original)
+            local.write_text(local_original.replace('resp.data = std::move(data)', 'resp.data = {}'))
+            with self.assertRaises(AssertionError):
+                module.inventory(root)
+            local.write_text(local_original)
+            local.write_text(local_original.replace('{"xrefs", "partial",', '{"xrefs", "supported",'))
+            with self.assertRaises(AssertionError):
+                module.inventory(root)
+            local.write_text(local_original)
             header = root/'cpp/src/local_arch_adapter.hpp'
             header.write_text(header.read_text().replace('std::map<std::pair<std::uint64_t, int>, std::string> comments_', 'std::multimap<std::pair<std::uint64_t, int>, std::string> comments_'))
             with self.assertRaises(AssertionError):
                 module.inventory(root)
+
+    def test_special_result_absence_and_schema_are_not_observations(self):
+        def sem(op,name):
+            return next(f['semantics'] for f in self.ops[op]['response']['fields'] if f['name']==name)
+        self.assertIn('binary Lua string',sem('ReadBytes','data'))
+        self.assertIn('0..INT32_MAX',sem('ReadBytes','data'))
+        self.assertIn('always empty',sem('ListDefinedStrings','strings'))
+        self.assertIn('unreachable nested schema',sem('ListDefinedStrings','encoding'))
+        self.assertIn('not decoded memory',sem('ListDataItems','value_repr'))
+        self.assertIn('coarse native claim',sem('GetCapabilities','status'))
+        self.assertIn('size>1',sem('GetCapabilities','note'))
 
     def test_type_delete_and_side_map_flags_are_distinct(self):
         for name in ['CreateType','AddTypeMember','DeleteComment','DeleteTypeEnumMember']:
