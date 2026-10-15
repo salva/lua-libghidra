@@ -273,3 +273,21 @@ fidelity. Downstream storage/address constraints are explicitly still unqualifie
 New independent drift probes remove signed ordinal checking and replace cumulative
 count addition; both must fail reviewed assertions. Thirteen tests pass. Remaining
 mutation/helper review still prevents exhaustive inventory acceptance.
+
+## Member reconstruction and side-map comments (tenth increment)
+
+Six struct/enum delete/rename/retype/value operations now record normalized-name,
+ordinal validation, reconstruction, error and revision branches. Struct rebuilds
+retain explicit offsets (deletion does not compact gaps); existing offsets must
+fit signed int before FieldDef casts. Enum rebuilds cast signed model values to
+uint64 EnumValue and can change traversal ordinals. Neither override remaps
+ordinal-keyed side-map comments during reconstruction. Bit-pattern/width and
+post-edit layout behavior still require real runtime fixtures.
+
+SetTypeMemberComment and SetTypeEnumMemberComment accept arbitrary normalized
+names and ordinals without checking existence/kind/range. They store even empty
+text, increment revision and return updated=true on normal return. This is not a
+validated successful edit to an existing native member. New independent probes
+invert deletion selection and shift a comment-map ordinal; both must fail source
+contract assertions. Fourteen tests pass; remaining operations and final
+field/grammar/effective-domain audits are still open.

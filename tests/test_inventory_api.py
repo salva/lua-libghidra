@@ -128,10 +128,29 @@ class InventoryTests(unittest.TestCase):
             with self.assertRaises(AssertionError):
                 module.inventory(root)
             local.write_text(local_original)
+            local.write_text(local_original.replace('if (i == ordinal) continue;', 'if (i != ordinal) continue;'))
+            with self.assertRaises(AssertionError):
+                module.inventory(root)
+            local.write_text(local_original)
+            adapter = root/'cpp/src/local_arch_adapter.cpp'
+            adapter_original = adapter.read_text()
+            adapter.write_text(adapter_original.replace('type_member_comments_[{type_name, ordinal}] = comment;', 'type_member_comments_[{type_name, ordinal + 1}] = comment;'))
+            with self.assertRaises(AssertionError):
+                module.inventory(root)
+            adapter.write_text(adapter_original)
             header = root/'cpp/src/local_arch_adapter.hpp'
             header.write_text(header.read_text().replace('std::map<std::pair<std::uint64_t, int>, std::string> comments_', 'std::multimap<std::pair<std::uint64_t, int>, std::string> comments_'))
             with self.assertRaises(AssertionError):
                 module.inventory(root)
+
+    def test_member_reconstruction_and_unvalidated_comments(self):
+        self.assertIn('does not compact', ' '.join(self.ops['DeleteTypeMember']['limitations']))
+        self.assertIn('signed int', self.ops['SetTypeMemberType']['effective_domain']['existing_offsets'])
+        self.assertIn('uint64', self.ops['SetTypeEnumMemberValue']['effective_domain']['value'])
+        for name in ['SetTypeMemberComment', 'SetTypeEnumMemberComment']:
+            self.assertIn('without checking', self.ops[name]['state_transitions'])
+            self.assertIn('nonexistent', ' '.join(self.ops[name]['limitations']))
+        self.assertIn('NOT_FOUND', self.ops['RenameTypeEnumMember']['state_transitions'])
 
     def test_parameter_reconstruction_and_byte_count_domains(self):
         self.assertIn('calling convention', ' '.join(self.ops['RenameFunctionParameter']['limitations']))

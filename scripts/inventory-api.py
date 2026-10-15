@@ -8,7 +8,7 @@ from pathlib import Path
 import re
 import sys
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from inventory_semantics import review_pages, review_aggregate_pages, review_session_records, review_open_and_creation, review_parameter_and_byte_mutations
+from inventory_semantics import review_pages, review_aggregate_pages, review_session_records, review_open_and_creation, review_parameter_and_byte_mutations, review_member_reconstruction
 
 from inventory_python import reconcile_python
 from inventory_surfaces import surfaces
@@ -146,6 +146,7 @@ def inventory(u):
     review_session_records(u, ops)
     review_open_and_creation(u, ops)
     review_parameter_and_byte_mutations(u, ops)
+    review_member_reconstruction(u, ops)
     surfaces(ops)
     python=[]
     # Independent public operations and model fields, including HTTP/async/headless exclusions.

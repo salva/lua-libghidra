@@ -243,3 +243,44 @@ def review_parameter_and_byte_mutations(u, operations):
                 op['limitations'].append('patch order is input array order; overlapping patches applied sequentially; native uint32 counter wraps on oversized cumulative input')
         op['semantic_review']='LocalClient parameter reconstruction or byte count/error branches reviewed; downstream and runtime gates remain unqualified'
     return operations
+
+
+def review_member_reconstruction(u, operations):
+    """Ordinal reconstruction and unvalidated side-map comment writes."""
+    source=(u/LOCAL).read_text()
+    adapter=(u/ADAPTER).read_text()
+    structs={'DeleteTypeMember':'DELETE_MEMBER_FAILED', 'RenameTypeMember':'RENAME_MEMBER_FAILED', 'SetTypeMemberType':'SET_MEMBER_TYPE_FAILED'}
+    enums={'DeleteTypeEnumMember':'DELETE_ENUM_MEMBER_FAILED','RenameTypeEnumMember':'RENAME_ENUM_MEMBER_FAILED','SetTypeEnumMemberValue':'SET_ENUM_VALUE_FAILED'}
+    comments={'SetTypeMemberComment':'setTypeMemberComment', 'SetTypeEnumMemberComment':'setTypeEnumMemberComment'}
+    for op in operations:
+        name=op['name']
+        if name not in structs and name not in enums and name not in comments: continue
+        start,text=body(source,' '+name+'(')
+        op['reconstruction_source_review']={'path':LOCAL,'line':source.count('\n',0,start)+1,'body_sha256':hashlib.sha256(text.encode()).hexdigest()}
+        assert 'if (!ensure_loaded())' in text
+        assert '.substr(1)' in text
+        if name in comments:
+            method=comments[name]
+            _,write=body(adapter,'ArchAdapter::'+method+'(')
+            assert '[{type_name, ordinal}] = comment' in write
+            assert 'findByName' not in write and 'existing.size()' not in text
+            op['state_transitions']='loaded required; strip one leading slash; write normalized type-name/UInt64-ordinal side map without checking type existence/kind/ordinal; increment native revision and return updated=true on normal return'
+            op['limitations'].append('arbitrary nonexistent type/ordinal comments accepted; empty text stored, not deletion; later type/member lookup may not expose entry; no name/ordinal remapping on reconstruction is performed in this override')
+        else:
+            failure=(structs|enums)[name]
+            assert text.index('ordinal >= existing.size()') < text.index('applyDecompilerMutationAllSlots')
+            assert '"NOT_FOUND"' in text and '"'+failure+'"' in text
+            assert text.index('if (!ok)') < text.index('revision_++')
+            op['state_transitions']='loaded required; normalize one slash; enumerate existing members; ordinal>=count -> NOT_FOUND; reconstruct entire struct/enum on all slots; failure '+failure+'; native revision increments only after success'
+            op['limitations'].append('ordinal selects current traversal position, not stable member ID; absent or wrong-kind parent can appear as ordinal NOT_FOUND; all-slot partial effects on failure remain possible')
+            if name in structs:
+                assert 'static_cast<int>(existing[i].offset)' in text
+                op['effective_domain']={'existing_offsets':'must fit signed int before FieldDef offset cast; changing referenced datatype may alter layout; no automatic gap compaction','ordinal':'exact uint64 zero-based; comparison against current member vector size','qualification':'source constraint; runtime unqualified'}
+                op['limitations'].append('remaining offsets retained explicitly; deletion does not compact gaps; side-map member comments are not rebuilt/remapped here')
+            else:
+                assert 'static_cast<uint64_t>' in text
+                op['effective_domain']={'value':'signed int64 model/request cast to uint64 for EnumValue; preserve bit-pattern conversion and do not invent unsigned Lua input','ordinal':'exact uint64 current enum traversal position; enum reorder may change ordinals after defineEnum','qualification':'source constraint; runtime unqualified'}
+                op['limitations'].append('enum is reconstructed from names and uint64-cast values; side-map ordinal comments not remapped here; negative-value roundtrip/width behavior unqualified')
+            if name.startswith('Delete'): assert 'if (i == ordinal) continue;' in text
+        op['semantic_review']='member reconstruction/side-map comment branches reviewed; downstream defineStruct/defineEnum and runtime evidence unqualified'
+    return operations

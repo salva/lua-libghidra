@@ -2761,6 +2761,11 @@
         }
       },
       "dispatch": "mutation",
+      "effective_domain": {
+        "ordinal": "exact uint64 current enum traversal position; enum reorder may change ordinals after defineEnum",
+        "qualification": "source constraint; runtime unqualified",
+        "value": "signed int64 model/request cast to uint64 for EnumValue; preserve bit-pattern conversion and do not invent unsigned Lua input"
+      },
       "evidence": {
         "negative": {
           "assertions": "unloaded/unsupported/validation and recorded limitations",
@@ -2787,7 +2792,10 @@
           "path": "cpp/src/local_client.cpp"
         }
       },
-      "limitations": [],
+      "limitations": [
+        "ordinal selects current traversal position, not stable member ID; absent or wrong-kind parent can appear as ordinal NOT_FOUND; all-slot partial effects on failure remain possible",
+        "enum is reconstructed from names and uint64-cast values; side-map ordinal comments not remapped here; negative-value roundtrip/width behavior unqualified"
+      ],
       "lowlevel": "delete_type_enum_member",
       "name": "DeleteTypeEnumMember",
       "native_literal_errors": [
@@ -2796,6 +2804,11 @@
       ],
       "pagination": null,
       "program_state": "requires loaded program",
+      "reconstruction_source_review": {
+        "body_sha256": "20fee06e9b0f71f12f030ac9999b8ab85a2467340fc9a467c0deb6102f5e8082",
+        "line": 935,
+        "path": "cpp/src/local_client.cpp"
+      },
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
@@ -2830,6 +2843,8 @@
         "lua": "DeleteTypeEnumMemberResponse table/enum; resolve in types/enums",
         "native_type": "DeleteTypeEnumMemberResponse"
       },
+      "semantic_review": "member reconstruction/side-map comment branches reviewed; downstream defineStruct/defineEnum and runtime evidence unqualified",
+      "state_transitions": "loaded required; normalize one slash; enumerate existing members; ordinal>=count -> NOT_FOUND; reconstruct entire struct/enum on all slots; failure DELETE_ENUM_MEMBER_FAILED; native revision increments only after success",
       "surface_contract": {
         "facade": {
           "disposition": "native escape hatch",
@@ -2861,6 +2876,11 @@
         }
       },
       "dispatch": "mutation",
+      "effective_domain": {
+        "existing_offsets": "must fit signed int before FieldDef offset cast; changing referenced datatype may alter layout; no automatic gap compaction",
+        "ordinal": "exact uint64 zero-based; comparison against current member vector size",
+        "qualification": "source constraint; runtime unqualified"
+      },
       "evidence": {
         "negative": {
           "assertions": "unloaded/unsupported/validation and recorded limitations",
@@ -2887,7 +2907,10 @@
           "path": "cpp/src/local_client.cpp"
         }
       },
-      "limitations": [],
+      "limitations": [
+        "ordinal selects current traversal position, not stable member ID; absent or wrong-kind parent can appear as ordinal NOT_FOUND; all-slot partial effects on failure remain possible",
+        "remaining offsets retained explicitly; deletion does not compact gaps; side-map member comments are not rebuilt/remapped here"
+      ],
       "lowlevel": "delete_type_member",
       "name": "DeleteTypeMember",
       "native_literal_errors": [
@@ -2896,6 +2919,11 @@
       ],
       "pagination": null,
       "program_state": "requires loaded program",
+      "reconstruction_source_review": {
+        "body_sha256": "8ce4f80498c30065e168440f1b6869dad3e64aa013288850e9f111828c711d10",
+        "line": 831,
+        "path": "cpp/src/local_client.cpp"
+      },
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
@@ -2930,6 +2958,8 @@
         "lua": "DeleteTypeMemberResponse table/enum; resolve in types/enums",
         "native_type": "DeleteTypeMemberResponse"
       },
+      "semantic_review": "member reconstruction/side-map comment branches reviewed; downstream defineStruct/defineEnum and runtime evidence unqualified",
+      "state_transitions": "loaded required; normalize one slash; enumerate existing members; ordinal>=count -> NOT_FOUND; reconstruct entire struct/enum on all slots; failure DELETE_MEMBER_FAILED; native revision increments only after success",
       "surface_contract": {
         "facade": {
           "disposition": "native escape hatch",
@@ -13871,6 +13901,11 @@
         }
       },
       "dispatch": "mutation",
+      "effective_domain": {
+        "ordinal": "exact uint64 current enum traversal position; enum reorder may change ordinals after defineEnum",
+        "qualification": "source constraint; runtime unqualified",
+        "value": "signed int64 model/request cast to uint64 for EnumValue; preserve bit-pattern conversion and do not invent unsigned Lua input"
+      },
       "evidence": {
         "negative": {
           "assertions": "unloaded/unsupported/validation and recorded limitations",
@@ -13897,7 +13932,10 @@
           "path": "cpp/src/local_client.cpp"
         }
       },
-      "limitations": [],
+      "limitations": [
+        "ordinal selects current traversal position, not stable member ID; absent or wrong-kind parent can appear as ordinal NOT_FOUND; all-slot partial effects on failure remain possible",
+        "enum is reconstructed from names and uint64-cast values; side-map ordinal comments not remapped here; negative-value roundtrip/width behavior unqualified"
+      ],
       "lowlevel": "rename_type_enum_member",
       "name": "RenameTypeEnumMember",
       "native_literal_errors": [
@@ -13906,6 +13944,11 @@
       ],
       "pagination": null,
       "program_state": "requires loaded program",
+      "reconstruction_source_review": {
+        "body_sha256": "51592faac0a11c5dc17b73e72b5c7da5df6672dd3ff95356e70a81c13e5e4011",
+        "line": 968,
+        "path": "cpp/src/local_client.cpp"
+      },
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
@@ -13948,6 +13991,8 @@
         "lua": "RenameTypeEnumMemberResponse table/enum; resolve in types/enums",
         "native_type": "RenameTypeEnumMemberResponse"
       },
+      "semantic_review": "member reconstruction/side-map comment branches reviewed; downstream defineStruct/defineEnum and runtime evidence unqualified",
+      "state_transitions": "loaded required; normalize one slash; enumerate existing members; ordinal>=count -> NOT_FOUND; reconstruct entire struct/enum on all slots; failure RENAME_ENUM_MEMBER_FAILED; native revision increments only after success",
       "surface_contract": {
         "facade": {
           "disposition": "native escape hatch",
@@ -13980,6 +14025,11 @@
         }
       },
       "dispatch": "mutation",
+      "effective_domain": {
+        "existing_offsets": "must fit signed int before FieldDef offset cast; changing referenced datatype may alter layout; no automatic gap compaction",
+        "ordinal": "exact uint64 zero-based; comparison against current member vector size",
+        "qualification": "source constraint; runtime unqualified"
+      },
       "evidence": {
         "negative": {
           "assertions": "unloaded/unsupported/validation and recorded limitations",
@@ -14006,7 +14056,10 @@
           "path": "cpp/src/local_client.cpp"
         }
       },
-      "limitations": [],
+      "limitations": [
+        "ordinal selects current traversal position, not stable member ID; absent or wrong-kind parent can appear as ordinal NOT_FOUND; all-slot partial effects on failure remain possible",
+        "remaining offsets retained explicitly; deletion does not compact gaps; side-map member comments are not rebuilt/remapped here"
+      ],
       "lowlevel": "rename_type_member",
       "name": "RenameTypeMember",
       "native_literal_errors": [
@@ -14015,6 +14068,11 @@
       ],
       "pagination": null,
       "program_state": "requires loaded program",
+      "reconstruction_source_review": {
+        "body_sha256": "54282c84d39f6d77f8ffce7c6edec18ca9a5c08f713dab4c29c8acfe143633e0",
+        "line": 865,
+        "path": "cpp/src/local_client.cpp"
+      },
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
@@ -14057,6 +14115,8 @@
         "lua": "RenameTypeMemberResponse table/enum; resolve in types/enums",
         "native_type": "RenameTypeMemberResponse"
       },
+      "semantic_review": "member reconstruction/side-map comment branches reviewed; downstream defineStruct/defineEnum and runtime evidence unqualified",
+      "state_transitions": "loaded required; normalize one slash; enumerate existing members; ordinal>=count -> NOT_FOUND; reconstruct entire struct/enum on all slots; failure RENAME_MEMBER_FAILED; native revision increments only after success",
       "surface_contract": {
         "facade": {
           "disposition": "native escape hatch",
@@ -15525,12 +15585,19 @@
           "path": "cpp/src/local_client.cpp"
         }
       },
-      "limitations": [],
+      "limitations": [
+        "arbitrary nonexistent type/ordinal comments accepted; empty text stored, not deletion; later type/member lookup may not expose entry; no name/ordinal remapping on reconstruction is performed in this override"
+      ],
       "lowlevel": "set_type_enum_member_comment",
       "name": "SetTypeEnumMemberComment",
       "native_literal_errors": [],
       "pagination": null,
       "program_state": "requires loaded program",
+      "reconstruction_source_review": {
+        "body_sha256": "6724195b17242de60d4b19191935adb4e822db3267acfb1593c0e79fcac2d95f",
+        "line": 1392,
+        "path": "cpp/src/local_client.cpp"
+      },
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
@@ -15573,6 +15640,8 @@
         "lua": "SetTypeEnumMemberCommentResponse table/enum; resolve in types/enums",
         "native_type": "SetTypeEnumMemberCommentResponse"
       },
+      "semantic_review": "member reconstruction/side-map comment branches reviewed; downstream defineStruct/defineEnum and runtime evidence unqualified",
+      "state_transitions": "loaded required; strip one leading slash; write normalized type-name/UInt64-ordinal side map without checking type existence/kind/ordinal; increment native revision and return updated=true on normal return",
       "surface_contract": {
         "facade": {
           "disposition": "native escape hatch",
@@ -15605,6 +15674,11 @@
         }
       },
       "dispatch": "mutation",
+      "effective_domain": {
+        "ordinal": "exact uint64 current enum traversal position; enum reorder may change ordinals after defineEnum",
+        "qualification": "source constraint; runtime unqualified",
+        "value": "signed int64 model/request cast to uint64 for EnumValue; preserve bit-pattern conversion and do not invent unsigned Lua input"
+      },
       "evidence": {
         "negative": {
           "assertions": "unloaded/unsupported/validation and recorded limitations",
@@ -15631,7 +15705,10 @@
           "path": "cpp/src/local_client.cpp"
         }
       },
-      "limitations": [],
+      "limitations": [
+        "ordinal selects current traversal position, not stable member ID; absent or wrong-kind parent can appear as ordinal NOT_FOUND; all-slot partial effects on failure remain possible",
+        "enum is reconstructed from names and uint64-cast values; side-map ordinal comments not remapped here; negative-value roundtrip/width behavior unqualified"
+      ],
       "lowlevel": "set_type_enum_member_value",
       "name": "SetTypeEnumMemberValue",
       "native_literal_errors": [
@@ -15640,6 +15717,11 @@
       ],
       "pagination": null,
       "program_state": "requires loaded program",
+      "reconstruction_source_review": {
+        "body_sha256": "cbc12271ce91e5798287b406b824eb57abf8569a8a3eb834968feb69b2febde9",
+        "line": 1002,
+        "path": "cpp/src/local_client.cpp"
+      },
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
@@ -15682,6 +15764,8 @@
         "lua": "SetTypeEnumMemberValueResponse table/enum; resolve in types/enums",
         "native_type": "SetTypeEnumMemberValueResponse"
       },
+      "semantic_review": "member reconstruction/side-map comment branches reviewed; downstream defineStruct/defineEnum and runtime evidence unqualified",
+      "state_transitions": "loaded required; normalize one slash; enumerate existing members; ordinal>=count -> NOT_FOUND; reconstruct entire struct/enum on all slots; failure SET_ENUM_VALUE_FAILED; native revision increments only after success",
       "surface_contract": {
         "facade": {
           "disposition": "native escape hatch",
@@ -15740,12 +15824,19 @@
           "path": "cpp/src/local_client.cpp"
         }
       },
-      "limitations": [],
+      "limitations": [
+        "arbitrary nonexistent type/ordinal comments accepted; empty text stored, not deletion; later type/member lookup may not expose entry; no name/ordinal remapping on reconstruction is performed in this override"
+      ],
       "lowlevel": "set_type_member_comment",
       "name": "SetTypeMemberComment",
       "native_literal_errors": [],
       "pagination": null,
       "program_state": "requires loaded program",
+      "reconstruction_source_review": {
+        "body_sha256": "7ff7796157657bad4ed452b83906810b73daa46a1d9a2e2d5299ea1de478e1f2",
+        "line": 1374,
+        "path": "cpp/src/local_client.cpp"
+      },
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
@@ -15788,6 +15879,8 @@
         "lua": "SetTypeMemberCommentResponse table/enum; resolve in types/enums",
         "native_type": "SetTypeMemberCommentResponse"
       },
+      "semantic_review": "member reconstruction/side-map comment branches reviewed; downstream defineStruct/defineEnum and runtime evidence unqualified",
+      "state_transitions": "loaded required; strip one leading slash; write normalized type-name/UInt64-ordinal side map without checking type existence/kind/ordinal; increment native revision and return updated=true on normal return",
       "surface_contract": {
         "facade": {
           "disposition": "native escape hatch",
@@ -15820,6 +15913,11 @@
         }
       },
       "dispatch": "mutation",
+      "effective_domain": {
+        "existing_offsets": "must fit signed int before FieldDef offset cast; changing referenced datatype may alter layout; no automatic gap compaction",
+        "ordinal": "exact uint64 zero-based; comparison against current member vector size",
+        "qualification": "source constraint; runtime unqualified"
+      },
       "evidence": {
         "negative": {
           "assertions": "unloaded/unsupported/validation and recorded limitations",
@@ -15846,7 +15944,10 @@
           "path": "cpp/src/local_client.cpp"
         }
       },
-      "limitations": [],
+      "limitations": [
+        "ordinal selects current traversal position, not stable member ID; absent or wrong-kind parent can appear as ordinal NOT_FOUND; all-slot partial effects on failure remain possible",
+        "remaining offsets retained explicitly; deletion does not compact gaps; side-map member comments are not rebuilt/remapped here"
+      ],
       "lowlevel": "set_type_member_type",
       "name": "SetTypeMemberType",
       "native_literal_errors": [
@@ -15855,6 +15956,11 @@
       ],
       "pagination": null,
       "program_state": "requires loaded program",
+      "reconstruction_source_review": {
+        "body_sha256": "f4259db29ffd3dbd4c3f48df5006355d1a91429a1c12746385679525c48715a9",
+        "line": 900,
+        "path": "cpp/src/local_client.cpp"
+      },
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
@@ -15897,6 +16003,8 @@
         "lua": "SetTypeMemberTypeResponse table/enum; resolve in types/enums",
         "native_type": "SetTypeMemberTypeResponse"
       },
+      "semantic_review": "member reconstruction/side-map comment branches reviewed; downstream defineStruct/defineEnum and runtime evidence unqualified",
+      "state_transitions": "loaded required; normalize one slash; enumerate existing members; ordinal>=count -> NOT_FOUND; reconstruct entire struct/enum on all slots; failure SET_MEMBER_TYPE_FAILED; native revision increments only after success",
       "surface_contract": {
         "facade": {
           "disposition": "native escape hatch",
