@@ -41,6 +41,8 @@ if(BUILD_TESTING)
   foreach(host IN ITEMS boundary_static_host boundary_shared_host)
     add_test(NAME ownership_${host} COMMAND ${host}
       ${PROJECT_SOURCE_DIR}/tests/run_ownership.lua ${PROJECT_SOURCE_DIR} ${CMAKE_BINARY_DIR})
+    add_test(NAME ownership_close_failure_${host} COMMAND ${host}
+      ${PROJECT_SOURCE_DIR}/tests/ownership_close_failure.lua ${PROJECT_SOURCE_DIR} ${CMAKE_BINARY_DIR})
     add_test(NAME ownership_entrypoints_${host} COMMAND ${host}
       ${PROJECT_SOURCE_DIR}/tests/ownership_entrypoints.lua ${PROJECT_SOURCE_DIR} ${CMAKE_BINARY_DIR})
   endforeach()

@@ -72,7 +72,7 @@ deterministic proof of every exact predispatch allocation edge.
 Remaining M1 qualification work, explicitly not waived by a passing entrypoint
 reproducer: deterministic finalizer scheduling at each parsing/conversion edge;
 native C++ allocation/exception injection (including partially constructed
-upstream engine cleanup); logical-close native failure injection; concurrent
+upstream engine cleanup); concurrent
 multi-thread independent-state engine overlap observation; whole dependency closure/Lua
 sanitizer instrumentation. The combined initialization/ownership/conversion
 sweep described below closes that specific earlier gap, not these other gates. Current ASan/UBSan instruments wrapper and C hosts,
@@ -133,3 +133,22 @@ in release builds. This asserts public slot exclusivity and cross-thread/state
 reuse for one loaded module. It is not a TSAN/native-phase overlap observer,
 proof across independently loaded module copies, or exhaustive engine-global
 race proof; those restrictions and remaining qualification gates are not waived.
+
+## Real logical-close save failure preservation
+
+`tests/ownership_close_failure.lua` opens the analyzed-project fixture through
+Session with `state_path=/dev/null/lua-libghidra-state.xml`. On the qualified
+Linux profile a child of the non-directory /dev/null cannot be opened, including
+as root. This injects a real native file-open failure without mocks, permission
+assumptions, or writable temporary state. Pinned `Decompiler::saveState` returns
+`Unable to open file for writing: <path>`; `closeProgramLocked(save)` returns
+SAVE_FAILED before resetting adapters/loaded state; Shutdown forwards that error.
+
+Static and shared C-built embedded hosts assert the exact native code/message,
+backend and operation for facade close_program(save) and native shutdown(save).
+Each failure increments shared dispatch generation once, retains program byte
+reads through both aliases and keeps the process slot occupied. A subsequent
+discard succeeds, exposes native NO_PROGRAM (not CLOSED), retains owner status,
+and only binding owner close permits a new client. This covers the real native
+save-failure branch, not every possible native exception/outcome or persistence
+success. Run `ctest --test-dir build -R ownership_close_failure -V` after building.
