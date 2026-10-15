@@ -49,6 +49,52 @@ def review_request_fields(u, operations):
         code=_code_mask(text)
         for arg in op['request']:
             nested=arg['nested_fields']
+            if not nested and name in {'CloseProgram','Shutdown'} and arg['name']=='policy':
+                assert arg['native_type']=='ShutdownPolicy' and 'closeProgramLocked(policy)' in code
+                _,helper=body(source,'StatusOr<CloseProgramResponse> closeProgramLocked(ShutdownPolicy policy)')
+                assert 'policy == ShutdownPolicy::kSave' in helper
+                assert 'should_save && !opts_.state_path.empty()' in helper
+                assert 'pool_->saveState(opts_.state_path)' in helper and 'pool_->resetAdapters();' in helper
+                assert helper.index('pool_->saveState(opts_.state_path)')<helper.index('pool_->resetAdapters();')
+                sem='required explicit Lua policy, no implicit save; facade close_program accepts save/discard only. Native enum kUnspecified=0, kSave=1, kDiscard=2, kNone=3: ONLY kSave requests save, other native values take non-save branch (not an approved Lua unknown-enum input policy); empty state_path skips native save, facade save-close rejects pre-dispatch; SAVE_FAILED precedes unload/reset, retains logical access; successful close resets adapters/benchmarks, not engines/owner, no autosave or revision increment'
+                if name=='Shutdown':
+                    assert 'if (program_loaded_)' in code
+                    sem+='; local Shutdown already unloaded succeeds accepted=true without policy processing; loaded uses same non-locking close helper and propagates its status, NOT remote host termination'
+                else:
+                    sem+='; CloseProgram unloaded returns NO_PROGRAM before policy branch'
+                arg['semantics']=sem+'; dispatched lifecycle invalidates binding generation even on error, validation-only rejection does not; aliases NO_PROGRAM after logical close, owner still usable for status/reopen; runtime fixture/alias/save-failure evidence unqualified'
+                arg['direct_argument_review']={'consumer':LOCAL,'helper':'closeProgramLocked','qualification':'source only; runtime unqualified'}
+                reviewed.append({'operation':name,'path':arg['name']})
+                continue
+            if not nested and name in {'SetComment','DeleteComment'} and arg['name'] in {'kind','text'}:
+                consumer='setComment' if name=='SetComment' else 'deleteComment'
+                _,producer=body(adapter,'ArchAdapter::'+consumer+'(')
+                assert 'static_cast<int>(kind)' in code
+                if name=='SetComment':
+                    assert 'a.setComment(address, static_cast<int>(kind), text)' in code
+                    assert 'comments_[{address, kind}] = text;' in producer
+                else:
+                    assert 'a.deleteComment(address, static_cast<int>(kind))' in code
+                    assert 'comments_.erase({address, kind}) > 0' in producer
+                if arg['name']=='kind':
+                    assert arg['native_type']=='CommentKind'
+                    sem='required Lua enum representation; native CommentKind unspecified=0/eol=1/pre=2/post=3/plate=4/repeatable=5, cast to signed int map key without native membership validation; unknown-numeric preservation in responses does not approve accepting arbitrary enum inputs; no implicit eol default'
+                else:
+                    assert arg['native_type']=='const std::string&'
+                    sem='required Lua string copied unchanged to adapter-local address/kind map; empty string is stored replacement, NOT deletion/absence; no text content validation, not native project comment metadata'
+                sem+=('; setter no address/kind/existence check, ignored aggregate status and unconditional true/revision even same value' if name=='SetComment' else '; deletion erases exact address/kind key, absent returns NOT_FOUND not deleted=false success; revision only on deletion')
+                arg['semantics']=sem+'; side-map persistence/NUL/non-ASCII roundtrip unqualified; dispatched mutation invalidates generation even failed call, validation-only rejection does not; runtime positive/negative evidence unqualified'
+                arg['direct_argument_review']={'consumer':ADAPTER,'helper':consumer,'qualification':'source only; runtime unqualified'}
+                reviewed.append({'operation':name,'path':arg['name']})
+                continue
+            if not nested and name=='DeletePerfBenchmark' and arg['name']=='bench_id':
+                assert arg['native_type']=='const std::string&'
+                assert 'bench_id.empty()' in code and 'r.bench_id == bench_id' in code
+                assert '"invalid_argument"' in text and 'if (deleted) revision_++;' in code
+                arg['semantics']='required Lua string; loaded guard first, empty gives lowercase invalid_argument; exact case-sensitive byte-string equality removes all matching in-memory benchmark IDs, no normalization/substring matching; absent nonempty ID returns successful deleted=false without revision increment; binding dispatched mutation generation still invalidates, validation-only rejection does not; native store lifetime is loaded program, not persistent measurement DB; NUL/non-ASCII and positive/negative runtime evidence unqualified'
+                arg['direct_argument_review']={'consumer':LOCAL,'helper':name,'qualification':'source only; runtime unqualified'}
+                reviewed.append({'operation':name,'path':arg['name']})
+                continue
             text_payloads={
                 'RenameFunction':{'new_name':('d.nameFunction(address, new_name)','literal function name passed unchanged to nameFunction; no wrapper empty/identifier/duplicate validation')},
                 'RenameSymbol':{'new_name':('d.nameFunction(address, new_name)','literal function name; missing symbol first NOT_FOUND, non-function NOT_SUPPORTED, only function branch calls nameFunction; no wrapper name validation')},

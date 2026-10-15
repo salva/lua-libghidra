@@ -781,3 +781,15 @@ Operator scope reaffirmed: native-local only. Shared-interface HTTP-only rows
 remain EXCLUDED boundary documentation, not exposed/implemented operations or
 remote-parity acceptance obligations. Common definitions needed by LocalClient
 remain inventoried; no transport/server/dependency surgery is introduced.
+
+## Policy and map-key requests (thirty-ninth increment)
+
+Six direct fields reconcile local close/shutdown policy, comment kind/text and
+benchmark deletion ID. Native only kSave requests save; other native enum values
+are non-save, not permission to expand approved Lua policy grammar. Logical close
+retains owner/engines; shutdown already unloaded accepts without policy processing,
+not remote host termination. Comment map kind has no implicit eol/default membership
+check; empty text stores replacement. Benchmark deletion exact ID equality returns
+deleted=false success if absent, unlike absent-comment NOT_FOUND. Native revision
+and binding generation remain distinct. Ledger 138 reviewed/18 remaining; 43 tests
+include independent inverted benchmark equality rejection. Runtime slots unqualified.

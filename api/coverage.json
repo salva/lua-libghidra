@@ -1308,11 +1308,17 @@
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "helper": "closeProgramLocked",
+            "qualification": "source only; runtime unqualified"
+          },
           "ignored": false,
           "lua": "ShutdownPolicy table/enum; resolve in types/enums",
           "name": "policy",
           "native_type": "ShutdownPolicy",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "required explicit Lua policy, no implicit save; facade close_program accepts save/discard only. Native enum kUnspecified=0, kSave=1, kDiscard=2, kNone=3: ONLY kSave requests save, other native values take non-save branch (not an approved Lua unknown-enum input policy); empty state_path skips native save, facade save-close rejects pre-dispatch; SAVE_FAILED precedes unload/reset, retains logical access; successful close resets adapters/benchmarks, not engines/owner, no autosave or revision increment; CloseProgram unloaded returns NO_PROGRAM before policy branch; dispatched lifecycle invalidates binding generation even on error, validation-only rejection does not; aliases NO_PROGRAM after logical close, owner still usable for status/reopen; runtime fixture/alias/save-failure evidence unqualified"
         }
       ],
       "response": {
@@ -2440,11 +2446,17 @@
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_arch_adapter.cpp",
+            "helper": "deleteComment",
+            "qualification": "source only; runtime unqualified"
+          },
           "ignored": false,
           "lua": "CommentKind table/enum; resolve in types/enums",
           "name": "kind",
           "native_type": "CommentKind",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "required Lua enum representation; native CommentKind unspecified=0/eol=1/pre=2/post=3/plate=4/repeatable=5, cast to signed int map key without native membership validation; unknown-numeric preservation in responses does not approve accepting arbitrary enum inputs; no implicit eol default; deletion erases exact address/kind key, absent returns NOT_FOUND not deleted=false success; revision only on deletion; side-map persistence/NUL/non-ASCII roundtrip unqualified; dispatched mutation invalidates generation even failed call, validation-only rejection does not; runtime positive/negative evidence unqualified"
         }
       ],
       "response": {
@@ -2726,11 +2738,17 @@
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "helper": "DeletePerfBenchmark",
+            "qualification": "source only; runtime unqualified"
+          },
           "ignored": false,
           "lua": "Lua string (no transcoding)",
           "name": "bench_id",
           "native_type": "const std::string&",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "required Lua string; loaded guard first, empty gives lowercase invalid_argument; exact case-sensitive byte-string equality removes all matching in-memory benchmark IDs, no normalization/substring matching; absent nonempty ID returns successful deleted=false without revision increment; binding dispatched mutation generation still invalidates, validation-only rejection does not; native store lifetime is loaded program, not persistent measurement DB; NUL/non-ASCII and positive/negative runtime evidence unqualified"
         }
       ],
       "response": {
@@ -18252,19 +18270,31 @@
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_arch_adapter.cpp",
+            "helper": "setComment",
+            "qualification": "source only; runtime unqualified"
+          },
           "ignored": false,
           "lua": "CommentKind table/enum; resolve in types/enums",
           "name": "kind",
           "native_type": "CommentKind",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "required Lua enum representation; native CommentKind unspecified=0/eol=1/pre=2/post=3/plate=4/repeatable=5, cast to signed int map key without native membership validation; unknown-numeric preservation in responses does not approve accepting arbitrary enum inputs; no implicit eol default; setter no address/kind/existence check, ignored aggregate status and unconditional true/revision even same value; side-map persistence/NUL/non-ASCII roundtrip unqualified; dispatched mutation invalidates generation even failed call, validation-only rejection does not; runtime positive/negative evidence unqualified"
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_arch_adapter.cpp",
+            "helper": "setComment",
+            "qualification": "source only; runtime unqualified"
+          },
           "ignored": false,
           "lua": "Lua string (no transcoding)",
           "name": "text",
           "native_type": "const std::string&",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "required Lua string copied unchanged to adapter-local address/kind map; empty string is stored replacement, NOT deletion/absence; no text content validation, not native project comment metadata; setter no address/kind/existence check, ignored aggregate status and unconditional true/revision even same value; side-map persistence/NUL/non-ASCII roundtrip unqualified; dispatched mutation invalidates generation even failed call, validation-only rejection does not; runtime positive/negative evidence unqualified"
         }
       ],
       "response": {
@@ -19938,11 +19968,17 @@
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "helper": "closeProgramLocked",
+            "qualification": "source only; runtime unqualified"
+          },
           "ignored": false,
           "lua": "ShutdownPolicy table/enum; resolve in types/enums",
           "name": "policy",
           "native_type": "ShutdownPolicy",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "required explicit Lua policy, no implicit save; facade close_program accepts save/discard only. Native enum kUnspecified=0, kSave=1, kDiscard=2, kNone=3: ONLY kSave requests save, other native values take non-save branch (not an approved Lua unknown-enum input policy); empty state_path skips native save, facade save-close rejects pre-dispatch; SAVE_FAILED precedes unload/reset, retains logical access; successful close resets adapters/benchmarks, not engines/owner, no autosave or revision increment; local Shutdown already unloaded succeeds accepted=true without policy processing; loaded uses same non-locking close helper and propagates its status, NOT remote host termination; dispatched lifecycle invalidates binding generation even on error, validation-only rejection does not; aliases NO_PROGRAM after logical close, owner still usable for status/reopen; runtime fixture/alias/save-failure evidence unqualified"
         }
       ],
       "response": {
@@ -30318,28 +30354,13 @@
         "reason": "direct argument consumption/default/domain review not yet independently reconciled"
       },
       {
-        "operation": "CloseProgram",
-        "path": "policy",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
         "operation": "DeleteComment",
         "path": "address",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "DeleteComment",
-        "path": "kind",
         "reason": "direct argument consumption/default/domain review not yet independently reconciled"
       },
       {
         "operation": "DeleteDataItem",
         "path": "address",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "DeletePerfBenchmark",
-        "path": "bench_id",
         "reason": "direct argument consumption/default/domain review not yet independently reconciled"
       },
       {
@@ -30403,16 +30424,6 @@
         "reason": "direct argument consumption/default/domain review not yet independently reconciled"
       },
       {
-        "operation": "SetComment",
-        "path": "kind",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "SetComment",
-        "path": "text",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
         "operation": "SetFunctionLocalType",
         "path": "address",
         "reason": "direct argument consumption/default/domain review not yet independently reconciled"
@@ -30425,11 +30436,6 @@
       {
         "operation": "SetFunctionSignature",
         "path": "address",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "Shutdown",
-        "path": "policy",
         "reason": "direct argument consumption/default/domain review not yet independently reconciled"
       }
     ],
@@ -30467,6 +30473,10 @@
         "path": "data_type"
       },
       {
+        "operation": "CloseProgram",
+        "path": "policy"
+      },
+      {
         "operation": "CreateType",
         "path": "name"
       },
@@ -30497,6 +30507,14 @@
       {
         "operation": "CreateTypeEnum",
         "path": "is_signed"
+      },
+      {
+        "operation": "DeleteComment",
+        "path": "kind"
+      },
+      {
+        "operation": "DeletePerfBenchmark",
+        "path": "bench_id"
       },
       {
         "operation": "DeleteSymbol",
@@ -30879,6 +30897,14 @@
         "path": "new_name"
       },
       {
+        "operation": "SetComment",
+        "path": "kind"
+      },
+      {
+        "operation": "SetComment",
+        "path": "text"
+      },
+      {
         "operation": "SetFunctionLocalType",
         "path": "local_id"
       },
@@ -30953,6 +30979,10 @@
       {
         "operation": "SetTypeMemberType",
         "path": "member_type"
+      },
+      {
+        "operation": "Shutdown",
+        "path": "policy"
       },
       {
         "operation": "WriteBytes",

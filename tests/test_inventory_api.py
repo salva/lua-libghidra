@@ -51,7 +51,7 @@ class InventoryTests(unittest.TestCase):
                     self.assertIn('must not be inferred',f['request_field_review']['native_absence'])
 
     def test_page_argument_domains_are_not_native_unbounded_defaults(self):
-        self.assertEqual(len(self.data['request_audit']['direct_arguments_reviewed']),132)
+        self.assertEqual(len(self.data['request_audit']['direct_arguments_reviewed']),138)
         for op in self.ops.values():
             if 'page_wrapper_review' not in op:continue
             args={a['name']:a for a in op['request']}
@@ -157,6 +157,16 @@ class InventoryTests(unittest.TestCase):
         self.assertIn('sets namelock',sem('RenameDataItem','new_name'))
         self.assertIn('complete prototype syntax',sem('SetFunctionSignature','prototype'))
         self.assertIn('DAT_',sem('ApplyDataType','data_type'))
+
+    def test_policy_comment_and_benchmark_keys(self):
+        def sem(op,key):
+            return next(a['semantics'] for a in self.ops[op]['request'] if a['name']==key)
+        self.assertIn('ONLY kSave',sem('CloseProgram','policy'))
+        self.assertIn('already unloaded succeeds',sem('Shutdown','policy'))
+        self.assertIn('NOT remote host termination',sem('Shutdown','policy'))
+        self.assertIn('no implicit eol default',sem('DeleteComment','kind'))
+        self.assertIn('NOT deletion/absence',sem('SetComment','text'))
+        self.assertIn('successful deleted=false',sem('DeletePerfBenchmark','bench_id'))
 
     def test_preserved_red_reproducer(self):
         # Exact acceptance trigger from red; stronger checks below prevent treating
@@ -444,6 +454,10 @@ class InventoryTests(unittest.TestCase):
                 module.inventory(root)
             local.write_text(local_original)
             local.write_text(local_original.replace('d.nameGlobal(address, name, data_type)', 'd.nameGlobal(address, name, name)'))
+            with self.assertRaises(AssertionError):
+                module.inventory(root)
+            local.write_text(local_original)
+            local.write_text(local_original.replace('r.bench_id == bench_id', 'r.bench_id != bench_id'))
             with self.assertRaises(AssertionError):
                 module.inventory(root)
             local.write_text(local_original)
