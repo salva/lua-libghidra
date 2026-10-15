@@ -193,7 +193,11 @@ An unreachable finalizable table closes the dispatch receiver, constructs and
 closes a replacement client, and increments a hit counter. Both ReadBytes and
 OpenProgram (with rooted parsed strings) must return CLOSED/binding with correct
 operation instead of dispatching into the closed/replaced owner. Hit/edge counts
-and subsequent fresh construction are asserted. The one-shot arm is cleared
+and subsequent fresh construction are asserted. The finalizer wraps its native
+close/replacement sequence in pcall and publishes both success/error and a
+completion counter set only after replacement close. Outside GC, the test
+requires success, nil error and exactly one completion; Lua's suppressed
+finalizer errors cannot masquerade as replacement success. The one-shot arm is cleared
 before GC to permit finalizer reentrancy; CTest has a 30s deadlock timeout.
 
 This pins a genuine Lua finalizer to the last pre-recheck edge and exercises
