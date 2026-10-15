@@ -206,3 +206,18 @@ production. It is **not** allocator-driven GC scheduling inside parsing or
 stack growth, nor conversion-edge finalization or native cleanup accounting.
 Those independent exact-edge qualification requirements remain open. Reproduce
 with target `reentry_host` and CTest regex `ownership_deterministic_recheck`.
+
+### Allocating native success-response fault sweep
+
+The same host sweeps persistent ordinary C++ new/new[] denial over the real
+GetCapabilities path, not just the unloaded-program error. Each reached
+allocation threshold must return NATIVE_EXCEPTION/binding/get_capabilities;
+unreached thresholds must return a nonempty capability table. Every iteration
+restores allocation and retries the full operation on the same owner. The sweep
+stops at the first measured success tail (with a 256-point ceiling that must
+reach success); no assumption equates another state's baseline with a failure.
+On the current SDK it reaches 15 failures then the success tail. This exercises
+unwinding of partially populated vector/string response storage, lock recovery,
+and protected conversion after native failure. It does not measure heap balance
+or destructor counts, cover partial engine construction, intercept malloc or
+aligned allocations, or constitute exhaustive whole-engine fault qualification.

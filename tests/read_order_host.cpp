@@ -12,11 +12,12 @@ static uint32_t observed[2];
 static bool watching=false;
 static bool deny=false;
 static unsigned denied=0;
+static unsigned attempts=0, deny_after=1;
 static size_t largest=0;
 // Observe C++ request/response allocations. Refuse huge allocations as a safety
 // backstop: an accidental accepted-bound read must never allocate gigabytes.
 void* operator new(size_t n) {
- if(watching) { if(n>largest) largest=n; if(deny) { ++denied; throw std::bad_alloc(); } if(n>1024*1024) throw std::bad_alloc(); }
+ if(watching) { if(n>largest) largest=n; if(deny && ++attempts>=deny_after) { ++denied; throw std::bad_alloc(); } if(n>1024*1024) throw std::bad_alloc(); }
  if(void* p=std::malloc(n?n:1)) return p;
  throw std::bad_alloc();
 }
@@ -35,6 +36,10 @@ void observe_read_phase(int phase,uint32_t size) noexcept {
 static int call(lua_State* L) {
  lua_getfield(L,1,"read_bytes"); lua_pushvalue(L,1);
  lua_pushinteger(L,0); lua_pushvalue(L,2); lua_call(L,3,2); return 2;
+}
+static int capabilities(lua_State* L) {
+ lua_getfield(L,1,"get_capabilities"); lua_pushvalue(L,1);
+ lua_call(L,1,2); return 2;
 }
 int main() {
  lua_State* L=luaL_newstate(); assert(L); luaL_openlibs(L);
@@ -85,5 +90,33 @@ int main() {
  lua_getfield(L,-1,"code");
  assert(std::string_view(lua_tostring(L,-1))=="NO_PROGRAM"); lua_pop(L,3);
  std::printf("ReadBytes native bad_alloc: %u actual denials, structured exception and same-owner recovery PASS\n",denied);
+ // Sweep allocation failures through a real allocating success response.
+ // GetCapabilities creates native vector/string storage before Lua conversion.
+ unsigned reached=0, unreached=0;
+ for(unsigned point=1;point<=256;++point) {
+  attempts=denied=0; deny_after=point;
+  lua_pushcfunction(L,capabilities); lua_pushvalue(L,owner);
+  watching=deny=true; int result=lua_pcall(L,1,2,0); watching=deny=false;
+  assert(result==LUA_OK);
+  if(denied) {
+   ++reached; assert(lua_isnil(L,-2) && lua_istable(L,-1));
+   lua_getfield(L,-1,"code");
+   assert(std::string_view(lua_tostring(L,-1))=="NATIVE_EXCEPTION"); lua_pop(L,1);
+   lua_getfield(L,-1,"operation");
+   assert(std::string_view(lua_tostring(L,-1))=="get_capabilities"); lua_pop(L,1);
+   lua_getfield(L,-1,"backend");
+   assert(std::string_view(lua_tostring(L,-1))=="binding"); lua_pop(L,1);
+  } else {
+   ++unreached; assert(attempts<point && lua_istable(L,-2) && lua_rawlen(L,-2)>0);
+  }
+  lua_pop(L,2);
+  // Retry the complete success path on the same owner after every failure.
+  lua_pushcfunction(L,capabilities); lua_pushvalue(L,owner);
+  assert(lua_pcall(L,1,2,0)==LUA_OK && lua_istable(L,-2) && lua_rawlen(L,-2)>0);
+  lua_pop(L,2);
+  if(unreached) break;
+ }
+ assert(reached>1 && unreached==1);
+ std::printf("GetCapabilities allocation sweep: %u reached failures, success tail, same-owner retries PASS\n",reached);
  lua_close(L);
 }
