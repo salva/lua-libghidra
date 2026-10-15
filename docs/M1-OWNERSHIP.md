@@ -73,10 +73,31 @@ Remaining M1 qualification work, explicitly not waived by a passing entrypoint
 reproducer: deterministic finalizer scheduling at each parsing/conversion edge;
 native C++ allocation/exception injection (including partially constructed
 upstream engine cleanup); logical-close native failure injection; concurrent
-multi-thread independent-state stress; fault sweeps of module initialization
-combined with ownership in a single script; whole dependency closure/Lua
-sanitizer instrumentation. Current ASan/UBSan instruments wrapper and C hosts,
+multi-thread independent-state stress; whole dependency closure/Lua
+sanitizer instrumentation. The combined initialization/ownership/conversion
+sweep described below closes that specific earlier gap, not these other gates. Current ASan/UBSan instruments wrapper and C hosts,
 not the prebuilt native SDK or system Lua. Foundation initialization sweeps are
 separate. Full first-slice operations/iterators remain M2. Raw/FileBytes loader
 limitations and historic qualification evidence remain unchanged. Installed
 SDK load is tested, but release/LuaRocks/distribution gates remain open.
+
+## Combined initialization/publication fault coverage
+
+`tests/ownership_host.c` additionally starts a persistent Lua-allocation denial
+sweep before either public module is required. Each fresh state has only standard
+libraries, module paths and fixture names configured; the test chunk is compiled
+before denial. One chunk requires both modules, publishes a low-level owner,
+converts real status/capabilities and a native open error, releases it, then
+publishes a Session over the real analyzed-project fixture and converts its
+open response and status. Every baseline allocation point must fail under
+persistent denial; the immediately following point must succeed. After restoring
+allocations and full collection, the entire chunk must succeed again in that
+same state, including require retry after partial initialization. Lua allocator
+byte balance must return to zero at state close.
+
+Reproduce: `cmake --build build --target ownership_host -j4 && ctest --test-dir
+build -R '^ownership_states_faults -V`. Installed patched SDK / ordinary
+system C-built Lua run: **371 denied points, baseline and beyond-range pass**.
+The preloaded sweeps also remain passing. This covers Lua allocation failure and
+recovery across the combined chain, not native C++ allocation failures, arbitrary
+GC scheduling, native heap leak accounting or full sanitizer qualification.
