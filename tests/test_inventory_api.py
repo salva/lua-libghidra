@@ -1,6 +1,9 @@
 """Structural inventory regressions; no mock/native runtime success claims."""
 import importlib.util
 import json
+import os
+import shutil
+import tempfile
 from pathlib import Path
 import unittest
 
@@ -53,6 +56,43 @@ class InventoryTests(unittest.TestCase):
         local = [r for r in self.data['python'] if r['file'].endswith('/local.py') and 'method' in r and not r['method'].startswith('_')]
         self.assertEqual(len(local), 27)
         self.assertTrue(all(r['native_operation'] for r in local))
+
+    def test_reviewed_page_contracts(self):
+        types = self.ops['ListTypes']['pagination']
+        self.assertEqual(types['identity']['fields'], ['path_name'])
+        self.assertIn('dependentOrder', types['order'])
+        self.assertEqual(types['post_page_filter'], 'none')
+        self.assertIn('synthetic', self.ops['ListMemoryBlocks']['pagination']['order'])
+        self.assertIn('limit+offset', self.ops['ListInstructions']['pagination']['scan_bound'])
+        self.assertIn('query-dependent', types['pre_page_filter'])
+        for name in ['ListFunctions', 'ListSymbols', 'ListInstructions']:
+            self.assertTrue(self.ops[name]['pagination']['range_zero_end'])
+        python = next(r for r in self.data['python'] if r.get('method')=='list_functions' and r['file'].endswith('/local.py'))
+        self.assertTrue(python['calls'])
+        self.assertTrue(python['returns'])
+
+    def test_independent_source_mutations_detect_field_and_cursor_drift(self):
+        # Disposable copies must not touch native inputs or use root siblings.
+        work = Path(os.environ['SAIVAGE_CARD_WORK_ROOT'])/'inventory-drift-tests'
+        work.mkdir(parents=True, exist_ok=True)
+        with tempfile.TemporaryDirectory(dir=work) as directory:
+            root = Path(directory)
+            for relative in self.data['sources']:
+                destination = root/relative
+                destination.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copyfile(module.DEFAULT/relative, destination)
+            models = root/'cpp/include/libghidra/models.hpp'
+            original = models.read_text()
+            models.write_text(original.replace('struct FunctionRecord {', 'struct FunctionRecord {\n  std::uint64_t added_probe = 0;'))
+            changed = module.inventory(root)
+            fields = {f['name'] for f in changed['types']['FunctionRecord']['fields']}
+            self.assertIn('added_probe', fields)
+            self.assertNotEqual(changed, self.data)
+            models.write_text(original)
+            local = root/'cpp/src/local_client.cpp'
+            local.write_text(local.read_text().replace('limit + offset', 'limit'))
+            with self.assertRaises(AssertionError):
+                module.inventory(root)
 
 
 if __name__ == '__main__':

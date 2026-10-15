@@ -69,3 +69,35 @@ signatures pages-only (candidate offsets; empty output is not exhaustion), ignor
 mutation arguments, range-end zero sentinels, signed-int4 ReadBytes bound, logical
 program closure versus binding owner release, and mutation/lifecycle generation
 invalidation across both public views. Structural tests pin these exceptions.
+
+## Reviewed page paths (second repair attempt)
+
+`inventory_semantics.py` records reviewed contracts for ListFunctions,
+ListSymbols, ListTypes, ListTypeAliases, ListTypeUnions, ListInstructions and
+ListMemoryBlocks. These now have exact candidate identity field sets, traversal
+order, pre/post-page filtering, cursor domain, and source-method/body-hash
+citations. Runtime uniqueness and comparator/stability remain unqualified:
+source traversal order is not an approved total-order comparator.
+
+Important observed distinctions:
+
+- Type pages use `TypeFactory::dependentOrder`, **not** lexical path order.
+  IDs are filtered counters and cannot be used as durable identity.
+- Symbol IDs likewise restart after range filtering; use address/name candidates,
+  subject to uniqueness tests, rather than assuming IDs survive query changes.
+- Memory blocks are zero or one synthetic default-code-space record, not real
+  mapped segment enumeration. Full-width highest+1 can wrap the native size.
+- Instruction offset counts decoded records after scanning from the original
+  start, with `limit+offset` scan bound; no post-page filter. Decoder stops on gap,
+  zero length or address wrap.
+- These adapters catch/log exceptions and return accumulated records; not every
+  backend failure is surfaced as a Status error. Partial/empty success must not
+  be confused with complete enumeration.
+
+Python method rows now include body AST hashes, called conversion functions and
+return expressions. These support independent conversion review but do not
+replace it. Source-mutation tests add a nested model field and alter the
+instruction scan bound in disposable copies under the card work root: the former
+changes extracted accounting; the latter fails the reviewed contract assertion.
+The deterministic baseline comparison still requires review before regeneration
+can be accepted. Seven page reviews are progress, not exhaustive completion.

@@ -6,6 +6,9 @@ import hashlib
 import json
 from pathlib import Path
 import re
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from inventory_semantics import review_pages
 
 PIN = 'd51ca813ae1b6b59519551a9be8c0b1ad74d862d'
 ROOT = Path(__file__).resolve().parents[1]
@@ -135,6 +138,7 @@ def inventory(u):
         if name in ['SaveProgram','OpenProgram']: limitations+=['state persistence/reload limited; no byte overlay persistence guarantee']
         if name in ['CloseProgram','Shutdown']: limitations+=['logical program access closure; engines retained; owner remains usable; do not label CLOSED']
         ops.append(dict(name=name,lowlevel=snake if included else None,tier=tier,facade=facade,dispatch=cls if included else 'excluded',generation='invalidate before dispatch, including failure/partial effect' if cls!='read' and included else 'unchanged',program_state=('requires loaded program' if 'ensure_loaded()' in b else 'no ensure_loaded guard in override; inspect lifecycle/helper') if included else 'not locally implemented; inherited NOT_SUPPORTED',declaration=d,implementation={k:v for k,v in impl.items() if k!='body'} if impl else None,request=request,response={'native_type':d['response_type'],'lua':lua(d['response_type']),'fields':response_fields},native_literal_errors=sorted(set(re.findall(r'FromError\(\s*"([^"]*)"',b))),pagination=page,limitations=limitations,ignored_fields=ignored,evidence={'positive':{'status':'unqualified','fixture':None,'command':None,'assertions':'real supported case with all response fields; defined strings fidelity exception applies'},'negative':{'status':'unqualified','fixture':None,'command':None,'assertions':'unloaded/unsupported/validation and recorded limitations'},'python_oracle':'unqualified'},exclusion=None if included else 'HTTP/shared default only; api.hpp NOT_SUPPORTED does not establish local support'))
+    review_pages(u, ops)
     python=[]
     # Independent public operations and model fields, including HTTP/async/headless exclusions.
     for p in sorted((u/'python/src/libghidra').glob('*.py')):
@@ -145,7 +149,7 @@ def inventory(u):
                 for n in c.body:
                     if isinstance(n,(ast.FunctionDef,ast.AsyncFunctionDef)) and (not n.name.startswith('_') or n.name in ['__init__','__enter__','__exit__']):
                         match=next((o['name'] for o in ops if o['lowlevel']==n.name),None)
-                        python.append({'file':rel,'class':c.name,'method':n.name,'line':n.lineno,'signature':ast.unparse(n.args),'return':ast.unparse(n.returns) if n.returns else None,'native_operation':match if p.name=='local.py' else None,'disposition':'local constructor/lifecycle' if p.name=='local.py' and n.name.startswith('_') else 'local facade mapped' if p.name=='local.py' and match else 'excluded transport/headless/helper; not native local support','model_fields':[]})
+                        python.append({'file':rel,'class':c.name,'method':n.name,'line':n.lineno,'signature':ast.unparse(n.args),'return':ast.unparse(n.returns) if n.returns else None,'native_operation':match if p.name=='local.py' else None,'disposition':'local constructor/lifecycle' if p.name=='local.py' and n.name.startswith('_') else 'local facade mapped' if p.name=='local.py' and match else 'excluded transport/headless/helper; not native local support','model_fields':[], 'body_sha256':hashlib.sha256(ast.dump(n, include_attributes=False).encode()).hexdigest(), 'calls':sorted(set(ast.unparse(x.func) for x in ast.walk(n) if isinstance(x,ast.Call))), 'returns':[ast.unparse(x.value) for x in ast.walk(n) if isinstance(x,ast.Return) and x.value is not None]})
                 annotations=[{'name':n.target.id,'python_type':ast.unparse(n.annotation),'default':ast.unparse(n.value) if n.value else None} for n in c.body if isinstance(n,ast.AnnAssign) and isinstance(n.target,ast.Name)]
                 if annotations: python.append({'file':rel,'class':c.name,'model_fields':annotations,'native_model':c.name if c.name in types else None,'disposition':'Python field inventory; narrower facade not native authority'})
     # Hash downstream primitives so source inspection can be reproduced without vendoring expression.
