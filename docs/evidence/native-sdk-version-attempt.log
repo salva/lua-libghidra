@@ -1,0 +1,10 @@
+CMake Error at CMakeLists.txt:8 (find_package):
+  Could not find a configuration file for package "Protobuf" that exactly
+  matches requested version "29.3".
+
+  The following configuration files were considered but not accepted:
+
+    /work/lua-libghidra/.cache/native-sdk/lib/cmake/protobuf/protobuf-config.cmake, version: 29.3.0
+
+
+

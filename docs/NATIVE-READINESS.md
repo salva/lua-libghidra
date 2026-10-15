@@ -47,13 +47,20 @@ source is otherwise unchanged except its normal generator's known_languages.py.
   `native_smoke=0x401106`. Its source and digests are retained. Native call:
   `native_probe EXTERNAL_ROOT ELF 0x401106 ''`.
 
-**Installed SDK is not yet a self-contained dependency package**: upstream turns
-protobuf/Abseil install rules off; its exported config requires a separately
-installed exact protobuf. For current fixture work use the root source build's
-`libghidra::local_whole` or the supplied probe, not an ambient system Protobuf.
-A useful next repair is an independently installed v29.3/Abseil closure and an
-installed-consumer whole-archive test. Do not infer that a successful archive
-install proves that consumer test.
+The SDK now includes independently installed PIC protobuf v29.3 (CMake package
+version **29.3.0**), Abseil 20240722.0 and bundled utf8_range. An installed-only
+consumer in `tests/installed-sdk` explicitly finds exact Protobuf CONFIG first,
+then libghidra, recreates WHOLE_ARCHIVE for `libghidra::local`, and builds both
+a shared `-z defs` closure and a working semantic probe. No ambient Protobuf
+fallback is accepted. Reusable all-in-one build command:
+
+```sh
+scripts/build-native-sdk.sh /path/to/inputs /path/to/fresh-work /path/to/sdk
+```
+
+The entire recipe was exercised in a network-disabled namespace; see follow-up
+logs in evidence. The SDK remains platform-specific and depends on the locked
+Ubuntu shared-library closure, not a portable redistribution kit.
 
 ## Evidence and actual limitations
 
@@ -73,9 +80,12 @@ and no Lua, Python or Java runtime dependency (there is no binding yet).
 The baseline toolchain log's query for `libssl-dev` failed because it is absent;
 this is not needed for this build. The successful later ldd command did not
 turn that package probe into success. httplib has no discovered OpenSSL dev
-profile here. Exact shared BFD inputs and package versions are recorded, but a
-portable binutils source build/complete archive lock for the system package
-closure remains work, not a claim of portability to other hosts.
+profile here. `native-system.lock.json` now records nine exact binary package URLs/hashes
+(downloaded and verified) and six corresponding source control documents with
+source-archive URLs/hashes. Installed BFD bytes were compared to the locked
+libbinutils package payload. The source archive hashes are from fetched .dsc
+metadata, not a claim that every large source archive was downloaded or built.
+A portable binutils source build remains outside the evidenced guest profile.
 
 Actual paired engine/spec smoke: both external and cold/warm embedded profiles
 produced completed, nonfallback `return param_1 * 3 + 7;` for authored x86 ELF.
@@ -86,7 +96,10 @@ open. Explicit missing and mode-000 roots failed open with `No sleigh
 specification for x86:LE:64:default`; constructors/status alone succeeded and
 were insufficient tests. An initial loop masked the unreadable exit with chmod;
 [evidence/native-unreadable-corrected.log](evidence/native-unreadable-corrected.log)
-records the actual open exit 4. Warm **unwritable** cache not yet tested.
+records the actual open exit 4. Warm **unwritable** cache now passed via `scripts/check-native-cache.py`: all
+cache files/directories lose write bits as an ordinary user, no path remains
+writable, all three profiles preserve semantic results and sentinel/file
+mtime/size inventory is unchanged.
 
 **Explicit Sleigh hints currently fail unmodified ELF loading** with `Unable to
 open image file`, while empty hints succeed. Inspection finds upstream's bundled

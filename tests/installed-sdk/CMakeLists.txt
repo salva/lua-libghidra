@@ -1,0 +1,20 @@
+# MIT Copyright 2026 Salvador Fandiño.
+cmake_minimum_required(VERSION 3.26)
+project(native_installed_consumer LANGUAGES C CXX)
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+# CONFIG is intentional: distro FindProtobuf can otherwise mix ambient headers
+# and incompatible libraries with the checked-in 29.3 generated code.
+find_package(Protobuf 29.3.0 EXACT CONFIG REQUIRED)
+find_package(libghidra CONFIG REQUIRED)
+add_library(installed_local_whole INTERFACE)
+target_link_libraries(installed_local_whole INTERFACE
+  "$<LINK_LIBRARY:WHOLE_ARCHIVE,libghidra::local>")
+add_library(installed_closure SHARED ../native_link_closure.cpp)
+target_link_libraries(installed_closure PRIVATE installed_local_whole)
+target_link_options(installed_closure PRIVATE -Wl,-z,defs)
+add_executable(native_probe ../native_probe.cpp)
+target_link_libraries(native_probe PRIVATE installed_local_whole)
+add_executable(native_smoke ../native_smoke.c)
+target_compile_options(native_smoke PRIVATE -O0 -g -fno-pie)
+target_link_options(native_smoke PRIVATE -no-pie)

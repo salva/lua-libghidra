@@ -1,0 +1,32 @@
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
+-- Found Threads: TRUE  
+-- Configuring done (0.2s)
+-- Generating done (0.0s)
+-- Build files have been written to: /work/lua-libghidra/.saivage/work/cards/card-a-b/installed-consumer
+[1/6] Building C object CMakeFiles/native_smoke.dir/work/lua-libghidra/tests/native_smoke.c.o
+[2/6] Building CXX object CMakeFiles/installed_closure.dir/work/lua-libghidra/tests/native_link_closure.cpp.o
+[3/6] Linking C executable native_smoke
+[4/6] Linking CXX shared library libinstalled_closure.so
+[5/6] Building CXX object CMakeFiles/native_probe.dir/work/lua-libghidra/tests/native_probe.cpp.o
+[6/6] Linking CXX executable native_probe
+constructed profile=external
+completed=1 fallback=0 error=
+
+int4 func_0x00401106(int4 param_1)
+
+{
+  return param_1 * 3 + 7;
+}
+completed=1 fallback=0 error=
+  return param_1 * 3 + 7;
+	linux-vdso.so.1 (0x000078ed3932a000)
+	libbfd-2.42-system.so => /lib/x86_64-linux-gnu/libbfd-2.42-system.so (0x000078ed38097000)
+	libstdc++.so.6 => /lib/x86_64-linux-gnu/libstdc++.so.6 (0x000078ed37e00000)
+	libm.so.6 => /lib/x86_64-linux-gnu/libm.so.6 (0x000078ed37d17000)
+	libgcc_s.so.1 => /lib/x86_64-linux-gnu/libgcc_s.so.1 (0x000078ed37ce9000)
+	libc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x000078ed37a00000)
+	/lib64/ld-linux-x86-64.so.2 (0x000078ed3932c000)
+	libz.so.1 => /lib/x86_64-linux-gnu/libz.so.1 (0x000078ed37ccd000)
+	libzstd.so.1 => /lib/x86_64-linux-gnu/libzstd.so.1 (0x000078ed37c13000)
+	libsframe.so.1 => /lib/x86_64-linux-gnu/libsframe.so.1 (0x000078ed3808c000)

@@ -1,0 +1,186 @@
+{
+  "platform": "Ubuntu 24.04 amd64",
+  "binaries": [
+    {
+      "package": "libbinutils",
+      "version": "2.42-4ubuntu2.10",
+      "url": "https://archive.ubuntu.com/ubuntu/pool/main/b/binutils/libbinutils_2.42-4ubuntu2.10_amd64.deb",
+      "sha256": "064dce00ce94e1fc2d33779cb0071088f4c8aac79e85345f2e78a020f7d14699",
+      "source": "binutils",
+      "source_version": "2.42-4ubuntu2.10"
+    },
+    {
+      "package": "libsframe1",
+      "version": "2.42-4ubuntu2.10",
+      "url": "https://archive.ubuntu.com/ubuntu/pool/main/b/binutils/libsframe1_2.42-4ubuntu2.10_amd64.deb",
+      "sha256": "72093fb456864db55f1352bfa5e952a94f7abaff64e71dff1fbf001db1984564",
+      "source": "binutils",
+      "source_version": "2.42-4ubuntu2.10"
+    },
+    {
+      "package": "binutils-dev",
+      "version": "2.42-4ubuntu2.10",
+      "url": "https://archive.ubuntu.com/ubuntu/pool/main/b/binutils/binutils-dev_2.42-4ubuntu2.10_amd64.deb",
+      "sha256": "250968ef31125accdcabf639c07b202e0326652fb218cc7d5e77164c09abdec6",
+      "source": "binutils",
+      "source_version": "2.42-4ubuntu2.10"
+    },
+    {
+      "package": "libiberty-dev",
+      "version": "20240117-1build1",
+      "url": "https://archive.ubuntu.com/ubuntu/pool/main/libi/libiberty/libiberty-dev_20240117-1build1_amd64.deb",
+      "sha256": "fcc1d4ccb86d558f46c7592c03c2743b81f421346b76c7fe399e01b00e0b68d1",
+      "source": "libiberty",
+      "source_version": "20240117-1build1"
+    },
+    {
+      "package": "libzstd1",
+      "version": "1.5.5+dfsg2-2build1.1",
+      "url": "https://archive.ubuntu.com/ubuntu/pool/main/libz/libzstd/libzstd1_1.5.5+dfsg2-2build1.1_amd64.deb",
+      "sha256": "dfcf25061e07aad7efd3f4f880ba5ad4d4d09ebe7fc8cc77ab6b8a161d6d4727",
+      "source": "libzstd",
+      "source_version": "1.5.5+dfsg2-2build1.1"
+    },
+    {
+      "package": "zlib1g",
+      "version": "1:1.3.dfsg-3.1ubuntu2.2",
+      "url": "https://archive.ubuntu.com/ubuntu/pool/main/z/zlib/zlib1g_1.3.dfsg-3.1ubuntu2.2_amd64.deb",
+      "sha256": "84b9cf5752b29c9f92c27cd4c4ba9bbcc70b5ccf9b1b515421a28ae23212e273",
+      "source": "zlib",
+      "source_version": "1:1.3.dfsg-3.1ubuntu2.2"
+    },
+    {
+      "package": "libc6",
+      "version": "2.39-0ubuntu8.9",
+      "url": "https://archive.ubuntu.com/ubuntu/pool/main/g/glibc/libc6_2.39-0ubuntu8.9_amd64.deb",
+      "sha256": "ff5557d99b51f761c4b7c92368b9cc45565eda17df9bf9eb4b134d09825008be",
+      "source": "glibc",
+      "source_version": "2.39-0ubuntu8.9"
+    },
+    {
+      "package": "libstdc++6",
+      "version": "14.2.0-4ubuntu2~24.04.1",
+      "url": "https://archive.ubuntu.com/ubuntu/pool/main/g/gcc-14/libstdc++6_14.2.0-4ubuntu2~24.04.1_amd64.deb",
+      "sha256": "a51f8de7829211db961a31f02158058ad1a95f92ac6d0a5dff6350e2821c54c0",
+      "source": "gcc-14",
+      "source_version": "14.2.0-4ubuntu2~24.04.1"
+    },
+    {
+      "package": "libgcc-s1",
+      "version": "14.2.0-4ubuntu2~24.04.1",
+      "url": "https://archive.ubuntu.com/ubuntu/pool/main/g/gcc-14/libgcc-s1_14.2.0-4ubuntu2~24.04.1_amd64.deb",
+      "sha256": "aa7fadbe33b78bcf99885318040601c550c208929565b179891d9a3cc2aa68cd",
+      "source": "gcc-14",
+      "source_version": "14.2.0-4ubuntu2~24.04.1"
+    }
+  ],
+  "sources": {
+    "binutils": {
+      "version": "2.42-4ubuntu2.10",
+      "dsc_url": "https://archive.ubuntu.com/ubuntu/pool/main/b/binutils/binutils_2.42-4ubuntu2.10.dsc",
+      "dsc_sha256": "a14a8e2efdb3566955476bccd2248cebed5cf2a2f5d28e223d08200ec1a18d75",
+      "archives": [
+        {
+          "url": "https://archive.ubuntu.com/ubuntu/pool/main/b/binutils/binutils_2.42.orig.tar.xz",
+          "sha256": "f6e4d41fd5fc778b06b7891457b3620da5ecea1006c6a4a41ae998109f85a800",
+          "bytes": 27567160
+        },
+        {
+          "url": "https://archive.ubuntu.com/ubuntu/pool/main/b/binutils/binutils_2.42-4ubuntu2.10.debian.tar.xz",
+          "sha256": "6acc777971890cb1efaeeb33a0a5358651c71067ced69dcfd59da7d0977f7530",
+          "bytes": 196552
+        }
+      ]
+    },
+    "libiberty": {
+      "version": "20240117-1build1",
+      "dsc_url": "https://archive.ubuntu.com/ubuntu/pool/main/libi/libiberty/libiberty_20240117-1build1.dsc",
+      "dsc_sha256": "9989234621aed377276566529b6e1ca13712f6a50bb37687b4fe4657fe9ac4cb",
+      "archives": [
+        {
+          "url": "https://archive.ubuntu.com/ubuntu/pool/main/libi/libiberty/libiberty_20240117.orig.tar.xz",
+          "sha256": "cfdf02864c7a5171ce4cd7bc72a516a57492c999722bb860e6dcda72de49cbaa",
+          "bytes": 1244572
+        },
+        {
+          "url": "https://archive.ubuntu.com/ubuntu/pool/main/libi/libiberty/libiberty_20240117-1build1.debian.tar.xz",
+          "sha256": "0f748232a6d2bb4930bd4a2d4b8958f0de6b897c3edf7fb32fa627f60366e88e",
+          "bytes": 5416
+        }
+      ]
+    },
+    "libzstd": {
+      "version": "1.5.5+dfsg2-2build1.1",
+      "dsc_url": "https://archive.ubuntu.com/ubuntu/pool/main/libz/libzstd/libzstd_1.5.5+dfsg2-2build1.1.dsc",
+      "dsc_sha256": "c190a5dff9e7c5b5b1399f0d701bb2c173bc7cbdf14d5e05970f5ac066c25570",
+      "archives": [
+        {
+          "url": "https://archive.ubuntu.com/ubuntu/pool/main/libz/libzstd/libzstd_1.5.5+dfsg2.orig.tar.xz",
+          "sha256": "d7cf3c10d416fd999cb8fcf7685d9268ba7bec8eb78121fc2d0d916fa393d22b",
+          "bytes": 1784164
+        },
+        {
+          "url": "https://archive.ubuntu.com/ubuntu/pool/main/libz/libzstd/libzstd_1.5.5+dfsg2-2build1.1.debian.tar.xz",
+          "sha256": "c1df6d2628b26d085259b8e7ac020eb060e4c1feca98d6103058eda5ded725bc",
+          "bytes": 21288
+        }
+      ]
+    },
+    "zlib": {
+      "version": "1:1.3.dfsg-3.1ubuntu2.2",
+      "dsc_url": "https://archive.ubuntu.com/ubuntu/pool/main/z/zlib/zlib_1.3.dfsg-3.1ubuntu2.2.dsc",
+      "dsc_sha256": "56a7cd029863cbddafce831e4e63cccfa84017f93617929cb7c02f80bb5a122a",
+      "archives": [
+        {
+          "url": "https://archive.ubuntu.com/ubuntu/pool/main/z/zlib/zlib_1.3.dfsg.orig.tar.xz",
+          "sha256": "5eea0322c1c21c75cad3b607ac1c43ff5c71e014b8ac4a34300b5e2b80d02e70",
+          "bytes": 1128572
+        },
+        {
+          "url": "https://archive.ubuntu.com/ubuntu/pool/main/z/zlib/zlib_1.3.dfsg-3.1ubuntu2.2.debian.tar.xz",
+          "sha256": "de1c2d532ecb7caf99ccb905fb03c37fe0c8117fbdc79d05be4474b71e6398c2",
+          "bytes": 61316
+        }
+      ]
+    },
+    "glibc": {
+      "version": "2.39-0ubuntu8.9",
+      "dsc_url": "https://archive.ubuntu.com/ubuntu/pool/main/g/glibc/glibc_2.39-0ubuntu8.9.dsc",
+      "dsc_sha256": "1b73a89e0910eb3e5920cde639ac7eb606256d8ee809688ff9b5912b67002711",
+      "archives": [
+        {
+          "url": "https://archive.ubuntu.com/ubuntu/pool/main/g/glibc/glibc_2.39.orig.tar.xz",
+          "sha256": "f77bd47cf8170c57365ae7bf86696c118adb3b120d3259c64c502d3dc1e2d926",
+          "bytes": 18520988
+        },
+        {
+          "url": "https://archive.ubuntu.com/ubuntu/pool/main/g/glibc/glibc_2.39.orig.tar.xz.asc",
+          "sha256": "2cce427ef7933c17379f5514e4f0ccf8dffae5bf8c72f0f7e0bf8b8401f34be5",
+          "bytes": 833
+        },
+        {
+          "url": "https://archive.ubuntu.com/ubuntu/pool/main/g/glibc/glibc_2.39-0ubuntu8.9.debian.tar.xz",
+          "sha256": "d6114f2302896a3c8612453e1bf1d0e61603e3029ba4a7c246fbb1ab4c48d2b0",
+          "bytes": 491440
+        }
+      ]
+    },
+    "gcc-14": {
+      "version": "14.2.0-4ubuntu2~24.04.1",
+      "dsc_url": "https://archive.ubuntu.com/ubuntu/pool/main/g/gcc-14/gcc-14_14.2.0-4ubuntu2~24.04.1.dsc",
+      "dsc_sha256": "50950080874a6ec6780dd60c243e21d9cda9d736bb32bca98d16095d27cc01b5",
+      "archives": [
+        {
+          "url": "https://archive.ubuntu.com/ubuntu/pool/main/g/gcc-14/gcc-14_14.2.0.orig.tar.gz",
+          "sha256": "768c314c11eeab56ccebb91eb42ec4a41122fa94f0d83400126401942622197b",
+          "bytes": 97158172
+        },
+        {
+          "url": "https://archive.ubuntu.com/ubuntu/pool/main/g/gcc-14/gcc-14_14.2.0-4ubuntu2~24.04.1.debian.tar.xz",
+          "sha256": "cfece214c2fb790ef5f3baffb9a53e40618e7ae12d053610b251e94d77d08ade",
+          "bytes": 1950432
+        }
+      ]
+    }
+  }
+}
