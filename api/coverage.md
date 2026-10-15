@@ -764,3 +764,20 @@ modulo 2^64, not saturation; reconstruction can change traversal ordinals withou
 comment remapping. All downstream parser/layout/identifier and runtime evidence
 remains unqualified. Ledger: 123 reviewed/33 remaining. Independent append-offset
 substitution probe and 41 tests retain the original absence reproducer.
+
+## Local/data text payload consumption (thirty-eighth increment)
+
+Nine direct string fields now bind to actual local rename/retype, data naming,
+function/symbol naming and prototype dispatch. Local IDs remain opaque, type and
+prototype strings remain parser input, not normalized identifiers. RenameSymbol
+supports only function symbols; RenameDataItem rejects empty/function/missing
+symbols and name-locks successful rename. ApplyDataType preserves existing symbol
+name or generates DAT_ hexadecimal fallback. Native revision, echoed results and
+pre-dispatch binding generation are distinct. Ledger: 132 reviewed/24 remaining;
+42 tests include independent nameGlobal datatype-consumption drift rejection.
+All parser/identifier/roundtrip and runtime evidence stays unqualified.
+
+Operator scope reaffirmed: native-local only. Shared-interface HTTP-only rows
+remain EXCLUDED boundary documentation, not exposed/implemented operations or
+remote-parity acceptance obligations. Common definitions needed by LocalClient
+remain inventoried; no transport/server/dependency surgery is introduced.

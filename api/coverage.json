@@ -990,11 +990,17 @@
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "helper": "ApplyDataType",
+            "qualification": "source only; runtime unqualified"
+          },
           "ignored": false,
           "lua": "Lua string (no transcoding)",
           "name": "data_type",
           "native_type": "const std::string&",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "required Lua string (no native default/initializer grants absence); literal type string forwarded to nameGlobal, not numeric type ID/path normalization; existing nonempty symbol name reused else DAT_ minimum-eight lowercase hex generated; wrapper does not parse/validate type; native revision after successful mutation only, response strings are input echoes not canonical readback; binding generation invalidates before dispatch including failed/partial mutation, not validation-only rejection; NUL/non-ASCII/parser/identifier/rollback behavior and runtime positive/negative evidence unqualified"
         }
       ],
       "response": {
@@ -16495,11 +16501,17 @@
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "helper": "RenameDataItem",
+            "qualification": "source only; runtime unqualified"
+          },
           "ignored": false,
           "lua": "Lua string (no transcoding)",
           "name": "new_name",
           "native_type": "const std::string&",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "required Lua string (no native default/initializer grants absence); literal new data symbol name; adapter rejects empty, missing entry/symbol and function symbols, sets namelock on successful rename; caught failures conflate into RENAME_FAILED; native revision after successful mutation only, response strings are input echoes not canonical readback; binding generation invalidates before dispatch including failed/partial mutation, not validation-only rejection; NUL/non-ASCII/parser/identifier/rollback behavior and runtime positive/negative evidence unqualified"
         }
       ],
       "response": {
@@ -16646,11 +16658,17 @@
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "helper": "RenameFunction",
+            "qualification": "source only; runtime unqualified"
+          },
           "ignored": false,
           "lua": "Lua string (no transcoding)",
           "name": "new_name",
           "native_type": "const std::string&",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "required Lua string (no native default/initializer grants absence); literal function name passed unchanged to nameFunction; no wrapper empty/identifier/duplicate validation; native revision after successful mutation only, response strings are input echoes not canonical readback; binding generation invalidates before dispatch including failed/partial mutation, not validation-only rejection; NUL/non-ASCII/parser/identifier/rollback behavior and runtime positive/negative evidence unqualified"
         }
       ],
       "response": {
@@ -16786,19 +16804,31 @@
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "helper": "RenameFunctionLocal",
+            "qualification": "source only; runtime unqualified"
+          },
           "ignored": false,
           "lua": "Lua string (no transcoding)",
           "name": "local_id",
           "native_type": "const std::string&",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "required Lua string (no native default/initializer grants absence); opaque local ID forwarded unchanged to local resolver, not parsed as Lua ordinal/name; missing local NOT_FOUND; resolution aliases and stability across generation unqualified; rename maps nominal invalid-type status into DECOMPILE_FAILED, not INVALID_TYPE; native revision after successful mutation only, response strings are input echoes not canonical readback; binding generation invalidates before dispatch including failed/partial mutation, not validation-only rejection; NUL/non-ASCII/parser/identifier/rollback behavior and runtime positive/negative evidence unqualified"
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "helper": "RenameFunctionLocal",
+            "qualification": "source only; runtime unqualified"
+          },
           "ignored": false,
           "lua": "Lua string (no transcoding)",
           "name": "new_name",
           "native_type": "const std::string&",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "required Lua string (no native default/initializer grants absence); literal name forwarded unchanged to local rename; no wrapper empty/name validation; name-locked downstream intent, not runtime persistence proof; rename maps nominal invalid-type status into DECOMPILE_FAILED, not INVALID_TYPE; native revision after successful mutation only, response strings are input echoes not canonical readback; binding generation invalidates before dispatch including failed/partial mutation, not validation-only rejection; NUL/non-ASCII/parser/identifier/rollback behavior and runtime positive/negative evidence unqualified"
         }
       ],
       "response": {
@@ -17127,11 +17157,17 @@
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "helper": "RenameSymbol",
+            "qualification": "source only; runtime unqualified"
+          },
           "ignored": false,
           "lua": "Lua string (no transcoding)",
           "name": "new_name",
           "native_type": "const std::string&",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "required Lua string (no native default/initializer grants absence); literal function name; missing symbol first NOT_FOUND, non-function NOT_SUPPORTED, only function branch calls nameFunction; no wrapper name validation; native revision after successful mutation only, response strings are input echoes not canonical readback; binding generation invalidates before dispatch including failed/partial mutation, not validation-only rejection; NUL/non-ASCII/parser/identifier/rollback behavior and runtime positive/negative evidence unqualified"
         }
       ],
       "response": {
@@ -18350,19 +18386,31 @@
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "helper": "SetFunctionLocalType",
+            "qualification": "source only; runtime unqualified"
+          },
           "ignored": false,
           "lua": "Lua string (no transcoding)",
           "name": "local_id",
           "native_type": "const std::string&",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "required Lua string (no native default/initializer grants absence); opaque local ID forwarded unchanged to local resolver, not ordinal/name conversion; missing local NOT_FOUND; generation stability and aliases unqualified; native revision after successful mutation only, response strings are input echoes not canonical readback; binding generation invalidates before dispatch including failed/partial mutation, not validation-only rejection; NUL/non-ASCII/parser/identifier/rollback behavior and runtime positive/negative evidence unqualified"
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "helper": "SetFunctionLocalType",
+            "qualification": "source only; runtime unqualified"
+          },
           "ignored": false,
           "lua": "Lua string (no transcoding)",
           "name": "data_type",
           "native_type": "const std::string&",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "required Lua string (no native default/initializer grants absence); service data_type binds positionally to LocalClient new_type; type syntax unchanged, no slash stripping or wrapper parsing; INVALID_TYPE distinguished from NOT_FOUND and DECOMPILE_FAILED; native revision after successful mutation only, response strings are input echoes not canonical readback; binding generation invalidates before dispatch including failed/partial mutation, not validation-only rejection; NUL/non-ASCII/parser/identifier/rollback behavior and runtime positive/negative evidence unqualified"
         }
       ],
       "response": {
@@ -18673,11 +18721,17 @@
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "helper": "SetFunctionSignature",
+            "qualification": "source only; runtime unqualified"
+          },
           "ignored": false,
           "lua": "Lua string (no transcoding)",
           "name": "prototype",
           "native_type": "const std::string&",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "required Lua string (no native default/initializer grants absence); complete prototype syntax forwarded unchanged to setPrototype, no wrapper parsing/escaping/validation; not an opaque type/name edit; parser/declarator fidelity unqualified; native revision after successful mutation only, response strings are input echoes not canonical readback; binding generation invalidates before dispatch including failed/partial mutation, not validation-only rejection; NUL/non-ASCII/parser/identifier/rollback behavior and runtime positive/negative evidence unqualified"
         }
       ],
       "response": {
@@ -30264,11 +30318,6 @@
         "reason": "direct argument consumption/default/domain review not yet independently reconciled"
       },
       {
-        "operation": "ApplyDataType",
-        "path": "data_type",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
         "operation": "CloseProgram",
         "path": "policy",
         "reason": "direct argument consumption/default/domain review not yet independently reconciled"
@@ -30329,33 +30378,13 @@
         "reason": "direct argument consumption/default/domain review not yet independently reconciled"
       },
       {
-        "operation": "RenameDataItem",
-        "path": "new_name",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
         "operation": "RenameFunction",
         "path": "address",
         "reason": "direct argument consumption/default/domain review not yet independently reconciled"
       },
       {
-        "operation": "RenameFunction",
-        "path": "new_name",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
         "operation": "RenameFunctionLocal",
         "path": "address",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "RenameFunctionLocal",
-        "path": "local_id",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "RenameFunctionLocal",
-        "path": "new_name",
         "reason": "direct argument consumption/default/domain review not yet independently reconciled"
       },
       {
@@ -30366,11 +30395,6 @@
       {
         "operation": "RenameSymbol",
         "path": "address",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "RenameSymbol",
-        "path": "new_name",
         "reason": "direct argument consumption/default/domain review not yet independently reconciled"
       },
       {
@@ -30394,16 +30418,6 @@
         "reason": "direct argument consumption/default/domain review not yet independently reconciled"
       },
       {
-        "operation": "SetFunctionLocalType",
-        "path": "local_id",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "SetFunctionLocalType",
-        "path": "data_type",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
         "operation": "SetFunctionParameterType",
         "path": "address",
         "reason": "direct argument consumption/default/domain review not yet independently reconciled"
@@ -30411,11 +30425,6 @@
       {
         "operation": "SetFunctionSignature",
         "path": "address",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "SetFunctionSignature",
-        "path": "prototype",
         "reason": "direct argument consumption/default/domain review not yet independently reconciled"
       },
       {
@@ -30452,6 +30461,10 @@
       {
         "operation": "AddTypeMember",
         "path": "size"
+      },
+      {
+        "operation": "ApplyDataType",
+        "path": "data_type"
       },
       {
         "operation": "CreateType",
@@ -30806,11 +30819,31 @@
         "path": "length"
       },
       {
+        "operation": "RenameDataItem",
+        "path": "new_name"
+      },
+      {
+        "operation": "RenameFunction",
+        "path": "new_name"
+      },
+      {
+        "operation": "RenameFunctionLocal",
+        "path": "local_id"
+      },
+      {
+        "operation": "RenameFunctionLocal",
+        "path": "new_name"
+      },
+      {
         "operation": "RenameFunctionParameter",
         "path": "ordinal"
       },
       {
         "operation": "RenameFunctionParameter",
+        "path": "new_name"
+      },
+      {
+        "operation": "RenameSymbol",
         "path": "new_name"
       },
       {
@@ -30846,12 +30879,24 @@
         "path": "new_name"
       },
       {
+        "operation": "SetFunctionLocalType",
+        "path": "local_id"
+      },
+      {
+        "operation": "SetFunctionLocalType",
+        "path": "data_type"
+      },
+      {
         "operation": "SetFunctionParameterType",
         "path": "ordinal"
       },
       {
         "operation": "SetFunctionParameterType",
         "path": "data_type"
+      },
+      {
+        "operation": "SetFunctionSignature",
+        "path": "prototype"
       },
       {
         "operation": "SetTypeAliasTarget",

@@ -51,7 +51,7 @@ class InventoryTests(unittest.TestCase):
                     self.assertIn('must not be inferred',f['request_field_review']['native_absence'])
 
     def test_page_argument_domains_are_not_native_unbounded_defaults(self):
-        self.assertEqual(len(self.data['request_audit']['direct_arguments_reviewed']),123)
+        self.assertEqual(len(self.data['request_audit']['direct_arguments_reviewed']),132)
         for op in self.ops.values():
             if 'page_wrapper_review' not in op:continue
             args={a['name']:a for a in op['request']}
@@ -146,6 +146,17 @@ class InventoryTests(unittest.TestCase):
         self.assertIn('NOT explicitly rejected',sem('AddTypeEnumMember','type_id_or_path'))
         self.assertIn('modulo 2^64',sem('AddTypeEnumMember','value'))
         self.assertIn('no alignment/padding',sem('AddTypeMember','member_type'))
+
+    def test_local_and_data_payloads_preserve_syntax_and_opaque_ids(self):
+        def sem(op,key):
+            return next(a['semantics'] for a in self.ops[op]['request'] if a['name']==key)
+        self.assertIn('opaque local ID',sem('RenameFunctionLocal','local_id'))
+        self.assertIn('LocalClient new_type',sem('SetFunctionLocalType','data_type'))
+        self.assertIn('INVALID_TYPE distinguished',sem('SetFunctionLocalType','data_type'))
+        self.assertIn('non-function NOT_SUPPORTED',sem('RenameSymbol','new_name'))
+        self.assertIn('sets namelock',sem('RenameDataItem','new_name'))
+        self.assertIn('complete prototype syntax',sem('SetFunctionSignature','prototype'))
+        self.assertIn('DAT_',sem('ApplyDataType','data_type'))
 
     def test_preserved_red_reproducer(self):
         # Exact acceptance trigger from red; stronger checks below prevent treating
@@ -429,6 +440,10 @@ class InventoryTests(unittest.TestCase):
                 module.inventory(root)
             adapter.write_text(adapter_original)
             local.write_text(local_original.replace('fields.push_back({member_name, member_type, off})', 'fields.push_back({member_name, member_type, 0})'))
+            with self.assertRaises(AssertionError):
+                module.inventory(root)
+            local.write_text(local_original)
+            local.write_text(local_original.replace('d.nameGlobal(address, name, data_type)', 'd.nameGlobal(address, name, name)'))
             with self.assertRaises(AssertionError):
                 module.inventory(root)
             local.write_text(local_original)

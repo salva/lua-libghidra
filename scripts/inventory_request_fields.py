@@ -49,6 +49,40 @@ def review_request_fields(u, operations):
         code=_code_mask(text)
         for arg in op['request']:
             nested=arg['nested_fields']
+            text_payloads={
+                'RenameFunction':{'new_name':('d.nameFunction(address, new_name)','literal function name passed unchanged to nameFunction; no wrapper empty/identifier/duplicate validation')},
+                'RenameSymbol':{'new_name':('d.nameFunction(address, new_name)','literal function name; missing symbol first NOT_FOUND, non-function NOT_SUPPORTED, only function branch calls nameFunction; no wrapper name validation')},
+                'RenameDataItem':{'new_name':('a.renameDataItem(address, new_name)','literal new data symbol name; adapter rejects empty, missing entry/symbol and function symbols, sets namelock on successful rename; caught failures conflate into RENAME_FAILED')},
+                'ApplyDataType':{'data_type':('d.nameGlobal(address, name, data_type)','literal type string forwarded to nameGlobal, not numeric type ID/path normalization; existing nonempty symbol name reused else DAT_ minimum-eight lowercase hex generated; wrapper does not parse/validate type')},
+                'SetFunctionSignature':{'prototype':('d.setPrototype(address, prototype)','complete prototype syntax forwarded unchanged to setPrototype, no wrapper parsing/escaping/validation; not an opaque type/name edit; parser/declarator fidelity unqualified')},
+                'RenameFunctionLocal':{
+                    'local_id':('applyLocalRenameAllSlots(address, local_id, new_name)','opaque local ID forwarded unchanged to local resolver, not parsed as Lua ordinal/name; missing local NOT_FOUND; resolution aliases and stability across generation unqualified'),
+                    'new_name':('applyLocalRenameAllSlots(address, local_id, new_name)','literal name forwarded unchanged to local rename; no wrapper empty/name validation; name-locked downstream intent, not runtime persistence proof')},
+                'SetFunctionLocalType':{
+                    'local_id':('applyLocalRetypeAllSlots(address, local_id, new_type)','opaque local ID forwarded unchanged to local resolver, not ordinal/name conversion; missing local NOT_FOUND; generation stability and aliases unqualified'),
+                    'data_type':('applyLocalRetypeAllSlots(address, local_id, new_type)','service data_type binds positionally to LocalClient new_type; type syntax unchanged, no slash stripping or wrapper parsing; INVALID_TYPE distinguished from NOT_FOUND and DECOMPILE_FAILED')},
+            }
+            if not nested and arg['name'] in text_payloads.get(name,{}):
+                token,sem=text_payloads[name][arg['name']]
+                assert token in code and arg['native_type']=='const std::string&'
+                assert 'revision_++;' in code
+                if name=='RenameSymbol':
+                    assert 'if (sym->type == "function")' in text and '"NOT_SUPPORTED"' in text and '"NOT_FOUND"' in text
+                if name=='ApplyDataType':
+                    assert 'if (sym && !sym->name.empty())' in code and 'name = sym->name;' in code
+                    assert '"DAT_%08llx"' in text
+                if name=='RenameDataItem':
+                    _,producer=body(adapter,'ArchAdapter::renameDataItem(')
+                    assert 'new_name.empty()' in producer and 'global->renameSymbol(sym, new_name)' in producer
+                    assert 'dynamic_cast<FunctionSymbol*>(sym) != nullptr' in producer and 'Varnode::namelock' in producer
+                if name in {'RenameFunctionLocal','SetFunctionLocalType'}:
+                    assert '"NOT_FOUND"' in text and '"DECOMPILE_FAILED"' in text
+                    if name=='SetFunctionLocalType': assert '"INVALID_TYPE"' in text
+                    else: sem+='; rename maps nominal invalid-type status into DECOMPILE_FAILED, not INVALID_TYPE'
+                arg['semantics']='required Lua string (no native default/initializer grants absence); '+sem+'; native revision after successful mutation only, response strings are input echoes not canonical readback; binding generation invalidates before dispatch including failed/partial mutation, not validation-only rejection; NUL/non-ASCII/parser/identifier/rollback behavior and runtime positive/negative evidence unqualified'
+                arg['direct_argument_review']={'consumer':LOCAL,'helper':name,'qualification':'source only; runtime unqualified'}
+                reviewed.append({'operation':name,'path':arg['name']})
+                continue
             creation_fields={
                 'CreateType':{'name','kind'}, 'CreateTypeEnum':{'name'},
                 'AddTypeMember':{'parent_type_id_or_path','member_name','member_type'},
