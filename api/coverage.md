@@ -254,3 +254,22 @@ remains ignored and is not a replacement implementation opportunity. Source
 assertions and twelve focused tests cover these recorded contracts, not runtime
 binding enforcement. Remaining mutation/helper/conditional-field review still
 prevents exhaustive acceptance.
+
+## Parameter reconstruction and byte-count review (ninth increment)
+
+RenameFunctionParameter/SetFunctionParameterType decompile, extract a signature,
+reject absent signature and signed out-of-range ordinals, then rebuild a prototype
+for all slots. The reconstruction contains return type/function name/parameter
+names/types and varargs, **not calling convention or all signature metadata**.
+A successful mutation is not a full-signature preservation guarantee. Parameter
+collection count must fit INT_MAX before its native signed-size comparison.
+
+WriteBytes/PatchBytesBatch report input counts, not verified readback; their write
+lambdas return true and the wrapper does not check the aggregate result. Normal
+empty input still increments revision. Exceptions may leave partial writes.
+Batch patches run in input order with no atomicity; uint32 count casts/cumulative
+addition require patch count, individual lengths and total <=UINT32_MAX for count
+fidelity. Downstream storage/address constraints are explicitly still unqualified.
+New independent drift probes remove signed ordinal checking and replace cumulative
+count addition; both must fail reviewed assertions. Thirteen tests pass. Remaining
+mutation/helper review still prevents exhaustive inventory acceptance.

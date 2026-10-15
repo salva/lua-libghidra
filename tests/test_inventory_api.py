@@ -120,10 +120,26 @@ class InventoryTests(unittest.TestCase):
             with self.assertRaises(AssertionError):
                 module.inventory(root)
             bindings.write_text(bindings_original)
+            local.write_text(local_original.replace('ordinal < 0 || ordinal >=', 'ordinal >= '))
+            with self.assertRaises((AssertionError, ValueError)):
+                module.inventory(root)
+            local.write_text(local_original)
+            local.write_text(local_original.replace('total_bytes += static_cast<std::uint32_t>(patch.data.size())', 'total_bytes = static_cast<std::uint32_t>(patch.data.size())'))
+            with self.assertRaises(AssertionError):
+                module.inventory(root)
+            local.write_text(local_original)
             header = root/'cpp/src/local_arch_adapter.hpp'
             header.write_text(header.read_text().replace('std::map<std::pair<std::uint64_t, int>, std::string> comments_', 'std::multimap<std::pair<std::uint64_t, int>, std::string> comments_'))
             with self.assertRaises(AssertionError):
                 module.inventory(root)
+
+    def test_parameter_reconstruction_and_byte_count_domains(self):
+        self.assertIn('calling convention', ' '.join(self.ops['RenameFunctionParameter']['limitations']))
+        self.assertIn('OUT_OF_RANGE', self.ops['SetFunctionParameterType']['state_transitions'])
+        self.assertIn('INT_MAX', self.ops['RenameFunctionParameter']['effective_domain']['ordinal'])
+        self.assertIn('UINT32_MAX', self.ops['WriteBytes']['effective_domain']['data_length'])
+        self.assertIn('cumulative', self.ops['PatchBytesBatch']['effective_domain']['total_data_length'])
+        self.assertTrue(any('input array order' in text for text in self.ops['PatchBytesBatch']['limitations']))
 
     def test_open_metadata_defaults_and_member_effective_domain(self):
         fields={f['name']:f for f in self.ops['OpenProgram']['response']['fields']}

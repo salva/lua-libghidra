@@ -12819,6 +12819,11 @@
         }
       },
       "dispatch": "mutation",
+      "effective_domain": {
+        "patch_count": "<=UINT32_MAX for patch_count fidelity",
+        "qualification": "count constraint identified, runtime unqualified",
+        "total_data_length": "each patch and checked cumulative bytes <=UINT32_MAX to avoid truncation/modulo wrap; downstream address/storage constraints remain unqualified"
+      },
       "evidence": {
         "negative": {
           "assertions": "unloaded/unsupported/validation and recorded limitations",
@@ -12845,8 +12850,16 @@
           "path": "cpp/src/local_client.cpp"
         }
       },
-      "limitations": [],
+      "limitations": [
+        "all-slot write lambda returns true regardless of d.writeBytes outcome; wrapper does not test aggregated result; thrown exception can leave partial writes; no batch atomicity or verified-byte-count promise",
+        "patch order is input array order; overlapping patches applied sequentially; native uint32 counter wraps on oversized cumulative input"
+      ],
       "lowlevel": "patch_bytes_batch",
+      "mutation_source_review": {
+        "body_sha256": "07d575c3305faff74732cec7033397eb1abd700b6879e606035073d8c5185c67",
+        "line": 1639,
+        "path": "cpp/src/local_client.cpp"
+      },
       "name": "PatchBytesBatch",
       "native_literal_errors": [],
       "pagination": null,
@@ -12910,6 +12923,8 @@
         "lua": "PatchBytesBatchResponse table/enum; resolve in types/enums",
         "native_type": "PatchBytesBatchResponse"
       },
+      "semantic_review": "LocalClient parameter reconstruction or byte count/error branches reviewed; downstream and runtime gates remain unqualified",
+      "state_transitions": "loaded required; dispatch overlay writes then native revision increments unconditionally on normal return, including empty input; response reports input counts not readback verification",
       "surface_contract": {
         "facade": {
           "disposition": "native escape hatch",
@@ -13487,6 +13502,10 @@
         }
       },
       "dispatch": "mutation",
+      "effective_domain": {
+        "ordinal": "signed int, zero-based; parameter collection size must fit INT_MAX before native static_cast<int>(size)",
+        "qualification": "source constraint, no runtime enforcement qualification"
+      },
       "evidence": {
         "negative": {
           "assertions": "unloaded/unsupported/validation and recorded limitations",
@@ -13513,8 +13532,15 @@
           "path": "cpp/src/local_client.cpp"
         }
       },
-      "limitations": [],
+      "limitations": [
+        "prototype reconstruction includes return type/function name/parameter data_type and name/varargs only; does not encode calling convention or all signature metadata; no full-signature fidelity promise"
+      ],
       "lowlevel": "rename_function_parameter",
+      "mutation_source_review": {
+        "body_sha256": "3c3650e2100ccc684520ae6bc88681e2fe01ca8cd60f7c2c96715c9077d3aa4d",
+        "line": 1448,
+        "path": "cpp/src/local_client.cpp"
+      },
       "name": "RenameFunctionParameter",
       "native_literal_errors": [
         "NOT_FOUND",
@@ -13575,6 +13601,8 @@
         "lua": "RenameFunctionParameterResponse table/enum; resolve in types/enums",
         "native_type": "RenameFunctionParameterResponse"
       },
+      "semantic_review": "LocalClient parameter reconstruction or byte count/error branches reviewed; downstream and runtime gates remain unqualified",
+      "state_transitions": "loaded required; decompile to populate signature, absent -> NOT_FOUND; signed int ordinal negative or >=parameter vector count -> OUT_OF_RANGE; modify copy then rebuild prototype and set on all slots; failure SET_PROTOTYPE_FAILED; native revision increments only when ok",
       "surface_contract": {
         "facade": {
           "disposition": "native escape hatch",
@@ -14779,6 +14807,10 @@
         }
       },
       "dispatch": "mutation",
+      "effective_domain": {
+        "ordinal": "signed int, zero-based; parameter collection size must fit INT_MAX before native static_cast<int>(size)",
+        "qualification": "source constraint, no runtime enforcement qualification"
+      },
       "evidence": {
         "negative": {
           "assertions": "unloaded/unsupported/validation and recorded limitations",
@@ -14805,8 +14837,15 @@
           "path": "cpp/src/local_client.cpp"
         }
       },
-      "limitations": [],
+      "limitations": [
+        "prototype reconstruction includes return type/function name/parameter data_type and name/varargs only; does not encode calling convention or all signature metadata; no full-signature fidelity promise"
+      ],
       "lowlevel": "set_function_parameter_type",
+      "mutation_source_review": {
+        "body_sha256": "e2a2c176cefdaa2ae2ae942628feb855b975ae026be905b13f4d7bbebd5eb32b",
+        "line": 1484,
+        "path": "cpp/src/local_client.cpp"
+      },
       "name": "SetFunctionParameterType",
       "native_literal_errors": [
         "NOT_FOUND",
@@ -14867,6 +14906,8 @@
         "lua": "SetFunctionParameterTypeResponse table/enum; resolve in types/enums",
         "native_type": "SetFunctionParameterTypeResponse"
       },
+      "semantic_review": "LocalClient parameter reconstruction or byte count/error branches reviewed; downstream and runtime gates remain unqualified",
+      "state_transitions": "loaded required; decompile to populate signature, absent -> NOT_FOUND; signed int ordinal negative or >=parameter vector count -> OUT_OF_RANGE; modify copy then rebuild prototype and set on all slots; failure SET_PROTOTYPE_FAILED; native revision increments only when ok",
       "surface_contract": {
         "facade": {
           "disposition": "native escape hatch",
@@ -16274,6 +16315,10 @@
         }
       },
       "dispatch": "mutation",
+      "effective_domain": {
+        "data_length": "supported input length <=UINT32_MAX to avoid response bytes_written truncation; downstream storage/allocation constraints remain unqualified",
+        "qualification": "count constraint identified, runtime unqualified"
+      },
       "evidence": {
         "negative": {
           "assertions": "unloaded/unsupported/validation and recorded limitations",
@@ -16300,8 +16345,15 @@
           "path": "cpp/src/local_client.cpp"
         }
       },
-      "limitations": [],
+      "limitations": [
+        "all-slot write lambda returns true regardless of d.writeBytes outcome; wrapper does not test aggregated result; thrown exception can leave partial writes; no batch atomicity or verified-byte-count promise"
+      ],
       "lowlevel": "write_bytes",
+      "mutation_source_review": {
+        "body_sha256": "07b6c9ac67cc7ab534c55185186ed4c29a9dec1d2a963fc0a889d4bb8569193c",
+        "line": 1625,
+        "path": "cpp/src/local_client.cpp"
+      },
       "name": "WriteBytes",
       "native_literal_errors": [],
       "pagination": null,
@@ -16340,6 +16392,8 @@
         "lua": "WriteBytesResponse table/enum; resolve in types/enums",
         "native_type": "WriteBytesResponse"
       },
+      "semantic_review": "LocalClient parameter reconstruction or byte count/error branches reviewed; downstream and runtime gates remain unqualified",
+      "state_transitions": "loaded required; dispatch overlay writes then native revision increments unconditionally on normal return, including empty input; response reports input counts not readback verification",
       "surface_contract": {
         "facade": {
           "disposition": "complete response convenience/page",

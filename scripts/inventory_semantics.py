@@ -209,3 +209,37 @@ def review_open_and_creation(u, operations):
             op['effective_domain']={'existing_fields':'all offsets and sizes must fit int and each offset+size <=INT_MAX before native struct rebuild; native casts/addition otherwise risk truncation/overflow','request_size':'uint64 validated but ignored; must not promise requested member size is enforced','qualification':'constraint identified; binding implementation and runtime validation unqualified'}
         if name=='CreateTypeEnum': assert 'defineEnum(name, std::vector<ghidra_standalone::EnumValue>{})' in text
     return operations
+
+
+def review_parameter_and_byte_mutations(u, operations):
+    """Local reconstruction/count branches; downstream mutation success still unqualified."""
+    source=(u/LOCAL).read_text()
+    _, prototype=body(source,'buildPrototypeString(const FunctionSignatureRecord& sig)')
+    assert 'sig.return_type + " " + sig.function_name' in prototype
+    assert 'sig.has_var_args' in prototype
+    assert 'calling_convention' not in prototype
+    for op in operations:
+        name=op['name']
+        if name not in ['RenameFunctionParameter','SetFunctionParameterType','WriteBytes','PatchBytesBatch']: continue
+        start,text=body(source,' '+name+'(')
+        op['mutation_source_review']={'path':LOCAL,'line':source.count('\n',0,start)+1,'body_sha256':hashlib.sha256(text.encode()).hexdigest()}
+        if name in ['RenameFunctionParameter','SetFunctionParameterType']:
+            assert text.index('if (!sig)') < text.index('ordinal < 0') < text.index('buildPrototypeString(*sig)') < text.index('setPrototype(address, proto)')
+            assert 'if (ok) revision_++' in text
+            op['state_transitions']='loaded required; decompile to populate signature, absent -> NOT_FOUND; signed int ordinal negative or >=parameter vector count -> OUT_OF_RANGE; modify copy then rebuild prototype and set on all slots; failure SET_PROTOTYPE_FAILED; native revision increments only when ok'
+            op['effective_domain']={'ordinal':'signed int, zero-based; parameter collection size must fit INT_MAX before native static_cast<int>(size)','qualification':'source constraint, no runtime enforcement qualification'}
+            op['limitations'].append('prototype reconstruction includes return type/function name/parameter data_type and name/varargs only; does not encode calling convention or all signature metadata; no full-signature fidelity promise')
+        else:
+            assert 'return true;' in text and 'revision_++;' in text
+            op['state_transitions']='loaded required; dispatch overlay writes then native revision increments unconditionally on normal return, including empty input; response reports input counts not readback verification'
+            op['limitations'].append('all-slot write lambda returns true regardless of d.writeBytes outcome; wrapper does not test aggregated result; thrown exception can leave partial writes; no batch atomicity or verified-byte-count promise')
+            if name=='WriteBytes':
+                assert 'static_cast<std::uint32_t>(data.size())' in text
+                op['effective_domain']={'data_length':'supported input length <=UINT32_MAX to avoid response bytes_written truncation; downstream storage/allocation constraints remain unqualified','qualification':'count constraint identified, runtime unqualified'}
+            else:
+                assert 'std::uint32_t total_bytes = 0' in text
+                assert 'total_bytes += static_cast<std::uint32_t>(patch.data.size())' in text
+                op['effective_domain']={'patch_count':'<=UINT32_MAX for patch_count fidelity','total_data_length':'each patch and checked cumulative bytes <=UINT32_MAX to avoid truncation/modulo wrap; downstream address/storage constraints remain unqualified','qualification':'count constraint identified, runtime unqualified'}
+                op['limitations'].append('patch order is input array order; overlapping patches applied sequentially; native uint32 counter wraps on oversized cumulative input')
+        op['semantic_review']='LocalClient parameter reconstruction or byte count/error branches reviewed; downstream and runtime gates remain unqualified'
+    return operations
