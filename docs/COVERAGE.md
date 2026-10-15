@@ -25,7 +25,7 @@ analyzed-project inputs where required, plus negative limitation tests.
 | decompiler.hpp | Full | ListDecompilations (native batch) |
 | functions.hpp | Full | ListLeafFunctions (project reference index required) |
 | symbols.hpp | Full | DeleteSymbol |
-| types.hpp | Full | CreateType, DeleteType, RenameType, CreateTypeAlias, DeleteTypeAlias, SetTypeAliasTarget, CreateTypeEnum, DeleteTypeEnum |
+| types.hpp | Full | CreateType, DeleteType, RenameType, CreateTypeAlias, DeleteTypeAlias, SetTypeAliasTarget, CreateTypeEnum |
 | types.hpp | Full | AddTypeEnumMember, DeleteTypeEnumMember, RenameTypeEnumMember, SetTypeEnumMemberValue, SetTypeEnumMemberComment |
 | types.hpp | Full | AddTypeMember, DeleteTypeMember, RenameTypeMember, SetTypeMemberType, SetTypeMemberComment |
 | types.hpp | Full | SetFunctionSignature, RenameFunctionParameter, SetFunctionParameterType, RenameFunctionLocal, SetFunctionLocalType, ApplyDataType |
@@ -38,7 +38,7 @@ in api.hpp are not local support. Excluded at this pin: OpenProject, CloseProjec
 ListProjectFiles, ImportProgram; program options/transactions; analysis jobs;
 Create/Remove/MoveMemoryBlock and SetMemoryBlockAttributes; switch tables,
 dominators/postdominators/loops/frames; function tags/mappings; ParseDeclarations;
-GetPcode; ListInstructionOperands; bookmarks and breakpoints. HTTP implementations
+DeleteTypeEnum; GetPcode; ListInstructionOperands; bookmarks and breakpoints. HTTP implementations
 do not expand scope. Project-backed OpenProgram and ListLeafFunctions remain in
 scope despite absent local project-management APIs.
 
