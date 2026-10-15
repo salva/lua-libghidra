@@ -190,10 +190,38 @@ class InventoryTests(unittest.TestCase):
             with self.assertRaises(AssertionError):
                 module.inventory(root)
             adapter.write_text(adapter_original)
+            adapter.write_text(adapter_original.replace('if (rec.name.empty()) rec.name = rec.local_id', 'if (rec.name.empty()) rec.name = "unnamed"'))
+            with self.assertRaises(AssertionError):
+                module.inventory(root)
+            adapter.write_text(adapter_original)
+            pool = root/'cpp/src/decompiler_pool.cpp'
+            pool_original = pool.read_text()
+            pool.write_text(pool_original.replace('results[i].error_message = dl.error', 'results[i].error_message = "failed"'))
+            with self.assertRaises(AssertionError):
+                module.inventory(root)
+            pool.write_text(pool_original)
             header = root/'cpp/src/local_arch_adapter.hpp'
             header.write_text(header.read_text().replace('std::map<std::pair<std::uint64_t, int>, std::string> comments_', 'std::multimap<std::pair<std::uint64_t, int>, std::string> comments_'))
             with self.assertRaises(AssertionError):
                 module.inventory(root)
+
+    def test_decompilation_branch_population_and_unreachable_tokens(self):
+        for op in ['GetDecompilation','ListDecompilations']:
+            fields=self.ops[op]['response']['fields']
+            def sem(model, name):
+                return next(f['semantics'] for f in fields if f['model']==model and f['name']==name)
+            self.assertIn('PRESENT',sem('DecompilationRecord','completed'))
+            self.assertIn('partial adapter output discarded',sem('DecompilationRecord','pseudocode'))
+            self.assertIn('success AND failure',sem('DecompilationRecord','tokens'))
+            self.assertIn('schema only',sem('DecompileTokenRecord','text'))
+            self.assertIn('NOT undefined',sem('DecompileLocalRecord','data_type'))
+            self.assertIn('-1 sentinel',sem('DecompileLocalRecord','ordinal'))
+            self.assertIn('empty name replaced',sem('DecompileLocalRecord','name'))
+            self.assertIn('dynamic traversal',sem('DecompilationRecord','locals'))
+        single=self.ops['GetDecompilation']['record_field_reviews'][-1]['branches']
+        batch=self.ops['ListDecompilations']['record_field_reviews'][-1]['branches']
+        self.assertNotIn('function_name',single['success_assigned'])
+        self.assertIn('function_name',batch['failure_assigned'])
 
     def test_signature_nested_fields_and_default_parameter_flags(self):
         for op in ['GetFunctionSignature', 'ListFunctionSignatures']:

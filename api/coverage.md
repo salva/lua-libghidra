@@ -433,3 +433,28 @@ must fail reviewed assertions. Twenty-one focused tests pass. Signature paging
 still filters missing signatures after candidate pagination, remains pages-only,
 and has no runtime qualification. Other model families, request/default/helper/
 domain review and final grammar remain open.
+
+## Decompilation branch population and unreachable token schema (eighteenth increment)
+
+`inventory_decompilation_fields.py` separately reconciles successful and failed
+single/batch record population, including nested locals and token schema. Failure
+returns a present completed=false record and actual dl.error, not optional absence
+or stale pool error. Partial adapter pseudocode/locals are discarded on failure.
+Single function_name remains empty; batch supplies candidate name even on failure.
+Prototype/is_fallback remain initializers. Tokens are never appended on either
+branch: nested token initializers are unreachable schema, not observed tokens.
+
+Locals enumerate mapped then dynamic scope entries before RAII analysis cleanup,
+dedup by Symbol* and canonical ID, and skip hidden returns. Empty names fall back
+to ID; absent datatype is empty (not undefined); nonparameter ordinal is -1. Local
+IDs/storage retain native opaque formatting and cast limits, not a cross-generation
+identity promise. Persisted local renames are reapplied before print/collection.
+Analysis may create a function despite no wrapper revision increment. Missing
+architecture, failed perform, empty output and caught exception diagnostics are
+recorded explicitly. Native identity boundary behavior stays runtime-unqualified.
+
+Independent probes alter empty-name fallback and batch diagnostic extraction;
+both fail reviewed assertions. Twenty-two focused tests pass. Generic response
+paths decrease from 187 to 143; graph/xref/performance/direct fields and request/
+default/helper/domain/final grammar acceptance remain open. Runtime evidence is
+unqualified; no adapters, discovery iterator or M1 implementation added.

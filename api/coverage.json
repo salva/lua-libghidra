@@ -3482,6 +3482,14 @@
           "path": "cpp/include/libghidra/decompiler.hpp"
         }
       },
+      "decompilation_extraction_review": {
+        "analysis": "find/create function and perform; reapply persisted local renames before print/locals; RAII clears analysis including exceptional exits; no wrapper native revision increment",
+        "body_sha256": "41f14c44427b45b794be7a6b5d6a67a445a2a2cf53a0cd4831ba7fcc05530a81",
+        "failure": "missing architecture leaves default failed result; failed perform or empty print supplies diagnostic; exceptions describe/log caught error; wrapper discards partial data when dl.ok false",
+        "identity_limits": "opaque local_id uses native casts/space snapshots; first-use displacement narrows to int, stack formatting signed arithmetic follows native; cross-runtime/address-boundary behavior unqualified",
+        "locals_order": "mapped scope iteration then dynamic scope iteration; first occurrence retained by symbol and canonical-ID seen sets; no sorted order promise",
+        "path": "cpp/src/local_arch_adapter.cpp"
+      },
       "dispatch": "read",
       "evidence": {
         "negative": {
@@ -3541,6 +3549,27 @@
           "path": "python/src/libghidra/local.py"
         }
       },
+      "record_field_reviews": [
+        {
+          "body_sha256": "450bfbca3479e69cb5cdd4a775794e7e7a93c7a9a0a7ab58d32e7a77cffe2321",
+          "branches": {
+            "failure_assigned": [
+              "function_entry_address",
+              "error_message",
+              "completed"
+            ],
+            "success_assigned": [
+              "function_entry_address",
+              "pseudocode",
+              "locals",
+              "completed"
+            ]
+          },
+          "model": "DecompilationRecord",
+          "path": "cpp/src/local_client.cpp",
+          "qualification": "source branch population only; runtime positive/negative fixtures unqualified"
+        }
+      ],
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
@@ -3579,7 +3608,11 @@
             "native_type": "std::uint64_t",
             "optional": false,
             "path": "decompilation.function_entry_address",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "method": " GetDecompilation(",
+              "path": "cpp/src/local_client.cpp"
+            },
+            "semantics": "candidate input address in both success/failure; copied unchanged, not independently normalized entry"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -3589,7 +3622,11 @@
             "native_type": "std::string",
             "optional": false,
             "path": "decompilation.function_name",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "method": " GetDecompilation(",
+              "path": "cpp/src/local_client.cpp"
+            },
+            "semantics": "never assigned by single decompilation wrapper; model empty even on success"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -3599,7 +3636,11 @@
             "native_type": "std::string",
             "optional": false,
             "path": "decompilation.prototype",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "method": " GetDecompilation(",
+              "path": "cpp/src/local_client.cpp"
+            },
+            "semantics": "never assigned by producer; model empty even on success"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -3609,7 +3650,11 @@
             "native_type": "std::string",
             "optional": false,
             "path": "decompilation.pseudocode",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "method": " GetDecompilation(",
+              "path": "cpp/src/local_client.cpp"
+            },
+            "semantics": "success: printer output after persisted local rename reapplication; failure: record empty initializer (partial adapter output discarded)"
           },
           {
             "lua": "boolean (preserve false)",
@@ -3619,7 +3664,11 @@
             "native_type": "bool",
             "optional": false,
             "path": "decompilation.completed",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "method": " GetDecompilation(",
+              "path": "cpp/src/local_client.cpp"
+            },
+            "semantics": "dl.ok (nonempty printer output) -> true; failure -> false but record remains PRESENT, not native StatusOr error or optional absence"
           },
           {
             "lua": "boolean (preserve false)",
@@ -3629,7 +3678,11 @@
             "native_type": "bool",
             "optional": false,
             "path": "decompilation.is_fallback",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "method": " GetDecompilation(",
+              "path": "cpp/src/local_client.cpp"
+            },
+            "semantics": "never assigned by producer; model false even on failure; not a measured fallback flag"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -3639,7 +3692,11 @@
             "native_type": "std::string",
             "optional": false,
             "path": "decompilation.error_message",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "method": " GetDecompilation(",
+              "path": "cpp/src/local_client.cpp"
+            },
+            "semantics": "failure: actual dl.error; success: model empty; not pool getError stale state"
           },
           {
             "lua": "dense 1-based array of DecompileLocalRecord table/enum; resolve in types/enums",
@@ -3649,7 +3706,11 @@
             "native_type": "std::vector<DecompileLocalRecord>",
             "optional": false,
             "path": "decompilation.locals",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "method": " GetDecompilation(",
+              "path": "cpp/src/local_client.cpp"
+            },
+            "semantics": "success: adapter collected locals before analysis cleanup; failure: empty initializer even if adapter collected partial locals; dedup by Symbol* and canonical ID, hidden returns skipped; mapped traversal then dynamic traversal, no sort"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -3659,7 +3720,11 @@
             "native_type": "std::string",
             "optional": false,
             "path": "decompilation.locals.local_id",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "method": "collect_function_locals / decompileWithLocals",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "canonical_local_id opaque string: arg category index for parameters; signed Stack offset for stack locals; otherwise space/offset, dynamic hash or anonymous plus signed-int first-use displacement snapshot; no cross-generation identity promise"
           },
           {
             "lua": "DecompileLocalKind table/enum; resolve in types/enums",
@@ -3669,7 +3734,11 @@
             "native_type": "DecompileLocalKind",
             "optional": false,
             "path": "decompilation.locals.kind",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "method": "collect_function_locals / decompileWithLocals",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "parameter category -> kParam; nonmapped first entry -> kTemp; otherwise kLocal (including no first entry); native numeric enum preserved"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -3679,7 +3748,11 @@
             "native_type": "std::string",
             "optional": false,
             "path": "decompilation.locals.name",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "method": "collect_function_locals / decompileWithLocals",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "symbol name; empty name replaced by canonical local_id"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -3689,7 +3762,11 @@
             "native_type": "std::string",
             "optional": false,
             "path": "decompilation.locals.data_type",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "method": "collect_function_locals / decompileWithLocals",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "symbol datatype name or empty string when absent, NOT undefined"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -3699,7 +3776,11 @@
             "native_type": "std::string",
             "optional": false,
             "path": "decompilation.locals.storage",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "method": "collect_function_locals / decompileWithLocals",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "empty for no first entry; hash for nonmapped entry; Stack[signed hex offset] for stack; otherwise space:0xoffset; display string not a stable address object"
           },
           {
             "lua": "checked Lua integer (int)",
@@ -3709,7 +3790,11 @@
             "native_type": "int",
             "optional": false,
             "path": "decompilation.locals.ordinal",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "method": "collect_function_locals / decompileWithLocals",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "parameter category index cast to signed int; nonparameters -1 sentinel, not Lua array index"
           },
           {
             "lua": "dense 1-based array of DecompileTokenRecord table/enum; resolve in types/enums",
@@ -3719,7 +3804,11 @@
             "native_type": "std::vector<DecompileTokenRecord>",
             "optional": false,
             "path": "decompilation.tokens",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "method": " GetDecompilation(",
+              "path": "cpp/src/local_client.cpp"
+            },
+            "semantics": "never populated by native-local producer; empty vector on success AND failure; nested token schema is unreachable here"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -3729,7 +3818,11 @@
             "native_type": "std::string",
             "optional": false,
             "path": "decompilation.tokens.text",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "method": "collect_function_locals / decompileWithLocals",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "unreachable nested token element: producer never appends tokens; declared initializer empty is schema only, NOT an observed token field or output item"
           },
           {
             "lua": "DecompileTokenKind table/enum; resolve in types/enums",
@@ -3739,7 +3832,11 @@
             "native_type": "DecompileTokenKind",
             "optional": false,
             "path": "decompilation.tokens.kind",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "method": "collect_function_locals / decompileWithLocals",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "unreachable nested token element: producer never appends tokens; declared initializer DecompileTokenKind::kUnspecified is schema only, NOT an observed token field or output item"
           },
           {
             "lua": "checked Lua integer (int)",
@@ -3749,7 +3846,11 @@
             "native_type": "int",
             "optional": false,
             "path": "decompilation.tokens.line_number",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "method": "collect_function_locals / decompileWithLocals",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "unreachable nested token element: producer never appends tokens; declared initializer -1 is schema only, NOT an observed token field or output item"
           },
           {
             "lua": "checked Lua integer (int)",
@@ -3759,7 +3860,11 @@
             "native_type": "int",
             "optional": false,
             "path": "decompilation.tokens.column_offset",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "method": "collect_function_locals / decompileWithLocals",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "unreachable nested token element: producer never appends tokens; declared initializer -1 is schema only, NOT an observed token field or output item"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -3769,7 +3874,11 @@
             "native_type": "std::string",
             "optional": false,
             "path": "decompilation.tokens.var_name",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "method": "collect_function_locals / decompileWithLocals",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "unreachable nested token element: producer never appends tokens; declared initializer empty is schema only, NOT an observed token field or output item"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -3779,7 +3888,11 @@
             "native_type": "std::string",
             "optional": false,
             "path": "decompilation.tokens.var_type",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "method": "collect_function_locals / decompileWithLocals",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "unreachable nested token element: producer never appends tokens; declared initializer empty is schema only, NOT an observed token field or output item"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -3789,7 +3902,11 @@
             "native_type": "std::string",
             "optional": false,
             "path": "decompilation.tokens.var_storage",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "method": "collect_function_locals / decompileWithLocals",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "unreachable nested token element: producer never appends tokens; declared initializer empty is schema only, NOT an observed token field or output item"
           }
         ],
         "lua": "GetDecompilationResponse table/enum; resolve in types/enums",
@@ -7281,6 +7398,14 @@
           "path": "cpp/include/libghidra/decompiler.hpp"
         }
       },
+      "decompilation_extraction_review": {
+        "analysis": "find/create function and perform; reapply persisted local renames before print/locals; RAII clears analysis including exceptional exits; no wrapper native revision increment",
+        "body_sha256": "41f14c44427b45b794be7a6b5d6a67a445a2a2cf53a0cd4831ba7fcc05530a81",
+        "failure": "missing architecture leaves default failed result; failed perform or empty print supplies diagnostic; exceptions describe/log caught error; wrapper discards partial data when dl.ok false",
+        "identity_limits": "opaque local_id uses native casts/space snapshots; first-use displacement narrows to int, stack formatting signed arithmetic follows native; cross-runtime/address-boundary behavior unqualified",
+        "locals_order": "mapped scope iteration then dynamic scope iteration; first occurrence retained by symbol and canonical-ID seen sets; no sorted order promise",
+        "path": "cpp/src/local_arch_adapter.cpp"
+      },
       "dispatch": "read",
       "evidence": {
         "negative": {
@@ -7372,6 +7497,29 @@
           "path": "python/src/libghidra/local.py"
         }
       },
+      "record_field_reviews": [
+        {
+          "body_sha256": "b4151acbc8ca4162d68414f9a42753ba394dbf2707a30691e9f3af11e90e2bfe",
+          "branches": {
+            "failure_assigned": [
+              "function_entry_address",
+              "error_message",
+              "completed",
+              "function_name"
+            ],
+            "success_assigned": [
+              "function_entry_address",
+              "pseudocode",
+              "locals",
+              "completed",
+              "function_name"
+            ]
+          },
+          "model": "DecompilationRecord",
+          "path": "cpp/src/decompiler_pool.cpp",
+          "qualification": "source branch population only; runtime positive/negative fixtures unqualified"
+        }
+      ],
       "request": [
         {
           "binding_default": "0",
@@ -7434,7 +7582,11 @@
             "native_type": "std::uint64_t",
             "optional": false,
             "path": "decompilations.function_entry_address",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "method": "DecompilerPool::decompileMany(",
+              "path": "cpp/src/decompiler_pool.cpp"
+            },
+            "semantics": "candidate input address in both success/failure; copied unchanged, not independently normalized entry"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -7444,7 +7596,11 @@
             "native_type": "std::string",
             "optional": false,
             "path": "decompilations.function_name",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "method": "DecompilerPool::decompileMany(",
+              "path": "cpp/src/decompiler_pool.cpp"
+            },
+            "semantics": "candidate list name assigned in BOTH success/failure if matching names index exists; normal wrapper supplies one name per address"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -7454,7 +7610,11 @@
             "native_type": "std::string",
             "optional": false,
             "path": "decompilations.prototype",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "method": "DecompilerPool::decompileMany(",
+              "path": "cpp/src/decompiler_pool.cpp"
+            },
+            "semantics": "never assigned by producer; model empty even on success"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -7464,7 +7624,11 @@
             "native_type": "std::string",
             "optional": false,
             "path": "decompilations.pseudocode",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "method": "DecompilerPool::decompileMany(",
+              "path": "cpp/src/decompiler_pool.cpp"
+            },
+            "semantics": "success: printer output after persisted local rename reapplication; failure: record empty initializer (partial adapter output discarded)"
           },
           {
             "lua": "boolean (preserve false)",
@@ -7474,7 +7638,11 @@
             "native_type": "bool",
             "optional": false,
             "path": "decompilations.completed",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "method": "DecompilerPool::decompileMany(",
+              "path": "cpp/src/decompiler_pool.cpp"
+            },
+            "semantics": "dl.ok (nonempty printer output) -> true; failure -> false but record remains PRESENT, not native StatusOr error or optional absence"
           },
           {
             "lua": "boolean (preserve false)",
@@ -7484,7 +7652,11 @@
             "native_type": "bool",
             "optional": false,
             "path": "decompilations.is_fallback",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "method": "DecompilerPool::decompileMany(",
+              "path": "cpp/src/decompiler_pool.cpp"
+            },
+            "semantics": "never assigned by producer; model false even on failure; not a measured fallback flag"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -7494,7 +7666,11 @@
             "native_type": "std::string",
             "optional": false,
             "path": "decompilations.error_message",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "method": "DecompilerPool::decompileMany(",
+              "path": "cpp/src/decompiler_pool.cpp"
+            },
+            "semantics": "failure: actual dl.error; success: model empty; not pool getError stale state"
           },
           {
             "lua": "dense 1-based array of DecompileLocalRecord table/enum; resolve in types/enums",
@@ -7504,7 +7680,11 @@
             "native_type": "std::vector<DecompileLocalRecord>",
             "optional": false,
             "path": "decompilations.locals",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "method": "DecompilerPool::decompileMany(",
+              "path": "cpp/src/decompiler_pool.cpp"
+            },
+            "semantics": "success: adapter collected locals before analysis cleanup; failure: empty initializer even if adapter collected partial locals; dedup by Symbol* and canonical ID, hidden returns skipped; mapped traversal then dynamic traversal, no sort"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -7514,7 +7694,11 @@
             "native_type": "std::string",
             "optional": false,
             "path": "decompilations.locals.local_id",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "method": "collect_function_locals / decompileWithLocals",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "canonical_local_id opaque string: arg category index for parameters; signed Stack offset for stack locals; otherwise space/offset, dynamic hash or anonymous plus signed-int first-use displacement snapshot; no cross-generation identity promise"
           },
           {
             "lua": "DecompileLocalKind table/enum; resolve in types/enums",
@@ -7524,7 +7708,11 @@
             "native_type": "DecompileLocalKind",
             "optional": false,
             "path": "decompilations.locals.kind",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "method": "collect_function_locals / decompileWithLocals",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "parameter category -> kParam; nonmapped first entry -> kTemp; otherwise kLocal (including no first entry); native numeric enum preserved"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -7534,7 +7722,11 @@
             "native_type": "std::string",
             "optional": false,
             "path": "decompilations.locals.name",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "method": "collect_function_locals / decompileWithLocals",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "symbol name; empty name replaced by canonical local_id"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -7544,7 +7736,11 @@
             "native_type": "std::string",
             "optional": false,
             "path": "decompilations.locals.data_type",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "method": "collect_function_locals / decompileWithLocals",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "symbol datatype name or empty string when absent, NOT undefined"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -7554,7 +7750,11 @@
             "native_type": "std::string",
             "optional": false,
             "path": "decompilations.locals.storage",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "method": "collect_function_locals / decompileWithLocals",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "empty for no first entry; hash for nonmapped entry; Stack[signed hex offset] for stack; otherwise space:0xoffset; display string not a stable address object"
           },
           {
             "lua": "checked Lua integer (int)",
@@ -7564,7 +7764,11 @@
             "native_type": "int",
             "optional": false,
             "path": "decompilations.locals.ordinal",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "method": "collect_function_locals / decompileWithLocals",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "parameter category index cast to signed int; nonparameters -1 sentinel, not Lua array index"
           },
           {
             "lua": "dense 1-based array of DecompileTokenRecord table/enum; resolve in types/enums",
@@ -7574,7 +7778,11 @@
             "native_type": "std::vector<DecompileTokenRecord>",
             "optional": false,
             "path": "decompilations.tokens",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "method": "DecompilerPool::decompileMany(",
+              "path": "cpp/src/decompiler_pool.cpp"
+            },
+            "semantics": "never populated by native-local producer; empty vector on success AND failure; nested token schema is unreachable here"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -7584,7 +7792,11 @@
             "native_type": "std::string",
             "optional": false,
             "path": "decompilations.tokens.text",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "method": "collect_function_locals / decompileWithLocals",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "unreachable nested token element: producer never appends tokens; declared initializer empty is schema only, NOT an observed token field or output item"
           },
           {
             "lua": "DecompileTokenKind table/enum; resolve in types/enums",
@@ -7594,7 +7806,11 @@
             "native_type": "DecompileTokenKind",
             "optional": false,
             "path": "decompilations.tokens.kind",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "method": "collect_function_locals / decompileWithLocals",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "unreachable nested token element: producer never appends tokens; declared initializer DecompileTokenKind::kUnspecified is schema only, NOT an observed token field or output item"
           },
           {
             "lua": "checked Lua integer (int)",
@@ -7604,7 +7820,11 @@
             "native_type": "int",
             "optional": false,
             "path": "decompilations.tokens.line_number",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "method": "collect_function_locals / decompileWithLocals",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "unreachable nested token element: producer never appends tokens; declared initializer -1 is schema only, NOT an observed token field or output item"
           },
           {
             "lua": "checked Lua integer (int)",
@@ -7614,7 +7834,11 @@
             "native_type": "int",
             "optional": false,
             "path": "decompilations.tokens.column_offset",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "method": "collect_function_locals / decompileWithLocals",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "unreachable nested token element: producer never appends tokens; declared initializer -1 is schema only, NOT an observed token field or output item"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -7624,7 +7848,11 @@
             "native_type": "std::string",
             "optional": false,
             "path": "decompilations.tokens.var_name",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "method": "collect_function_locals / decompileWithLocals",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "unreachable nested token element: producer never appends tokens; declared initializer empty is schema only, NOT an observed token field or output item"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -7634,7 +7862,11 @@
             "native_type": "std::string",
             "optional": false,
             "path": "decompilations.tokens.var_type",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "method": "collect_function_locals / decompileWithLocals",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "unreachable nested token element: producer never appends tokens; declared initializer empty is schema only, NOT an observed token field or output item"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -7644,7 +7876,11 @@
             "native_type": "std::string",
             "optional": false,
             "path": "decompilations.tokens.var_storage",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "method": "collect_function_locals / decompileWithLocals",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "unreachable nested token element: producer never appends tokens; declared initializer empty is schema only, NOT an observed token field or output item"
           }
         ],
         "lua": "ListDecompilationsResponse table/enum; resolve in types/enums",
@@ -28100,116 +28336,6 @@
         "path": "decompilation"
       },
       {
-        "native_type": "std::uint64_t",
-        "operation": "GetDecompilation",
-        "path": "decompilation.function_entry_address"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "GetDecompilation",
-        "path": "decompilation.function_name"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "GetDecompilation",
-        "path": "decompilation.prototype"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "GetDecompilation",
-        "path": "decompilation.pseudocode"
-      },
-      {
-        "native_type": "bool",
-        "operation": "GetDecompilation",
-        "path": "decompilation.completed"
-      },
-      {
-        "native_type": "bool",
-        "operation": "GetDecompilation",
-        "path": "decompilation.is_fallback"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "GetDecompilation",
-        "path": "decompilation.error_message"
-      },
-      {
-        "native_type": "std::vector<DecompileLocalRecord>",
-        "operation": "GetDecompilation",
-        "path": "decompilation.locals"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "GetDecompilation",
-        "path": "decompilation.locals.local_id"
-      },
-      {
-        "native_type": "DecompileLocalKind",
-        "operation": "GetDecompilation",
-        "path": "decompilation.locals.kind"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "GetDecompilation",
-        "path": "decompilation.locals.name"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "GetDecompilation",
-        "path": "decompilation.locals.data_type"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "GetDecompilation",
-        "path": "decompilation.locals.storage"
-      },
-      {
-        "native_type": "int",
-        "operation": "GetDecompilation",
-        "path": "decompilation.locals.ordinal"
-      },
-      {
-        "native_type": "std::vector<DecompileTokenRecord>",
-        "operation": "GetDecompilation",
-        "path": "decompilation.tokens"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "GetDecompilation",
-        "path": "decompilation.tokens.text"
-      },
-      {
-        "native_type": "DecompileTokenKind",
-        "operation": "GetDecompilation",
-        "path": "decompilation.tokens.kind"
-      },
-      {
-        "native_type": "int",
-        "operation": "GetDecompilation",
-        "path": "decompilation.tokens.line_number"
-      },
-      {
-        "native_type": "int",
-        "operation": "GetDecompilation",
-        "path": "decompilation.tokens.column_offset"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "GetDecompilation",
-        "path": "decompilation.tokens.var_name"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "GetDecompilation",
-        "path": "decompilation.tokens.var_type"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "GetDecompilation",
-        "path": "decompilation.tokens.var_storage"
-      },
-      {
         "native_type": "std::optional<FunctionRecord>",
         "operation": "GetFunction",
         "path": "function"
@@ -28363,116 +28489,6 @@
         "native_type": "std::vector<DecompilationRecord>",
         "operation": "ListDecompilations",
         "path": "decompilations"
-      },
-      {
-        "native_type": "std::uint64_t",
-        "operation": "ListDecompilations",
-        "path": "decompilations.function_entry_address"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "ListDecompilations",
-        "path": "decompilations.function_name"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "ListDecompilations",
-        "path": "decompilations.prototype"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "ListDecompilations",
-        "path": "decompilations.pseudocode"
-      },
-      {
-        "native_type": "bool",
-        "operation": "ListDecompilations",
-        "path": "decompilations.completed"
-      },
-      {
-        "native_type": "bool",
-        "operation": "ListDecompilations",
-        "path": "decompilations.is_fallback"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "ListDecompilations",
-        "path": "decompilations.error_message"
-      },
-      {
-        "native_type": "std::vector<DecompileLocalRecord>",
-        "operation": "ListDecompilations",
-        "path": "decompilations.locals"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "ListDecompilations",
-        "path": "decompilations.locals.local_id"
-      },
-      {
-        "native_type": "DecompileLocalKind",
-        "operation": "ListDecompilations",
-        "path": "decompilations.locals.kind"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "ListDecompilations",
-        "path": "decompilations.locals.name"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "ListDecompilations",
-        "path": "decompilations.locals.data_type"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "ListDecompilations",
-        "path": "decompilations.locals.storage"
-      },
-      {
-        "native_type": "int",
-        "operation": "ListDecompilations",
-        "path": "decompilations.locals.ordinal"
-      },
-      {
-        "native_type": "std::vector<DecompileTokenRecord>",
-        "operation": "ListDecompilations",
-        "path": "decompilations.tokens"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "ListDecompilations",
-        "path": "decompilations.tokens.text"
-      },
-      {
-        "native_type": "DecompileTokenKind",
-        "operation": "ListDecompilations",
-        "path": "decompilations.tokens.kind"
-      },
-      {
-        "native_type": "int",
-        "operation": "ListDecompilations",
-        "path": "decompilations.tokens.line_number"
-      },
-      {
-        "native_type": "int",
-        "operation": "ListDecompilations",
-        "path": "decompilations.tokens.column_offset"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "ListDecompilations",
-        "path": "decompilations.tokens.var_name"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "ListDecompilations",
-        "path": "decompilations.tokens.var_type"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "ListDecompilations",
-        "path": "decompilations.tokens.var_storage"
       },
       {
         "native_type": "std::vector<DefinedStringRecord>",
