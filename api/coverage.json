@@ -179,6 +179,11 @@
         "lua": "AddBookmarkResponse table/enum; resolve in types/enums",
         "native_type": "AddBookmarkResponse"
       },
+      "surface_contract": {
+        "disposition": "excluded: inherited NOT_SUPPORTED; no Lua adapter promised",
+        "facade": null,
+        "lowlevel": null
+      },
       "tier": "excluded"
     },
     {
@@ -277,6 +282,11 @@
         "lua": "AddBreakpointResponse table/enum; resolve in types/enums",
         "native_type": "AddBreakpointResponse"
       },
+      "surface_contract": {
+        "disposition": "excluded: inherited NOT_SUPPORTED; no Lua adapter promised",
+        "facade": null,
+        "lowlevel": null
+      },
       "tier": "excluded"
     },
     {
@@ -327,11 +337,13 @@
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": false,
           "lua": "PerfBenchmarkRecord table/enum; resolve in types/enums",
           "name": "record",
           "native_type": "const PerfBenchmarkRecord&",
           "nested_fields": [
             {
+              "ignored": false,
               "lua": "Lua string (no transcoding)",
               "model": "PerfBenchmarkRecord",
               "name": "bench_id",
@@ -342,6 +354,7 @@
               "semantics": "native field preserved; no truthiness substitution"
             },
             {
+              "ignored": false,
               "lua": "Lua string (no transcoding)",
               "model": "PerfBenchmarkRecord",
               "name": "query_family",
@@ -352,6 +365,7 @@
               "semantics": "native field preserved; no truthiness substitution"
             },
             {
+              "ignored": false,
               "lua": "Lua string (no transcoding)",
               "model": "PerfBenchmarkRecord",
               "name": "dataset_profile",
@@ -362,6 +376,7 @@
               "semantics": "native field preserved; no truthiness substitution"
             },
             {
+              "ignored": false,
               "lua": "double table/enum; resolve in types/enums",
               "model": "PerfBenchmarkRecord",
               "name": "cold_ms_p50",
@@ -372,6 +387,7 @@
               "semantics": "native field preserved; no truthiness substitution"
             },
             {
+              "ignored": false,
               "lua": "double table/enum; resolve in types/enums",
               "model": "PerfBenchmarkRecord",
               "name": "cold_ms_p95",
@@ -382,6 +398,7 @@
               "semantics": "native field preserved; no truthiness substitution"
             },
             {
+              "ignored": false,
               "lua": "double table/enum; resolve in types/enums",
               "model": "PerfBenchmarkRecord",
               "name": "warm_ms_p50",
@@ -392,6 +409,7 @@
               "semantics": "native field preserved; no truthiness substitution"
             },
             {
+              "ignored": false,
               "lua": "double table/enum; resolve in types/enums",
               "model": "PerfBenchmarkRecord",
               "name": "warm_ms_p95",
@@ -402,6 +420,7 @@
               "semantics": "native field preserved; no truthiness substitution"
             },
             {
+              "ignored": false,
               "lua": "double table/enum; resolve in types/enums",
               "model": "PerfBenchmarkRecord",
               "name": "throughput_qps",
@@ -412,6 +431,7 @@
               "semantics": "native field preserved; no truthiness substitution"
             },
             {
+              "ignored": false,
               "lua": "double table/enum; resolve in types/enums",
               "model": "PerfBenchmarkRecord",
               "name": "regression_pct",
@@ -422,6 +442,7 @@
               "semantics": "native field preserved; no truthiness substitution"
             },
             {
+              "ignored": false,
               "lua": "Lua string (no transcoding)",
               "model": "PerfBenchmarkRecord",
               "name": "status",
@@ -457,6 +478,24 @@
         "path": "cpp/src/local_client.cpp"
       },
       "state_transitions": "erase matching bench_id then append detached record; replacement moves to tail; revision increments on every successful upsert; added=true",
+      "surface_contract": {
+        "facade": {
+          "disposition": "native escape hatch",
+          "extraction": null,
+          "name": null,
+          "return": "complete response/error via convenience or native() as disposed"
+        },
+        "implementation_status": "planned M0 contract only; not runtime-qualified",
+        "iterator": "not enabled; source identity/order alone is not runtime qualification",
+        "lowlevel": {
+          "call": "add_perf_benchmark(record)",
+          "name": "add_perf_benchmark",
+          "native_request_keys": [
+            "record"
+          ],
+          "return": "complete detached native response or nil,error"
+        }
+      },
       "tier": "full"
     },
     {
@@ -506,6 +545,7 @@
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": false,
           "lua": "Lua string (no transcoding)",
           "name": "type_id_or_path",
           "native_type": "const std::string&",
@@ -513,6 +553,7 @@
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": false,
           "lua": "Lua string (no transcoding)",
           "name": "name",
           "native_type": "const std::string&",
@@ -520,6 +561,7 @@
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": false,
           "lua": "checked Lua integer (std::int64_t)",
           "name": "value",
           "native_type": "std::int64_t",
@@ -541,6 +583,26 @@
         ],
         "lua": "AddTypeEnumMemberResponse table/enum; resolve in types/enums",
         "native_type": "AddTypeEnumMemberResponse"
+      },
+      "surface_contract": {
+        "facade": {
+          "disposition": "native escape hatch",
+          "extraction": null,
+          "name": null,
+          "return": "complete response/error via convenience or native() as disposed"
+        },
+        "implementation_status": "planned M0 contract only; not runtime-qualified",
+        "iterator": "not enabled; source identity/order alone is not runtime qualification",
+        "lowlevel": {
+          "call": "add_type_enum_member(type_id_or_path, name, value)",
+          "name": "add_type_enum_member",
+          "native_request_keys": [
+            "type_id_or_path",
+            "name",
+            "value"
+          ],
+          "return": "complete detached native response or nil,error"
+        }
       },
       "tier": "full"
     },
@@ -595,6 +657,7 @@
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": false,
           "lua": "Lua string (no transcoding)",
           "name": "parent_type_id_or_path",
           "native_type": "const std::string&",
@@ -602,6 +665,7 @@
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": false,
           "lua": "Lua string (no transcoding)",
           "name": "member_name",
           "native_type": "const std::string&",
@@ -609,6 +673,7 @@
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": false,
           "lua": "Lua string (no transcoding)",
           "name": "member_type",
           "native_type": "const std::string&",
@@ -616,6 +681,7 @@
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": true,
           "lua": "exact UInt64",
           "name": "size",
           "native_type": "std::uint64_t",
@@ -637,6 +703,27 @@
         ],
         "lua": "AddTypeMemberResponse table/enum; resolve in types/enums",
         "native_type": "AddTypeMemberResponse"
+      },
+      "surface_contract": {
+        "facade": {
+          "disposition": "native escape hatch",
+          "extraction": null,
+          "name": null,
+          "return": "complete response/error via convenience or native() as disposed"
+        },
+        "implementation_status": "planned M0 contract only; not runtime-qualified",
+        "iterator": "not enabled; source identity/order alone is not runtime qualification",
+        "lowlevel": {
+          "call": "add_type_member(parent_type_id_or_path, member_name, member_type, size)",
+          "name": "add_type_member",
+          "native_request_keys": [
+            "parent_type_id_or_path",
+            "member_name",
+            "member_type",
+            "size"
+          ],
+          "return": "complete detached native response or nil,error"
+        }
       },
       "tier": "full"
     },
@@ -687,6 +774,7 @@
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": false,
           "lua": "exact UInt64",
           "name": "address",
           "native_type": "std::uint64_t",
@@ -694,6 +782,7 @@
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": false,
           "lua": "Lua string (no transcoding)",
           "name": "data_type",
           "native_type": "const std::string&",
@@ -725,6 +814,25 @@
         ],
         "lua": "ApplyDataTypeResponse table/enum; resolve in types/enums",
         "native_type": "ApplyDataTypeResponse"
+      },
+      "surface_contract": {
+        "facade": {
+          "disposition": "native escape hatch",
+          "extraction": null,
+          "name": null,
+          "return": "complete response/error via convenience or native() as disposed"
+        },
+        "implementation_status": "planned M0 contract only; not runtime-qualified",
+        "iterator": "not enabled; source identity/order alone is not runtime qualification",
+        "lowlevel": {
+          "call": "apply_data_type(address, data_type)",
+          "name": "apply_data_type",
+          "native_request_keys": [
+            "address",
+            "data_type"
+          ],
+          "return": "complete detached native response or nil,error"
+        }
       },
       "tier": "full"
     },
@@ -788,6 +896,11 @@
         ],
         "lua": "CancelAnalysisResponse table/enum; resolve in types/enums",
         "native_type": "CancelAnalysisResponse"
+      },
+      "surface_contract": {
+        "disposition": "excluded: inherited NOT_SUPPORTED; no Lua adapter promised",
+        "facade": null,
+        "lowlevel": null
       },
       "tier": "excluded"
     },
@@ -871,6 +984,22 @@
         "path": "cpp/src/local_client.cpp"
       },
       "state_transitions": "removed_count uint32 cast from vector size; cleared=true even empty; clear then native revision increments unconditionally",
+      "surface_contract": {
+        "facade": {
+          "disposition": "native escape hatch",
+          "extraction": null,
+          "name": null,
+          "return": "complete response/error via convenience or native() as disposed"
+        },
+        "implementation_status": "planned M0 contract only; not runtime-qualified",
+        "iterator": "not enabled; source identity/order alone is not runtime qualification",
+        "lowlevel": {
+          "call": "clear_perf_benchmarks()",
+          "name": "clear_perf_benchmarks",
+          "native_request_keys": [],
+          "return": "complete detached native response or nil,error"
+        }
+      },
       "tier": "full"
     },
     {
@@ -943,6 +1072,7 @@
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": false,
           "lua": "ShutdownPolicy table/enum; resolve in types/enums",
           "name": "policy",
           "native_type": "ShutdownPolicy",
@@ -972,6 +1102,25 @@
         "path": "cpp/src/local_client.cpp"
       },
       "state_transitions": "kSave with nonempty state_path attempts save; failure preserves access/benchmarks; empty state_path skips saving; all nonsave policies close; reset adapters, loaded=false and clear benchmarks; engines retained",
+      "surface_contract": {
+        "facade": {
+          "disposition": "complete response convenience/page",
+          "extraction": null,
+          "name": "close_program",
+          "return": "complete response/error via convenience or native() as disposed",
+          "save_policy": "reject empty configured state_path with binding NO_STATE_PATH before dispatch; no implicit save"
+        },
+        "implementation_status": "planned M0 contract only; not runtime-qualified",
+        "iterator": "not enabled; source identity/order alone is not runtime qualification",
+        "lowlevel": {
+          "call": "close_program{policy=\"save\"|\"discard\"}",
+          "name": "close_program",
+          "native_request_keys": [
+            "policy"
+          ],
+          "return": "complete detached native response or nil,error"
+        }
+      },
       "tier": "slice"
     },
     {
@@ -1034,6 +1183,11 @@
         ],
         "lua": "CloseProjectResponse table/enum; resolve in types/enums",
         "native_type": "CloseProjectResponse"
+      },
+      "surface_contract": {
+        "disposition": "excluded: inherited NOT_SUPPORTED; no Lua adapter promised",
+        "facade": null,
+        "lowlevel": null
       },
       "tier": "excluded"
     },
@@ -1104,6 +1258,11 @@
         ],
         "lua": "CreateFunctionTagResponse table/enum; resolve in types/enums",
         "native_type": "CreateFunctionTagResponse"
+      },
+      "surface_contract": {
+        "disposition": "excluded: inherited NOT_SUPPORTED; no Lua adapter promised",
+        "facade": null,
+        "lowlevel": null
       },
       "tier": "excluded"
     },
@@ -1369,6 +1528,11 @@
         "lua": "CreateMemoryBlockResponse table/enum; resolve in types/enums",
         "native_type": "CreateMemoryBlockResponse"
       },
+      "surface_contract": {
+        "disposition": "excluded: inherited NOT_SUPPORTED; no Lua adapter promised",
+        "facade": null,
+        "lowlevel": null
+      },
       "tier": "excluded"
     },
     {
@@ -1424,6 +1588,7 @@
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": false,
           "lua": "Lua string (no transcoding)",
           "name": "name",
           "native_type": "const std::string&",
@@ -1431,6 +1596,7 @@
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": false,
           "lua": "Lua string (no transcoding)",
           "name": "kind",
           "native_type": "const std::string&",
@@ -1438,6 +1604,7 @@
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": true,
           "lua": "exact UInt64",
           "name": "size",
           "native_type": "std::uint64_t",
@@ -1459,6 +1626,26 @@
         ],
         "lua": "CreateTypeResponse table/enum; resolve in types/enums",
         "native_type": "CreateTypeResponse"
+      },
+      "surface_contract": {
+        "facade": {
+          "disposition": "native escape hatch",
+          "extraction": null,
+          "name": null,
+          "return": "complete response/error via convenience or native() as disposed"
+        },
+        "implementation_status": "planned M0 contract only; not runtime-qualified",
+        "iterator": "not enabled; source identity/order alone is not runtime qualification",
+        "lowlevel": {
+          "call": "create_type(name, kind, size)",
+          "name": "create_type",
+          "native_request_keys": [
+            "name",
+            "kind",
+            "size"
+          ],
+          "return": "complete detached native response or nil,error"
+        }
       },
       "tier": "full"
     },
@@ -1509,6 +1696,7 @@
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": false,
           "lua": "Lua string (no transcoding)",
           "name": "name",
           "native_type": "const std::string&",
@@ -1516,6 +1704,7 @@
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": false,
           "lua": "Lua string (no transcoding)",
           "name": "target_type",
           "native_type": "const std::string&",
@@ -1537,6 +1726,25 @@
         ],
         "lua": "CreateTypeAliasResponse table/enum; resolve in types/enums",
         "native_type": "CreateTypeAliasResponse"
+      },
+      "surface_contract": {
+        "facade": {
+          "disposition": "native escape hatch",
+          "extraction": null,
+          "name": null,
+          "return": "complete response/error via convenience or native() as disposed"
+        },
+        "implementation_status": "planned M0 contract only; not runtime-qualified",
+        "iterator": "not enabled; source identity/order alone is not runtime qualification",
+        "lowlevel": {
+          "call": "create_type_alias(name, target_type)",
+          "name": "create_type_alias",
+          "native_request_keys": [
+            "name",
+            "target_type"
+          ],
+          "return": "complete detached native response or nil,error"
+        }
       },
       "tier": "full"
     },
@@ -1592,6 +1800,7 @@
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": false,
           "lua": "Lua string (no transcoding)",
           "name": "name",
           "native_type": "const std::string&",
@@ -1599,6 +1808,7 @@
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": true,
           "lua": "exact UInt64",
           "name": "width",
           "native_type": "std::uint64_t",
@@ -1606,6 +1816,7 @@
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": true,
           "lua": "boolean (preserve false)",
           "name": "is_signed",
           "native_type": "bool",
@@ -1627,6 +1838,26 @@
         ],
         "lua": "CreateTypeEnumResponse table/enum; resolve in types/enums",
         "native_type": "CreateTypeEnumResponse"
+      },
+      "surface_contract": {
+        "facade": {
+          "disposition": "native escape hatch",
+          "extraction": null,
+          "name": null,
+          "return": "complete response/error via convenience or native() as disposed"
+        },
+        "implementation_status": "planned M0 contract only; not runtime-qualified",
+        "iterator": "not enabled; source identity/order alone is not runtime qualification",
+        "lowlevel": {
+          "call": "create_type_enum(name, width, is_signed)",
+          "name": "create_type_enum",
+          "native_request_keys": [
+            "name",
+            "width",
+            "is_signed"
+          ],
+          "return": "complete detached native response or nil,error"
+        }
       },
       "tier": "full"
     },
@@ -1705,6 +1936,11 @@
         "lua": "DeleteBookmarkResponse table/enum; resolve in types/enums",
         "native_type": "DeleteBookmarkResponse"
       },
+      "surface_contract": {
+        "disposition": "excluded: inherited NOT_SUPPORTED; no Lua adapter promised",
+        "facade": null,
+        "lowlevel": null
+      },
       "tier": "excluded"
     },
     {
@@ -1768,6 +2004,11 @@
         "lua": "DeleteBreakpointResponse table/enum; resolve in types/enums",
         "native_type": "DeleteBreakpointResponse"
       },
+      "surface_contract": {
+        "disposition": "excluded: inherited NOT_SUPPORTED; no Lua adapter promised",
+        "facade": null,
+        "lowlevel": null
+      },
       "tier": "excluded"
     },
     {
@@ -1817,6 +2058,7 @@
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": false,
           "lua": "exact UInt64",
           "name": "address",
           "native_type": "std::uint64_t",
@@ -1824,6 +2066,7 @@
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": false,
           "lua": "CommentKind table/enum; resolve in types/enums",
           "name": "kind",
           "native_type": "CommentKind",
@@ -1845,6 +2088,25 @@
         ],
         "lua": "DeleteCommentResponse table/enum; resolve in types/enums",
         "native_type": "DeleteCommentResponse"
+      },
+      "surface_contract": {
+        "facade": {
+          "disposition": "native escape hatch",
+          "extraction": null,
+          "name": null,
+          "return": "complete response/error via convenience or native() as disposed"
+        },
+        "implementation_status": "planned M0 contract only; not runtime-qualified",
+        "iterator": "not enabled; source identity/order alone is not runtime qualification",
+        "lowlevel": {
+          "call": "delete_comment(address, kind)",
+          "name": "delete_comment",
+          "native_request_keys": [
+            "address",
+            "kind"
+          ],
+          "return": "complete detached native response or nil,error"
+        }
       },
       "tier": "full"
     },
@@ -1895,6 +2157,7 @@
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": false,
           "lua": "exact UInt64",
           "name": "address",
           "native_type": "std::uint64_t",
@@ -1916,6 +2179,24 @@
         ],
         "lua": "DeleteDataItemResponse table/enum; resolve in types/enums",
         "native_type": "DeleteDataItemResponse"
+      },
+      "surface_contract": {
+        "facade": {
+          "disposition": "native escape hatch",
+          "extraction": null,
+          "name": null,
+          "return": "complete response/error via convenience or native() as disposed"
+        },
+        "implementation_status": "planned M0 contract only; not runtime-qualified",
+        "iterator": "not enabled; source identity/order alone is not runtime qualification",
+        "lowlevel": {
+          "call": "delete_data_item(address)",
+          "name": "delete_data_item",
+          "native_request_keys": [
+            "address"
+          ],
+          "return": "complete detached native response or nil,error"
+        }
       },
       "tier": "full"
     },
@@ -1980,6 +2261,11 @@
         "lua": "DeleteFunctionTagResponse table/enum; resolve in types/enums",
         "native_type": "DeleteFunctionTagResponse"
       },
+      "surface_contract": {
+        "disposition": "excluded: inherited NOT_SUPPORTED; no Lua adapter promised",
+        "facade": null,
+        "lowlevel": null
+      },
       "tier": "excluded"
     },
     {
@@ -2030,6 +2316,7 @@
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": false,
           "lua": "Lua string (no transcoding)",
           "name": "bench_id",
           "native_type": "const std::string&",
@@ -2059,6 +2346,24 @@
         "path": "cpp/src/local_client.cpp"
       },
       "state_transitions": "erase matching bench_id; deleted=false if absent; revision increments only when an entry removed",
+      "surface_contract": {
+        "facade": {
+          "disposition": "native escape hatch",
+          "extraction": null,
+          "name": null,
+          "return": "complete response/error via convenience or native() as disposed"
+        },
+        "implementation_status": "planned M0 contract only; not runtime-qualified",
+        "iterator": "not enabled; source identity/order alone is not runtime qualification",
+        "lowlevel": {
+          "call": "delete_perf_benchmark(bench_id)",
+          "name": "delete_perf_benchmark",
+          "native_request_keys": [
+            "bench_id"
+          ],
+          "return": "complete detached native response or nil,error"
+        }
+      },
       "tier": "full"
     },
     {
@@ -2090,7 +2395,7 @@
       "facade": "native() escape hatch",
       "generation": "invalidate before dispatch, including failure/partial effect",
       "ignored_fields": [
-        "name"
+        "name_filter"
       ],
       "implementation": {
         "body_sha256": "58a441909df371d15622174e54abe3dc60f134f1b388019429133d0a186bbe66",
@@ -2100,7 +2405,8 @@
         }
       },
       "limitations": [
-        "ignored native fields: name"
+        "ignored native fields: name",
+        "native argument name_filter (semantic name) ignored: deletion by address only, never a name guard"
       ],
       "lowlevel": "delete_symbol",
       "name": "DeleteSymbol",
@@ -2112,6 +2418,7 @@
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": false,
           "lua": "exact UInt64",
           "name": "address",
           "native_type": "std::uint64_t",
@@ -2119,6 +2426,7 @@
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": true,
           "lua": "Lua string (no transcoding)",
           "name": "name_filter",
           "native_type": "const std::string&",
@@ -2150,6 +2458,25 @@
         ],
         "lua": "DeleteSymbolResponse table/enum; resolve in types/enums",
         "native_type": "DeleteSymbolResponse"
+      },
+      "surface_contract": {
+        "facade": {
+          "disposition": "native escape hatch",
+          "extraction": null,
+          "name": null,
+          "return": "complete response/error via convenience or native() as disposed"
+        },
+        "implementation_status": "planned M0 contract only; not runtime-qualified",
+        "iterator": "not enabled; source identity/order alone is not runtime qualification",
+        "lowlevel": {
+          "call": "delete_symbol(address, name_filter)",
+          "name": "delete_symbol",
+          "native_request_keys": [
+            "address",
+            "name_filter"
+          ],
+          "return": "complete detached native response or nil,error"
+        }
       },
       "tier": "full"
     },
@@ -2200,6 +2527,7 @@
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": false,
           "lua": "Lua string (no transcoding)",
           "name": "type_id_or_path",
           "native_type": "const std::string&",
@@ -2221,6 +2549,24 @@
         ],
         "lua": "DeleteTypeResponse table/enum; resolve in types/enums",
         "native_type": "DeleteTypeResponse"
+      },
+      "surface_contract": {
+        "facade": {
+          "disposition": "native escape hatch",
+          "extraction": null,
+          "name": null,
+          "return": "complete response/error via convenience or native() as disposed"
+        },
+        "implementation_status": "planned M0 contract only; not runtime-qualified",
+        "iterator": "not enabled; source identity/order alone is not runtime qualification",
+        "lowlevel": {
+          "call": "delete_type(type_id_or_path)",
+          "name": "delete_type",
+          "native_request_keys": [
+            "type_id_or_path"
+          ],
+          "return": "complete detached native response or nil,error"
+        }
       },
       "tier": "full"
     },
@@ -2271,6 +2617,7 @@
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": false,
           "lua": "Lua string (no transcoding)",
           "name": "type_id_or_path",
           "native_type": "const std::string&",
@@ -2292,6 +2639,24 @@
         ],
         "lua": "DeleteTypeAliasResponse table/enum; resolve in types/enums",
         "native_type": "DeleteTypeAliasResponse"
+      },
+      "surface_contract": {
+        "facade": {
+          "disposition": "native escape hatch",
+          "extraction": null,
+          "name": null,
+          "return": "complete response/error via convenience or native() as disposed"
+        },
+        "implementation_status": "planned M0 contract only; not runtime-qualified",
+        "iterator": "not enabled; source identity/order alone is not runtime qualification",
+        "lowlevel": {
+          "call": "delete_type_alias(type_id_or_path)",
+          "name": "delete_type_alias",
+          "native_request_keys": [
+            "type_id_or_path"
+          ],
+          "return": "complete detached native response or nil,error"
+        }
       },
       "tier": "full"
     },
@@ -2356,6 +2721,11 @@
         "lua": "DeleteTypeEnumResponse table/enum; resolve in types/enums",
         "native_type": "DeleteTypeEnumResponse"
       },
+      "surface_contract": {
+        "disposition": "excluded: inherited NOT_SUPPORTED; no Lua adapter promised",
+        "facade": null,
+        "lowlevel": null
+      },
       "tier": "excluded"
     },
     {
@@ -2406,6 +2776,7 @@
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": false,
           "lua": "Lua string (no transcoding)",
           "name": "type_id_or_path",
           "native_type": "const std::string&",
@@ -2413,6 +2784,7 @@
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": false,
           "lua": "exact UInt64",
           "name": "ordinal",
           "native_type": "std::uint64_t",
@@ -2434,6 +2806,25 @@
         ],
         "lua": "DeleteTypeEnumMemberResponse table/enum; resolve in types/enums",
         "native_type": "DeleteTypeEnumMemberResponse"
+      },
+      "surface_contract": {
+        "facade": {
+          "disposition": "native escape hatch",
+          "extraction": null,
+          "name": null,
+          "return": "complete response/error via convenience or native() as disposed"
+        },
+        "implementation_status": "planned M0 contract only; not runtime-qualified",
+        "iterator": "not enabled; source identity/order alone is not runtime qualification",
+        "lowlevel": {
+          "call": "delete_type_enum_member(type_id_or_path, ordinal)",
+          "name": "delete_type_enum_member",
+          "native_request_keys": [
+            "type_id_or_path",
+            "ordinal"
+          ],
+          "return": "complete detached native response or nil,error"
+        }
       },
       "tier": "full"
     },
@@ -2485,6 +2876,7 @@
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": false,
           "lua": "Lua string (no transcoding)",
           "name": "parent_type_id_or_path",
           "native_type": "const std::string&",
@@ -2492,6 +2884,7 @@
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": false,
           "lua": "exact UInt64",
           "name": "ordinal",
           "native_type": "std::uint64_t",
@@ -2513,6 +2906,25 @@
         ],
         "lua": "DeleteTypeMemberResponse table/enum; resolve in types/enums",
         "native_type": "DeleteTypeMemberResponse"
+      },
+      "surface_contract": {
+        "facade": {
+          "disposition": "native escape hatch",
+          "extraction": null,
+          "name": null,
+          "return": "complete response/error via convenience or native() as disposed"
+        },
+        "implementation_status": "planned M0 contract only; not runtime-qualified",
+        "iterator": "not enabled; source identity/order alone is not runtime qualification",
+        "lowlevel": {
+          "call": "delete_type_member(parent_type_id_or_path, ordinal)",
+          "name": "delete_type_member",
+          "native_request_keys": [
+            "parent_type_id_or_path",
+            "ordinal"
+          ],
+          "return": "complete detached native response or nil,error"
+        }
       },
       "tier": "full"
     },
@@ -2601,6 +3013,22 @@
         "path": "cpp/src/local_client.cpp"
       },
       "state_transitions": "discarded=true even unloaded; no rollback, state change or native revision increment",
+      "surface_contract": {
+        "facade": {
+          "disposition": "native escape hatch",
+          "extraction": null,
+          "name": null,
+          "return": "complete response/error via convenience or native() as disposed"
+        },
+        "implementation_status": "planned M0 contract only; not runtime-qualified",
+        "iterator": "not enabled; source identity/order alone is not runtime qualification",
+        "lowlevel": {
+          "call": "discard_program()",
+          "name": "discard_program",
+          "native_request_keys": [],
+          "return": "complete detached native response or nil,error"
+        }
+      },
       "tier": "core"
     },
     {
@@ -2698,6 +3126,22 @@
         "lua": "dense 1-based array of Capability table/enum; resolve in types/enums",
         "native_type": "std::vector<Capability>"
       },
+      "surface_contract": {
+        "facade": {
+          "disposition": "complete response convenience/page",
+          "extraction": null,
+          "name": "get_capabilities",
+          "return": "complete response/error via convenience or native() as disposed"
+        },
+        "implementation_status": "planned M0 contract only; not runtime-qualified",
+        "iterator": "not enabled; source identity/order alone is not runtime qualification",
+        "lowlevel": {
+          "call": "get_capabilities()",
+          "name": "get_capabilities",
+          "native_request_keys": [],
+          "return": "complete detached native response or nil,error"
+        }
+      },
       "tier": "slice"
     },
     {
@@ -2774,6 +3218,7 @@
       "request": [
         {
           "binding_default": "0",
+          "ignored": false,
           "lua": "exact UInt64",
           "name": "range_start",
           "native_type": "std::uint64_t",
@@ -2781,6 +3226,7 @@
         },
         {
           "binding_default": "UINT64_MAX (explicit zero sentinel only where documented)",
+          "ignored": false,
           "lua": "exact UInt64",
           "name": "range_end",
           "native_type": "std::uint64_t",
@@ -2788,6 +3234,7 @@
         },
         {
           "binding_default": "100",
+          "ignored": false,
           "lua": "checked Lua integer (int)",
           "name": "limit",
           "native_type": "int",
@@ -2795,6 +3242,7 @@
         },
         {
           "binding_default": "0",
+          "ignored": false,
           "lua": "checked Lua integer (int)",
           "name": "offset",
           "native_type": "int",
@@ -2848,6 +3296,27 @@
         "native_type": "GetCommentsResponse"
       },
       "semantic_review": "page adapter and LocalClient dispatch reviewed; runtime unqualified; remaining field/facade obligations still open",
+      "surface_contract": {
+        "facade": {
+          "disposition": "complete response convenience/page",
+          "extraction": null,
+          "name": "get_comments",
+          "return": "complete response/error via convenience or native() as disposed"
+        },
+        "implementation_status": "planned M0 contract only; not runtime-qualified",
+        "iterator": "not enabled; source identity/order alone is not runtime qualification",
+        "lowlevel": {
+          "call": "get_comments(options={})",
+          "name": "get_comments",
+          "native_request_keys": [
+            "range_start",
+            "range_end",
+            "limit",
+            "offset"
+          ],
+          "return": "complete detached native response or nil,error"
+        }
+      },
       "tier": "core"
     },
     {
@@ -2915,6 +3384,7 @@
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": false,
           "lua": "exact UInt64",
           "name": "address",
           "native_type": "std::uint64_t",
@@ -2922,6 +3392,7 @@
         },
         {
           "binding_default": "30000 (ignored)",
+          "ignored": true,
           "lua": "checked Lua integer (int)",
           "name": "timeout_ms",
           "native_type": "int",
@@ -3164,6 +3635,26 @@
         "lua": "GetDecompilationResponse table/enum; resolve in types/enums",
         "native_type": "GetDecompilationResponse"
       },
+      "surface_contract": {
+        "facade": {
+          "disposition": "direct extraction",
+          "extraction": "decompilation",
+          "name": "get_decompilation",
+          "return": "value,nil,response; optional absent -> nil,NOT_FOUND,response; native error -> nil,error",
+          "timeout_policy": "reject explicit timeout key; native default ignored; no deadline promise"
+        },
+        "implementation_status": "planned M0 contract only; not runtime-qualified",
+        "iterator": "not enabled; source identity/order alone is not runtime qualification",
+        "lowlevel": {
+          "call": "get_decompilation(address, options={})",
+          "name": "get_decompilation",
+          "native_request_keys": [
+            "address",
+            "timeout_ms"
+          ],
+          "return": "complete detached native response or nil,error"
+        }
+      },
       "tier": "slice"
     },
     {
@@ -3227,6 +3718,7 @@
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": false,
           "lua": "exact UInt64",
           "name": "address",
           "native_type": "std::uint64_t",
@@ -3339,6 +3831,24 @@
         "lua": "GetFunctionResponse table/enum; resolve in types/enums",
         "native_type": "GetFunctionResponse"
       },
+      "surface_contract": {
+        "facade": {
+          "disposition": "direct extraction",
+          "extraction": "function",
+          "name": "get_function",
+          "return": "value,nil,response; optional absent -> nil,NOT_FOUND,response; native error -> nil,error"
+        },
+        "implementation_status": "planned M0 contract only; not runtime-qualified",
+        "iterator": "not enabled; source identity/order alone is not runtime qualification",
+        "lowlevel": {
+          "call": "get_function(address)",
+          "name": "get_function",
+          "native_request_keys": [
+            "address"
+          ],
+          "return": "complete detached native response or nil,error"
+        }
+      },
       "tier": "slice"
     },
     {
@@ -3386,6 +3896,7 @@
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": false,
           "lua": "exact UInt64",
           "name": "address",
           "native_type": "std::uint64_t",
@@ -3538,6 +4049,24 @@
         "lua": "GetFunctionSignatureResponse table/enum; resolve in types/enums",
         "native_type": "GetFunctionSignatureResponse"
       },
+      "surface_contract": {
+        "facade": {
+          "disposition": "direct extraction",
+          "extraction": "signature",
+          "name": "get_function_signature",
+          "return": "value,nil,response; optional absent -> nil,NOT_FOUND,response; native error -> nil,error"
+        },
+        "implementation_status": "planned M0 contract only; not runtime-qualified",
+        "iterator": "not enabled; source identity/order alone is not runtime qualification",
+        "lowlevel": {
+          "call": "get_function_signature(address)",
+          "name": "get_function_signature",
+          "native_request_keys": [
+            "address"
+          ],
+          "return": "complete detached native response or nil,error"
+        }
+      },
       "tier": "core"
     },
     {
@@ -3601,6 +4130,7 @@
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": false,
           "lua": "exact UInt64",
           "name": "address",
           "native_type": "std::uint64_t",
@@ -3672,6 +4202,24 @@
         ],
         "lua": "GetInstructionResponse table/enum; resolve in types/enums",
         "native_type": "GetInstructionResponse"
+      },
+      "surface_contract": {
+        "facade": {
+          "disposition": "direct extraction",
+          "extraction": "instruction",
+          "name": "get_instruction",
+          "return": "value,nil,response; optional absent -> nil,NOT_FOUND,response; native error -> nil,error"
+        },
+        "implementation_status": "planned M0 contract only; not runtime-qualified",
+        "iterator": "not enabled; source identity/order alone is not runtime qualification",
+        "lowlevel": {
+          "call": "get_instruction(address)",
+          "name": "get_instruction",
+          "native_request_keys": [
+            "address"
+          ],
+          "return": "complete detached native response or nil,error"
+        }
       },
       "tier": "slice"
     },
@@ -3950,6 +4498,11 @@
         "lua": "GetPcodeResponse table/enum; resolve in types/enums",
         "native_type": "GetPcodeResponse"
       },
+      "surface_contract": {
+        "disposition": "excluded: inherited NOT_SUPPORTED; no Lua adapter promised",
+        "facade": null,
+        "lowlevel": null
+      },
       "tier": "excluded"
     },
     {
@@ -4084,6 +4637,22 @@
         "path": "cpp/src/local_client.cpp"
       },
       "state_transitions": "modification_number exact UInt64 revision_; no reset/refresh implied",
+      "surface_contract": {
+        "facade": {
+          "disposition": "complete response convenience/page",
+          "extraction": null,
+          "name": "get_revision",
+          "return": "complete response/error via convenience or native() as disposed"
+        },
+        "implementation_status": "planned M0 contract only; not runtime-qualified",
+        "iterator": "not enabled; source identity/order alone is not runtime qualification",
+        "lowlevel": {
+          "call": "get_revision()",
+          "name": "get_revision",
+          "native_request_keys": [],
+          "return": "complete detached native response or nil,error"
+        }
+      },
       "tier": "core"
     },
     {
@@ -4211,6 +4780,22 @@
         "lua": "HealthStatus table/enum; resolve in types/enums",
         "native_type": "HealthStatus"
       },
+      "surface_contract": {
+        "facade": {
+          "disposition": "complete response convenience/page",
+          "extraction": null,
+          "name": "get_status",
+          "return": "complete response/error via convenience or native() as disposed"
+        },
+        "implementation_status": "planned M0 contract only; not runtime-qualified",
+        "iterator": "not enabled; source identity/order alone is not runtime qualification",
+        "lowlevel": {
+          "call": "get_status()",
+          "name": "get_status",
+          "native_request_keys": [],
+          "return": "complete detached native response or nil,error"
+        }
+      },
       "tier": "slice"
     },
     {
@@ -4274,6 +4859,7 @@
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": false,
           "lua": "exact UInt64",
           "name": "address",
           "native_type": "std::uint64_t",
@@ -4406,6 +4992,24 @@
         "lua": "GetSymbolResponse table/enum; resolve in types/enums",
         "native_type": "GetSymbolResponse"
       },
+      "surface_contract": {
+        "facade": {
+          "disposition": "direct extraction",
+          "extraction": "symbol",
+          "name": "get_symbol",
+          "return": "value,nil,response; optional absent -> nil,NOT_FOUND,response; native error -> nil,error"
+        },
+        "implementation_status": "planned M0 contract only; not runtime-qualified",
+        "iterator": "not enabled; source identity/order alone is not runtime qualification",
+        "lowlevel": {
+          "call": "get_symbol(address)",
+          "name": "get_symbol",
+          "native_request_keys": [
+            "address"
+          ],
+          "return": "complete detached native response or nil,error"
+        }
+      },
       "tier": "core"
     },
     {
@@ -4470,6 +5074,7 @@
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": false,
           "lua": "Lua string (no transcoding)",
           "name": "path",
           "native_type": "const std::string&",
@@ -4591,6 +5196,24 @@
         ],
         "lua": "GetTypeResponse table/enum; resolve in types/enums",
         "native_type": "GetTypeResponse"
+      },
+      "surface_contract": {
+        "facade": {
+          "disposition": "direct extraction",
+          "extraction": "type",
+          "name": "get_type",
+          "return": "value,nil,response; optional absent -> nil,NOT_FOUND,response; native error -> nil,error"
+        },
+        "implementation_status": "planned M0 contract only; not runtime-qualified",
+        "iterator": "not enabled; source identity/order alone is not runtime qualification",
+        "lowlevel": {
+          "call": "get_type(path)",
+          "name": "get_type",
+          "native_request_keys": [
+            "path"
+          ],
+          "return": "complete detached native response or nil,error"
+        }
       },
       "tier": "core"
     },
@@ -4836,6 +5459,11 @@
         "lua": "ImportProgramResponse table/enum; resolve in types/enums",
         "native_type": "ImportProgramResponse"
       },
+      "surface_contract": {
+        "disposition": "excluded: inherited NOT_SUPPORTED; no Lua adapter promised",
+        "facade": null,
+        "lowlevel": null
+      },
       "tier": "excluded"
     },
     {
@@ -4961,6 +5589,11 @@
         "lua": "ListAnalysisJobsResponse table/enum; resolve in types/enums",
         "native_type": "ListAnalysisJobsResponse"
       },
+      "surface_contract": {
+        "disposition": "excluded: inherited NOT_SUPPORTED; no Lua adapter promised",
+        "facade": null,
+        "lowlevel": null
+      },
       "tier": "excluded"
     },
     {
@@ -5059,6 +5692,7 @@
       "request": [
         {
           "binding_default": "0",
+          "ignored": false,
           "lua": "exact UInt64",
           "name": "range_start",
           "native_type": "std::uint64_t",
@@ -5066,6 +5700,7 @@
         },
         {
           "binding_default": "UINT64_MAX (explicit zero sentinel only where documented)",
+          "ignored": false,
           "lua": "exact UInt64",
           "name": "range_end",
           "native_type": "std::uint64_t",
@@ -5073,6 +5708,7 @@
         },
         {
           "binding_default": "100",
+          "ignored": false,
           "lua": "checked Lua integer (int)",
           "name": "limit",
           "native_type": "int",
@@ -5080,6 +5716,7 @@
         },
         {
           "binding_default": "0",
+          "ignored": false,
           "lua": "checked Lua integer (int)",
           "name": "offset",
           "native_type": "int",
@@ -5153,6 +5790,27 @@
         "native_type": "ListBasicBlocksResponse"
       },
       "semantic_review": "aggregate cursor/filter/ordering branches reviewed; remaining conversion/field and runtime gates open",
+      "surface_contract": {
+        "facade": {
+          "disposition": "complete response convenience/page",
+          "extraction": null,
+          "name": "list_basic_blocks",
+          "return": "complete response/error via convenience or native() as disposed"
+        },
+        "implementation_status": "planned M0 contract only; not runtime-qualified",
+        "iterator": "not enabled; source identity/order alone is not runtime qualification",
+        "lowlevel": {
+          "call": "list_basic_blocks(options={})",
+          "name": "list_basic_blocks",
+          "native_request_keys": [
+            "range_start",
+            "range_end",
+            "limit",
+            "offset"
+          ],
+          "return": "complete detached native response or nil,error"
+        }
+      },
       "tier": "core"
     },
     {
@@ -5300,6 +5958,11 @@
         ],
         "lua": "ListBookmarksResponse table/enum; resolve in types/enums",
         "native_type": "ListBookmarksResponse"
+      },
+      "surface_contract": {
+        "disposition": "excluded: inherited NOT_SUPPORTED; no Lua adapter promised",
+        "facade": null,
+        "lowlevel": null
       },
       "tier": "excluded"
     },
@@ -5469,6 +6132,11 @@
         "lua": "ListBreakpointsResponse table/enum; resolve in types/enums",
         "native_type": "ListBreakpointsResponse"
       },
+      "surface_contract": {
+        "disposition": "excluded: inherited NOT_SUPPORTED; no Lua adapter promised",
+        "facade": null,
+        "lowlevel": null
+      },
       "tier": "excluded"
     },
     {
@@ -5569,6 +6237,7 @@
       "request": [
         {
           "binding_default": "0",
+          "ignored": false,
           "lua": "exact UInt64",
           "name": "range_start",
           "native_type": "std::uint64_t",
@@ -5576,6 +6245,7 @@
         },
         {
           "binding_default": "UINT64_MAX (explicit zero sentinel only where documented)",
+          "ignored": false,
           "lua": "exact UInt64",
           "name": "range_end",
           "native_type": "std::uint64_t",
@@ -5583,6 +6253,7 @@
         },
         {
           "binding_default": "100",
+          "ignored": false,
           "lua": "checked Lua integer (int)",
           "name": "limit",
           "native_type": "int",
@@ -5590,6 +6261,7 @@
         },
         {
           "binding_default": "0",
+          "ignored": false,
           "lua": "checked Lua integer (int)",
           "name": "offset",
           "native_type": "int",
@@ -5653,6 +6325,27 @@
         "native_type": "ListCFGEdgesResponse"
       },
       "semantic_review": "aggregate cursor/filter/ordering branches reviewed; remaining conversion/field and runtime gates open",
+      "surface_contract": {
+        "facade": {
+          "disposition": "complete response convenience/page",
+          "extraction": null,
+          "name": "list_cfg_edges",
+          "return": "complete response/error via convenience or native() as disposed"
+        },
+        "implementation_status": "planned M0 contract only; not runtime-qualified",
+        "iterator": "not enabled; source identity/order alone is not runtime qualification",
+        "lowlevel": {
+          "call": "list_cfg_edges(options={})",
+          "name": "list_cfg_edges",
+          "native_request_keys": [
+            "range_start",
+            "range_end",
+            "limit",
+            "offset"
+          ],
+          "return": "complete detached native response or nil,error"
+        }
+      },
       "tier": "core"
     },
     {
@@ -5727,6 +6420,7 @@
       "request": [
         {
           "binding_default": "0",
+          "ignored": false,
           "lua": "exact UInt64",
           "name": "range_start",
           "native_type": "std::uint64_t",
@@ -5734,6 +6428,7 @@
         },
         {
           "binding_default": "UINT64_MAX (explicit zero sentinel only where documented)",
+          "ignored": false,
           "lua": "exact UInt64",
           "name": "range_end",
           "native_type": "std::uint64_t",
@@ -5741,6 +6436,7 @@
         },
         {
           "binding_default": "100",
+          "ignored": false,
           "lua": "checked Lua integer (int)",
           "name": "limit",
           "native_type": "int",
@@ -5748,6 +6444,7 @@
         },
         {
           "binding_default": "0",
+          "ignored": false,
           "lua": "checked Lua integer (int)",
           "name": "offset",
           "native_type": "int",
@@ -5831,6 +6528,27 @@
         "native_type": "ListDataItemsResponse"
       },
       "semantic_review": "page adapter and LocalClient dispatch reviewed; runtime unqualified; remaining field/facade obligations still open",
+      "surface_contract": {
+        "facade": {
+          "disposition": "native escape hatch",
+          "extraction": null,
+          "name": null,
+          "return": "complete response/error via convenience or native() as disposed"
+        },
+        "implementation_status": "planned M0 contract only; not runtime-qualified",
+        "iterator": "not enabled; source identity/order alone is not runtime qualification",
+        "lowlevel": {
+          "call": "list_data_items(options={})",
+          "name": "list_data_items",
+          "native_request_keys": [
+            "range_start",
+            "range_end",
+            "limit",
+            "offset"
+          ],
+          "return": "complete detached native response or nil,error"
+        }
+      },
       "tier": "full"
     },
     {
@@ -5928,6 +6646,7 @@
       "request": [
         {
           "binding_default": "0",
+          "ignored": false,
           "lua": "exact UInt64",
           "name": "range_start",
           "native_type": "std::uint64_t",
@@ -5935,6 +6654,7 @@
         },
         {
           "binding_default": "UINT64_MAX (explicit zero sentinel only where documented)",
+          "ignored": false,
           "lua": "exact UInt64",
           "name": "range_end",
           "native_type": "std::uint64_t",
@@ -5942,6 +6662,7 @@
         },
         {
           "binding_default": "100",
+          "ignored": false,
           "lua": "checked Lua integer (int)",
           "name": "limit",
           "native_type": "int",
@@ -5949,6 +6670,7 @@
         },
         {
           "binding_default": "0",
+          "ignored": false,
           "lua": "checked Lua integer (int)",
           "name": "offset",
           "native_type": "int",
@@ -5956,6 +6678,7 @@
         },
         {
           "binding_default": "30000 (ignored)",
+          "ignored": true,
           "lua": "checked Lua integer (int)",
           "name": "timeout_ms",
           "native_type": "int",
@@ -6199,6 +6922,29 @@
         "native_type": "ListDecompilationsResponse"
       },
       "semantic_review": "aggregate cursor/filter/ordering branches reviewed; remaining conversion/field and runtime gates open",
+      "surface_contract": {
+        "facade": {
+          "disposition": "native escape hatch",
+          "extraction": null,
+          "name": null,
+          "return": "complete response/error via convenience or native() as disposed",
+          "timeout_policy": "reject explicit timeout key; native default ignored; no deadline promise"
+        },
+        "implementation_status": "planned M0 contract only; not runtime-qualified",
+        "iterator": "not enabled; source identity/order alone is not runtime qualification",
+        "lowlevel": {
+          "call": "list_decompilations(options={})",
+          "name": "list_decompilations",
+          "native_request_keys": [
+            "range_start",
+            "range_end",
+            "limit",
+            "offset",
+            "timeout_ms"
+          ],
+          "return": "complete detached native response or nil,error"
+        }
+      },
       "tier": "full"
     },
     {
@@ -6280,6 +7026,7 @@
       "request": [
         {
           "binding_default": "0",
+          "ignored": false,
           "lua": "exact UInt64",
           "name": "range_start",
           "native_type": "std::uint64_t",
@@ -6287,6 +7034,7 @@
         },
         {
           "binding_default": "UINT64_MAX (explicit zero sentinel only where documented)",
+          "ignored": false,
           "lua": "exact UInt64",
           "name": "range_end",
           "native_type": "std::uint64_t",
@@ -6294,6 +7042,7 @@
         },
         {
           "binding_default": "100",
+          "ignored": false,
           "lua": "checked Lua integer (int)",
           "name": "limit",
           "native_type": "int",
@@ -6301,6 +7050,7 @@
         },
         {
           "binding_default": "0",
+          "ignored": false,
           "lua": "checked Lua integer (int)",
           "name": "offset",
           "native_type": "int",
@@ -6372,6 +7122,27 @@
         ],
         "lua": "ListDefinedStringsResponse table/enum; resolve in types/enums",
         "native_type": "ListDefinedStringsResponse"
+      },
+      "surface_contract": {
+        "facade": {
+          "disposition": "native escape hatch compatibility page; no discovery iterator",
+          "extraction": null,
+          "name": null,
+          "return": "complete response/error via convenience or native() as disposed"
+        },
+        "implementation_status": "planned M0 contract only; not runtime-qualified",
+        "iterator": "not enabled; source identity/order alone is not runtime qualification",
+        "lowlevel": {
+          "call": "list_defined_strings(options={})",
+          "name": "list_defined_strings",
+          "native_request_keys": [
+            "range_start",
+            "range_end",
+            "limit",
+            "offset"
+          ],
+          "return": "complete detached native response or nil,error"
+        }
       },
       "tier": "core compatibility"
     },
@@ -6516,6 +7287,11 @@
         ],
         "lua": "ListDominatorsResponse table/enum; resolve in types/enums",
         "native_type": "ListDominatorsResponse"
+      },
+      "surface_contract": {
+        "disposition": "excluded: inherited NOT_SUPPORTED; no Lua adapter promised",
+        "facade": null,
+        "lowlevel": null
       },
       "tier": "excluded"
     },
@@ -6781,6 +7557,11 @@
         "lua": "ListFunctionFramesResponse table/enum; resolve in types/enums",
         "native_type": "ListFunctionFramesResponse"
       },
+      "surface_contract": {
+        "disposition": "excluded: inherited NOT_SUPPORTED; no Lua adapter promised",
+        "facade": null,
+        "lowlevel": null
+      },
       "tier": "excluded"
     },
     {
@@ -6852,6 +7633,7 @@
       "request": [
         {
           "binding_default": "0",
+          "ignored": false,
           "lua": "exact UInt64",
           "name": "range_start",
           "native_type": "std::uint64_t",
@@ -6859,6 +7641,7 @@
         },
         {
           "binding_default": "UINT64_MAX (explicit zero sentinel only where documented)",
+          "ignored": false,
           "lua": "exact UInt64",
           "name": "range_end",
           "native_type": "std::uint64_t",
@@ -6866,6 +7649,7 @@
         },
         {
           "binding_default": "100",
+          "ignored": false,
           "lua": "checked Lua integer (int)",
           "name": "limit",
           "native_type": "int",
@@ -6873,6 +7657,7 @@
         },
         {
           "binding_default": "0",
+          "ignored": false,
           "lua": "checked Lua integer (int)",
           "name": "offset",
           "native_type": "int",
@@ -7026,6 +7811,27 @@
         "native_type": "ListFunctionSignaturesResponse"
       },
       "semantic_review": "aggregate cursor/filter/ordering branches reviewed; remaining conversion/field and runtime gates open",
+      "surface_contract": {
+        "facade": {
+          "disposition": "complete response page; no iterator",
+          "extraction": null,
+          "name": "list_function_signatures",
+          "return": "complete response/error via convenience or native() as disposed"
+        },
+        "implementation_status": "planned M0 contract only; not runtime-qualified",
+        "iterator": "not enabled; source identity/order alone is not runtime qualification",
+        "lowlevel": {
+          "call": "list_function_signatures(options={})",
+          "name": "list_function_signatures",
+          "native_request_keys": [
+            "range_start",
+            "range_end",
+            "limit",
+            "offset"
+          ],
+          "return": "complete detached native response or nil,error"
+        }
+      },
       "tier": "core"
     },
     {
@@ -7109,6 +7915,11 @@
         "lua": "ListFunctionTagMappingsResponse table/enum; resolve in types/enums",
         "native_type": "ListFunctionTagMappingsResponse"
       },
+      "surface_contract": {
+        "disposition": "excluded: inherited NOT_SUPPORTED; no Lua adapter promised",
+        "facade": null,
+        "lowlevel": null
+      },
       "tier": "excluded"
     },
     {
@@ -7183,6 +7994,11 @@
         ],
         "lua": "ListFunctionTagsResponse table/enum; resolve in types/enums",
         "native_type": "ListFunctionTagsResponse"
+      },
+      "surface_contract": {
+        "disposition": "excluded: inherited NOT_SUPPORTED; no Lua adapter promised",
+        "facade": null,
+        "lowlevel": null
       },
       "tier": "excluded"
     },
@@ -7280,6 +8096,7 @@
       "request": [
         {
           "binding_default": "0",
+          "ignored": false,
           "lua": "exact UInt64",
           "name": "range_start",
           "native_type": "std::uint64_t",
@@ -7287,6 +8104,7 @@
         },
         {
           "binding_default": "UINT64_MAX (explicit zero sentinel only where documented)",
+          "ignored": false,
           "lua": "exact UInt64",
           "name": "range_end",
           "native_type": "std::uint64_t",
@@ -7294,6 +8112,7 @@
         },
         {
           "binding_default": "100",
+          "ignored": false,
           "lua": "checked Lua integer (int)",
           "name": "limit",
           "native_type": "int",
@@ -7301,6 +8120,7 @@
         },
         {
           "binding_default": "0",
+          "ignored": false,
           "lua": "checked Lua integer (int)",
           "name": "offset",
           "native_type": "int",
@@ -7414,6 +8234,27 @@
         "native_type": "ListFunctionsResponse"
       },
       "semantic_review": "page adapter and LocalClient dispatch reviewed; runtime unqualified; remaining field/facade obligations still open",
+      "surface_contract": {
+        "facade": {
+          "disposition": "complete response convenience/page",
+          "extraction": null,
+          "name": "list_functions",
+          "return": "complete response/error via convenience or native() as disposed"
+        },
+        "implementation_status": "planned M0 contract only; not runtime-qualified",
+        "iterator": "not enabled; source identity/order alone is not runtime qualification",
+        "lowlevel": {
+          "call": "list_functions(options={})",
+          "name": "list_functions",
+          "native_request_keys": [
+            "range_start",
+            "range_end",
+            "limit",
+            "offset"
+          ],
+          "return": "complete detached native response or nil,error"
+        }
+      },
       "tier": "slice"
     },
     {
@@ -7558,6 +8399,11 @@
         "lua": "ListInstructionOperandsResponse table/enum; resolve in types/enums",
         "native_type": "ListInstructionOperandsResponse"
       },
+      "surface_contract": {
+        "disposition": "excluded: inherited NOT_SUPPORTED; no Lua adapter promised",
+        "facade": null,
+        "lowlevel": null
+      },
       "tier": "excluded"
     },
     {
@@ -7656,6 +8502,7 @@
       "request": [
         {
           "binding_default": "0",
+          "ignored": false,
           "lua": "exact UInt64",
           "name": "range_start",
           "native_type": "std::uint64_t",
@@ -7663,6 +8510,7 @@
         },
         {
           "binding_default": "UINT64_MAX (explicit zero sentinel only where documented)",
+          "ignored": false,
           "lua": "exact UInt64",
           "name": "range_end",
           "native_type": "std::uint64_t",
@@ -7670,6 +8518,7 @@
         },
         {
           "binding_default": "100",
+          "ignored": false,
           "lua": "checked Lua integer (int)",
           "name": "limit",
           "native_type": "int",
@@ -7677,6 +8526,7 @@
         },
         {
           "binding_default": "0",
+          "ignored": false,
           "lua": "checked Lua integer (int)",
           "name": "offset",
           "native_type": "int",
@@ -7750,6 +8600,27 @@
         "native_type": "ListInstructionsResponse"
       },
       "semantic_review": "page adapter and LocalClient dispatch reviewed; runtime unqualified; remaining field/facade obligations still open",
+      "surface_contract": {
+        "facade": {
+          "disposition": "complete response convenience/page",
+          "extraction": null,
+          "name": "list_instructions",
+          "return": "complete response/error via convenience or native() as disposed"
+        },
+        "implementation_status": "planned M0 contract only; not runtime-qualified",
+        "iterator": "not enabled; source identity/order alone is not runtime qualification",
+        "lowlevel": {
+          "call": "list_instructions(options={})",
+          "name": "list_instructions",
+          "native_request_keys": [
+            "range_start",
+            "range_end",
+            "limit",
+            "offset"
+          ],
+          "return": "complete detached native response or nil,error"
+        }
+      },
       "tier": "slice"
     },
     {
@@ -7848,6 +8719,7 @@
       "request": [
         {
           "binding_default": "0",
+          "ignored": false,
           "lua": "exact UInt64",
           "name": "range_start",
           "native_type": "std::uint64_t",
@@ -7855,6 +8727,7 @@
         },
         {
           "binding_default": "UINT64_MAX (explicit zero sentinel only where documented)",
+          "ignored": false,
           "lua": "exact UInt64",
           "name": "range_end",
           "native_type": "std::uint64_t",
@@ -7862,6 +8735,7 @@
         },
         {
           "binding_default": "100",
+          "ignored": false,
           "lua": "checked Lua integer (int)",
           "name": "limit",
           "native_type": "int",
@@ -7869,6 +8743,7 @@
         },
         {
           "binding_default": "0",
+          "ignored": false,
           "lua": "checked Lua integer (int)",
           "name": "offset",
           "native_type": "int",
@@ -7982,6 +8857,27 @@
         "native_type": "ListFunctionsResponse"
       },
       "semantic_review": "aggregate cursor/filter/ordering branches reviewed; remaining conversion/field and runtime gates open",
+      "surface_contract": {
+        "facade": {
+          "disposition": "native escape hatch",
+          "extraction": null,
+          "name": null,
+          "return": "complete response/error via convenience or native() as disposed"
+        },
+        "implementation_status": "planned M0 contract only; not runtime-qualified",
+        "iterator": "not enabled; source identity/order alone is not runtime qualification",
+        "lowlevel": {
+          "call": "list_leaf_functions(options={})",
+          "name": "list_leaf_functions",
+          "native_request_keys": [
+            "range_start",
+            "range_end",
+            "limit",
+            "offset"
+          ],
+          "return": "complete detached native response or nil,error"
+        }
+      },
       "tier": "full"
     },
     {
@@ -8136,6 +9032,11 @@
         "lua": "ListLoopsResponse table/enum; resolve in types/enums",
         "native_type": "ListLoopsResponse"
       },
+      "surface_contract": {
+        "disposition": "excluded: inherited NOT_SUPPORTED; no Lua adapter promised",
+        "facade": null,
+        "lowlevel": null
+      },
       "tier": "excluded"
     },
     {
@@ -8231,6 +9132,7 @@
       "request": [
         {
           "binding_default": "100",
+          "ignored": false,
           "lua": "checked Lua integer (int)",
           "name": "limit",
           "native_type": "int",
@@ -8238,6 +9140,7 @@
         },
         {
           "binding_default": "0",
+          "ignored": false,
           "lua": "checked Lua integer (int)",
           "name": "offset",
           "native_type": "int",
@@ -8371,6 +9274,25 @@
         "native_type": "ListMemoryBlocksResponse"
       },
       "semantic_review": "page adapter and LocalClient dispatch reviewed; runtime unqualified; remaining field/facade obligations still open",
+      "surface_contract": {
+        "facade": {
+          "disposition": "complete response convenience/page",
+          "extraction": null,
+          "name": "list_memory_blocks",
+          "return": "complete response/error via convenience or native() as disposed"
+        },
+        "implementation_status": "planned M0 contract only; not runtime-qualified",
+        "iterator": "not enabled; source identity/order alone is not runtime qualification",
+        "lowlevel": {
+          "call": "list_memory_blocks(options={})",
+          "name": "list_memory_blocks",
+          "native_request_keys": [
+            "limit",
+            "offset"
+          ],
+          "return": "complete detached native response or nil,error"
+        }
+      },
       "tier": "core"
     },
     {
@@ -8549,6 +9471,22 @@
         "path": "cpp/src/local_client.cpp"
       },
       "state_transitions": "complete vector in insertion/upsert order; no pagination/filter/cursor; identity bench_id; order not lexical",
+      "surface_contract": {
+        "facade": {
+          "disposition": "native escape hatch",
+          "extraction": null,
+          "name": null,
+          "return": "complete response/error via convenience or native() as disposed"
+        },
+        "implementation_status": "planned M0 contract only; not runtime-qualified",
+        "iterator": "not enabled; source identity/order alone is not runtime qualification",
+        "lowlevel": {
+          "call": "list_perf_benchmarks()",
+          "name": "list_perf_benchmarks",
+          "native_request_keys": [],
+          "return": "complete detached native response or nil,error"
+        }
+      },
       "tier": "full"
     },
     {
@@ -8692,6 +9630,11 @@
         ],
         "lua": "ListPostDominatorsResponse table/enum; resolve in types/enums",
         "native_type": "ListPostDominatorsResponse"
+      },
+      "surface_contract": {
+        "disposition": "excluded: inherited NOT_SUPPORTED; no Lua adapter promised",
+        "facade": null,
+        "lowlevel": null
       },
       "tier": "excluded"
     },
@@ -8842,6 +9785,11 @@
         ],
         "lua": "ListProgramOptionsResponse table/enum; resolve in types/enums",
         "native_type": "ListProgramOptionsResponse"
+      },
+      "surface_contract": {
+        "disposition": "excluded: inherited NOT_SUPPORTED; no Lua adapter promised",
+        "facade": null,
+        "lowlevel": null
       },
       "tier": "excluded"
     },
@@ -8996,6 +9944,11 @@
         ],
         "lua": "ListProjectFilesResponse table/enum; resolve in types/enums",
         "native_type": "ListProjectFilesResponse"
+      },
+      "surface_contract": {
+        "disposition": "excluded: inherited NOT_SUPPORTED; no Lua adapter promised",
+        "facade": null,
+        "lowlevel": null
       },
       "tier": "excluded"
     },
@@ -9161,6 +10114,11 @@
         "lua": "ListSwitchTablesResponse table/enum; resolve in types/enums",
         "native_type": "ListSwitchTablesResponse"
       },
+      "surface_contract": {
+        "disposition": "excluded: inherited NOT_SUPPORTED; no Lua adapter promised",
+        "facade": null,
+        "lowlevel": null
+      },
       "tier": "excluded"
     },
     {
@@ -9258,6 +10216,7 @@
       "request": [
         {
           "binding_default": "0",
+          "ignored": false,
           "lua": "exact UInt64",
           "name": "range_start",
           "native_type": "std::uint64_t",
@@ -9265,6 +10224,7 @@
         },
         {
           "binding_default": "UINT64_MAX (explicit zero sentinel only where documented)",
+          "ignored": false,
           "lua": "exact UInt64",
           "name": "range_end",
           "native_type": "std::uint64_t",
@@ -9272,6 +10232,7 @@
         },
         {
           "binding_default": "100",
+          "ignored": false,
           "lua": "checked Lua integer (int)",
           "name": "limit",
           "native_type": "int",
@@ -9279,6 +10240,7 @@
         },
         {
           "binding_default": "0",
+          "ignored": false,
           "lua": "checked Lua integer (int)",
           "name": "offset",
           "native_type": "int",
@@ -9412,6 +10374,27 @@
         "native_type": "ListSymbolsResponse"
       },
       "semantic_review": "page adapter and LocalClient dispatch reviewed; runtime unqualified; remaining field/facade obligations still open",
+      "surface_contract": {
+        "facade": {
+          "disposition": "complete response convenience/page",
+          "extraction": null,
+          "name": "list_symbols",
+          "return": "complete response/error via convenience or native() as disposed"
+        },
+        "implementation_status": "planned M0 contract only; not runtime-qualified",
+        "iterator": "not enabled; source identity/order alone is not runtime qualification",
+        "lowlevel": {
+          "call": "list_symbols(options={})",
+          "name": "list_symbols",
+          "native_request_keys": [
+            "range_start",
+            "range_end",
+            "limit",
+            "offset"
+          ],
+          "return": "complete detached native response or nil,error"
+        }
+      },
       "tier": "core"
     },
     {
@@ -9507,6 +10490,11 @@
         "lua": "ListTransactionsResponse table/enum; resolve in types/enums",
         "native_type": "ListTransactionsResponse"
       },
+      "surface_contract": {
+        "disposition": "excluded: inherited NOT_SUPPORTED; no Lua adapter promised",
+        "facade": null,
+        "lowlevel": null
+      },
       "tier": "excluded"
     },
     {
@@ -9581,6 +10569,7 @@
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": false,
           "lua": "Lua string (no transcoding)",
           "name": "query",
           "native_type": "const std::string&",
@@ -9588,6 +10577,7 @@
         },
         {
           "binding_default": "100",
+          "ignored": false,
           "lua": "checked Lua integer (int)",
           "name": "limit",
           "native_type": "int",
@@ -9595,6 +10585,7 @@
         },
         {
           "binding_default": "0",
+          "ignored": false,
           "lua": "checked Lua integer (int)",
           "name": "offset",
           "native_type": "int",
@@ -9668,6 +10659,26 @@
         "native_type": "ListTypeAliasesResponse"
       },
       "semantic_review": "page adapter and LocalClient dispatch reviewed; runtime unqualified; remaining field/facade obligations still open",
+      "surface_contract": {
+        "facade": {
+          "disposition": "complete response convenience/page",
+          "extraction": null,
+          "name": "list_type_aliases",
+          "return": "complete response/error via convenience or native() as disposed"
+        },
+        "implementation_status": "planned M0 contract only; not runtime-qualified",
+        "iterator": "not enabled; source identity/order alone is not runtime qualification",
+        "lowlevel": {
+          "call": "list_type_aliases(options={})",
+          "name": "list_type_aliases",
+          "native_request_keys": [
+            "query",
+            "limit",
+            "offset"
+          ],
+          "return": "complete detached native response or nil,error"
+        }
+      },
       "tier": "core"
     },
     {
@@ -9744,6 +10755,7 @@
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": false,
           "lua": "Lua string (no transcoding)",
           "name": "type_id_or_path",
           "native_type": "const std::string&",
@@ -9751,6 +10763,7 @@
         },
         {
           "binding_default": "100",
+          "ignored": false,
           "lua": "checked Lua integer (int)",
           "name": "limit",
           "native_type": "int",
@@ -9758,6 +10771,7 @@
         },
         {
           "binding_default": "0",
+          "ignored": false,
           "lua": "checked Lua integer (int)",
           "name": "offset",
           "native_type": "int",
@@ -9851,6 +10865,26 @@
         "native_type": "ListTypeEnumMembersResponse"
       },
       "semantic_review": "page adapter and LocalClient dispatch reviewed; runtime unqualified; remaining field/facade obligations still open",
+      "surface_contract": {
+        "facade": {
+          "disposition": "complete response convenience/page",
+          "extraction": null,
+          "name": "list_type_enum_members",
+          "return": "complete response/error via convenience or native() as disposed"
+        },
+        "implementation_status": "planned M0 contract only; not runtime-qualified",
+        "iterator": "not enabled; source identity/order alone is not runtime qualification",
+        "lowlevel": {
+          "call": "list_type_enum_members(options={})",
+          "name": "list_type_enum_members",
+          "native_request_keys": [
+            "type_id_or_path",
+            "limit",
+            "offset"
+          ],
+          "return": "complete detached native response or nil,error"
+        }
+      },
       "tier": "core"
     },
     {
@@ -9925,6 +10959,7 @@
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": false,
           "lua": "Lua string (no transcoding)",
           "name": "query",
           "native_type": "const std::string&",
@@ -9932,6 +10967,7 @@
         },
         {
           "binding_default": "100",
+          "ignored": false,
           "lua": "checked Lua integer (int)",
           "name": "limit",
           "native_type": "int",
@@ -9939,6 +10975,7 @@
         },
         {
           "binding_default": "0",
+          "ignored": false,
           "lua": "checked Lua integer (int)",
           "name": "offset",
           "native_type": "int",
@@ -10022,6 +11059,26 @@
         "native_type": "ListTypeEnumsResponse"
       },
       "semantic_review": "page adapter and LocalClient dispatch reviewed; runtime unqualified; remaining field/facade obligations still open",
+      "surface_contract": {
+        "facade": {
+          "disposition": "complete response convenience/page",
+          "extraction": null,
+          "name": "list_type_enums",
+          "return": "complete response/error via convenience or native() as disposed"
+        },
+        "implementation_status": "planned M0 contract only; not runtime-qualified",
+        "iterator": "not enabled; source identity/order alone is not runtime qualification",
+        "lowlevel": {
+          "call": "list_type_enums(options={})",
+          "name": "list_type_enums",
+          "native_request_keys": [
+            "query",
+            "limit",
+            "offset"
+          ],
+          "return": "complete detached native response or nil,error"
+        }
+      },
       "tier": "core"
     },
     {
@@ -10118,6 +11175,7 @@
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": false,
           "lua": "Lua string (no transcoding)",
           "name": "type_id_or_path",
           "native_type": "const std::string&",
@@ -10125,6 +11183,7 @@
         },
         {
           "binding_default": "100",
+          "ignored": false,
           "lua": "checked Lua integer (int)",
           "name": "limit",
           "native_type": "int",
@@ -10132,6 +11191,7 @@
         },
         {
           "binding_default": "0",
+          "ignored": false,
           "lua": "checked Lua integer (int)",
           "name": "offset",
           "native_type": "int",
@@ -10245,6 +11305,26 @@
         "native_type": "ListTypeMembersResponse"
       },
       "semantic_review": "page adapter and LocalClient dispatch reviewed; runtime unqualified; remaining field/facade obligations still open",
+      "surface_contract": {
+        "facade": {
+          "disposition": "complete response convenience/page",
+          "extraction": null,
+          "name": "list_type_members",
+          "return": "complete response/error via convenience or native() as disposed"
+        },
+        "implementation_status": "planned M0 contract only; not runtime-qualified",
+        "iterator": "not enabled; source identity/order alone is not runtime qualification",
+        "lowlevel": {
+          "call": "list_type_members(options={})",
+          "name": "list_type_members",
+          "native_request_keys": [
+            "type_id_or_path",
+            "limit",
+            "offset"
+          ],
+          "return": "complete detached native response or nil,error"
+        }
+      },
       "tier": "core"
     },
     {
@@ -10319,6 +11399,7 @@
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": false,
           "lua": "Lua string (no transcoding)",
           "name": "query",
           "native_type": "const std::string&",
@@ -10326,6 +11407,7 @@
         },
         {
           "binding_default": "100",
+          "ignored": false,
           "lua": "checked Lua integer (int)",
           "name": "limit",
           "native_type": "int",
@@ -10333,6 +11415,7 @@
         },
         {
           "binding_default": "0",
+          "ignored": false,
           "lua": "checked Lua integer (int)",
           "name": "offset",
           "native_type": "int",
@@ -10406,6 +11489,26 @@
         "native_type": "ListTypeUnionsResponse"
       },
       "semantic_review": "page adapter and LocalClient dispatch reviewed; runtime unqualified; remaining field/facade obligations still open",
+      "surface_contract": {
+        "facade": {
+          "disposition": "complete response convenience/page",
+          "extraction": null,
+          "name": "list_type_unions",
+          "return": "complete response/error via convenience or native() as disposed"
+        },
+        "implementation_status": "planned M0 contract only; not runtime-qualified",
+        "iterator": "not enabled; source identity/order alone is not runtime qualification",
+        "lowlevel": {
+          "call": "list_type_unions(options={})",
+          "name": "list_type_unions",
+          "native_request_keys": [
+            "query",
+            "limit",
+            "offset"
+          ],
+          "return": "complete detached native response or nil,error"
+        }
+      },
       "tier": "core"
     },
     {
@@ -10501,6 +11604,7 @@
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": false,
           "lua": "Lua string (no transcoding)",
           "name": "query",
           "native_type": "const std::string&",
@@ -10508,6 +11612,7 @@
         },
         {
           "binding_default": "100",
+          "ignored": false,
           "lua": "checked Lua integer (int)",
           "name": "limit",
           "native_type": "int",
@@ -10515,6 +11620,7 @@
         },
         {
           "binding_default": "0",
+          "ignored": false,
           "lua": "checked Lua integer (int)",
           "name": "offset",
           "native_type": "int",
@@ -10638,6 +11744,26 @@
         "native_type": "ListTypesResponse"
       },
       "semantic_review": "page adapter and LocalClient dispatch reviewed; runtime unqualified; remaining field/facade obligations still open",
+      "surface_contract": {
+        "facade": {
+          "disposition": "complete response convenience/page",
+          "extraction": null,
+          "name": "list_types",
+          "return": "complete response/error via convenience or native() as disposed"
+        },
+        "implementation_status": "planned M0 contract only; not runtime-qualified",
+        "iterator": "not enabled; source identity/order alone is not runtime qualification",
+        "lowlevel": {
+          "call": "list_types(options={})",
+          "name": "list_types",
+          "native_request_keys": [
+            "query",
+            "limit",
+            "offset"
+          ],
+          "return": "complete detached native response or nil,error"
+        }
+      },
       "tier": "core"
     },
     {
@@ -10736,6 +11862,7 @@
       "request": [
         {
           "binding_default": "0",
+          "ignored": false,
           "lua": "exact UInt64",
           "name": "range_start",
           "native_type": "std::uint64_t",
@@ -10743,6 +11870,7 @@
         },
         {
           "binding_default": "UINT64_MAX (explicit zero sentinel only where documented)",
+          "ignored": false,
           "lua": "exact UInt64",
           "name": "range_end",
           "native_type": "std::uint64_t",
@@ -10750,6 +11878,7 @@
         },
         {
           "binding_default": "100",
+          "ignored": false,
           "lua": "checked Lua integer (int)",
           "name": "limit",
           "native_type": "int",
@@ -10757,6 +11886,7 @@
         },
         {
           "binding_default": "0",
+          "ignored": false,
           "lua": "checked Lua integer (int)",
           "name": "offset",
           "native_type": "int",
@@ -10920,6 +12050,27 @@
         "native_type": "ListXrefsResponse"
       },
       "semantic_review": "aggregate cursor/filter/ordering branches reviewed; remaining conversion/field and runtime gates open",
+      "surface_contract": {
+        "facade": {
+          "disposition": "complete response convenience/page",
+          "extraction": null,
+          "name": "list_xrefs",
+          "return": "complete response/error via convenience or native() as disposed"
+        },
+        "implementation_status": "planned M0 contract only; not runtime-qualified",
+        "iterator": "not enabled; source identity/order alone is not runtime qualification",
+        "lowlevel": {
+          "call": "list_xrefs(options={})",
+          "name": "list_xrefs",
+          "native_request_keys": [
+            "range_start",
+            "range_end",
+            "limit",
+            "offset"
+          ],
+          "return": "complete detached native response or nil,error"
+        }
+      },
       "tier": "core"
     },
     {
@@ -11110,6 +12261,11 @@
         "lua": "MoveMemoryBlockResponse table/enum; resolve in types/enums",
         "native_type": "MoveMemoryBlockResponse"
       },
+      "surface_contract": {
+        "disposition": "excluded: inherited NOT_SUPPORTED; no Lua adapter promised",
+        "facade": null,
+        "lowlevel": null
+      },
       "tier": "excluded"
     },
     {
@@ -11189,11 +12345,13 @@
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": false,
           "lua": "OpenProgramRequest table/enum; resolve in types/enums",
           "name": "request",
           "native_type": "const OpenProgramRequest&",
           "nested_fields": [
             {
+              "ignored": false,
               "lua": "Lua string (no transcoding)",
               "model": "OpenProgramRequest",
               "name": "project_path",
@@ -11204,6 +12362,7 @@
               "semantics": "native field preserved; no truthiness substitution"
             },
             {
+              "ignored": true,
               "lua": "Lua string (no transcoding)",
               "model": "OpenProgramRequest",
               "name": "project_name",
@@ -11214,6 +12373,7 @@
               "semantics": "native field preserved; no truthiness substitution"
             },
             {
+              "ignored": false,
               "lua": "Lua string (no transcoding)",
               "model": "OpenProgramRequest",
               "name": "program_path",
@@ -11224,6 +12384,7 @@
               "semantics": "native field preserved; no truthiness substitution"
             },
             {
+              "ignored": true,
               "lua": "boolean (preserve false)",
               "model": "OpenProgramRequest",
               "name": "read_only",
@@ -11234,6 +12395,7 @@
               "semantics": "native field preserved; no truthiness substitution"
             },
             {
+              "ignored": false,
               "lua": "Lua string (no transcoding)",
               "model": "OpenProgramRequest",
               "name": "language_id",
@@ -11244,6 +12406,7 @@
               "semantics": "native field preserved; no truthiness substitution"
             },
             {
+              "ignored": false,
               "lua": "Lua string (no transcoding)",
               "model": "OpenProgramRequest",
               "name": "compiler_spec_id",
@@ -11254,6 +12417,7 @@
               "semantics": "native field preserved; no truthiness substitution"
             },
             {
+              "ignored": false,
               "lua": "Lua string (no transcoding)",
               "model": "OpenProgramRequest",
               "name": "format",
@@ -11264,6 +12428,7 @@
               "semantics": "native field preserved; no truthiness substitution"
             },
             {
+              "ignored": false,
               "lua": "exact UInt64",
               "model": "OpenProgramRequest",
               "name": "base_address",
@@ -11371,6 +12536,28 @@
         ],
         "lua": "OpenProgramResponse table/enum; resolve in types/enums",
         "native_type": "OpenProgramResponse"
+      },
+      "surface_contract": {
+        "facade": {
+          "disposition": "module open{client={}, program=...}; returns session,nil,historical_open_response",
+          "extraction": null,
+          "name": "open_program",
+          "rejected_keys": [
+            "project_name",
+            "read_only"
+          ],
+          "return": "complete response/error via convenience or native() as disposed"
+        },
+        "implementation_status": "planned M0 contract only; not runtime-qualified",
+        "iterator": "not enabled; source identity/order alone is not runtime qualification",
+        "lowlevel": {
+          "call": "open_program(program_options)",
+          "name": "open_program",
+          "native_request_keys": [
+            "request"
+          ],
+          "return": "complete detached native response or nil,error"
+        }
       },
       "tier": "slice"
     },
@@ -11496,6 +12683,11 @@
         "lua": "OpenProjectResponse table/enum; resolve in types/enums",
         "native_type": "OpenProjectResponse"
       },
+      "surface_contract": {
+        "disposition": "excluded: inherited NOT_SUPPORTED; no Lua adapter promised",
+        "facade": null,
+        "lowlevel": null
+      },
       "tier": "excluded"
     },
     {
@@ -11579,6 +12771,11 @@
         "lua": "ParseDeclarationsResponse table/enum; resolve in types/enums",
         "native_type": "ParseDeclarationsResponse"
       },
+      "surface_contract": {
+        "disposition": "excluded: inherited NOT_SUPPORTED; no Lua adapter promised",
+        "facade": null,
+        "lowlevel": null
+      },
       "tier": "excluded"
     },
     {
@@ -11626,11 +12823,13 @@
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": false,
           "lua": "dense 1-based array of BytePatch table/enum; resolve in types/enums",
           "name": "patches",
           "native_type": "const std::vector<BytePatch>&",
           "nested_fields": [
             {
+              "ignored": false,
               "lua": "exact UInt64",
               "model": "BytePatch",
               "name": "address",
@@ -11641,6 +12840,7 @@
               "semantics": "native field preserved; no truthiness substitution"
             },
             {
+              "ignored": false,
               "lua": "binary Lua string (length preserving)",
               "model": "BytePatch",
               "name": "data",
@@ -11678,6 +12878,24 @@
         ],
         "lua": "PatchBytesBatchResponse table/enum; resolve in types/enums",
         "native_type": "PatchBytesBatchResponse"
+      },
+      "surface_contract": {
+        "facade": {
+          "disposition": "native escape hatch",
+          "extraction": null,
+          "name": null,
+          "return": "complete response/error via convenience or native() as disposed"
+        },
+        "implementation_status": "planned M0 contract only; not runtime-qualified",
+        "iterator": "not enabled; source identity/order alone is not runtime qualification",
+        "lowlevel": {
+          "call": "patch_bytes_batch(patches)",
+          "name": "patch_bytes_batch",
+          "native_request_keys": [
+            "patches"
+          ],
+          "return": "complete detached native response or nil,error"
+        }
       },
       "tier": "full"
     },
@@ -11744,6 +12962,7 @@
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": false,
           "lua": "exact UInt64",
           "name": "address",
           "native_type": "std::uint64_t",
@@ -11751,6 +12970,7 @@
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": false,
           "lua": "checked Lua integer (std::uint32_t)",
           "name": "length",
           "native_type": "std::uint32_t",
@@ -11772,6 +12992,26 @@
         ],
         "lua": "ReadBytesResponse table/enum; resolve in types/enums",
         "native_type": "ReadBytesResponse"
+      },
+      "surface_contract": {
+        "facade": {
+          "disposition": "direct extraction",
+          "extraction": "data",
+          "name": "read_bytes",
+          "return": "value,nil,response; optional absent -> nil,NOT_FOUND,response; native error -> nil,error"
+        },
+        "implementation_status": "planned M0 contract only; not runtime-qualified",
+        "iterator": "not enabled; source identity/order alone is not runtime qualification",
+        "lowlevel": {
+          "argument_alias": "Lua size corresponds to native length; 0..INT32_MAX before dispatch/allocation",
+          "call": "read_bytes(address, size)",
+          "name": "read_bytes",
+          "native_request_keys": [
+            "address",
+            "length"
+          ],
+          "return": "complete detached native response or nil,error"
+        }
       },
       "tier": "slice"
     },
@@ -11836,6 +13076,11 @@
         "lua": "RemoveMemoryBlockResponse table/enum; resolve in types/enums",
         "native_type": "RemoveMemoryBlockResponse"
       },
+      "surface_contract": {
+        "disposition": "excluded: inherited NOT_SUPPORTED; no Lua adapter promised",
+        "facade": null,
+        "lowlevel": null
+      },
       "tier": "excluded"
     },
     {
@@ -11885,6 +13130,7 @@
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": false,
           "lua": "exact UInt64",
           "name": "address",
           "native_type": "std::uint64_t",
@@ -11892,6 +13138,7 @@
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": false,
           "lua": "Lua string (no transcoding)",
           "name": "new_name",
           "native_type": "const std::string&",
@@ -11923,6 +13170,25 @@
         ],
         "lua": "RenameDataItemResponse table/enum; resolve in types/enums",
         "native_type": "RenameDataItemResponse"
+      },
+      "surface_contract": {
+        "facade": {
+          "disposition": "native escape hatch",
+          "extraction": null,
+          "name": null,
+          "return": "complete response/error via convenience or native() as disposed"
+        },
+        "implementation_status": "planned M0 contract only; not runtime-qualified",
+        "iterator": "not enabled; source identity/order alone is not runtime qualification",
+        "lowlevel": {
+          "call": "rename_data_item(address, new_name)",
+          "name": "rename_data_item",
+          "native_request_keys": [
+            "address",
+            "new_name"
+          ],
+          "return": "complete detached native response or nil,error"
+        }
       },
       "tier": "full"
     },
@@ -11989,6 +13255,7 @@
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": false,
           "lua": "exact UInt64",
           "name": "address",
           "native_type": "std::uint64_t",
@@ -11996,6 +13263,7 @@
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": false,
           "lua": "Lua string (no transcoding)",
           "name": "new_name",
           "native_type": "const std::string&",
@@ -12027,6 +13295,25 @@
         ],
         "lua": "RenameFunctionResponse table/enum; resolve in types/enums",
         "native_type": "RenameFunctionResponse"
+      },
+      "surface_contract": {
+        "facade": {
+          "disposition": "complete response convenience/page",
+          "extraction": null,
+          "name": "rename_function",
+          "return": "complete response/error via convenience or native() as disposed"
+        },
+        "implementation_status": "planned M0 contract only; not runtime-qualified",
+        "iterator": "not enabled; source identity/order alone is not runtime qualification",
+        "lowlevel": {
+          "call": "rename_function(address, new_name)",
+          "name": "rename_function",
+          "native_request_keys": [
+            "address",
+            "new_name"
+          ],
+          "return": "complete detached native response or nil,error"
+        }
       },
       "tier": "core"
     },
@@ -12078,6 +13365,7 @@
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": false,
           "lua": "exact UInt64",
           "name": "address",
           "native_type": "std::uint64_t",
@@ -12085,6 +13373,7 @@
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": false,
           "lua": "Lua string (no transcoding)",
           "name": "local_id",
           "native_type": "const std::string&",
@@ -12092,6 +13381,7 @@
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": false,
           "lua": "Lua string (no transcoding)",
           "name": "new_name",
           "native_type": "const std::string&",
@@ -12133,6 +13423,26 @@
         ],
         "lua": "RenameFunctionLocalResponse table/enum; resolve in types/enums",
         "native_type": "RenameFunctionLocalResponse"
+      },
+      "surface_contract": {
+        "facade": {
+          "disposition": "native escape hatch",
+          "extraction": null,
+          "name": null,
+          "return": "complete response/error via convenience or native() as disposed"
+        },
+        "implementation_status": "planned M0 contract only; not runtime-qualified",
+        "iterator": "not enabled; source identity/order alone is not runtime qualification",
+        "lowlevel": {
+          "call": "rename_function_local(address, local_id, new_name)",
+          "name": "rename_function_local",
+          "native_request_keys": [
+            "address",
+            "local_id",
+            "new_name"
+          ],
+          "return": "complete detached native response or nil,error"
+        }
       },
       "tier": "full"
     },
@@ -12185,6 +13495,7 @@
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": false,
           "lua": "exact UInt64",
           "name": "address",
           "native_type": "std::uint64_t",
@@ -12192,6 +13503,7 @@
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": false,
           "lua": "checked Lua integer (int)",
           "name": "ordinal",
           "native_type": "int",
@@ -12199,6 +13511,7 @@
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": false,
           "lua": "Lua string (no transcoding)",
           "name": "new_name",
           "native_type": "const std::string&",
@@ -12230,6 +13543,26 @@
         ],
         "lua": "RenameFunctionParameterResponse table/enum; resolve in types/enums",
         "native_type": "RenameFunctionParameterResponse"
+      },
+      "surface_contract": {
+        "facade": {
+          "disposition": "native escape hatch",
+          "extraction": null,
+          "name": null,
+          "return": "complete response/error via convenience or native() as disposed"
+        },
+        "implementation_status": "planned M0 contract only; not runtime-qualified",
+        "iterator": "not enabled; source identity/order alone is not runtime qualification",
+        "lowlevel": {
+          "call": "rename_function_parameter(address, ordinal, new_name)",
+          "name": "rename_function_parameter",
+          "native_request_keys": [
+            "address",
+            "ordinal",
+            "new_name"
+          ],
+          "return": "complete detached native response or nil,error"
+        }
       },
       "tier": "full"
     },
@@ -12298,6 +13631,7 @@
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": false,
           "lua": "exact UInt64",
           "name": "address",
           "native_type": "std::uint64_t",
@@ -12305,6 +13639,7 @@
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": false,
           "lua": "Lua string (no transcoding)",
           "name": "new_name",
           "native_type": "const std::string&",
@@ -12336,6 +13671,25 @@
         ],
         "lua": "RenameSymbolResponse table/enum; resolve in types/enums",
         "native_type": "RenameSymbolResponse"
+      },
+      "surface_contract": {
+        "facade": {
+          "disposition": "complete response convenience/page",
+          "extraction": null,
+          "name": "rename_symbol",
+          "return": "complete response/error via convenience or native() as disposed"
+        },
+        "implementation_status": "planned M0 contract only; not runtime-qualified",
+        "iterator": "not enabled; source identity/order alone is not runtime qualification",
+        "lowlevel": {
+          "call": "rename_symbol(address, new_name)",
+          "name": "rename_symbol",
+          "native_request_keys": [
+            "address",
+            "new_name"
+          ],
+          "return": "complete detached native response or nil,error"
+        }
       },
       "tier": "core"
     },
@@ -12386,6 +13740,7 @@
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": false,
           "lua": "Lua string (no transcoding)",
           "name": "type_id_or_path",
           "native_type": "const std::string&",
@@ -12393,6 +13748,7 @@
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": false,
           "lua": "Lua string (no transcoding)",
           "name": "new_name",
           "native_type": "const std::string&",
@@ -12424,6 +13780,25 @@
         ],
         "lua": "RenameTypeResponse table/enum; resolve in types/enums",
         "native_type": "RenameTypeResponse"
+      },
+      "surface_contract": {
+        "facade": {
+          "disposition": "native escape hatch",
+          "extraction": null,
+          "name": null,
+          "return": "complete response/error via convenience or native() as disposed"
+        },
+        "implementation_status": "planned M0 contract only; not runtime-qualified",
+        "iterator": "not enabled; source identity/order alone is not runtime qualification",
+        "lowlevel": {
+          "call": "rename_type(type_id_or_path, new_name)",
+          "name": "rename_type",
+          "native_request_keys": [
+            "type_id_or_path",
+            "new_name"
+          ],
+          "return": "complete detached native response or nil,error"
+        }
       },
       "tier": "full"
     },
@@ -12475,6 +13850,7 @@
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": false,
           "lua": "Lua string (no transcoding)",
           "name": "type_id_or_path",
           "native_type": "const std::string&",
@@ -12482,6 +13858,7 @@
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": false,
           "lua": "exact UInt64",
           "name": "ordinal",
           "native_type": "std::uint64_t",
@@ -12489,6 +13866,7 @@
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": false,
           "lua": "Lua string (no transcoding)",
           "name": "new_name",
           "native_type": "const std::string&",
@@ -12510,6 +13888,26 @@
         ],
         "lua": "RenameTypeEnumMemberResponse table/enum; resolve in types/enums",
         "native_type": "RenameTypeEnumMemberResponse"
+      },
+      "surface_contract": {
+        "facade": {
+          "disposition": "native escape hatch",
+          "extraction": null,
+          "name": null,
+          "return": "complete response/error via convenience or native() as disposed"
+        },
+        "implementation_status": "planned M0 contract only; not runtime-qualified",
+        "iterator": "not enabled; source identity/order alone is not runtime qualification",
+        "lowlevel": {
+          "call": "rename_type_enum_member(type_id_or_path, ordinal, new_name)",
+          "name": "rename_type_enum_member",
+          "native_request_keys": [
+            "type_id_or_path",
+            "ordinal",
+            "new_name"
+          ],
+          "return": "complete detached native response or nil,error"
+        }
       },
       "tier": "full"
     },
@@ -12561,6 +13959,7 @@
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": false,
           "lua": "Lua string (no transcoding)",
           "name": "parent_type_id_or_path",
           "native_type": "const std::string&",
@@ -12568,6 +13967,7 @@
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": false,
           "lua": "exact UInt64",
           "name": "ordinal",
           "native_type": "std::uint64_t",
@@ -12575,6 +13975,7 @@
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": false,
           "lua": "Lua string (no transcoding)",
           "name": "new_name",
           "native_type": "const std::string&",
@@ -12596,6 +13997,26 @@
         ],
         "lua": "RenameTypeMemberResponse table/enum; resolve in types/enums",
         "native_type": "RenameTypeMemberResponse"
+      },
+      "surface_contract": {
+        "facade": {
+          "disposition": "native escape hatch",
+          "extraction": null,
+          "name": null,
+          "return": "complete response/error via convenience or native() as disposed"
+        },
+        "implementation_status": "planned M0 contract only; not runtime-qualified",
+        "iterator": "not enabled; source identity/order alone is not runtime qualification",
+        "lowlevel": {
+          "call": "rename_type_member(parent_type_id_or_path, ordinal, new_name)",
+          "name": "rename_type_member",
+          "native_request_keys": [
+            "parent_type_id_or_path",
+            "ordinal",
+            "new_name"
+          ],
+          "return": "complete detached native response or nil,error"
+        }
       },
       "tier": "full"
     },
@@ -12688,6 +14109,22 @@
         "path": "cpp/src/local_client.cpp"
       },
       "state_transitions": "saveState failure -> SAVE_FAILED; success saved=true; does not close or increment native revision",
+      "surface_contract": {
+        "facade": {
+          "disposition": "complete response convenience/page",
+          "extraction": null,
+          "name": "save_program",
+          "return": "complete response/error via convenience or native() as disposed"
+        },
+        "implementation_status": "planned M0 contract only; not runtime-qualified",
+        "iterator": "not enabled; source identity/order alone is not runtime qualification",
+        "lowlevel": {
+          "call": "save_program()",
+          "name": "save_program",
+          "native_request_keys": [],
+          "return": "complete detached native response or nil,error"
+        }
+      },
       "tier": "core"
     },
     {
@@ -12757,6 +14194,11 @@
         ],
         "lua": "SetBreakpointConditionResponse table/enum; resolve in types/enums",
         "native_type": "SetBreakpointConditionResponse"
+      },
+      "surface_contract": {
+        "disposition": "excluded: inherited NOT_SUPPORTED; no Lua adapter promised",
+        "facade": null,
+        "lowlevel": null
       },
       "tier": "excluded"
     },
@@ -12828,6 +14270,11 @@
         "lua": "SetBreakpointEnabledResponse table/enum; resolve in types/enums",
         "native_type": "SetBreakpointEnabledResponse"
       },
+      "surface_contract": {
+        "disposition": "excluded: inherited NOT_SUPPORTED; no Lua adapter promised",
+        "facade": null,
+        "lowlevel": null
+      },
       "tier": "excluded"
     },
     {
@@ -12897,6 +14344,11 @@
         ],
         "lua": "SetBreakpointGroupResponse table/enum; resolve in types/enums",
         "native_type": "SetBreakpointGroupResponse"
+      },
+      "surface_contract": {
+        "disposition": "excluded: inherited NOT_SUPPORTED; no Lua adapter promised",
+        "facade": null,
+        "lowlevel": null
       },
       "tier": "excluded"
     },
@@ -12968,6 +14420,11 @@
         "lua": "SetBreakpointKindResponse table/enum; resolve in types/enums",
         "native_type": "SetBreakpointKindResponse"
       },
+      "surface_contract": {
+        "disposition": "excluded: inherited NOT_SUPPORTED; no Lua adapter promised",
+        "facade": null,
+        "lowlevel": null
+      },
       "tier": "excluded"
     },
     {
@@ -13038,6 +14495,11 @@
         "lua": "SetBreakpointSizeResponse table/enum; resolve in types/enums",
         "native_type": "SetBreakpointSizeResponse"
       },
+      "surface_contract": {
+        "disposition": "excluded: inherited NOT_SUPPORTED; no Lua adapter promised",
+        "facade": null,
+        "lowlevel": null
+      },
       "tier": "excluded"
     },
     {
@@ -13085,6 +14547,7 @@
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": false,
           "lua": "exact UInt64",
           "name": "address",
           "native_type": "std::uint64_t",
@@ -13092,6 +14555,7 @@
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": false,
           "lua": "CommentKind table/enum; resolve in types/enums",
           "name": "kind",
           "native_type": "CommentKind",
@@ -13099,6 +14563,7 @@
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": false,
           "lua": "Lua string (no transcoding)",
           "name": "text",
           "native_type": "const std::string&",
@@ -13120,6 +14585,26 @@
         ],
         "lua": "SetCommentResponse table/enum; resolve in types/enums",
         "native_type": "SetCommentResponse"
+      },
+      "surface_contract": {
+        "facade": {
+          "disposition": "native escape hatch",
+          "extraction": null,
+          "name": null,
+          "return": "complete response/error via convenience or native() as disposed"
+        },
+        "implementation_status": "planned M0 contract only; not runtime-qualified",
+        "iterator": "not enabled; source identity/order alone is not runtime qualification",
+        "lowlevel": {
+          "call": "set_comment(address, kind, text)",
+          "name": "set_comment",
+          "native_request_keys": [
+            "address",
+            "kind",
+            "text"
+          ],
+          "return": "complete detached native response or nil,error"
+        }
       },
       "tier": "full"
     },
@@ -13172,6 +14657,7 @@
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": false,
           "lua": "exact UInt64",
           "name": "address",
           "native_type": "std::uint64_t",
@@ -13179,6 +14665,7 @@
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": false,
           "lua": "Lua string (no transcoding)",
           "name": "local_id",
           "native_type": "const std::string&",
@@ -13186,6 +14673,7 @@
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": false,
           "lua": "Lua string (no transcoding)",
           "name": "data_type",
           "native_type": "const std::string&",
@@ -13227,6 +14715,26 @@
         ],
         "lua": "SetFunctionLocalTypeResponse table/enum; resolve in types/enums",
         "native_type": "SetFunctionLocalTypeResponse"
+      },
+      "surface_contract": {
+        "facade": {
+          "disposition": "native escape hatch",
+          "extraction": null,
+          "name": null,
+          "return": "complete response/error via convenience or native() as disposed"
+        },
+        "implementation_status": "planned M0 contract only; not runtime-qualified",
+        "iterator": "not enabled; source identity/order alone is not runtime qualification",
+        "lowlevel": {
+          "call": "set_function_local_type(address, local_id, data_type)",
+          "name": "set_function_local_type",
+          "native_request_keys": [
+            "address",
+            "local_id",
+            "data_type"
+          ],
+          "return": "complete detached native response or nil,error"
+        }
       },
       "tier": "full"
     },
@@ -13279,6 +14787,7 @@
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": false,
           "lua": "exact UInt64",
           "name": "address",
           "native_type": "std::uint64_t",
@@ -13286,6 +14795,7 @@
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": false,
           "lua": "checked Lua integer (int)",
           "name": "ordinal",
           "native_type": "int",
@@ -13293,6 +14803,7 @@
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": false,
           "lua": "Lua string (no transcoding)",
           "name": "data_type",
           "native_type": "const std::string&",
@@ -13324,6 +14835,26 @@
         ],
         "lua": "SetFunctionParameterTypeResponse table/enum; resolve in types/enums",
         "native_type": "SetFunctionParameterTypeResponse"
+      },
+      "surface_contract": {
+        "facade": {
+          "disposition": "native escape hatch",
+          "extraction": null,
+          "name": null,
+          "return": "complete response/error via convenience or native() as disposed"
+        },
+        "implementation_status": "planned M0 contract only; not runtime-qualified",
+        "iterator": "not enabled; source identity/order alone is not runtime qualification",
+        "lowlevel": {
+          "call": "set_function_parameter_type(address, ordinal, data_type)",
+          "name": "set_function_parameter_type",
+          "native_request_keys": [
+            "address",
+            "ordinal",
+            "data_type"
+          ],
+          "return": "complete detached native response or nil,error"
+        }
       },
       "tier": "full"
     },
@@ -13374,6 +14905,7 @@
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": false,
           "lua": "exact UInt64",
           "name": "address",
           "native_type": "std::uint64_t",
@@ -13381,6 +14913,7 @@
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": false,
           "lua": "Lua string (no transcoding)",
           "name": "prototype",
           "native_type": "const std::string&",
@@ -13422,6 +14955,25 @@
         ],
         "lua": "SetFunctionSignatureResponse table/enum; resolve in types/enums",
         "native_type": "SetFunctionSignatureResponse"
+      },
+      "surface_contract": {
+        "facade": {
+          "disposition": "native escape hatch",
+          "extraction": null,
+          "name": null,
+          "return": "complete response/error via convenience or native() as disposed"
+        },
+        "implementation_status": "planned M0 contract only; not runtime-qualified",
+        "iterator": "not enabled; source identity/order alone is not runtime qualification",
+        "lowlevel": {
+          "call": "set_function_signature(address, prototype)",
+          "name": "set_function_signature",
+          "native_request_keys": [
+            "address",
+            "prototype"
+          ],
+          "return": "complete detached native response or nil,error"
+        }
       },
       "tier": "full"
     },
@@ -13667,6 +15219,11 @@
         "lua": "SetMemoryBlockAttributesResponse table/enum; resolve in types/enums",
         "native_type": "SetMemoryBlockAttributesResponse"
       },
+      "surface_contract": {
+        "disposition": "excluded: inherited NOT_SUPPORTED; no Lua adapter promised",
+        "facade": null,
+        "lowlevel": null
+      },
       "tier": "excluded"
     },
     {
@@ -13754,6 +15311,11 @@
         "lua": "SetProgramOptionResponse table/enum; resolve in types/enums",
         "native_type": "SetProgramOptionResponse"
       },
+      "surface_contract": {
+        "disposition": "excluded: inherited NOT_SUPPORTED; no Lua adapter promised",
+        "facade": null,
+        "lowlevel": null
+      },
       "tier": "excluded"
     },
     {
@@ -13803,6 +15365,7 @@
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": false,
           "lua": "Lua string (no transcoding)",
           "name": "type_id_or_path",
           "native_type": "const std::string&",
@@ -13810,6 +15373,7 @@
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": false,
           "lua": "Lua string (no transcoding)",
           "name": "target_type",
           "native_type": "const std::string&",
@@ -13831,6 +15395,25 @@
         ],
         "lua": "SetTypeAliasTargetResponse table/enum; resolve in types/enums",
         "native_type": "SetTypeAliasTargetResponse"
+      },
+      "surface_contract": {
+        "facade": {
+          "disposition": "native escape hatch",
+          "extraction": null,
+          "name": null,
+          "return": "complete response/error via convenience or native() as disposed"
+        },
+        "implementation_status": "planned M0 contract only; not runtime-qualified",
+        "iterator": "not enabled; source identity/order alone is not runtime qualification",
+        "lowlevel": {
+          "call": "set_type_alias_target(type_id_or_path, target_type)",
+          "name": "set_type_alias_target",
+          "native_request_keys": [
+            "type_id_or_path",
+            "target_type"
+          ],
+          "return": "complete detached native response or nil,error"
+        }
       },
       "tier": "full"
     },
@@ -13879,6 +15462,7 @@
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": false,
           "lua": "Lua string (no transcoding)",
           "name": "type_id_or_path",
           "native_type": "const std::string&",
@@ -13886,6 +15470,7 @@
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": false,
           "lua": "exact UInt64",
           "name": "ordinal",
           "native_type": "std::uint64_t",
@@ -13893,6 +15478,7 @@
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": false,
           "lua": "Lua string (no transcoding)",
           "name": "comment",
           "native_type": "const std::string&",
@@ -13914,6 +15500,26 @@
         ],
         "lua": "SetTypeEnumMemberCommentResponse table/enum; resolve in types/enums",
         "native_type": "SetTypeEnumMemberCommentResponse"
+      },
+      "surface_contract": {
+        "facade": {
+          "disposition": "native escape hatch",
+          "extraction": null,
+          "name": null,
+          "return": "complete response/error via convenience or native() as disposed"
+        },
+        "implementation_status": "planned M0 contract only; not runtime-qualified",
+        "iterator": "not enabled; source identity/order alone is not runtime qualification",
+        "lowlevel": {
+          "call": "set_type_enum_member_comment(type_id_or_path, ordinal, comment)",
+          "name": "set_type_enum_member_comment",
+          "native_request_keys": [
+            "type_id_or_path",
+            "ordinal",
+            "comment"
+          ],
+          "return": "complete detached native response or nil,error"
+        }
       },
       "tier": "full"
     },
@@ -13965,6 +15571,7 @@
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": false,
           "lua": "Lua string (no transcoding)",
           "name": "type_id_or_path",
           "native_type": "const std::string&",
@@ -13972,6 +15579,7 @@
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": false,
           "lua": "exact UInt64",
           "name": "ordinal",
           "native_type": "std::uint64_t",
@@ -13979,6 +15587,7 @@
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": false,
           "lua": "checked Lua integer (std::int64_t)",
           "name": "value",
           "native_type": "std::int64_t",
@@ -14000,6 +15609,26 @@
         ],
         "lua": "SetTypeEnumMemberValueResponse table/enum; resolve in types/enums",
         "native_type": "SetTypeEnumMemberValueResponse"
+      },
+      "surface_contract": {
+        "facade": {
+          "disposition": "native escape hatch",
+          "extraction": null,
+          "name": null,
+          "return": "complete response/error via convenience or native() as disposed"
+        },
+        "implementation_status": "planned M0 contract only; not runtime-qualified",
+        "iterator": "not enabled; source identity/order alone is not runtime qualification",
+        "lowlevel": {
+          "call": "set_type_enum_member_value(type_id_or_path, ordinal, value)",
+          "name": "set_type_enum_member_value",
+          "native_request_keys": [
+            "type_id_or_path",
+            "ordinal",
+            "value"
+          ],
+          "return": "complete detached native response or nil,error"
+        }
       },
       "tier": "full"
     },
@@ -14048,6 +15677,7 @@
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": false,
           "lua": "Lua string (no transcoding)",
           "name": "parent_type_id_or_path",
           "native_type": "const std::string&",
@@ -14055,6 +15685,7 @@
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": false,
           "lua": "exact UInt64",
           "name": "ordinal",
           "native_type": "std::uint64_t",
@@ -14062,6 +15693,7 @@
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": false,
           "lua": "Lua string (no transcoding)",
           "name": "comment",
           "native_type": "const std::string&",
@@ -14083,6 +15715,26 @@
         ],
         "lua": "SetTypeMemberCommentResponse table/enum; resolve in types/enums",
         "native_type": "SetTypeMemberCommentResponse"
+      },
+      "surface_contract": {
+        "facade": {
+          "disposition": "native escape hatch",
+          "extraction": null,
+          "name": null,
+          "return": "complete response/error via convenience or native() as disposed"
+        },
+        "implementation_status": "planned M0 contract only; not runtime-qualified",
+        "iterator": "not enabled; source identity/order alone is not runtime qualification",
+        "lowlevel": {
+          "call": "set_type_member_comment(parent_type_id_or_path, ordinal, comment)",
+          "name": "set_type_member_comment",
+          "native_request_keys": [
+            "parent_type_id_or_path",
+            "ordinal",
+            "comment"
+          ],
+          "return": "complete detached native response or nil,error"
+        }
       },
       "tier": "full"
     },
@@ -14134,6 +15786,7 @@
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": false,
           "lua": "Lua string (no transcoding)",
           "name": "parent_type_id_or_path",
           "native_type": "const std::string&",
@@ -14141,6 +15794,7 @@
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": false,
           "lua": "exact UInt64",
           "name": "ordinal",
           "native_type": "std::uint64_t",
@@ -14148,6 +15802,7 @@
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": false,
           "lua": "Lua string (no transcoding)",
           "name": "member_type",
           "native_type": "const std::string&",
@@ -14169,6 +15824,26 @@
         ],
         "lua": "SetTypeMemberTypeResponse table/enum; resolve in types/enums",
         "native_type": "SetTypeMemberTypeResponse"
+      },
+      "surface_contract": {
+        "facade": {
+          "disposition": "native escape hatch",
+          "extraction": null,
+          "name": null,
+          "return": "complete response/error via convenience or native() as disposed"
+        },
+        "implementation_status": "planned M0 contract only; not runtime-qualified",
+        "iterator": "not enabled; source identity/order alone is not runtime qualification",
+        "lowlevel": {
+          "call": "set_type_member_type(parent_type_id_or_path, ordinal, member_type)",
+          "name": "set_type_member_type",
+          "native_request_keys": [
+            "parent_type_id_or_path",
+            "ordinal",
+            "member_type"
+          ],
+          "return": "complete detached native response or nil,error"
+        }
       },
       "tier": "full"
     },
@@ -14220,6 +15895,7 @@
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": false,
           "lua": "ShutdownPolicy table/enum; resolve in types/enums",
           "name": "policy",
           "native_type": "ShutdownPolicy",
@@ -14249,6 +15925,24 @@
         "path": "cpp/src/local_client.cpp"
       },
       "state_transitions": "loaded delegates closeProgramLocked; propagates failure code/message unchanged; success accepted=true; does not terminate host or release owner",
+      "surface_contract": {
+        "facade": {
+          "disposition": "native escape hatch",
+          "extraction": null,
+          "name": null,
+          "return": "complete response/error via convenience or native() as disposed"
+        },
+        "implementation_status": "planned M0 contract only; not runtime-qualified",
+        "iterator": "not enabled; source identity/order alone is not runtime qualification",
+        "lowlevel": {
+          "call": "shutdown(policy)",
+          "name": "shutdown",
+          "native_request_keys": [
+            "policy"
+          ],
+          "return": "complete detached native response or nil,error"
+        }
+      },
       "tier": "full"
     },
     {
@@ -14382,6 +16076,11 @@
         "lua": "StartAnalysisResponse table/enum; resolve in types/enums",
         "native_type": "StartAnalysisResponse"
       },
+      "surface_contract": {
+        "disposition": "excluded: inherited NOT_SUPPORTED; no Lua adapter promised",
+        "facade": null,
+        "lowlevel": null
+      },
       "tier": "excluded"
     },
     {
@@ -14451,6 +16150,11 @@
         ],
         "lua": "TagFunctionResponse table/enum; resolve in types/enums",
         "native_type": "TagFunctionResponse"
+      },
+      "surface_contract": {
+        "disposition": "excluded: inherited NOT_SUPPORTED; no Lua adapter promised",
+        "facade": null,
+        "lowlevel": null
       },
       "tier": "excluded"
     },
@@ -14522,6 +16226,11 @@
         "lua": "UntagFunctionResponse table/enum; resolve in types/enums",
         "native_type": "UntagFunctionResponse"
       },
+      "surface_contract": {
+        "disposition": "excluded: inherited NOT_SUPPORTED; no Lua adapter promised",
+        "facade": null,
+        "lowlevel": null
+      },
       "tier": "excluded"
     },
     {
@@ -14569,6 +16278,7 @@
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": false,
           "lua": "exact UInt64",
           "name": "address",
           "native_type": "std::uint64_t",
@@ -14576,6 +16286,7 @@
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "ignored": false,
           "lua": "binary Lua string (length preserving)",
           "name": "data",
           "native_type": "const std::vector<std::uint8_t>&",
@@ -14597,6 +16308,25 @@
         ],
         "lua": "WriteBytesResponse table/enum; resolve in types/enums",
         "native_type": "WriteBytesResponse"
+      },
+      "surface_contract": {
+        "facade": {
+          "disposition": "complete response convenience/page",
+          "extraction": null,
+          "name": "write_bytes",
+          "return": "complete response/error via convenience or native() as disposed"
+        },
+        "implementation_status": "planned M0 contract only; not runtime-qualified",
+        "iterator": "not enabled; source identity/order alone is not runtime qualification",
+        "lowlevel": {
+          "call": "write_bytes(address, data)",
+          "name": "write_bytes",
+          "native_request_keys": [
+            "address",
+            "data"
+          ],
+          "return": "complete detached native response or nil,error"
+        }
       },
       "tier": "core"
     }

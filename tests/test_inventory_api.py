@@ -48,7 +48,7 @@ class InventoryTests(unittest.TestCase):
         self.assertIn('INT32_MAX', ' '.join(self.ops['ReadBytes']['limitations']))
         self.assertIn('no discovery iterator', self.ops['ListDefinedStrings']['facade'])
         self.assertEqual(self.ops['ListFunctionSignatures']['pagination']['cursor_domain'], 'candidate functions')
-        self.assertEqual(self.ops['DeleteSymbol']['ignored_fields'], ['name'])
+        self.assertEqual(self.ops['DeleteSymbol']['ignored_fields'], ['name_filter'])
         self.assertEqual(self.ops['CreateTypeEnum']['ignored_fields'], ['width', 'is_signed'])
         self.assertTrue(self.ops['ListInstructions']['pagination']['range_zero_end'])
         self.assertEqual(self.ops['CloseProgram']['dispatch'], 'lifecycle')
@@ -124,6 +124,16 @@ class InventoryTests(unittest.TestCase):
             header.write_text(header.read_text().replace('std::map<std::pair<std::uint64_t, int>, std::string> comments_', 'std::multimap<std::pair<std::uint64_t, int>, std::string> comments_'))
             with self.assertRaises(AssertionError):
                 module.inventory(root)
+
+    def test_surface_extraction_and_native_escape_disposition(self):
+        for name, key in [('GetFunction', 'function'), ('GetType', 'type'), ('ReadBytes', 'data')]:
+            self.assertEqual(self.ops[name]['surface_contract']['facade']['extraction'], key)
+        self.assertIsNone(self.ops['DiscardProgram']['surface_contract']['facade']['name'])
+        self.assertIsNone(self.ops['DeleteSymbol']['surface_contract']['facade']['name'])
+        req = self.ops['DeleteSymbol']['request']
+        self.assertTrue(next(r for r in req if r['name']=='name_filter')['ignored'])
+        self.assertIn('NO_STATE_PATH', self.ops['CloseProgram']['surface_contract']['facade']['save_policy'])
+        self.assertIn('size', self.ops['ReadBytes']['surface_contract']['lowlevel']['argument_alias'])
 
     def test_python_binding_fidelity_exceptions(self):
         audit = self.data['python_reconciliation']

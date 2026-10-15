@@ -11,6 +11,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from inventory_semantics import review_pages, review_aggregate_pages, review_session_records
 
 from inventory_python import reconcile_python
+from inventory_surfaces import surfaces
 
 PIN = 'd51ca813ae1b6b59519551a9be8c0b1ad74d862d'
 ROOT = Path(__file__).resolve().parents[1]
@@ -143,6 +144,7 @@ def inventory(u):
     review_pages(u, ops)
     review_aggregate_pages(u, ops)
     review_session_records(u, ops)
+    surfaces(ops)
     python=[]
     # Independent public operations and model fields, including HTTP/async/headless exclusions.
     for p in sorted((u/'python/src/libghidra').glob('*.py')):

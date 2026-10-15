@@ -215,3 +215,22 @@ Ten tests pass. This is source accounting, not Python-oracle execution or full
 nested conversion equivalence. Remaining mutation/open/health branches, exact
 Lua facade signatures and conditional field/effective-domain review still block
 exhaustive acceptance. All positive/negative runtime slots remain unqualified.
+
+## Explicit surface disposition (seventh repair increment)
+
+`inventory_surfaces.py` adds a structured surface_contract per operation. Included
+lowlevel calls preserve complete detached responses. Facade lookups explicitly
+name function/decompilation/instruction/symbol/type/signature/data extraction and
+the third-result/optional-absence convention; mutations/pages preserve envelopes.
+Discard and full specialist operations remain native() escape hatches (defined
+strings compatibility included), not automatically promoted list conveniences.
+Signatures remain pages-only. No iterator is enabled by these inventory rows.
+
+First-slice call grammar, read_bytes size/native-length alias, ignored timeout,
+open's rejected facade keys and save-close's pre-dispatch NO_STATE_PATH policy are
+now structured. Other positional signatures are inventory proposals and still
+require exact facade grammar review before implementation. Native DeleteSymbol
+calls the ignored argument name_filter, not name: field-level ignored accounting
+now uses that exact declaration key while preserving the documented semantic
+name caveat. Nested OpenProgram ignored fields are individually marked. Eleven
+focused tests pass; this is not completed exhaustive semantic acceptance.
