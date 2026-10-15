@@ -71,4 +71,5 @@ def semantic_audit(operations):
     return {'included_operations':len(included),'wrapper_transition_review_missing':wrapper,
             'response_field_semantics_unreviewed':missing_fields,
             'scope':'Explicit accounting audit only; empty wrapper list would not establish full nested/default/domain review or runtime qualification',
-            'remaining_gates':['Audit every generic field semantic against owning adapter/default source','Finalize non-first-slice facade call grammar rather than positional proposals','Qualify runtime fixtures separately; preserve all unqualified slots']}
+            'remaining_gates':['Before implementing non-first-slice syntax, obtain approval for explicitly proposed grammar','Qualify real Lua/native fixtures separately; preserve all unqualified slots'],
+            'source_accounting_status':'closed when wrapper/response and request/completeness ledgers are empty/consistent; no runtime inference'}

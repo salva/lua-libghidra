@@ -1,11 +1,35 @@
-# M0 operation/field inventory — structural baseline, semantic review open
+# M0 native operation/field inventory — source accounting complete
 
-`coverage.json` is generated from the actual pinned public headers, LocalClient
-overrides and Python AST, not the COVERAGE summary alone. It is **not yet a
-completed M0 inventory**, an adapter specification ready for implementation, or
-runtime qualification. `unresolved` and per-operation pagination identity/order
-slots intentionally expose remaining work. A passing structural check does not
-close those gates.
+`coverage.json` inventories pinned public headers, LocalClient and owning native
+producers. Native operation/field reconciliation is complete at this pin, with
+explicit exceptions and remaining runtime unknowns. This is not adapter
+implementation or runtime qualification. Source review does not prove stable
+identity/comparators, address-space casts, persistence, rollback or boundary
+behavior; see per-operation limitations and evidence slots.
+
+## Current acceptance authority (e0cc4a2)
+
+Native API + real Lua acceptance and direct C++ probes govern. Existing Python
+research is preserved development reference, not exhaustive parity authority or
+a requirement to build/install upstream Python bindings. Active Python scripts
+and tests remain development tools only, not a permanent release requirement.
+Migrate project-owned tooling/tests to Lua with implementation before release;
+any retained exception needs documented alternatives/reason and operator
+acceptance. No exception is approved here, including spec embedding.
+
+Downstream implementation handoff: use the native inventory and its exact
+limitations, keep all positive/negative runtime slots unqualified until real
+Lua/native evidence exists, and do not add a Python-binding dependency or parity
+gate. Sixty non-first-slice grammars are proposals requiring approval before
+implementation, not missing native inventory. HTTP remains excluded. Keep the
+constant-empty strings exception/no discovery iterator, signatures pages-only,
+ignored mutation fields, signed ReadBytes bound and separate owner/program
+closure. M0 inventory completion does not declare other M0 readiness/license
+work or any M1/runtime milestone complete.
+
+Earlier increment notes below are chronological research history; statements of
+open inventory/Python parity work are superseded by this authority and current
+machine-readable acceptance_basis, not erased as evidence.
 
 ## Reproduce
 

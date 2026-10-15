@@ -1,4 +1,10 @@
 {
+  "acceptance_basis": {
+    "authority": "native API plus real Lua acceptance and direct C++ probes; docs authority e0cc4a2",
+    "inventory_status": "native source accounting complete; runtime qualification not performed",
+    "python_research": "preserved development reference only; not upstream-binding dependency or permanent parity/release gate",
+    "tooling_migration": "project-owned Python scripts/tests migrate to Lua before release; retained exceptions require alternatives, compelling reason and operator acceptance; no exception approved here"
+  },
   "completeness_audit": {
     "direct_request_paths": 156,
     "excluded_operations": 40,
@@ -33433,12 +33439,12 @@
   "semantic_audit": {
     "included_operations": 70,
     "remaining_gates": [
-      "Audit every generic field semantic against owning adapter/default source",
-      "Finalize non-first-slice facade call grammar rather than positional proposals",
-      "Qualify runtime fixtures separately; preserve all unqualified slots"
+      "Before implementing non-first-slice syntax, obtain approval for explicitly proposed grammar",
+      "Qualify real Lua/native fixtures separately; preserve all unqualified slots"
     ],
     "response_field_semantics_unreviewed": [],
     "scope": "Explicit accounting audit only; empty wrapper list would not establish full nested/default/domain review or runtime qualification",
+    "source_accounting_status": "closed when wrapper/response and request/completeness ledgers are empty/consistent; no runtime inference",
     "wrapper_transition_review_missing": []
   },
   "sources": {
@@ -38855,7 +38861,7 @@
     }
   },
   "unresolved": [
-    "Exact downstream identity/order/comparator and effective numeric constraints beyond documented exceptions require operation-by-operation review; no iterators qualified",
-    "Independent semantic reconciliation of Python conversion/extraction bodies remains open; AST signatures are not behavioral equivalence evidence"
+    "Runtime identity uniqueness/comparator stability, address-space mapping/cast fidelity, rollback/persistence and boundary behavior remain unqualified as detailed per operation; no iterators qualified",
+    "Sixty non-first-slice call grammars remain explicitly proposed, not approved; disposition and extraction are inventoried"
   ]
 }

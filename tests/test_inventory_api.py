@@ -23,15 +23,23 @@ class InventoryTests(unittest.TestCase):
         from inventory_completeness import validate
         import copy
         self.assertEqual(validate(self.data)['expanded_response_paths'],345)
-        for kind in ('response','direct','evidence','python','excluded'):
+        for kind in ('response','direct','evidence','excluded'):
             data=copy.deepcopy(self.data)
             op=next(o for o in data['operations'] if o['name']=='GetFunction')
             if kind=='response':op['response']['fields'].pop()
             elif kind=='direct':op['request'][0].pop('direct_argument_review')
             elif kind=='evidence':op['evidence']['positive']['status']='qualified'
-            elif kind=='python':data['python_reconciliation']['methods'].pop()
             else:data['operations'][0]['surface_contract']['lowlevel']={'call':'invented()'}
             with self.assertRaises(AssertionError,msg=kind):validate(data)
+
+    def test_native_gate_does_not_require_python_research(self):
+        from inventory_completeness import validate
+        import copy
+        data=copy.deepcopy(self.data)
+        data.pop('python_reconciliation');data.pop('python')
+        self.assertEqual(validate(data)['included_operations'],70)
+        self.assertIn('development reference',data['acceptance_basis']['python_research'])
+        self.assertIn('native source accounting complete',data['acceptance_basis']['inventory_status'])
 
     def test_definition_extractor_rejects_call_and_literal_brace_confusion(self):
         from inventory_semantics import body
