@@ -3,8 +3,9 @@
 - Scope is the native local libghidra functionality only; HTTP support is deferred.
   Do not use SWIG, including for prototypes, generators or fallback bindings.
 
-- Read `docs/SPEC.md`, `docs/DESIGN.md` and `docs/PLAN.md` when available.
-  Until requirements are agreed, do not invent a binding API or start implementation.
+- Read `docs/SPEC.md`, `docs/DESIGN.md`, `docs/COVERAGE.md` and `docs/PLAN.md`.
+  The operator authorized implementation of the reviewed baseline; see
+  `workflows/LAUNCH.md` for the objective and `workflows/OPERATIONS.md` for deployment.
 - Keep product requirements and design separate from automation configuration.
   Saivage deployment and launch policy belongs in `workflows/OPERATIONS.md`.
 - Verify the exact upstream libghidra project, revision, API and licensing before
