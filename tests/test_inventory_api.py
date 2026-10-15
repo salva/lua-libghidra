@@ -37,6 +37,19 @@ class InventoryTests(unittest.TestCase):
         # Nanobind lambda prefixes remain a supported explicit consumer.
         self.assertEqual(body('.def("x", [](int x) { return x; })','.def("x", []')[1],'{ return x; }')
 
+    def test_nested_request_consumption_has_explicit_review_and_gaps(self):
+        audit=self.data['request_audit']
+        self.assertEqual(audit['nested_field_review_count'],20)
+        self.assertTrue(audit['direct_argument_review_missing'])
+        fields={f['name']:f for f in self.ops['OpenProgram']['request'][0]['nested_fields']}
+        self.assertIn('never read',fields['project_name']['semantics'])
+        self.assertIn('project route ignores',fields['base_address']['semantics'])
+        self.assertIn('compiler_spec_id then not appended',fields['language_id']['semantics'])
+        for name in ['OpenProgram','AddPerfBenchmark','PatchBytesBatch']:
+            for a in self.ops[name]['request']:
+                for f in a['nested_fields']:
+                    self.assertIn('must not be inferred',f['request_field_review']['native_absence'])
+
     def test_preserved_red_reproducer(self):
         # Exact acceptance trigger from red; stronger checks below prevent treating
         # mere existence as exhaustive semantic acceptance.
@@ -275,6 +288,10 @@ class InventoryTests(unittest.TestCase):
                 module.inventory(root)
             local.write_text(local_original)
             local.write_text(local_original.replace('resp.function = pool_->primaryAdapter().getFunction(address)', 'resp.function = {}'))
+            with self.assertRaises(AssertionError):
+                module.inventory(root)
+            local.write_text(local_original)
+            local.write_text(local_original.replace('arch = opts_.default_arch;', 'arch = request.project_name;'))
             with self.assertRaises(AssertionError):
                 module.inventory(root)
             local.write_text(local_original)

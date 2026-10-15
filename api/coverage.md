@@ -623,3 +623,17 @@ comparison. New synthetic tests reject call-only, duplicate and unbalanced input
 and verify comments/literals do not truncate a definition. Thirty-one inventory
 tests pass. No runtime evidence is inferred; request/domain and grammar audit
 remain open despite zero preservation-only response gaps.
+
+## Nested request consumption audit (twenty-eighth increment)
+
+All twenty nested request paths across OpenProgram, AddPerfBenchmark and
+PatchBytesBatch now have explicit source-bound consumption/default annotations.
+Open routing checks project precedence, binary architecture default/join behavior,
+and two never-read fields (facade rejects project_name/read_only). Binary-only
+base/format/hints are not project settings. Native model initializers do not prove
+Lua input optionality. Performance preserves prior measured-versus-caller field
+semantics; batch bytes retain input order/overlap and count-fidelity constraints.
+The request_audit explicitly enumerates direct argument review gaps rather than
+silently approving them based on type/default presence. This is source inventory,
+not runtime/binding-validation qualification. Factory fields remain a separate
+review obligation. Thirty-two tests pass including ignored-field consumption drift.

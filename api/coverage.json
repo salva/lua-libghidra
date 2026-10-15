@@ -371,7 +371,13 @@
               "native_type": "std::string",
               "optional": false,
               "path": "bench_id",
-              "semantics": "caller-supplied nonempty string, sole upsert/delete key; empty rejected invalid_argument; stored verbatim and listed unchanged"
+              "request_field_review": {
+                "consumer": "cpp/src/local_client.cpp",
+                "native_absence": "model initializer empty; Lua input default/requiredness must not be inferred from native model alone",
+                "operation": "AddPerfBenchmark",
+                "qualification": "source only; runtime and binding validation unqualified"
+              },
+              "semantics": "caller-supplied nonempty string, sole upsert/delete key; empty rejected invalid_argument; stored verbatim and listed unchanged; nonempty native string required (lowercase invalid_argument on empty); exact bench_id upsert key, erase matches then append so replacement moves to tail"
             },
             {
               "ignored": false,
@@ -382,7 +388,13 @@
               "native_type": "std::string",
               "optional": false,
               "path": "query_family",
-              "semantics": "caller-supplied label, empty allowed natively; no native family validation or measurement"
+              "request_field_review": {
+                "consumer": "cpp/src/local_client.cpp",
+                "native_absence": "model initializer empty; Lua input default/requiredness must not be inferred from native model alone",
+                "operation": "AddPerfBenchmark",
+                "qualification": "source only; runtime and binding validation unqualified"
+              },
+              "semantics": "caller-supplied label, empty allowed natively; no native family validation or measurement; caller-supplied field copied unchanged with complete record; not measured/computed/validated by native, including empty strings or double zero; no adapter finite/sign acceptance policy inferred"
             },
             {
               "ignored": false,
@@ -393,7 +405,13 @@
               "native_type": "std::string",
               "optional": false,
               "path": "dataset_profile",
-              "semantics": "caller-supplied label, empty allowed natively; no native dataset validation"
+              "request_field_review": {
+                "consumer": "cpp/src/local_client.cpp",
+                "native_absence": "model initializer empty; Lua input default/requiredness must not be inferred from native model alone",
+                "operation": "AddPerfBenchmark",
+                "qualification": "source only; runtime and binding validation unqualified"
+              },
+              "semantics": "caller-supplied label, empty allowed natively; no native dataset validation; caller-supplied field copied unchanged with complete record; not measured/computed/validated by native, including empty strings or double zero; no adapter finite/sign acceptance policy inferred"
             },
             {
               "ignored": false,
@@ -404,7 +422,13 @@
               "native_type": "double",
               "optional": false,
               "path": "cold_ms_p50",
-              "semantics": "caller-supplied double, conventional milliseconds; native stores/copies unchanged, no timing/percentile calculation, nonnegative or finite validation; Lua number uses runtime lua_Number precision, binary64 roundtrip unqualified"
+              "request_field_review": {
+                "consumer": "cpp/src/local_client.cpp",
+                "native_absence": "model initializer 0.0; Lua input default/requiredness must not be inferred from native model alone",
+                "operation": "AddPerfBenchmark",
+                "qualification": "source only; runtime and binding validation unqualified"
+              },
+              "semantics": "caller-supplied double, conventional milliseconds; native stores/copies unchanged, no timing/percentile calculation, nonnegative or finite validation; Lua number uses runtime lua_Number precision, binary64 roundtrip unqualified; caller-supplied field copied unchanged with complete record; not measured/computed/validated by native, including empty strings or double zero; no adapter finite/sign acceptance policy inferred"
             },
             {
               "ignored": false,
@@ -415,7 +439,13 @@
               "native_type": "double",
               "optional": false,
               "path": "cold_ms_p95",
-              "semantics": "caller-supplied double, conventional milliseconds; native stores/copies unchanged, no timing/percentile calculation, nonnegative or finite validation; Lua number uses runtime lua_Number precision, binary64 roundtrip unqualified"
+              "request_field_review": {
+                "consumer": "cpp/src/local_client.cpp",
+                "native_absence": "model initializer 0.0; Lua input default/requiredness must not be inferred from native model alone",
+                "operation": "AddPerfBenchmark",
+                "qualification": "source only; runtime and binding validation unqualified"
+              },
+              "semantics": "caller-supplied double, conventional milliseconds; native stores/copies unchanged, no timing/percentile calculation, nonnegative or finite validation; Lua number uses runtime lua_Number precision, binary64 roundtrip unqualified; caller-supplied field copied unchanged with complete record; not measured/computed/validated by native, including empty strings or double zero; no adapter finite/sign acceptance policy inferred"
             },
             {
               "ignored": false,
@@ -426,7 +456,13 @@
               "native_type": "double",
               "optional": false,
               "path": "warm_ms_p50",
-              "semantics": "caller-supplied double, conventional milliseconds; native stores/copies unchanged, no timing/percentile calculation, nonnegative or finite validation; Lua number uses runtime lua_Number precision, binary64 roundtrip unqualified"
+              "request_field_review": {
+                "consumer": "cpp/src/local_client.cpp",
+                "native_absence": "model initializer 0.0; Lua input default/requiredness must not be inferred from native model alone",
+                "operation": "AddPerfBenchmark",
+                "qualification": "source only; runtime and binding validation unqualified"
+              },
+              "semantics": "caller-supplied double, conventional milliseconds; native stores/copies unchanged, no timing/percentile calculation, nonnegative or finite validation; Lua number uses runtime lua_Number precision, binary64 roundtrip unqualified; caller-supplied field copied unchanged with complete record; not measured/computed/validated by native, including empty strings or double zero; no adapter finite/sign acceptance policy inferred"
             },
             {
               "ignored": false,
@@ -437,7 +473,13 @@
               "native_type": "double",
               "optional": false,
               "path": "warm_ms_p95",
-              "semantics": "caller-supplied double, conventional milliseconds; native stores/copies unchanged, no timing/percentile calculation, nonnegative or finite validation; Lua number uses runtime lua_Number precision, binary64 roundtrip unqualified"
+              "request_field_review": {
+                "consumer": "cpp/src/local_client.cpp",
+                "native_absence": "model initializer 0.0; Lua input default/requiredness must not be inferred from native model alone",
+                "operation": "AddPerfBenchmark",
+                "qualification": "source only; runtime and binding validation unqualified"
+              },
+              "semantics": "caller-supplied double, conventional milliseconds; native stores/copies unchanged, no timing/percentile calculation, nonnegative or finite validation; Lua number uses runtime lua_Number precision, binary64 roundtrip unqualified; caller-supplied field copied unchanged with complete record; not measured/computed/validated by native, including empty strings or double zero; no adapter finite/sign acceptance policy inferred"
             },
             {
               "ignored": false,
@@ -448,7 +490,13 @@
               "native_type": "double",
               "optional": false,
               "path": "throughput_qps",
-              "semantics": "caller-supplied double, conventional queries/second; native stores/copies unchanged, no computation or finite/sign/range validation; Lua number precision is runtime-dependent, binary64 roundtrip unqualified"
+              "request_field_review": {
+                "consumer": "cpp/src/local_client.cpp",
+                "native_absence": "model initializer 0.0; Lua input default/requiredness must not be inferred from native model alone",
+                "operation": "AddPerfBenchmark",
+                "qualification": "source only; runtime and binding validation unqualified"
+              },
+              "semantics": "caller-supplied double, conventional queries/second; native stores/copies unchanged, no computation or finite/sign/range validation; Lua number precision is runtime-dependent, binary64 roundtrip unqualified; caller-supplied field copied unchanged with complete record; not measured/computed/validated by native, including empty strings or double zero; no adapter finite/sign acceptance policy inferred"
             },
             {
               "ignored": false,
@@ -459,7 +507,13 @@
               "native_type": "double",
               "optional": false,
               "path": "regression_pct",
-              "semantics": "caller-supplied double, conventional percent; native stores/copies unchanged, no computation or finite/sign/range validation; Lua number precision is runtime-dependent, binary64 roundtrip unqualified"
+              "request_field_review": {
+                "consumer": "cpp/src/local_client.cpp",
+                "native_absence": "model initializer 0.0; Lua input default/requiredness must not be inferred from native model alone",
+                "operation": "AddPerfBenchmark",
+                "qualification": "source only; runtime and binding validation unqualified"
+              },
+              "semantics": "caller-supplied double, conventional percent; native stores/copies unchanged, no computation or finite/sign/range validation; Lua number precision is runtime-dependent, binary64 roundtrip unqualified; caller-supplied field copied unchanged with complete record; not measured/computed/validated by native, including empty strings or double zero; no adapter finite/sign acceptance policy inferred"
             },
             {
               "ignored": false,
@@ -470,7 +524,13 @@
               "native_type": "std::string",
               "optional": false,
               "path": "status",
-              "semantics": "caller-supplied string, empty allowed natively; not a native pass/fail result or validated enum"
+              "request_field_review": {
+                "consumer": "cpp/src/local_client.cpp",
+                "native_absence": "model initializer empty; Lua input default/requiredness must not be inferred from native model alone",
+                "operation": "AddPerfBenchmark",
+                "qualification": "source only; runtime and binding validation unqualified"
+              },
+              "semantics": "caller-supplied string, empty allowed natively; not a native pass/fail result or validated enum; caller-supplied field copied unchanged with complete record; not measured/computed/validated by native, including empty strings or double zero; no adapter finite/sign acceptance policy inferred"
             }
           ]
         }
@@ -14934,7 +14994,13 @@
               "native_type": "std::string",
               "optional": false,
               "path": "project_path",
-              "semantics": "native field preserved; no truthiness substitution"
+              "request_field_review": {
+                "consumer": "cpp/src/local_client.cpp",
+                "native_absence": "model initializer empty; Lua input default/requiredness must not be inferred from native model alone",
+                "operation": "OpenProgram",
+                "qualification": "source only; runtime and binding validation unqualified"
+              },
+              "semantics": "nonempty selects loadProject BEFORE binary branch; program_path forwarded too; empty selects binary route if program_path nonempty, else INVALID_ARGUMENT"
             },
             {
               "ignored": true,
@@ -14945,7 +15011,13 @@
               "native_type": "std::string",
               "optional": false,
               "path": "project_name",
-              "semantics": "native field preserved; no truthiness substitution"
+              "request_field_review": {
+                "consumer": "cpp/src/local_client.cpp",
+                "native_absence": "model initializer empty; Lua input default/requiredness must not be inferred from native model alone",
+                "operation": "OpenProgram",
+                "qualification": "source only; runtime and binding validation unqualified"
+              },
+              "semantics": "ignored native request field: never read; facade rejects presence rather than silently dropping it"
             },
             {
               "ignored": false,
@@ -14956,7 +15028,13 @@
               "native_type": "std::string",
               "optional": false,
               "path": "program_path",
-              "semantics": "native field preserved; no truthiness substitution"
+              "request_field_review": {
+                "consumer": "cpp/src/local_client.cpp",
+                "native_absence": "model initializer empty; Lua input default/requiredness must not be inferred from native model alone",
+                "operation": "OpenProgram",
+                "qualification": "source only; runtime and binding validation unqualified"
+              },
+              "semantics": "project program selector when project_path nonempty; otherwise nonempty binary filename required; not expanded/canonicalized by wrapper; also response program_name preference"
             },
             {
               "ignored": true,
@@ -14967,7 +15045,13 @@
               "native_type": "bool",
               "optional": false,
               "path": "read_only",
-              "semantics": "native field preserved; no truthiness substitution"
+              "request_field_review": {
+                "consumer": "cpp/src/local_client.cpp",
+                "native_absence": "model initializer false; Lua input default/requiredness must not be inferred from native model alone",
+                "operation": "OpenProgram",
+                "qualification": "source only; runtime and binding validation unqualified"
+              },
+              "semantics": "ignored native request field: never read; false is not absence; facade rejects presence rather than promising read-only behavior"
             },
             {
               "ignored": false,
@@ -14978,7 +15062,13 @@
               "native_type": "std::string",
               "optional": false,
               "path": "language_id",
-              "semantics": "native field preserved; no truthiness substitution"
+              "request_field_review": {
+                "consumer": "cpp/src/local_client.cpp",
+                "native_absence": "model initializer empty; Lua input default/requiredness must not be inferred from native model alone",
+                "operation": "OpenProgram",
+                "qualification": "source only; runtime and binding validation unqualified"
+              },
+              "semantics": "binary only: empty selects opts.default_arch (compiler_spec_id then not appended); nonempty plus nonempty compiler_spec_id joins with colon, otherwise used unchanged; project route ignores architecture hints; response echo is not detected metadata"
             },
             {
               "ignored": false,
@@ -14989,7 +15079,13 @@
               "native_type": "std::string",
               "optional": false,
               "path": "compiler_spec_id",
-              "semantics": "native field preserved; no truthiness substitution"
+              "request_field_review": {
+                "consumer": "cpp/src/local_client.cpp",
+                "native_absence": "model initializer empty; Lua input default/requiredness must not be inferred from native model alone",
+                "operation": "OpenProgram",
+                "qualification": "source only; runtime and binding validation unqualified"
+              },
+              "semantics": "binary only appended to nonempty language_id using colon when nonempty; ignored for architecture if language_id empty and on project route; response echoes field regardless"
             },
             {
               "ignored": false,
@@ -15000,7 +15096,13 @@
               "native_type": "std::string",
               "optional": false,
               "path": "format",
-              "semantics": "native field preserved; no truthiness substitution"
+              "request_field_review": {
+                "consumer": "cpp/src/local_client.cpp",
+                "native_absence": "model initializer empty; Lua input default/requiredness must not be inferred from native model alone",
+                "operation": "OpenProgram",
+                "qualification": "source only; runtime and binding validation unqualified"
+              },
+              "semantics": "binary only forwarded unchanged to loadBinary; project route ignores; empty native string preserved, not an independently detected format"
             },
             {
               "ignored": false,
@@ -15011,7 +15113,13 @@
               "native_type": "std::uint64_t",
               "optional": false,
               "path": "base_address",
-              "semantics": "native field preserved; no truthiness substitution"
+              "request_field_review": {
+                "consumer": "cpp/src/local_client.cpp",
+                "native_absence": "model initializer 0; Lua input default/requiredness must not be inferred from native model alone",
+                "operation": "OpenProgram",
+                "qualification": "source only; runtime and binding validation unqualified"
+              },
+              "semantics": "binary only exact uint64 forwarded to loadBinary; project route ignores; zero preserved, no zero-end range sentinel semantics"
             }
           ]
         }
@@ -15435,7 +15543,13 @@
               "native_type": "std::uint64_t",
               "optional": false,
               "path": "address",
-              "semantics": "native field preserved; no truthiness substitution"
+              "request_field_review": {
+                "consumer": "cpp/src/local_client.cpp",
+                "native_absence": "model initializer 0; Lua input default/requiredness must not be inferred from native model alone",
+                "operation": "PatchBytesBatch",
+                "qualification": "source only; runtime and binding validation unqualified"
+              },
+              "semantics": "exact UInt64 patch start forwarded unchanged; no sorting/dedup/coalescing; patches dispatched in input order, later overlaps may overwrite earlier bytes; downstream bounds unqualified"
             },
             {
               "ignored": false,
@@ -15446,7 +15560,13 @@
               "native_type": "std::vector<std::uint8_t>",
               "optional": false,
               "path": "data",
-              "semantics": "native field preserved; no truthiness substitution"
+              "request_field_review": {
+                "consumer": "cpp/src/local_client.cpp",
+                "native_absence": "model initializer empty; Lua input default/requiredness must not be inferred from native model alone",
+                "operation": "PatchBytesBatch",
+                "qualification": "source only; runtime and binding validation unqualified"
+              },
+              "semantics": "binary bytes forwarded unchanged per patch including NUL/empty; native input size cast and total uint32 accumulator require each and summed sizes <=UINT32_MAX for count fidelity; patch count <=UINT32_MAX; no rollback on partial effects"
             }
           ]
         }
@@ -29374,6 +29494,791 @@
     "remaining": "record converter omitted fields enumerated below, not silently supplied as native evidence; defaults/enum behavior need real positive and negative fixtures"
   },
   "qualification": "M0 inventory only; no adapters or runtime qualification",
+  "request_audit": {
+    "direct_argument_review_missing": [
+      {
+        "operation": "AddTypeEnumMember",
+        "path": "type_id_or_path",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "AddTypeEnumMember",
+        "path": "name",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "AddTypeEnumMember",
+        "path": "value",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "AddTypeMember",
+        "path": "parent_type_id_or_path",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "AddTypeMember",
+        "path": "member_name",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "AddTypeMember",
+        "path": "member_type",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "AddTypeMember",
+        "path": "size",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "ApplyDataType",
+        "path": "address",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "ApplyDataType",
+        "path": "data_type",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "CloseProgram",
+        "path": "policy",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "CreateType",
+        "path": "name",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "CreateType",
+        "path": "kind",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "CreateType",
+        "path": "size",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "CreateTypeAlias",
+        "path": "name",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "CreateTypeAlias",
+        "path": "target_type",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "CreateTypeEnum",
+        "path": "name",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "CreateTypeEnum",
+        "path": "width",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "CreateTypeEnum",
+        "path": "is_signed",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "DeleteComment",
+        "path": "address",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "DeleteComment",
+        "path": "kind",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "DeleteDataItem",
+        "path": "address",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "DeletePerfBenchmark",
+        "path": "bench_id",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "DeleteSymbol",
+        "path": "address",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "DeleteSymbol",
+        "path": "name_filter",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "DeleteType",
+        "path": "type_id_or_path",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "DeleteTypeAlias",
+        "path": "type_id_or_path",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "DeleteTypeEnumMember",
+        "path": "type_id_or_path",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "DeleteTypeEnumMember",
+        "path": "ordinal",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "DeleteTypeMember",
+        "path": "parent_type_id_or_path",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "DeleteTypeMember",
+        "path": "ordinal",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "GetComments",
+        "path": "range_start",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "GetComments",
+        "path": "range_end",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "GetComments",
+        "path": "limit",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "GetComments",
+        "path": "offset",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "GetDecompilation",
+        "path": "address",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "GetDecompilation",
+        "path": "timeout_ms",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "GetFunction",
+        "path": "address",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "GetFunctionSignature",
+        "path": "address",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "GetInstruction",
+        "path": "address",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "GetSymbol",
+        "path": "address",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "GetType",
+        "path": "path",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "ListBasicBlocks",
+        "path": "range_start",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "ListBasicBlocks",
+        "path": "range_end",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "ListBasicBlocks",
+        "path": "limit",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "ListBasicBlocks",
+        "path": "offset",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "ListCFGEdges",
+        "path": "range_start",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "ListCFGEdges",
+        "path": "range_end",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "ListCFGEdges",
+        "path": "limit",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "ListCFGEdges",
+        "path": "offset",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "ListDataItems",
+        "path": "range_start",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "ListDataItems",
+        "path": "range_end",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "ListDataItems",
+        "path": "limit",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "ListDataItems",
+        "path": "offset",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "ListDecompilations",
+        "path": "range_start",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "ListDecompilations",
+        "path": "range_end",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "ListDecompilations",
+        "path": "limit",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "ListDecompilations",
+        "path": "offset",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "ListDecompilations",
+        "path": "timeout_ms",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "ListDefinedStrings",
+        "path": "range_start",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "ListDefinedStrings",
+        "path": "range_end",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "ListDefinedStrings",
+        "path": "limit",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "ListDefinedStrings",
+        "path": "offset",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "ListFunctionSignatures",
+        "path": "range_start",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "ListFunctionSignatures",
+        "path": "range_end",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "ListFunctionSignatures",
+        "path": "limit",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "ListFunctionSignatures",
+        "path": "offset",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "ListFunctions",
+        "path": "range_start",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "ListFunctions",
+        "path": "range_end",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "ListFunctions",
+        "path": "limit",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "ListFunctions",
+        "path": "offset",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "ListInstructions",
+        "path": "range_start",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "ListInstructions",
+        "path": "range_end",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "ListInstructions",
+        "path": "limit",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "ListInstructions",
+        "path": "offset",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "ListLeafFunctions",
+        "path": "range_start",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "ListLeafFunctions",
+        "path": "range_end",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "ListLeafFunctions",
+        "path": "limit",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "ListLeafFunctions",
+        "path": "offset",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "ListMemoryBlocks",
+        "path": "limit",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "ListMemoryBlocks",
+        "path": "offset",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "ListSymbols",
+        "path": "range_start",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "ListSymbols",
+        "path": "range_end",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "ListSymbols",
+        "path": "limit",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "ListSymbols",
+        "path": "offset",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "ListTypeAliases",
+        "path": "query",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "ListTypeAliases",
+        "path": "limit",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "ListTypeAliases",
+        "path": "offset",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "ListTypeEnumMembers",
+        "path": "type_id_or_path",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "ListTypeEnumMembers",
+        "path": "limit",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "ListTypeEnumMembers",
+        "path": "offset",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "ListTypeEnums",
+        "path": "query",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "ListTypeEnums",
+        "path": "limit",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "ListTypeEnums",
+        "path": "offset",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "ListTypeMembers",
+        "path": "type_id_or_path",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "ListTypeMembers",
+        "path": "limit",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "ListTypeMembers",
+        "path": "offset",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "ListTypeUnions",
+        "path": "query",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "ListTypeUnions",
+        "path": "limit",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "ListTypeUnions",
+        "path": "offset",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "ListTypes",
+        "path": "query",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "ListTypes",
+        "path": "limit",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "ListTypes",
+        "path": "offset",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "ListXrefs",
+        "path": "range_start",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "ListXrefs",
+        "path": "range_end",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "ListXrefs",
+        "path": "limit",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "ListXrefs",
+        "path": "offset",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "ReadBytes",
+        "path": "address",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "ReadBytes",
+        "path": "length",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "RenameDataItem",
+        "path": "address",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "RenameDataItem",
+        "path": "new_name",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "RenameFunction",
+        "path": "address",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "RenameFunction",
+        "path": "new_name",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "RenameFunctionLocal",
+        "path": "address",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "RenameFunctionLocal",
+        "path": "local_id",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "RenameFunctionLocal",
+        "path": "new_name",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "RenameFunctionParameter",
+        "path": "address",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "RenameFunctionParameter",
+        "path": "ordinal",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "RenameFunctionParameter",
+        "path": "new_name",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "RenameSymbol",
+        "path": "address",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "RenameSymbol",
+        "path": "new_name",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "RenameType",
+        "path": "type_id_or_path",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "RenameType",
+        "path": "new_name",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "RenameTypeEnumMember",
+        "path": "type_id_or_path",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "RenameTypeEnumMember",
+        "path": "ordinal",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "RenameTypeEnumMember",
+        "path": "new_name",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "RenameTypeMember",
+        "path": "parent_type_id_or_path",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "RenameTypeMember",
+        "path": "ordinal",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "RenameTypeMember",
+        "path": "new_name",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "SetComment",
+        "path": "address",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "SetComment",
+        "path": "kind",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "SetComment",
+        "path": "text",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "SetFunctionLocalType",
+        "path": "address",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "SetFunctionLocalType",
+        "path": "local_id",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "SetFunctionLocalType",
+        "path": "data_type",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "SetFunctionParameterType",
+        "path": "address",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "SetFunctionParameterType",
+        "path": "ordinal",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "SetFunctionParameterType",
+        "path": "data_type",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "SetFunctionSignature",
+        "path": "address",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "SetFunctionSignature",
+        "path": "prototype",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "SetTypeAliasTarget",
+        "path": "type_id_or_path",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "SetTypeAliasTarget",
+        "path": "target_type",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "SetTypeEnumMemberComment",
+        "path": "type_id_or_path",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "SetTypeEnumMemberComment",
+        "path": "ordinal",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "SetTypeEnumMemberComment",
+        "path": "comment",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "SetTypeEnumMemberValue",
+        "path": "type_id_or_path",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "SetTypeEnumMemberValue",
+        "path": "ordinal",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "SetTypeEnumMemberValue",
+        "path": "value",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "SetTypeMemberComment",
+        "path": "parent_type_id_or_path",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "SetTypeMemberComment",
+        "path": "ordinal",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "SetTypeMemberComment",
+        "path": "comment",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "SetTypeMemberType",
+        "path": "parent_type_id_or_path",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "SetTypeMemberType",
+        "path": "ordinal",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "SetTypeMemberType",
+        "path": "member_type",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "Shutdown",
+        "path": "policy",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "WriteBytes",
+        "path": "address",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      },
+      {
+        "operation": "WriteBytes",
+        "path": "data",
+        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
+      }
+    ],
+    "nested_field_review_count": 20
+  },
   "semantic_audit": {
     "included_operations": 70,
     "remaining_gates": [
