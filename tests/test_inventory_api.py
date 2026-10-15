@@ -51,7 +51,7 @@ class InventoryTests(unittest.TestCase):
                     self.assertIn('must not be inferred',f['request_field_review']['native_absence'])
 
     def test_page_argument_domains_are_not_native_unbounded_defaults(self):
-        self.assertEqual(len(self.data['request_audit']['direct_arguments_reviewed']),36)
+        self.assertEqual(len(self.data['request_audit']['direct_arguments_reviewed']),62)
         for op in self.ops.values():
             if 'page_wrapper_review' not in op:continue
             args={a['name']:a for a in op['request']}
@@ -59,6 +59,17 @@ class InventoryTests(unittest.TestCase):
             self.assertIn('offset>=n yields empty',args['offset']['semantics'])
             self.assertIn('offset+limit<=INT_MAX',args['offset']['semantics'])
             self.assertIn('validation-only',args['limit']['semantics'])
+
+    def test_range_consumption_and_constant_empty_exception(self):
+        args={a['name']:a for a in self.ops['ListXrefs']['request']}
+        self.assertIn('function ENTRY',args['range_end']['semantics'])
+        self.assertIn('cannot select only address zero',args['range_end']['semantics'])
+        self.assertIn('start>end',args['range_start']['semantics'])
+        for a in self.ops['ListDefinedStrings']['request']:
+            self.assertTrue(a['ignored'])
+            self.assertIn('no discovery iterator',a['semantics'])
+        args={a['name']:a for a in self.ops['ListInstructions']['request']}
+        self.assertIn('beginning exactly at range_start',args['range_start']['semantics'])
 
     def test_preserved_red_reproducer(self):
         # Exact acceptance trigger from red; stronger checks below prevent treating
@@ -309,6 +320,10 @@ class InventoryTests(unittest.TestCase):
             with self.assertRaises(AssertionError):
                 module.inventory(root)
             local.write_text(local_original)
+            adapter.write_text(adapter_original.replace('range_end == 0 ? kAllRangeEnd : range_end', 'range_end == 1 ? kAllRangeEnd : range_end'))
+            with self.assertRaises(AssertionError):
+                module.inventory(root)
+            adapter.write_text(adapter_original)
             header = root/'cpp/src/local_arch_adapter.hpp'
             header.write_text(header.read_text().replace('std::map<std::pair<std::uint64_t, int>, std::string> comments_', 'std::multimap<std::pair<std::uint64_t, int>, std::string> comments_'))
             with self.assertRaises(AssertionError):

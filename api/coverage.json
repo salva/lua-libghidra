@@ -3738,19 +3738,31 @@
       "request": [
         {
           "binding_default": "0",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_arch_adapter.cpp",
+            "helper": "getComments / normalize_range_end",
+            "qualification": "source only; zero/max/reversed boundary fixture slots unqualified"
+          },
           "ignored": false,
           "lua": "exact UInt64",
           "name": "range_start",
           "native_type": "std::uint64_t",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "Lua default 0; exact UInt64 inclusive lower bound; zero is literal start, not absence; selects record start addresses, not overlap of whole record extent; start>end after normalization yields empty native candidates, not wrapper INVALID_ARGUMENT; filter precedes pagination (signature missing records still filtered after candidate page); runtime address-space/storage bounds unqualified"
         },
         {
           "binding_default": "UINT64_MAX (explicit zero sentinel only where documented)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_arch_adapter.cpp",
+            "helper": "getComments / normalize_range_end",
+            "qualification": "source only; zero/max/reversed boundary fixture slots unqualified"
+          },
           "ignored": false,
           "lua": "exact UInt64",
           "name": "range_end",
           "native_type": "std::uint64_t",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "Lua default UINT64_MAX; exact UInt64 inclusive upper bound; explicit zero normalized to UINT64_MAX at native normalize_range_end; cannot select only address zero with end=0; selects record start addresses, not overlap of whole record extent; start>end after normalization yields empty native candidates, not wrapper INVALID_ARGUMENT; filter precedes pagination (signature missing records still filtered after candidate page); runtime address-space/storage bounds unqualified"
         },
         {
           "binding_default": "100",
@@ -6990,19 +7002,31 @@
       "request": [
         {
           "binding_default": "0",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_arch_adapter.cpp",
+            "helper": "listFunctions / normalize_range_end",
+            "qualification": "source only; zero/max/reversed boundary fixture slots unqualified"
+          },
           "ignored": false,
           "lua": "exact UInt64",
           "name": "range_start",
           "native_type": "std::uint64_t",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "Lua default 0; exact UInt64 inclusive lower bound; zero is literal start, not absence; selects function ENTRY addresses, not returned block/xref endpoints or whole function extent; start>end after normalization yields empty native candidates, not wrapper INVALID_ARGUMENT; filter precedes pagination (signature missing records still filtered after candidate page); runtime address-space/storage bounds unqualified"
         },
         {
           "binding_default": "UINT64_MAX (explicit zero sentinel only where documented)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_arch_adapter.cpp",
+            "helper": "listFunctions / normalize_range_end",
+            "qualification": "source only; zero/max/reversed boundary fixture slots unqualified"
+          },
           "ignored": false,
           "lua": "exact UInt64",
           "name": "range_end",
           "native_type": "std::uint64_t",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "Lua default UINT64_MAX; exact UInt64 inclusive upper bound; explicit zero normalized to UINT64_MAX at native normalize_range_end; cannot select only address zero with end=0; selects function ENTRY addresses, not returned block/xref endpoints or whole function extent; start>end after normalization yields empty native candidates, not wrapper INVALID_ARGUMENT; filter precedes pagination (signature missing records still filtered after candidate page); runtime address-space/storage bounds unqualified"
         },
         {
           "binding_default": "100",
@@ -7599,19 +7623,31 @@
       "request": [
         {
           "binding_default": "0",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_arch_adapter.cpp",
+            "helper": "listFunctions / normalize_range_end",
+            "qualification": "source only; zero/max/reversed boundary fixture slots unqualified"
+          },
           "ignored": false,
           "lua": "exact UInt64",
           "name": "range_start",
           "native_type": "std::uint64_t",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "Lua default 0; exact UInt64 inclusive lower bound; zero is literal start, not absence; selects function ENTRY addresses, not returned block/xref endpoints or whole function extent; start>end after normalization yields empty native candidates, not wrapper INVALID_ARGUMENT; filter precedes pagination (signature missing records still filtered after candidate page); runtime address-space/storage bounds unqualified"
         },
         {
           "binding_default": "UINT64_MAX (explicit zero sentinel only where documented)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_arch_adapter.cpp",
+            "helper": "listFunctions / normalize_range_end",
+            "qualification": "source only; zero/max/reversed boundary fixture slots unqualified"
+          },
           "ignored": false,
           "lua": "exact UInt64",
           "name": "range_end",
           "native_type": "std::uint64_t",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "Lua default UINT64_MAX; exact UInt64 inclusive upper bound; explicit zero normalized to UINT64_MAX at native normalize_range_end; cannot select only address zero with end=0; selects function ENTRY addresses, not returned block/xref endpoints or whole function extent; start>end after normalization yields empty native candidates, not wrapper INVALID_ARGUMENT; filter precedes pagination (signature missing records still filtered after candidate page); runtime address-space/storage bounds unqualified"
         },
         {
           "binding_default": "100",
@@ -7826,19 +7862,31 @@
       "request": [
         {
           "binding_default": "0",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_arch_adapter.cpp",
+            "helper": "listDataItems / normalize_range_end",
+            "qualification": "source only; zero/max/reversed boundary fixture slots unqualified"
+          },
           "ignored": false,
           "lua": "exact UInt64",
           "name": "range_start",
           "native_type": "std::uint64_t",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "Lua default 0; exact UInt64 inclusive lower bound; zero is literal start, not absence; selects record start addresses, not overlap of whole record extent; start>end after normalization yields empty native candidates, not wrapper INVALID_ARGUMENT; filter precedes pagination (signature missing records still filtered after candidate page); runtime address-space/storage bounds unqualified"
         },
         {
           "binding_default": "UINT64_MAX (explicit zero sentinel only where documented)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_arch_adapter.cpp",
+            "helper": "listDataItems / normalize_range_end",
+            "qualification": "source only; zero/max/reversed boundary fixture slots unqualified"
+          },
           "ignored": false,
           "lua": "exact UInt64",
           "name": "range_end",
           "native_type": "std::uint64_t",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "Lua default UINT64_MAX; exact UInt64 inclusive upper bound; explicit zero normalized to UINT64_MAX at native normalize_range_end; cannot select only address zero with end=0; selects record start addresses, not overlap of whole record extent; start>end after normalization yields empty native candidates, not wrapper INVALID_ARGUMENT; filter precedes pagination (signature missing records still filtered after candidate page); runtime address-space/storage bounds unqualified"
         },
         {
           "binding_default": "100",
@@ -8117,19 +8165,31 @@
       "request": [
         {
           "binding_default": "0",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_arch_adapter.cpp",
+            "helper": "listFunctions / normalize_range_end",
+            "qualification": "source only; zero/max/reversed boundary fixture slots unqualified"
+          },
           "ignored": false,
           "lua": "exact UInt64",
           "name": "range_start",
           "native_type": "std::uint64_t",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "Lua default 0; exact UInt64 inclusive lower bound; zero is literal start, not absence; selects function ENTRY addresses, not returned block/xref endpoints or whole function extent; start>end after normalization yields empty native candidates, not wrapper INVALID_ARGUMENT; filter precedes pagination (signature missing records still filtered after candidate page); runtime address-space/storage bounds unqualified"
         },
         {
           "binding_default": "UINT64_MAX (explicit zero sentinel only where documented)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_arch_adapter.cpp",
+            "helper": "listFunctions / normalize_range_end",
+            "qualification": "source only; zero/max/reversed boundary fixture slots unqualified"
+          },
           "ignored": false,
           "lua": "exact UInt64",
           "name": "range_end",
           "native_type": "std::uint64_t",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "Lua default UINT64_MAX; exact UInt64 inclusive upper bound; explicit zero normalized to UINT64_MAX at native normalize_range_end; cannot select only address zero with end=0; selects function ENTRY addresses, not returned block/xref endpoints or whole function extent; start>end after normalization yields empty native candidates, not wrapper INVALID_ARGUMENT; filter precedes pagination (signature missing records still filtered after candidate page); runtime address-space/storage bounds unqualified"
         },
         {
           "binding_default": "100",
@@ -8603,35 +8663,59 @@
       "request": [
         {
           "binding_default": "0",
-          "ignored": false,
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "helper": "ListDefinedStrings",
+            "qualification": "source only; fidelity and negative runtime slots unqualified"
+          },
+          "ignored": true,
           "lua": "exact UInt64",
           "name": "range_start",
           "native_type": "std::uint64_t",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "native never reads this argument; loaded constant-empty success ignores range and pages, no zero-sentinel/filter/cursor behavior observed; Lua typed/bounded input validation remains separate before dispatch; known-string positive fixture must preserve empty fidelity exception, unloaded/validation negatives remain unqualified; no discovery iterator"
         },
         {
           "binding_default": "UINT64_MAX (explicit zero sentinel only where documented)",
-          "ignored": false,
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "helper": "ListDefinedStrings",
+            "qualification": "source only; fidelity and negative runtime slots unqualified"
+          },
+          "ignored": true,
           "lua": "exact UInt64",
           "name": "range_end",
           "native_type": "std::uint64_t",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "native never reads this argument; loaded constant-empty success ignores range and pages, no zero-sentinel/filter/cursor behavior observed; Lua typed/bounded input validation remains separate before dispatch; known-string positive fixture must preserve empty fidelity exception, unloaded/validation negatives remain unqualified; no discovery iterator"
         },
         {
           "binding_default": "100",
-          "ignored": false,
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "helper": "ListDefinedStrings",
+            "qualification": "source only; fidelity and negative runtime slots unqualified"
+          },
+          "ignored": true,
           "lua": "checked Lua integer (int)",
           "name": "limit",
           "native_type": "int",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "native never reads this argument; loaded constant-empty success ignores range and pages, no zero-sentinel/filter/cursor behavior observed; Lua typed/bounded input validation remains separate before dispatch; known-string positive fixture must preserve empty fidelity exception, unloaded/validation negatives remain unqualified; no discovery iterator"
         },
         {
           "binding_default": "0",
-          "ignored": false,
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "helper": "ListDefinedStrings",
+            "qualification": "source only; fidelity and negative runtime slots unqualified"
+          },
+          "ignored": true,
           "lua": "checked Lua integer (int)",
           "name": "offset",
           "native_type": "int",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "native never reads this argument; loaded constant-empty success ignores range and pages, no zero-sentinel/filter/cursor behavior observed; Lua typed/bounded input validation remains separate before dispatch; known-string positive fixture must preserve empty fidelity exception, unloaded/validation negatives remain unqualified; no discovery iterator"
         }
       ],
       "response": {
@@ -9271,19 +9355,31 @@
       "request": [
         {
           "binding_default": "0",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_arch_adapter.cpp",
+            "helper": "listFunctions / normalize_range_end",
+            "qualification": "source only; zero/max/reversed boundary fixture slots unqualified"
+          },
           "ignored": false,
           "lua": "exact UInt64",
           "name": "range_start",
           "native_type": "std::uint64_t",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "Lua default 0; exact UInt64 inclusive lower bound; zero is literal start, not absence; selects function ENTRY addresses, not returned block/xref endpoints or whole function extent; start>end after normalization yields empty native candidates, not wrapper INVALID_ARGUMENT; filter precedes pagination (signature missing records still filtered after candidate page); runtime address-space/storage bounds unqualified"
         },
         {
           "binding_default": "UINT64_MAX (explicit zero sentinel only where documented)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_arch_adapter.cpp",
+            "helper": "listFunctions / normalize_range_end",
+            "qualification": "source only; zero/max/reversed boundary fixture slots unqualified"
+          },
           "ignored": false,
           "lua": "exact UInt64",
           "name": "range_end",
           "native_type": "std::uint64_t",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "Lua default UINT64_MAX; exact UInt64 inclusive upper bound; explicit zero normalized to UINT64_MAX at native normalize_range_end; cannot select only address zero with end=0; selects function ENTRY addresses, not returned block/xref endpoints or whole function extent; start>end after normalization yields empty native candidates, not wrapper INVALID_ARGUMENT; filter precedes pagination (signature missing records still filtered after candidate page); runtime address-space/storage bounds unqualified"
         },
         {
           "binding_default": "100",
@@ -9850,19 +9946,31 @@
       "request": [
         {
           "binding_default": "0",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_arch_adapter.cpp",
+            "helper": "listFunctions / normalize_range_end",
+            "qualification": "source only; zero/max/reversed boundary fixture slots unqualified"
+          },
           "ignored": false,
           "lua": "exact UInt64",
           "name": "range_start",
           "native_type": "std::uint64_t",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "Lua default 0; exact UInt64 inclusive lower bound; zero is literal start, not absence; selects function ENTRY addresses, not returned block/xref endpoints or whole function extent; start>end after normalization yields empty native candidates, not wrapper INVALID_ARGUMENT; filter precedes pagination (signature missing records still filtered after candidate page); runtime address-space/storage bounds unqualified"
         },
         {
           "binding_default": "UINT64_MAX (explicit zero sentinel only where documented)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_arch_adapter.cpp",
+            "helper": "listFunctions / normalize_range_end",
+            "qualification": "source only; zero/max/reversed boundary fixture slots unqualified"
+          },
           "ignored": false,
           "lua": "exact UInt64",
           "name": "range_end",
           "native_type": "std::uint64_t",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "Lua default UINT64_MAX; exact UInt64 inclusive upper bound; explicit zero normalized to UINT64_MAX at native normalize_range_end; cannot select only address zero with end=0; selects function ENTRY addresses, not returned block/xref endpoints or whole function extent; start>end after normalization yields empty native candidates, not wrapper INVALID_ARGUMENT; filter precedes pagination (signature missing records still filtered after candidate page); runtime address-space/storage bounds unqualified"
         },
         {
           "binding_default": "100",
@@ -10347,19 +10455,31 @@
       "request": [
         {
           "binding_default": "0",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_arch_adapter.cpp",
+            "helper": "listInstructions / normalize_range_end",
+            "qualification": "source only; zero/max/reversed boundary fixture slots unqualified"
+          },
           "ignored": false,
           "lua": "exact UInt64",
           "name": "range_start",
           "native_type": "std::uint64_t",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "Lua default 0; exact UInt64 inclusive lower bound; zero is literal start, not absence; selects instruction START addresses in a linear sweep beginning exactly at range_start, not discovered mapped regions; decoder gaps/zero length/wrap terminate; start>end after normalization yields empty native candidates, not wrapper INVALID_ARGUMENT; filter precedes pagination (signature missing records still filtered after candidate page); runtime address-space/storage bounds unqualified"
         },
         {
           "binding_default": "UINT64_MAX (explicit zero sentinel only where documented)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_arch_adapter.cpp",
+            "helper": "listInstructions / normalize_range_end",
+            "qualification": "source only; zero/max/reversed boundary fixture slots unqualified"
+          },
           "ignored": false,
           "lua": "exact UInt64",
           "name": "range_end",
           "native_type": "std::uint64_t",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "Lua default UINT64_MAX; exact UInt64 inclusive upper bound; explicit zero normalized to UINT64_MAX at native normalize_range_end; cannot select only address zero with end=0; selects instruction START addresses in a linear sweep beginning exactly at range_start, not discovered mapped regions; decoder gaps/zero length/wrap terminate; start>end after normalization yields empty native candidates, not wrapper INVALID_ARGUMENT; filter precedes pagination (signature missing records still filtered after candidate page); runtime address-space/storage bounds unqualified"
         },
         {
           "binding_default": "100",
@@ -10640,19 +10760,31 @@
       "request": [
         {
           "binding_default": "0",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_arch_adapter.cpp",
+            "helper": "listFunctions / normalize_range_end",
+            "qualification": "source only; zero/max/reversed boundary fixture slots unqualified"
+          },
           "ignored": false,
           "lua": "exact UInt64",
           "name": "range_start",
           "native_type": "std::uint64_t",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "Lua default 0; exact UInt64 inclusive lower bound; zero is literal start, not absence; selects function ENTRY addresses, not returned block/xref endpoints or whole function extent; start>end after normalization yields empty native candidates, not wrapper INVALID_ARGUMENT; filter precedes pagination (signature missing records still filtered after candidate page); runtime address-space/storage bounds unqualified"
         },
         {
           "binding_default": "UINT64_MAX (explicit zero sentinel only where documented)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_arch_adapter.cpp",
+            "helper": "listFunctions / normalize_range_end",
+            "qualification": "source only; zero/max/reversed boundary fixture slots unqualified"
+          },
           "ignored": false,
           "lua": "exact UInt64",
           "name": "range_end",
           "native_type": "std::uint64_t",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "Lua default UINT64_MAX; exact UInt64 inclusive upper bound; explicit zero normalized to UINT64_MAX at native normalize_range_end; cannot select only address zero with end=0; selects function ENTRY addresses, not returned block/xref endpoints or whole function extent; start>end after normalization yields empty native candidates, not wrapper INVALID_ARGUMENT; filter precedes pagination (signature missing records still filtered after candidate page); runtime address-space/storage bounds unqualified"
         },
         {
           "binding_default": "100",
@@ -12363,19 +12495,31 @@
       "request": [
         {
           "binding_default": "0",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_arch_adapter.cpp",
+            "helper": "listSymbols / normalize_range_end",
+            "qualification": "source only; zero/max/reversed boundary fixture slots unqualified"
+          },
           "ignored": false,
           "lua": "exact UInt64",
           "name": "range_start",
           "native_type": "std::uint64_t",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "Lua default 0; exact UInt64 inclusive lower bound; zero is literal start, not absence; selects record start addresses, not overlap of whole record extent; start>end after normalization yields empty native candidates, not wrapper INVALID_ARGUMENT; filter precedes pagination (signature missing records still filtered after candidate page); runtime address-space/storage bounds unqualified"
         },
         {
           "binding_default": "UINT64_MAX (explicit zero sentinel only where documented)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_arch_adapter.cpp",
+            "helper": "listSymbols / normalize_range_end",
+            "qualification": "source only; zero/max/reversed boundary fixture slots unqualified"
+          },
           "ignored": false,
           "lua": "exact UInt64",
           "name": "range_end",
           "native_type": "std::uint64_t",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "Lua default UINT64_MAX; exact UInt64 inclusive upper bound; explicit zero normalized to UINT64_MAX at native normalize_range_end; cannot select only address zero with end=0; selects record start addresses, not overlap of whole record extent; start>end after normalization yields empty native candidates, not wrapper INVALID_ARGUMENT; filter precedes pagination (signature missing records still filtered after candidate page); runtime address-space/storage bounds unqualified"
         },
         {
           "binding_default": "100",
@@ -14636,19 +14780,31 @@
       "request": [
         {
           "binding_default": "0",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_arch_adapter.cpp",
+            "helper": "listFunctions / normalize_range_end",
+            "qualification": "source only; zero/max/reversed boundary fixture slots unqualified"
+          },
           "ignored": false,
           "lua": "exact UInt64",
           "name": "range_start",
           "native_type": "std::uint64_t",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "Lua default 0; exact UInt64 inclusive lower bound; zero is literal start, not absence; selects function ENTRY addresses, not returned block/xref endpoints or whole function extent; start>end after normalization yields empty native candidates, not wrapper INVALID_ARGUMENT; filter precedes pagination (signature missing records still filtered after candidate page); runtime address-space/storage bounds unqualified"
         },
         {
           "binding_default": "UINT64_MAX (explicit zero sentinel only where documented)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_arch_adapter.cpp",
+            "helper": "listFunctions / normalize_range_end",
+            "qualification": "source only; zero/max/reversed boundary fixture slots unqualified"
+          },
           "ignored": false,
           "lua": "exact UInt64",
           "name": "range_end",
           "native_type": "std::uint64_t",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "Lua default UINT64_MAX; exact UInt64 inclusive upper bound; explicit zero normalized to UINT64_MAX at native normalize_range_end; cannot select only address zero with end=0; selects function ENTRY addresses, not returned block/xref endpoints or whole function extent; start>end after normalization yields empty native candidates, not wrapper INVALID_ARGUMENT; filter precedes pagination (signature missing records still filtered after candidate page); runtime address-space/storage bounds unqualified"
         },
         {
           "binding_default": "100",
@@ -29863,16 +30019,6 @@
         "reason": "direct argument consumption/default/domain review not yet independently reconciled"
       },
       {
-        "operation": "GetComments",
-        "path": "range_start",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "GetComments",
-        "path": "range_end",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
         "operation": "GetDecompilation",
         "path": "address",
         "reason": "direct argument consumption/default/domain review not yet independently reconciled"
@@ -29908,118 +30054,8 @@
         "reason": "direct argument consumption/default/domain review not yet independently reconciled"
       },
       {
-        "operation": "ListBasicBlocks",
-        "path": "range_start",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "ListBasicBlocks",
-        "path": "range_end",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "ListCFGEdges",
-        "path": "range_start",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "ListCFGEdges",
-        "path": "range_end",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "ListDataItems",
-        "path": "range_start",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "ListDataItems",
-        "path": "range_end",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "ListDecompilations",
-        "path": "range_start",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "ListDecompilations",
-        "path": "range_end",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
         "operation": "ListDecompilations",
         "path": "timeout_ms",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "ListDefinedStrings",
-        "path": "range_start",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "ListDefinedStrings",
-        "path": "range_end",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "ListDefinedStrings",
-        "path": "limit",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "ListDefinedStrings",
-        "path": "offset",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "ListFunctionSignatures",
-        "path": "range_start",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "ListFunctionSignatures",
-        "path": "range_end",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "ListFunctions",
-        "path": "range_start",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "ListFunctions",
-        "path": "range_end",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "ListInstructions",
-        "path": "range_start",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "ListInstructions",
-        "path": "range_end",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "ListLeafFunctions",
-        "path": "range_start",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "ListLeafFunctions",
-        "path": "range_end",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "ListSymbols",
-        "path": "range_start",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "ListSymbols",
-        "path": "range_end",
         "reason": "direct argument consumption/default/domain review not yet independently reconciled"
       },
       {
@@ -30050,16 +30086,6 @@
       {
         "operation": "ListTypes",
         "path": "query",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "ListXrefs",
-        "path": "range_start",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "ListXrefs",
-        "path": "range_end",
         "reason": "direct argument consumption/default/domain review not yet independently reconciled"
       },
       {
@@ -30316,6 +30342,14 @@
     "direct_arguments_reviewed": [
       {
         "operation": "GetComments",
+        "path": "range_start"
+      },
+      {
+        "operation": "GetComments",
+        "path": "range_end"
+      },
+      {
+        "operation": "GetComments",
         "path": "limit"
       },
       {
@@ -30324,6 +30358,14 @@
       },
       {
         "operation": "ListBasicBlocks",
+        "path": "range_start"
+      },
+      {
+        "operation": "ListBasicBlocks",
+        "path": "range_end"
+      },
+      {
+        "operation": "ListBasicBlocks",
         "path": "limit"
       },
       {
@@ -30332,6 +30374,14 @@
       },
       {
         "operation": "ListCFGEdges",
+        "path": "range_start"
+      },
+      {
+        "operation": "ListCFGEdges",
+        "path": "range_end"
+      },
+      {
+        "operation": "ListCFGEdges",
         "path": "limit"
       },
       {
@@ -30340,6 +30390,14 @@
       },
       {
         "operation": "ListDataItems",
+        "path": "range_start"
+      },
+      {
+        "operation": "ListDataItems",
+        "path": "range_end"
+      },
+      {
+        "operation": "ListDataItems",
         "path": "limit"
       },
       {
@@ -30348,6 +30406,14 @@
       },
       {
         "operation": "ListDecompilations",
+        "path": "range_start"
+      },
+      {
+        "operation": "ListDecompilations",
+        "path": "range_end"
+      },
+      {
+        "operation": "ListDecompilations",
         "path": "limit"
       },
       {
@@ -30355,12 +30421,44 @@
         "path": "offset"
       },
       {
+        "operation": "ListDefinedStrings",
+        "path": "range_start"
+      },
+      {
+        "operation": "ListDefinedStrings",
+        "path": "range_end"
+      },
+      {
+        "operation": "ListDefinedStrings",
+        "path": "limit"
+      },
+      {
+        "operation": "ListDefinedStrings",
+        "path": "offset"
+      },
+      {
+        "operation": "ListFunctionSignatures",
+        "path": "range_start"
+      },
+      {
+        "operation": "ListFunctionSignatures",
+        "path": "range_end"
+      },
+      {
         "operation": "ListFunctionSignatures",
         "path": "limit"
       },
       {
         "operation": "ListFunctionSignatures",
         "path": "offset"
+      },
+      {
+        "operation": "ListFunctions",
+        "path": "range_start"
+      },
+      {
+        "operation": "ListFunctions",
+        "path": "range_end"
       },
       {
         "operation": "ListFunctions",
@@ -30372,11 +30470,27 @@
       },
       {
         "operation": "ListInstructions",
+        "path": "range_start"
+      },
+      {
+        "operation": "ListInstructions",
+        "path": "range_end"
+      },
+      {
+        "operation": "ListInstructions",
         "path": "limit"
       },
       {
         "operation": "ListInstructions",
         "path": "offset"
+      },
+      {
+        "operation": "ListLeafFunctions",
+        "path": "range_start"
+      },
+      {
+        "operation": "ListLeafFunctions",
+        "path": "range_end"
       },
       {
         "operation": "ListLeafFunctions",
@@ -30393,6 +30507,14 @@
       {
         "operation": "ListMemoryBlocks",
         "path": "offset"
+      },
+      {
+        "operation": "ListSymbols",
+        "path": "range_start"
+      },
+      {
+        "operation": "ListSymbols",
+        "path": "range_end"
       },
       {
         "operation": "ListSymbols",
@@ -30449,6 +30571,14 @@
       {
         "operation": "ListTypes",
         "path": "offset"
+      },
+      {
+        "operation": "ListXrefs",
+        "path": "range_start"
+      },
+      {
+        "operation": "ListXrefs",
+        "path": "range_end"
       },
       {
         "operation": "ListXrefs",

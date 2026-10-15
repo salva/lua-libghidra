@@ -652,3 +652,19 @@ output/count from proving exhaustion. Validation-only rejection does not advance
 binding generation. New helper-clamp drift probe is rejected. Thirty-three tests
 pass; direct request/factory/final grammar accounting remains incomplete and all
 runtime boundary/iterator evidence stays unqualified.
+
+## Range consumption and ignored string pages (thirtieth increment)
+
+Twenty-two range paths now independently reconcile exact UInt64 inclusive bounds,
+zero-end normalization at the shared helper, and actual consumer filters. Zero
+start is literal; zero end means UINT64_MAX, so end=0 cannot select only address
+zero. Reversed normalized ranges yield empty candidates rather than a wrapper
+error. Function-based graph/xref/batch/signature pages filter entries, not output
+endpoints/extents; data/symbol/comment pages filter record starts. Instruction
+sweep begins exactly at the requested start and stops at gaps, not discovery.
+Four ListDefinedStrings arguments are explicitly never read: loaded constant-empty
+success is the fidelity exception, not a real filter/page/zero-sentinel pipeline;
+no discovery iterator. Validation remains separate. All runtime boundary slots
+stay unqualified. Direct request ledger: 62 reviewed, 94 remaining; factory and
+non-first-slice grammar review still open. Thirty-four focused tests pass,
+including independent normalization-sentinel drift rejection.
