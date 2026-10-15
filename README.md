@@ -1,17 +1,25 @@
 # lua-libghidra
 
-Lua bindings for [0xeb/libghidra](https://github.com/0xeb/libghidra), designed
-around its C++ SDK and inspired by its Python API. Specification and design are
-drafted for review; no binding implementation or Saivage deployment exists yet.
+Proposed local Lua bindings for [libghidra by Elias Bachaalany](https://github.com/0xeb/libghidra).
+These AI-assisted design documents are informed by upstream API, documentation
+and source review; no binding implementation or runtime qualification exists yet.
+Upstream is not represented as endorsing this project.
 
-## Project documents
+- [Specification](docs/SPEC.md): two public surfaces, values and behavior.
+- [Design](docs/DESIGN.md): ownership, pagination and reproducible native build.
+- [Coverage](docs/COVERAGE.md): named native operations and release tiers.
+- [Plan](docs/PLAN.md): readiness and release qualification gates.
+- [Review index](docs/reviews/00-INDEX.md): dispositions and pending review.
+- [Operations](workflows/OPERATIONS.md): automation policy.
 
-- [Specification](docs/SPEC.md): proposed scope, Lua API and acceptance criteria.
-- [Design](docs/DESIGN.md): integration architecture and binding-tool comparison.
-- [Plan](docs/PLAN.md): sequenced implementation work and validation gates.
-- [Automation operations](workflows/OPERATIONS.md): Saivage setup and launch policy.
+Baseline: Linux x86-64, Lua 5.4, C++20, native local engine, CMake/LuaRocks.
+sol2 is provisional pending ownership validation. HTTP is deferred; SWIG excluded.
+The SDK proposes faithful `libghidra.lowlevel` responses and a small `libghidra`
+Session facade sharing one owner. Python is a qualification oracle, not a runtime
+dependency.
 
-The proposed baseline is Lua 5.4 on Linux x86-64, C++20 with sol2, the local
-backend, CMake and LuaRocks. HTTP is out of scope for now; SWIG must not be used.
-The plan records decisions to confirm before
-implementation. Python supplies API inspiration, not a runtime dependency.
+Upstream pin: `d51ca813ae1b6b59519551a9be8c0b1ad74d862d`.
+Its [Human-Origin Source License v1.0](https://github.com/0xeb/libghidra/blob/d51ca813ae1b6b59519551a9be8c0b1ad74d862d/LICENSE)
+permits unchanged dependency use and conditionally restricts derivative wrappers.
+Applicability and binding licensing remain M0 decisions before implementation;
+see SPEC for the distinction and distribution obligations.

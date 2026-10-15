@@ -1,185 +1,169 @@
-# Lua binding design
+# Design
 
-Status: proposed, 2026-10-15. Implements [SPEC.md](SPEC.md). Technology selection
-is a reasoned recommendation, not a completed build benchmark.
+Proposed implementation of [SPEC.md](SPEC.md); no experiments are claimed passed.
+Use a minimal C++20 adapter and small Lua facade. sol2 is provisional, contingent
+on M1's C-built Lua longjmp audit; direct Lua C API is the fallback. No SWIG,
+HTTP abstraction, Python bridge or record-object hierarchy.
 
-## 1. Decision: C++20 + sol2 + a small Lua facade
+## 1. Layers and ownership
 
-Use **sol2 (the sol3 API)** for explicit native module registration and owning
-userdata, CMake/Ninja for building, and LuaRocks for source installation. Wrap
-libghidra's native LocalClient through its public C++ interface and local factory.
-SWIG is explicitly prohibited, including as a fallback or code-generation tool.
-Keep Lua conversions explicit;
-do not expose STL containers, StatusOr, inheritance trees or native model objects.
+`lua/libghidra/lowlevel.lua` exposes faithful envelopes;
+`lua/libghidra/init.lua` supplies Session/open, direct reads, check and iterators.
+Both call private `libghidra._native`. `src/client.*` owns a unique IClient,
+generation and closed state. `src/convert/` contains explicit field converters;
+`src/bindings/` groups operations. No borrowed storage, JSON/protobuf round-trip
+or second conversion implementation. Handwritten adapters first; `api/coverage.*`
+will track native operation, public mappings, field types, defaults, tier,
+limitations and positive/negative evidence.
 
-| Approach | Fit and tradeoff | Decision |
-| --- | --- | --- |
-| sol2 | Native C++ ownership, tables, userdata, multiple returns and existing Lua-state integration; template compile cost and error-boundary care required | Preferred for this C++20 SDK |
-| Direct Lua C API | Maximum control and minimal dependency; manual stack/lifetime/error bookkeeping across a broad record API | Narrow escape hatch; fallback if spike fails |
-| SWIG Lua | Excluded by operator direction | Must not be used |
-| LuaBridge3 | Plausible lighter C++ registration alternative; still needs the same explicit record/result adapters | Reconsider only for a measured sol2 blocker |
-| LuaJIT FFI | Good for stable C ABIs; upstream exposes a C++ API and target is standard Lua | Would require a new C shim and exclude primary runtime |
-| Pure Lua HTTP/protobuf | Lightweight remote-only possibility | Duplicates transport and cannot deliver local native backend |
-| Python bridge / nanobind | Existing Python implementation can be a reference | nanobind targets Python, not Lua; extra runtime is unnecessary |
+Userdata contains a live handle until GC. close and __close reset its unique
+native owner but do not destroy the enclosing C++ handle; __gc destroys that
+handle once, with a construction marker for partial publication. All aliases
+share it. __close ignores its error argument and never raises, preserving an
+unrelated active error. Explicit close_program is separately fallible.
 
-Use a pinned stable sol2 release after a compiler/Lua 5.4 smoke spike; do not use
-a floating branch. Enable argument/type safety in all supported builds. Do not
-choose a library based on its self-published performance rankings. The spike must
-demonstrate multi-result errors, exact integers, nested table conversion,
-idempotent destruction and ordinary C-built Lua error handling before expansion.
+A process guard rejects a second live client and serializes construction,
+dispatch and destruction across Lua states. Do not hold a mutex across a Lua
+allocation that can longjmp. Test client B after A closes, reversed state
+teardown and repeated construction on different states. Audit selected-engine
+initialization/destruction and global registries before any relaxation;
+LocalClient's per-instance mutex proves no cross-client safety.
 
-## 2. Layers and proposed layout
+## 2. C-Lua error boundary
 
-```text
-lua/libghidra/init.lua      public facade, check(), lazy iterators
-lua/libghidra/types.lua     LuaLS annotations (no runtime class hierarchy)
-src/module.cpp             luaopen_libghidra__native, registration
-src/client.*               owning ClientHandle and dispatch boundaries
-src/uint64.*               exact value userdata and checked conversions
-src/convert/               request validators and response-to-table converters
-src/bindings/              service-group adapters
-tests/lua/                 public contract and lifecycle tests
-tests/native/              native adapter/fault-injection tests
-tests/integration/         real local-backend scenarios
-tests/fixtures/            authored source + reproducible binary manifests
-examples/                  small executable Lua examples
-api/coverage.*             reviewed operation/field coverage manifest
-cmake/                     dependency and packaging integration
-```
+A protected trampoline alone does **not** protect destructors in jumped frames.
+All frames between an allocating/raising Lua API and its protected boundary
+must have only trivial automatic storage. No sol2 temporary, std::string,
+container, lock guard, exception object or other live RAII owner may be skipped.
 
-`require("libghidra")` loads the facade, which loads `libghidra._native`.
-The native module attaches to the caller's state via a state view; it never owns
-or closes that state. Registration returns one module table without global writes.
-Keep all Lua references state-local and destroy them before the host closes Lua.
+1. An outer native owner holds request/result/error storage. Raw Lua validation
+   and marshalling run through protected C API trampolines using trivial locals
+   and pointers to that owner. Owners are outside jumped frames, not merely
+   in a trampoline's own C++ locals.
+2. Native request construction and SDK dispatch use RAII in a phase with no
+   allocating/raising Lua calls. Catch exceptions into owned error data;
+   leave catch frames before Lua marshalling or raising.
+3. Response/error conversion uses protected raw allocating API trampolines.
+   After pcall returns, release native owners normally. Propagate a Lua runtime
+   error only from an outer trivial frame after all RAII scopes have ended.
+   Never call lua_error from a live RAII or catch frame.
+4. Userdata publication reserves Lua storage and installs a GC-capable metatable
+   before native ownership transfer; every failure edge has exactly one owner.
+   Audit module initialization, metatable creation, request validation, nested
+   responses, errors, UInt64 construction and finalizers, not just dispatch.
 
-`ClientHandle` owns one `unique_ptr<IClient>` and closed/backend metadata. It
-does not expose raw pointers. Responses are copied into Lua values; requests are
-converted to owning native structures before dispatch. Release native temporary
-storage after conversion. No client-owned views escape into Lua.
+M1 records an all-frame audit and allocator-failure sweeps at each allocation
+boundary using ordinary C-built Lua. Prove no leaks, double destruction or skipped
+destructors under ASan/UBSan. If sol2 hides unsafe frames, use direct C API there
+or throughout; never waive the gate based on pcall. check and iterator raising
+live in Lua after native return.
 
-## 3. Call pipeline and errors
+## 3. Pagination and generation
 
-1. Validate receiver and options, unknown keys, required fields and numeric ranges.
-2. Build the appropriate native request without coercing strings to booleans or
-   floats to integers. Keep missing optional fields distinct from explicit defaults.
-3. Invoke one public upstream operation, catching native exceptions.
-4. Convert StatusOr failure to `nil, Error`; require a present value on success,
-   otherwise return `INTERNAL`. Preserve backend status evidence.
-5. Convert results with explicit field converters; no protobuf round-trip or JSON
-   intermediate representation.
+Apply SPEC compound integer validation to every paged adapter, including
+ListInstructions' native limit+offset scan argument. Native paginate also casts
+container size to int: qualification must establish supported collection sizes
+below INT_MAX; this release does not support larger native collections.
+pool_size=1 is mandatory: multi-engine CFG/block aggregation appends by completion
+order, so repeated scans can duplicate/omit records across pages; state reload
+also targets only slot 0. Per-page sorting cannot solve that problem.
 
-Do not bind naked upstream methods and rely on sol2 defaults to establish this
-contract. Return tuples/variadic results deliberately. `check()` and iterator
-error raising happen in Lua after native calls return.
+Each iterator has a fixed extraction field, canonical identity and qualification
+fixture. Compound keys use exact UInt64 hex and length-delimited text:
 
-Lua built as C may use longjmp for errors, including allocation errors. RAII and
-sol2 are not a blanket solution. The spike must audit allocating Lua API calls
-and protected-call placement: do not allow a Lua longjmp to skip live C++ objects
-requiring destruction. Use a protected marshalling trampoline with native result
-ownership held outside the jumped frames, or Lua-owned finalizable storage;
-keep raw error-raising trampolines free of nontrivial local destructors. Inject
-allocator failures at conversion points. Avoid calling Lua callbacks during SDK
-execution. If safe integration cannot be demonstrated, use a small direct C API
-boundary with the same protected ownership scheme rather than changing public API.
+| Page family | Identity (native field meaning) |
+| --- | --- |
+| Functions, leaves | entry_address |
+| Signatures, decompilations | function_entry_address |
+| Instructions, data items, defined strings | Address |
+| Symbols | Address plus name (and namespace if returned) |
+| Memory blocks | start_address plus name |
+| Types, aliases, unions, enums | path_name (full native type path) |
+| Type members | parent_type_path_name plus ordinal |
+| Enum members | type_path_name plus ordinal |
+| Basic blocks | function_entry, start_address, end_address |
+| CFG edges | function_entry, src_block_start, dst_block_start, edge_kind |
+| Xrefs | Source, destination and reference kind |
+| Comments | Address and comment kind |
 
-## 4. Conversion and coverage strategy
+Resolve these semantic identities to exact model fields in the manifest before
+enabling a family. If identity or stable serial order is insufficient, provide
+pages only until qualified. Retain the previous page's ordered identities and
+last ordering key, bounded by page size. Reject oversized pages, repeated pages,
+duplicate identities within a page and non-advancing/overlapping order as
+`PAGINATION_STALLED`; do not silently deduplicate. Verify native order (not
+necessarily numeric) and define the comparator per operation in the manifest.
+One offending page ends iteration: no unbounded retries/history set. Advance by
+actual count with checked arithmetic. Without reliable continuation metadata,
+stop on an empty page, not a short page. No implicit unbounded request.
 
-Central converters own UInt64, bytes, enums, optionals, arrays and error objects.
-Use small per-record/per-request converters over public headers. Every service
-adapter must list supported input keys, defaults, output fields and error cases.
-Use the coverage manifest to check registration and documentation drift.
+All calls share native dispatch classification (read/mutation/lifecycle).
+Generation invalidation happens before mutating/lifecycle dispatch, including
+native() calls; iterators check before buffered yields too. Test low-level
+mutation during high-level iteration, close/reopen, failed partial mutations,
+identical adjacent pages and serial repeated scans. No global page cache.
 
-Start with handwritten adapters. If repetitive conversion dominates, introduce a
-small declarative field manifest and deterministic generator with checked output;
-do not introduce a full C++ parser or automatically bind all headers. Protobuf is
-the wire contract, not necessarily the complete C++/Python convenience API.
+## 4. Local integration and persistence
 
-Canonical uint64 storage is `std::uint64_t`. Parsing checks digits, prefixes,
-trailing bytes and overflow before multiplication/addition. `to_integer()` checks
-`LUA_MAXINTEGER`; signed values are never reinterpreted as unsigned. UInt64 value
-comparisons accept UInt64 operands; explicit construction avoids surprising mixed
-string/number equality. Arithmetic helpers reject negative offsets and overflow.
+Use public local factory and IClient. SPEC's matrix is normative for surface
+behavior. Verify save/reopen separately for types, symbols, comments, signatures,
+data, bytes and benchmarks; saved=true never means every category persisted.
+DiscardProgram's true flag is a no-op acknowledgment, not rollback. Preserve
+native flags. Ignored members cannot imply read-only/deadline guarantees.
+Explicit architecture hints match in Lua, native and Python qualification runs.
 
-Core method names preserve Python discoverability. Document each intentional
-shape difference, e.g. `close_program{policy="save"}` rather than a Python enum
-class and `get_decompilation(address, {timeout_ms=...})` rather than keyword args.
-The registry must resolve C++/Python coverage differences explicitly rather than
-claiming that one language's feature list proves the other backend supports it.
+## 5. Reproducible native build
 
-## 5. Local backend and lifecycle
+Use CMake >=3.26 and C++20. Source builds **must** link
+`libghidra::local_whole`, not just libghidra_local: registration-only architecture
+objects otherwise disappear from archives. Installed packages export
+`libghidra::local`; recreate a consumer whole-archive interface wrapper (CMake
+LINK_LIBRARY:WHOLE_ARCHIVE) for the local archive and verify registration/link
+closure. A release SDK with HTTP-only libraries is insufficient.
 
-Expose only the local factory and supported local operations. No connection
-factory, URL/auth/retry configuration, HTTP dispatch or remote-host lifecycle
-is part of this implementation. Do not build a transport abstraction for possible
-future HTTP support; retaining the upstream IClient pointer is sufficient.
+M0 dependency lock records URLs, revisions, archive SHA-256, options and licenses
+independently for:
 
-Local factory options mirror native options: `ghidra_root`, `state_path`,
-`default_arch`, `pool_size`. Verify native open/detection semantics rather than
-porting Python's format-detection implementation. A bare binary does not imply
-full function discovery: upstream documents loader-symbol-only enumeration and
-address-driven decompilation. Some methods require analyzed project data or a
-live host. Those live-only operations are out of scope. Report `NOT_SUPPORTED`
-faithfully for input-dependent local limitations and expose capabilities.
+- libghidra `d51ca813ae1b6b59519551a9be8c0b1ad74d862d`;
+- Ghidra engine source `2035b8153afaf7ce2edde24a2c80b62bbcf5127f`;
+- compiled Sleigh archive: upstream `specs12.1.3` is a candidate, **not qualified**
+  until digest and engine compatibility are verified. Source lacks compiled .sla;
+- protobuf exactly v29.3 (checked-in generated code requires 5029003), compatible
+  Abseil, httplib v0.16.3, and a tested sol2 release if retained;
+- Lua ABI, toolchain and all transitive libraries.
 
-`close()` destroys the client once; GC and `__close` call the same nonthrowing
-release path. Explicit program/project close methods return operation errors and
-accept documented policies. Tests establish any state_path autosave effects.
-No remote host is managed. No background tasks are created initially.
+Provide source-directory/FetchContent source overrides for every fetched input
+and a clean network-disabled build. Set PIC for every archive used by the module;
+upstream Python-build PIC settings are insufficient. Initial Linux profile
+explicitly requires BFD with pinned compatible binutils, not ambient optional
+detection. Record actual BFD/libiberty/compression-library licenses and source
+obligations; require PIC-capable archives or shared libraries, fail configuration
+for unqualified system archives. Do not label BFD permissive. No-BFD profiles
+are deferred pending separate loader qualification.
 
-Out-of-band HTTP cancellation and headless launch are deferred. A blocking Lua
-call cannot be interrupted by another coroutine on the same state; exposing an
-apparently asynchronous cancel method would misrepresent this limitation.
+Require explicit spec root (`ghidra_root`) in qualification. Native embedded spec
+extraction uses `$HOME/.ghidracpp/cache/sleigh`; document writable HOME cache
+requirements instead of relying on a warm developer cache. Test cold, warm,
+missing and unwritable cache/spec roots. Clearly diagnose unavailable engines/specs.
 
-## 6. Pagination
+Compile against the selected Lua ABI without bundling another VM. Test dynamic
+Lua hosts and statically embedded hosts exporting Lua symbols; inspect module
+dependencies/symbol resolution to prove functions resolve to the host VM.
+Test require from a fresh directory after CMake and LuaRocks staged installation.
 
-Page calls preserve response envelopes. Iterators specify which record field to
-read and fetch only when the current page is exhausted. Advance offsets by
-actual records returned, not requested page size. Use upstream total/continuation
-metadata where available; absent reliable metadata, continue until an empty page
-rather than treating a server-capped short page as completion. Detect repeated
-non-progress pages and offset overflow and raise a structured pagination error.
-Pin these rules per operation; do not assume all response models share metadata.
-Holding an iterator keeps its handle alive but does not prevent explicit close;
-the next fetch on a closed client fails. No global page cache.
+## 6. Evidence sources
 
-## 7. Build and distribution
+Paths refer to the SPEC pin in
+[upstream](https://github.com/0xeb/libghidra/tree/d51ca813ae1b6b59519551a9be8c0b1ad74d862d):
 
-Use CMake >=3.26 and C++20, matching the inspected upstream. Pin libghidra, sol2,
-and the compatible Ghidra source/spec revision in a dependency lock document.
-Prefer an explicitly supplied SDK/source directory; offer a reproducible pinned
-fetch path and a documented offline build path. Verify actual exported CMake
-target names during the spike rather than guessing package configuration names.
+- `cpp/include/libghidra/{api,models,local}.hpp`: public types/default stubs.
+- `cpp/src/local_client.cpp`: paginate, ignored options/timeouts, operations,
+  no-op discard, save/close and batches.
+- `cpp/src/decompiler_pool.cpp`, `cpp/src/local_arch_adapter.cpp`: pool ordering,
+  primary state, engine access and persistence.
+- `cpp/CMakeLists.txt`, `cpp/bindings/CMakeLists.txt`: whole-archive linkage and
+  dependencies; generated protobuf headers record 5029003.
+- `LICENSE`: HOS terms, distinct from third-party licenses.
 
-Upstream source targets are `libghidra_client` and `libghidra_local`. Local builds
-require `GHIDRA_SOURCE_DIR`; runtime specs may be embedded. Set PIC for every
-static dependency linked into the Lua shared module: upstream currently enables
-global PIC for Python builds, which does not automatically cover this binding.
-Compile against exactly the selected Lua ABI and never bundle a second Lua VM.
-Account for protobuf/Abseil and HTTP dependencies and C++ ABI compatibility.
-
-LuaRocks uses a CMake-backed source rockspec and installs facade, module, type
-annotations, docs and notices in normal Lua locations. Test staged installation
-and dynamic-library discovery from a fresh working directory. Package metadata
-reports binding version, upstream commit, Lua ABI and local engine/spec details.
-The local engine is required, not an optional package feature. Avoid relying on
-Python wheel binaries as a C++ SDK.
-
-## 8. Verification and sources
-
-Use CTest to orchestrate plain Lua assertion tests, native tests and integration
-tiers; no large test framework is required initially. Add LuaLS annotations and
-StyLua formatting. Native sanitizers and injected errors cover ownership; real
-fixtures and the real local engine cover behavior. Python LocalClient is an optional development oracle,
-never a dependency of the installed module. Record dependency/compiler versions,
-fixture hashes and engine/spec versions with comparisons.
-
-Inspected upstream sources at the pinned commit:
-
-- [Python API and examples](https://github.com/0xeb/libghidra/tree/d51ca813ae1b6b59519551a9be8c0b1ad74d862d/python)
-- [C++ public interface](https://github.com/0xeb/libghidra/tree/d51ca813ae1b6b59519551a9be8c0b1ad74d862d/cpp/include/libghidra)
-- [C++ behavior/build docs](https://github.com/0xeb/libghidra/tree/d51ca813ae1b6b59519551a9be8c0b1ad74d862d/cpp)
-- [License](https://github.com/0xeb/libghidra/blob/d51ca813ae1b6b59519551a9be8c0b1ad74d862d/LICENSE)
-- [sol2 capabilities](https://sol2.readthedocs.io/en/latest/features.html)
-- [Lua 5.4 manual](https://www.lua.org/manual/5.4/manual.html)
-
-No binding build or integration experiment has been performed during this design.
+These are source evidence, not executed acceptance. M0/M1 must inspect selected
+engine globals and exact archives in addition to this wrapper tree.

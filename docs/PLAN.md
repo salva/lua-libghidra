@@ -1,117 +1,105 @@
-# Implementation plan
+# Implementation and qualification plan
 
-Status: proposed, 2026-10-15. No implementation milestone is complete.
-[SPEC.md](SPEC.md) defines acceptance; [DESIGN.md](DESIGN.md) owns architecture.
-Deployment and Run remain in [operations](../workflows/OPERATIONS.md).
+Proposed, 2026-10-15. No milestone has passed. [SPEC](SPEC.md) is the contract;
+[DESIGN](DESIGN.md) the architecture; [coverage](COVERAGE.md) the scope.
+Deployment policy stays in [operations](../workflows/OPERATIONS.md).
 
-## M0 — Confirm baseline and create a reproducible development environment
+## M0 — Decisions, dependencies and real fixture readiness
 
-- Confirm `0xeb/libghidra` is the intended upstream and approve the Lua 5.4 /
-  Linux-first scope, error convention and UInt64 representation.
-- Record the inspected commit and select compatible Ghidra specs, sol2 release,
-  compiler and dependency pins. Record applicable upstream packaging terms and
-  the operator's binding-license choice before publishing packages.
-- Inventory Python LocalClient methods, native local-supported methods,
-  request/response fields and local limitations in `api/coverage.*`; classify release tiers and
-  explicit deferrals. Resolve contradictory upstream docs with narrow experiments.
-- Provision build tools, Lua development headers and local engine dependencies.
-  Prepare reproducible local binary and analyzed-project fixtures as needed.
+Confirm baseline/platform/tier and license applicability before implementation.
+Record binding license, intended distribution, dependency sources/digests,
+spec compatibility, deterministic BFD profile and notices. Inventory every native
+and Python local operation and every request/response field in `api/coverage.*`.
+Mark HTTP-only stubs excluded; they are not local implementations.
 
-Exit: dependency setup is repeatable; manifest identifies exact first-slice calls
-and fields. Product choices are recorded, not silently inferred by implementers.
+Create authored redistributable binary source and compiler/flags/source-hash/
+binary-hash manifest with known symbols, bytes and instruction expectations.
+Generate a real analyzed-project fixture (development Java/Ghidra allowed),
+record generator versions, commands and artifact hashes. Exercise leaf queries,
+xrefs, comments and data. Prove native local loading and completed nonfallback
+decompilation with expected semantics on known code. Nonempty pseudocode or an
+unsupported response is not readiness.
 
-## M1 — Binding-tool and ownership spike
+Exit: repeatable offline inputs and positive native evidence for binary and
+analyzed fixtures; open engine/spec/licensing gates block M1 rather than waiting
+for packaging. This document does not authorize implementation.
 
-- Build/load `libghidra._native` through the public facade in standalone Lua and
-  an existing host state. Use C++20, pinned sol2 and PIC-correct dependencies.
-- Implement UInt64, Error, ClientHandle, close/GC/`__close`, and conversions for
-  one representative nested response plus a binary string.
-- Exercise real local construction/status and missing-spec/input diagnostics;
-  test the required local-enabled build profile.
-- Validate protected error boundaries, caught native exceptions, invalid inputs,
-  allocator failures, repeated create/close/state teardown and sanitizers.
-- Record build time, dependency impact and the tool decision. If sol2 is unsuitable,
-  change the internal boundary based on evidence while retaining the Lua contract.
-  SWIG must not be used in the spike, fallback or later implementation.
+## M1 — Build, ownership and value boundary
 
-Exit: installed module loads, the exact-integer tests pass, and cleanup remains
-correct on failure. Stop broad adapter expansion until this boundary is sound.
+Build source/installed-SDK whole-archive paths with PIC; test standalone and
+shared/static embedded C-built Lua. Implement exact values, errors and shared
+handle. Qualify every-frame longjmp safety, allocation-failure publication and
+conversion, native exceptions, __close error preservation, surviving aliases,
+double-finalization resistance and ASan/UBSan. Test process guard across states,
+client B after A close, and engine globals/init/destruction. Retain sol2 only if
+audit passes; otherwise direct C API with unchanged public surfaces. No SWIG.
 
-## M2 — First real end-to-end slice
+Exit: reproducible local-enabled installed load, no second VM, exact numeric
+conversion and safe failure/teardown; no broad adapters before this gate passes.
 
-- Add open/close program, status/capabilities, function listing/lookup, read_bytes,
-  instruction listing and get_decompilation with all returned metadata.
-- Compile a small authored fixture, record symbols/addresses and exercise the
-  offline path at known addresses without requiring full function discovery.
-- Run equivalent reads through Python LocalClient and Lua against the same local
-  fixtures. Adapt local exploration scenarios into original Lua examples using
-  tables and explicit error handling.
-- Compare selected Python/C++ and Lua results; establish genuine fallback and
-  unsupported-operation cases without pretending these are successful analysis.
+## M2 — Both surfaces, first usable slice
 
-Exit: SPEC acceptance 1–5 passes for this slice using the real local engine.
-Demonstrate a working example from an installed module.
+Implement first-slice coverage on lowlevel and Session: factory/open/close,
+status/capabilities, function lookup/pages/iterator, bytes, instructions and
+decompilation. Preserve full responses and missing-record/unsupported distinctions.
+Exercise known bytes/instructions and semantic nonfallback decompilation using
+M0 fixtures. Qualify Python oracle with identical pin/architecture/specs; compare
+normalized fields, not formatting. Test false/zero, optional/nested values,
+uint64 boundaries, zero-based ordinals, flags and outcome presence.
 
-## M3 — Core API and Lua conveniences
+Exit: positive real-engine cases through both surfaces, installed examples and
+negative/fallback diagnostics; no runtime Python/Java/network dependency.
 
-- Add remaining core reads, revisions, save/discard, renames and writes.
-- Add lazy core iterators with per-method pagination semantics and failure tests.
-- Verify response lifetime after close, request validation and copied-table
-  mutation isolation. Exercise fixture writes/renames and save/reopen behavior
-  on disposable programs; compare original and modified state deliberately.
-- Publish a Python-to-Lua mapping guide, LuaLS annotations and practical examples
-  for binary exploration, xrefs, CFG, comments and decompilation quality checks.
+## M3 — Core operations and robust iteration
 
-Exit: all core rows have passing local-backend evidence or demonstrated
-upstream `NOT_SUPPORTED` behavior; core release acceptance is met.
+Implement core inventory; register fields and dispatch mutation classifications
+as each lands. Test compound INT_MAX boundaries, positive page sizes,
+empty/exact/partial/capped pages, stable serial CFG/block order, stalled pages,
+errors and early exit. Test generation invalidation across native escape-hatch
+calls and before buffered yields. No universal snapshot claim.
 
-## M4 — Full local coverage
+Verify per-category save/reopen on disposable fixtures, no-op discard,
+empty-state-path facade save rejection versus native behavior, nonpersistent
+byte overlay and destructor no-save. Every supported core row needs a positive
+test; negative NOT_SUPPORTED alone cannot satisfy it.
 
-- Complete the remaining operations supported by the pinned native LocalClient,
-  including supported edits and listing/analysis queries identified in M0.
-- Expand by coherent service groups, each including request validation, all
-  response fields, examples, backend evidence and coverage updates.
-- Preserve live-only distinctions. Do not fabricate local equivalents for
-  Ghidra project management, analysis or other missing backend operations.
-- Reconcile the full local operation inventory. Every omission is explicit, with
-  a reason and release disposition; no claim of Python parity from method counts.
+Exit: all core rows qualified/documented. Route core release through M5 now;
+M4 is not a prerequisite for a labelled core release.
 
-Exit: the full local coverage target is evidenced. HTTP, async, headless launch,
-CLI duplication and additional platforms remain separate future scope.
+## M4 — Full native local coverage
 
-## M5 — Packaging and release qualification
+Complete full-tier inventory: native batch decompilation, project-backed leaves,
+type/enum/member edits, parameter/local edits, data edits, patch batches,
+performance records and local Shutdown. Each service slice includes positive
+supported cases, errors, complete field maps and low/high-layer dispositions.
+Preserve actual batch semantics without invented atomicity. Reconcile public
+headers against LocalClient overrides and Python; each omission has a tier/reason.
 
-- Finalize CMake install/export integration and source rockspec; build local-enabled
-  packages from clean directories with pinned dependencies.
-- Run standalone/embedded Lua, boundary/lifecycle/sanitizer and real local-engine
-  suites plus normalized Python comparisons. Validate examples after installation.
-- Verify dependency discovery, license/notices, version metadata and offline
-  build instructions. Record tested engine/spec/Lua/compiler combinations.
-- Publish API reference, coverage report, explicit limitations and changelog.
-  Add Lua 5.3 only after the same compatibility gates pass for its ABI.
+Exit: every local operation accounted for and supported cases demonstrated.
 
-Exit: all release acceptance criteria pass; unexecuted integration gates prevent
-a fully validated release claim. Publication itself requires operator direction.
+## M5 — Required for every release tier
 
-## Execution conventions
+From clean directories run CMake/LuaRocks offline install, standalone/embedded
+hosts, values, lifecycle/fault injection/sanitizers, pagination, real binary and
+analyzed fixtures and required normalized Python comparisons. Test cold and
+unwritable caches, explicit specs and runtime network/Java absence. Record exact
+compiler/engine/spec/Lua/dependency identities and actual linked licenses/PIC.
+Ship API reference, manifest, examples, limitations, license/source links and
+visible attribution. Missing tests block qualification; publication requires
+operator direction. Lua 5.3 independently passes equivalent gates.
 
-Follow M0 → M1 → M2 → M3 → M4 → M5; M3 may produce a clearly labelled core
-release before full local coverage. Keep changes small and commit each implemented
-slice with its meaningful tests. Update coverage as methods land, not at the end.
-Build/package work starts in M1 and is hardened in M5.
+Sequence: M0 → M1 → M2 → M3 → M5 (core), then M4 → M5 (full), or M4 before the
+first M5 for a full-first release. Commit each implemented slice promptly.
 
-Use authored fixtures rather than sibling PM assets. Keep target work inside
-this repository and its isolated environment. Report environment blockers with
-the exact pending gate; continue independent docs/conversion work where useful.
-Do not replace real-backend verification with mocks or remove acceptance criteria
-to make a milestone appear complete.
+## Review completion and operator decisions
 
-## Decisions to confirm before implementation
+Writer corrections are not reviewer approval. Original reviewers must re-review
+their findings, then fresh independent rounds must return no unresolved findings
+before the owning session declares convergence. Record each round and stable
+dispositions in [the index](reviews/00-INDEX.md); never invent review results.
+This writer does not spawn reviewers.
 
-1. Upstream identity and chosen commit/release baseline.
-2. Linux x86-64 / Lua 5.4 first, with Lua 5.3 and other platforms later.
-3. Local-only scope is confirmed by operator direction; HTTP is deferred.
-4. sol2 recommendation, subject to the bounded M1 build/ownership spike. SWIG is
-   prohibited by operator direction.
-5. Always-exact UInt64 values and `result` / `nil, error` convention.
-6. Binding license/distribution intent and desired first-release coverage tier.
+Remaining operator decisions: approve two-surface/default restrictions, confirm
+upstream/platform and first release tier, choose binding license/intended
+distribution and record applicability determination. Technical experiments are
+objective M0/M1 gates above, not substitute operator choices.
