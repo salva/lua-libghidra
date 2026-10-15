@@ -1367,6 +1367,9 @@
       "python_reconciliation": {
         "binding_body_sha256": "ac1b42a1fd40cc8ac6a11b24b660afc28990667de3385745091cb158dca7e607",
         "binding_extraction": "closed",
+        "binding_return_expressions": [
+          "resp.closed"
+        ],
         "fidelity": "Python returns scalar bool, unlike faithful Lua response envelope; no extra native fields currently present",
         "method": "close_program",
         "native_operation": "CloseProgram",
@@ -3849,6 +3852,9 @@
       "python_reconciliation": {
         "binding_body_sha256": "d0202b3086da645cdc2cc2f97362b179a2cb6d43c2c2a6537aabc555e5c6fe60",
         "binding_extraction": "discarded",
+        "binding_return_expressions": [
+          "unwrap(self.DiscardProgram()).discarded"
+        ],
         "fidelity": "Python returns scalar bool, unlike faithful Lua response envelope; no extra native fields currently present",
         "method": "discard_program",
         "native_operation": "DiscardProgram",
@@ -4031,6 +4037,9 @@
       "python_reconciliation": {
         "binding_body_sha256": "aef93e9a1ff262faf3059d30fbb383bd8d7f3d7fe5f0235a150843b7f80fce71",
         "binding_extraction": "complete dict/array",
+        "binding_return_expressions": [
+          "to_list(unwrap(self.GetCapabilities()))"
+        ],
         "method": "get_capabilities",
         "native_operation": "GetCapabilities",
         "native_response_fields_not_exported": [],
@@ -4417,6 +4426,10 @@
       "python_reconciliation": {
         "binding_body_sha256": "290eaeecafbf51ee1bc3860695b636b38486d1e15406a79a6b8ad7a12bc4c98a",
         "binding_extraction": "decompilation",
+        "binding_return_expressions": [
+          "to_dict(resp.decompilation.value())",
+          "nb::none()"
+        ],
         "method": "get_decompilation",
         "native_operation": "GetDecompilation",
         "native_response_fields_not_exported": [],
@@ -4928,6 +4941,10 @@
       "python_reconciliation": {
         "binding_body_sha256": "90209e6055ddd593b1a79eee50c06f1e81d4a4f79f9cfa01e6e27f7c0fc81d2d",
         "binding_extraction": "function",
+        "binding_return_expressions": [
+          "to_dict(resp.function.value())",
+          "nb::none()"
+        ],
         "method": "get_function",
         "native_operation": "GetFunction",
         "native_response_fields_not_exported": [],
@@ -5627,6 +5644,10 @@
       "python_reconciliation": {
         "binding_body_sha256": "faa5f9a873931a33f8b3d85fa538ecabeceb4445b3b7c5eb36e2acb3e3cd5e19",
         "binding_extraction": "instruction",
+        "binding_return_expressions": [
+          "to_dict(resp.instruction.value())",
+          "nb::none()"
+        ],
         "method": "get_instruction",
         "native_operation": "GetInstruction",
         "native_response_fields_not_exported": [],
@@ -6129,6 +6150,9 @@
       "python_reconciliation": {
         "binding_body_sha256": "6329cfdfcaee7220eec21e6d4d449f4f98b1cafa7790aae8f56c574cdd5e2f0b",
         "binding_extraction": "modification_number",
+        "binding_return_expressions": [
+          "unwrap(self.GetRevision()).modification_number"
+        ],
         "method": "get_revision",
         "native_operation": "GetRevision",
         "native_response_fields_not_exported": [],
@@ -6314,6 +6338,9 @@
       "python_reconciliation": {
         "binding_body_sha256": "4d19feeca1159a9fbf3b749799f9db694af92a0d10f318404786bc03e631fc4d",
         "binding_extraction": "complete dict/array",
+        "binding_return_expressions": [
+          "to_dict(unwrap(self.GetStatus()))"
+        ],
         "method": "get_status",
         "native_operation": "GetStatus",
         "native_response_fields_not_exported": [],
@@ -6525,6 +6552,10 @@
       "python_reconciliation": {
         "binding_body_sha256": "6287250268bdf5d5f73cb8eaff5d20f22c8d83968dd16cb9dc89e7903e7be838",
         "binding_extraction": "symbol",
+        "binding_return_expressions": [
+          "to_dict(resp.symbol.value())",
+          "nb::none()"
+        ],
         "method": "get_symbol",
         "native_operation": "GetSymbol",
         "native_response_fields_not_exported": [],
@@ -6879,6 +6910,10 @@
       "python_reconciliation": {
         "binding_body_sha256": "c6a32c7f8a3a95a19f506a0e0ae1fa65bbc55c9f2bdb2b7c32561ae0b3f54a1e",
         "binding_extraction": "type",
+        "binding_return_expressions": [
+          "to_dict(resp.type.value())",
+          "nb::none()"
+        ],
         "fidelity": "Python returns bare TypeRecord/None, not GetTypeResponse; Lua lowlevel must preserve envelope",
         "method": "get_type",
         "native_operation": "GetType",
@@ -7603,6 +7638,9 @@
       "python_reconciliation": {
         "binding_body_sha256": "3b8100ae3f774bd000747a3a832ad42598edc19db85a81604e0ab1eb08d646d8",
         "binding_extraction": "blocks",
+        "binding_return_expressions": [
+          "to_list(unwrap(self.ListBasicBlocks(range_start, range_end, limit, offset)).blocks)"
+        ],
         "fidelity": "Python defaults limit=0 (native unbounded), unlike binding positive bounded limit=100; no such unbounded request on Lua surfaces",
         "method": "list_basic_blocks",
         "native_operation": "ListBasicBlocks",
@@ -8241,6 +8279,9 @@
       "python_reconciliation": {
         "binding_body_sha256": "354391623c1479c431675d471a84da47cd3b4fc01c30ea3e432d509254d5d768",
         "binding_extraction": "edges",
+        "binding_return_expressions": [
+          "to_list(unwrap(self.ListCFGEdges(range_start, range_end, limit, offset)).edges)"
+        ],
         "fidelity": "Python defaults limit=0 (native unbounded), unlike binding positive bounded limit=100; no such unbounded request on Lua surfaces",
         "method": "list_cfg_edges",
         "native_operation": "ListCFGEdges",
@@ -8806,6 +8847,9 @@
       "python_reconciliation": {
         "binding_body_sha256": "3ceaffe850787309ab7beb763fe708b93498a9c7b08ca63fafa54f52ad9c53b3",
         "binding_extraction": "decompilations",
+        "binding_return_expressions": [
+          "result"
+        ],
         "fidelity": "Python defaults limit=0 (native unbounded), unlike binding positive bounded limit=100; no such unbounded request on Lua surfaces",
         "method": "list_decompilations",
         "native_operation": "ListDecompilations",
@@ -9351,6 +9395,9 @@
       "python_reconciliation": {
         "binding_body_sha256": "a2277bd568d905d06901351aacc2a10f7343c1244d5dd9a57fc2f7e83b46580d",
         "binding_extraction": "strings",
+        "binding_return_expressions": [
+          "to_list(unwrap(self.ListDefinedStrings(range_start, range_end, limit, offset)).strings)"
+        ],
         "fidelity": "Python defaults limit=0 (native unbounded), unlike binding positive bounded limit=100; no such unbounded request on Lua surfaces",
         "method": "list_defined_strings",
         "native_operation": "ListDefinedStrings",
@@ -10643,6 +10690,9 @@
       "python_reconciliation": {
         "binding_body_sha256": "2ee5c9f792c7bf59a7f8eab9fed9d39491935e6bfb8e4fa6181d7f983af2de88",
         "binding_extraction": "functions",
+        "binding_return_expressions": [
+          "to_list(resp.functions)"
+        ],
         "fidelity": "Python defaults limit=0 (native unbounded), unlike binding positive bounded limit=100; no such unbounded request on Lua surfaces",
         "method": "list_functions",
         "native_operation": "ListFunctions",
@@ -11173,6 +11223,9 @@
       "python_reconciliation": {
         "binding_body_sha256": "98dc4aaf607bdbc62b5eea6dc36544fd1f540493697c707f65134a41a38933e1",
         "binding_extraction": "instructions",
+        "binding_return_expressions": [
+          "to_list(unwrap(self.ListInstructions(range_start, range_end, limit, offset)).instructions)"
+        ],
         "fidelity": "Python defaults limit=0 (native unbounded), unlike binding positive bounded limit=100; no such unbounded request on Lua surfaces",
         "method": "list_instructions",
         "native_operation": "ListInstructions",
@@ -11489,6 +11542,9 @@
       "python_reconciliation": {
         "binding_body_sha256": "f8c0128a6e60aed6dede51e40c728d0b36cb1d8680fba0bbb3f880a163dfaebf",
         "binding_extraction": "functions",
+        "binding_return_expressions": [
+          "to_list(resp.functions)"
+        ],
         "fidelity": "Python defaults limit=0 (native unbounded), unlike binding positive bounded limit=100; no such unbounded request on Lua surfaces",
         "method": "list_leaf_functions",
         "native_operation": "ListLeafFunctions",
@@ -12028,6 +12084,9 @@
       "python_reconciliation": {
         "binding_body_sha256": "4964ff19ef8070572c9faf1dc72daac1fe3566d31012a309686a68096f446d25",
         "binding_extraction": "blocks",
+        "binding_return_expressions": [
+          "to_list(unwrap(self.ListMemoryBlocks(limit, offset)).blocks)"
+        ],
         "fidelity": "Python defaults limit=0 (native unbounded), unlike binding positive bounded limit=100; no such unbounded request on Lua surfaces",
         "method": "list_memory_blocks",
         "native_operation": "ListMemoryBlocks",
@@ -13263,6 +13322,9 @@
       "python_reconciliation": {
         "binding_body_sha256": "2c4b8815f1d87d0a553b70dafaf892b1aa1c636372606cd31598362e70b29c3c",
         "binding_extraction": "symbols",
+        "binding_return_expressions": [
+          "to_list(unwrap(self.ListSymbols(range_start, range_end, limit, offset)).symbols)"
+        ],
         "fidelity": "Python defaults limit=0 (native unbounded), unlike binding positive bounded limit=100; no such unbounded request on Lua surfaces",
         "method": "list_symbols",
         "native_operation": "ListSymbols",
@@ -14656,6 +14718,9 @@
       "python_reconciliation": {
         "binding_body_sha256": "9fb4ffb192508dc072d485e9e76f28f462cd73e360b7ea69522f4b40329dabc2",
         "binding_extraction": "members",
+        "binding_return_expressions": [
+          "to_list(unwrap(self.ListTypeMembers(type_id_or_path, limit, offset)).members)"
+        ],
         "fidelity": "Python defaults limit=0 (native unbounded), unlike binding positive bounded limit=100; no such unbounded request on Lua surfaces",
         "method": "list_type_members",
         "native_operation": "ListTypeMembers",
@@ -15294,6 +15359,9 @@
       "python_reconciliation": {
         "binding_body_sha256": "16b052e5a3f63b67f6d1cba6c9d6d649d1267b79ac65e1fbe323793a98b92511",
         "binding_extraction": "types",
+        "binding_return_expressions": [
+          "to_list(unwrap(self.ListTypes(query, limit, offset)).types)"
+        ],
         "fidelity": "Python defaults limit=0 (native unbounded), unlike binding positive bounded limit=100; no such unbounded request on Lua surfaces",
         "method": "list_types",
         "native_operation": "ListTypes",
@@ -15674,6 +15742,9 @@
       "python_reconciliation": {
         "binding_body_sha256": "11e219314532b5e4bf1a68294268dacc02cf5147aa3ce151e49e7cc71d5faa40",
         "binding_extraction": "xrefs",
+        "binding_return_expressions": [
+          "to_list(unwrap(self.ListXrefs(range_start, range_end, limit, offset)).xrefs)"
+        ],
         "fidelity": "Python defaults limit=0 (native unbounded), unlike binding positive bounded limit=100; no such unbounded request on Lua surfaces",
         "method": "list_xrefs",
         "native_operation": "ListXrefs",
@@ -16302,6 +16373,9 @@
       "python_reconciliation": {
         "binding_body_sha256": "7f6ffef9b8941320f8089878c3cea17aa3285ca6c01abe8072c6e437fd3bf025",
         "binding_extraction": "complete dict/array",
+        "binding_return_expressions": [
+          "d"
+        ],
         "fidelity": "Python native binding exports only program_name/language_id/compiler_spec/image_base; Python model defaults must not be mistaken for native metadata",
         "method": "open_program",
         "native_operation": "OpenProgram",
@@ -17059,6 +17133,9 @@
       "python_reconciliation": {
         "binding_body_sha256": "5ed06888585d188a90162ed75ac9915359c6d088b55386804647ad8abf186067",
         "binding_extraction": "data",
+        "binding_return_expressions": [
+          "nb::bytes(reinterpret_cast<const char*>(resp.data.data()), resp.data.size())"
+        ],
         "method": "read_bytes",
         "native_operation": "ReadBytes",
         "native_response_fields_not_exported": [],
@@ -17454,6 +17531,9 @@
       "python_reconciliation": {
         "binding_body_sha256": "5519ee0d5261ced38f9aea2fbab72e22f4804bff3283bdab4d6ba4cc82463236",
         "binding_extraction": "complete dict/array",
+        "binding_return_expressions": [
+          "d"
+        ],
         "method": "rename_function",
         "native_operation": "RenameFunction",
         "native_response_fields_not_exported": [],
@@ -18023,6 +18103,9 @@
       "python_reconciliation": {
         "binding_body_sha256": "cc63f95179a0b11161af069342ebb0b8213e357126a26463dc21a0dfdcc74de2",
         "binding_extraction": "complete dict/array",
+        "binding_return_expressions": [
+          "d"
+        ],
         "method": "rename_symbol",
         "native_operation": "RenameSymbol",
         "native_response_fields_not_exported": [],
@@ -18701,6 +18784,9 @@
       "python_reconciliation": {
         "binding_body_sha256": "a0be90fdbcf2ff60659f4e649074a36b4315f578994a3ae3dcb04c741335441a",
         "binding_extraction": "saved",
+        "binding_return_expressions": [
+          "unwrap(self.SaveProgram()).saved"
+        ],
         "fidelity": "Python returns scalar bool, unlike faithful Lua response envelope; no extra native fields currently present",
         "method": "save_program",
         "native_operation": "SaveProgram",
@@ -30580,7 +30666,9 @@
         ],
         "line": 74,
         "name": "detect_arch",
-        "path": "python/src/libghidra/local.py"
+        "path": "python/src/libghidra/local.py",
+        "review_status": "non-converter helper; calls/hash inventoried, branch review separate",
+        "reviewed_statements": null
       },
       {
         "body_sha256": "045afa348082abceacdbe03bac628cb7c83e34ea1d3c159231226adea5e2eb73",
@@ -30589,7 +30677,9 @@
         ],
         "line": 83,
         "name": "_require_native",
-        "path": "python/src/libghidra/local.py"
+        "path": "python/src/libghidra/local.py",
+        "review_status": "non-converter helper; calls/hash inventoried, branch review separate",
+        "reviewed_statements": null
       },
       {
         "body_sha256": "d47d9deff03b3f9d8aef5208974f2d4ec789105406aaeb6083b2e0ed90dd1849",
@@ -30598,7 +30688,11 @@
         ],
         "line": 98,
         "name": "_to_function",
-        "path": "python/src/libghidra/local.py"
+        "path": "python/src/libghidra/local.py",
+        "review_status": "exact reconstruction AST reconciled; runtime unqualified",
+        "reviewed_statements": [
+          "return FunctionRecord(**d)"
+        ]
       },
       {
         "body_sha256": "dabf97e8a3fdbbbfda0d2782cb95888af2945b38b71f13db1f84338bd7bd117f",
@@ -30607,7 +30701,11 @@
         ],
         "line": 102,
         "name": "_to_symbol",
-        "path": "python/src/libghidra/local.py"
+        "path": "python/src/libghidra/local.py",
+        "review_status": "exact reconstruction AST reconciled; runtime unqualified",
+        "reviewed_statements": [
+          "return SymbolRecord(**d)"
+        ]
       },
       {
         "body_sha256": "17e005835a41f6cd12b1d9cde1ab0087d3ae2f0241a9b2b7301fc059d9f3f2d3",
@@ -30618,7 +30716,12 @@
         ],
         "line": 106,
         "name": "_to_decompile_local",
-        "path": "python/src/libghidra/local.py"
+        "path": "python/src/libghidra/local.py",
+        "review_status": "exact reconstruction AST reconciled; runtime unqualified",
+        "reviewed_statements": [
+          "d['kind'] = DecompileLocalKind(d.get('kind', 0))",
+          "return DecompileLocalRecord(**d)"
+        ]
       },
       {
         "body_sha256": "d70015ea5774405267075999c9288e4cdf24d5c2f32940b601d93578c1608774",
@@ -30629,7 +30732,12 @@
         ],
         "line": 111,
         "name": "_to_decompile_token",
-        "path": "python/src/libghidra/local.py"
+        "path": "python/src/libghidra/local.py",
+        "review_status": "exact reconstruction AST reconciled; runtime unqualified",
+        "reviewed_statements": [
+          "d['kind'] = DecompileTokenKind(d.get('kind', 0))",
+          "return DecompileTokenRecord(**d)"
+        ]
       },
       {
         "body_sha256": "41882e422259a8af03e342152e2436cdf6f2038ccdc91d9b11139f3a56859696",
@@ -30641,7 +30749,13 @@
         ],
         "line": 116,
         "name": "_to_decompilation",
-        "path": "python/src/libghidra/local.py"
+        "path": "python/src/libghidra/local.py",
+        "review_status": "exact reconstruction AST reconciled; runtime unqualified",
+        "reviewed_statements": [
+          "d['locals'] = [_to_decompile_local(l) for l in d.get('locals', [])]",
+          "d['tokens'] = [_to_decompile_token(t) for t in d.get('tokens', [])]",
+          "return DecompilationRecord(**d)"
+        ]
       },
       {
         "body_sha256": "ff0448f004b932d85ce4fb0eb0d46092181796fb3dcbbc2c0416f33dfa165815",
@@ -30650,7 +30764,11 @@
         ],
         "line": 122,
         "name": "_to_instruction",
-        "path": "python/src/libghidra/local.py"
+        "path": "python/src/libghidra/local.py",
+        "review_status": "exact reconstruction AST reconciled; runtime unqualified",
+        "reviewed_statements": [
+          "return InstructionRecord(**d)"
+        ]
       },
       {
         "body_sha256": "41b5ce23564aeeb1d24d19c48f6432f4badc66d8e4df35bd70d225b0ec45498f",
@@ -30659,7 +30777,11 @@
         ],
         "line": 126,
         "name": "_to_memory_block",
-        "path": "python/src/libghidra/local.py"
+        "path": "python/src/libghidra/local.py",
+        "review_status": "exact reconstruction AST reconciled; runtime unqualified",
+        "reviewed_statements": [
+          "return MemoryBlockRecord(**d)"
+        ]
       },
       {
         "body_sha256": "7a3a3283472552ca8752358258745f53dce21884a22258363347dcca13a079d2",
@@ -30668,7 +30790,11 @@
         ],
         "line": 130,
         "name": "_to_xref",
-        "path": "python/src/libghidra/local.py"
+        "path": "python/src/libghidra/local.py",
+        "review_status": "exact reconstruction AST reconciled; runtime unqualified",
+        "reviewed_statements": [
+          "return XrefRecord(**d)"
+        ]
       },
       {
         "body_sha256": "f69fd8c8f6e3c416ee4749aaef4a70d94eecc6369f47473131a7c629560a9873",
@@ -30677,7 +30803,11 @@
         ],
         "line": 134,
         "name": "_to_type",
-        "path": "python/src/libghidra/local.py"
+        "path": "python/src/libghidra/local.py",
+        "review_status": "exact reconstruction AST reconciled; runtime unqualified",
+        "reviewed_statements": [
+          "return TypeRecord(**d)"
+        ]
       },
       {
         "body_sha256": "2c83304e05593cf77c2842619a6e22a9a5dd4e22d7939b72f4c0b72942831edb",
@@ -30686,7 +30816,11 @@
         ],
         "line": 138,
         "name": "_to_type_member",
-        "path": "python/src/libghidra/local.py"
+        "path": "python/src/libghidra/local.py",
+        "review_status": "exact reconstruction AST reconciled; runtime unqualified",
+        "reviewed_statements": [
+          "return TypeMemberRecord(**d)"
+        ]
       },
       {
         "body_sha256": "84be54da780bae20b30b44bae19ab0b897f6a7b256e570b1084cfb84a2e1427b",
@@ -30695,7 +30829,11 @@
         ],
         "line": 142,
         "name": "_to_basic_block",
-        "path": "python/src/libghidra/local.py"
+        "path": "python/src/libghidra/local.py",
+        "review_status": "exact reconstruction AST reconciled; runtime unqualified",
+        "reviewed_statements": [
+          "return BasicBlockRecord(**d)"
+        ]
       },
       {
         "body_sha256": "0ea53ddc60a78e253c8e900b69dad97218f4d300e54571e84d826601145f2f96",
@@ -30704,7 +30842,11 @@
         ],
         "line": 146,
         "name": "_to_cfg_edge",
-        "path": "python/src/libghidra/local.py"
+        "path": "python/src/libghidra/local.py",
+        "review_status": "exact reconstruction AST reconciled; runtime unqualified",
+        "reviewed_statements": [
+          "return CFGEdgeRecord(**d)"
+        ]
       },
       {
         "body_sha256": "67648705effba00df72723a058f4a6fb1bd5af629f7dd3bccaba58dd9cdf1229",
@@ -30713,7 +30855,11 @@
         ],
         "line": 150,
         "name": "_to_defined_string",
-        "path": "python/src/libghidra/local.py"
+        "path": "python/src/libghidra/local.py",
+        "review_status": "exact reconstruction AST reconciled; runtime unqualified",
+        "reviewed_statements": [
+          "return DefinedStringRecord(**d)"
+        ]
       }
     ],
     "errors": "nanobind unwrap throws ValueError(code + colon-space + message); Python _call catches ValueError and maps ErrorCode; unknown-code preservation not established by Python mapping; Lua must preserve upstream code/message",
@@ -30721,6 +30867,9 @@
       {
         "binding_body_sha256": "4d19feeca1159a9fbf3b749799f9db694af92a0d10f318404786bc03e631fc4d",
         "binding_extraction": "complete dict/array",
+        "binding_return_expressions": [
+          "to_dict(unwrap(self.GetStatus()))"
+        ],
         "method": "get_status",
         "native_operation": "GetStatus",
         "native_response_fields_not_exported": [],
@@ -30737,6 +30886,9 @@
       {
         "binding_body_sha256": "aef93e9a1ff262faf3059d30fbb383bd8d7f3d7fe5f0235a150843b7f80fce71",
         "binding_extraction": "complete dict/array",
+        "binding_return_expressions": [
+          "to_list(unwrap(self.GetCapabilities()))"
+        ],
         "method": "get_capabilities",
         "native_operation": "GetCapabilities",
         "native_response_fields_not_exported": [],
@@ -30753,6 +30905,9 @@
       {
         "binding_body_sha256": "7f6ffef9b8941320f8089878c3cea17aa3285ca6c01abe8072c6e437fd3bf025",
         "binding_extraction": "complete dict/array",
+        "binding_return_expressions": [
+          "d"
+        ],
         "fidelity": "Python native binding exports only program_name/language_id/compiler_spec/image_base; Python model defaults must not be mistaken for native metadata",
         "method": "open_program",
         "native_operation": "OpenProgram",
@@ -30776,6 +30931,9 @@
       {
         "binding_body_sha256": "ac1b42a1fd40cc8ac6a11b24b660afc28990667de3385745091cb158dca7e607",
         "binding_extraction": "closed",
+        "binding_return_expressions": [
+          "resp.closed"
+        ],
         "fidelity": "Python returns scalar bool, unlike faithful Lua response envelope; no extra native fields currently present",
         "method": "close_program",
         "native_operation": "CloseProgram",
@@ -30795,6 +30953,9 @@
       {
         "binding_body_sha256": "a0be90fdbcf2ff60659f4e649074a36b4315f578994a3ae3dcb04c741335441a",
         "binding_extraction": "saved",
+        "binding_return_expressions": [
+          "unwrap(self.SaveProgram()).saved"
+        ],
         "fidelity": "Python returns scalar bool, unlike faithful Lua response envelope; no extra native fields currently present",
         "method": "save_program",
         "native_operation": "SaveProgram",
@@ -30812,6 +30973,9 @@
       {
         "binding_body_sha256": "d0202b3086da645cdc2cc2f97362b179a2cb6d43c2c2a6537aabc555e5c6fe60",
         "binding_extraction": "discarded",
+        "binding_return_expressions": [
+          "unwrap(self.DiscardProgram()).discarded"
+        ],
         "fidelity": "Python returns scalar bool, unlike faithful Lua response envelope; no extra native fields currently present",
         "method": "discard_program",
         "native_operation": "DiscardProgram",
@@ -30829,6 +30993,9 @@
       {
         "binding_body_sha256": "6329cfdfcaee7220eec21e6d4d449f4f98b1cafa7790aae8f56c574cdd5e2f0b",
         "binding_extraction": "modification_number",
+        "binding_return_expressions": [
+          "unwrap(self.GetRevision()).modification_number"
+        ],
         "method": "get_revision",
         "native_operation": "GetRevision",
         "native_response_fields_not_exported": [],
@@ -30845,6 +31012,10 @@
       {
         "binding_body_sha256": "90209e6055ddd593b1a79eee50c06f1e81d4a4f79f9cfa01e6e27f7c0fc81d2d",
         "binding_extraction": "function",
+        "binding_return_expressions": [
+          "to_dict(resp.function.value())",
+          "nb::none()"
+        ],
         "method": "get_function",
         "native_operation": "GetFunction",
         "native_response_fields_not_exported": [],
@@ -30861,6 +31032,9 @@
       {
         "binding_body_sha256": "2ee5c9f792c7bf59a7f8eab9fed9d39491935e6bfb8e4fa6181d7f983af2de88",
         "binding_extraction": "functions",
+        "binding_return_expressions": [
+          "to_list(resp.functions)"
+        ],
         "fidelity": "Python defaults limit=0 (native unbounded), unlike binding positive bounded limit=100; no such unbounded request on Lua surfaces",
         "method": "list_functions",
         "native_operation": "ListFunctions",
@@ -30883,6 +31057,9 @@
       {
         "binding_body_sha256": "f8c0128a6e60aed6dede51e40c728d0b36cb1d8680fba0bbb3f880a163dfaebf",
         "binding_extraction": "functions",
+        "binding_return_expressions": [
+          "to_list(resp.functions)"
+        ],
         "fidelity": "Python defaults limit=0 (native unbounded), unlike binding positive bounded limit=100; no such unbounded request on Lua surfaces",
         "method": "list_leaf_functions",
         "native_operation": "ListLeafFunctions",
@@ -30905,6 +31082,9 @@
       {
         "binding_body_sha256": "5519ee0d5261ced38f9aea2fbab72e22f4804bff3283bdab4d6ba4cc82463236",
         "binding_extraction": "complete dict/array",
+        "binding_return_expressions": [
+          "d"
+        ],
         "method": "rename_function",
         "native_operation": "RenameFunction",
         "native_response_fields_not_exported": [],
@@ -30921,6 +31101,9 @@
       {
         "binding_body_sha256": "3b8100ae3f774bd000747a3a832ad42598edc19db85a81604e0ab1eb08d646d8",
         "binding_extraction": "blocks",
+        "binding_return_expressions": [
+          "to_list(unwrap(self.ListBasicBlocks(range_start, range_end, limit, offset)).blocks)"
+        ],
         "fidelity": "Python defaults limit=0 (native unbounded), unlike binding positive bounded limit=100; no such unbounded request on Lua surfaces",
         "method": "list_basic_blocks",
         "native_operation": "ListBasicBlocks",
@@ -30943,6 +31126,9 @@
       {
         "binding_body_sha256": "354391623c1479c431675d471a84da47cd3b4fc01c30ea3e432d509254d5d768",
         "binding_extraction": "edges",
+        "binding_return_expressions": [
+          "to_list(unwrap(self.ListCFGEdges(range_start, range_end, limit, offset)).edges)"
+        ],
         "fidelity": "Python defaults limit=0 (native unbounded), unlike binding positive bounded limit=100; no such unbounded request on Lua surfaces",
         "method": "list_cfg_edges",
         "native_operation": "ListCFGEdges",
@@ -30965,6 +31151,10 @@
       {
         "binding_body_sha256": "290eaeecafbf51ee1bc3860695b636b38486d1e15406a79a6b8ad7a12bc4c98a",
         "binding_extraction": "decompilation",
+        "binding_return_expressions": [
+          "to_dict(resp.decompilation.value())",
+          "nb::none()"
+        ],
         "method": "get_decompilation",
         "native_operation": "GetDecompilation",
         "native_response_fields_not_exported": [],
@@ -30983,6 +31173,9 @@
       {
         "binding_body_sha256": "3ceaffe850787309ab7beb763fe708b93498a9c7b08ca63fafa54f52ad9c53b3",
         "binding_extraction": "decompilations",
+        "binding_return_expressions": [
+          "result"
+        ],
         "fidelity": "Python defaults limit=0 (native unbounded), unlike binding positive bounded limit=100; no such unbounded request on Lua surfaces",
         "method": "list_decompilations",
         "native_operation": "ListDecompilations",
@@ -31006,6 +31199,10 @@
       {
         "binding_body_sha256": "6287250268bdf5d5f73cb8eaff5d20f22c8d83968dd16cb9dc89e7903e7be838",
         "binding_extraction": "symbol",
+        "binding_return_expressions": [
+          "to_dict(resp.symbol.value())",
+          "nb::none()"
+        ],
         "method": "get_symbol",
         "native_operation": "GetSymbol",
         "native_response_fields_not_exported": [],
@@ -31022,6 +31219,9 @@
       {
         "binding_body_sha256": "2c4b8815f1d87d0a553b70dafaf892b1aa1c636372606cd31598362e70b29c3c",
         "binding_extraction": "symbols",
+        "binding_return_expressions": [
+          "to_list(unwrap(self.ListSymbols(range_start, range_end, limit, offset)).symbols)"
+        ],
         "fidelity": "Python defaults limit=0 (native unbounded), unlike binding positive bounded limit=100; no such unbounded request on Lua surfaces",
         "method": "list_symbols",
         "native_operation": "ListSymbols",
@@ -31044,6 +31244,9 @@
       {
         "binding_body_sha256": "cc63f95179a0b11161af069342ebb0b8213e357126a26463dc21a0dfdcc74de2",
         "binding_extraction": "complete dict/array",
+        "binding_return_expressions": [
+          "d"
+        ],
         "method": "rename_symbol",
         "native_operation": "RenameSymbol",
         "native_response_fields_not_exported": [],
@@ -31060,6 +31263,9 @@
       {
         "binding_body_sha256": "5ed06888585d188a90162ed75ac9915359c6d088b55386804647ad8abf186067",
         "binding_extraction": "data",
+        "binding_return_expressions": [
+          "nb::bytes(reinterpret_cast<const char*>(resp.data.data()), resp.data.size())"
+        ],
         "method": "read_bytes",
         "native_operation": "ReadBytes",
         "native_response_fields_not_exported": [],
@@ -31076,6 +31282,9 @@
       {
         "binding_body_sha256": "4964ff19ef8070572c9faf1dc72daac1fe3566d31012a309686a68096f446d25",
         "binding_extraction": "blocks",
+        "binding_return_expressions": [
+          "to_list(unwrap(self.ListMemoryBlocks(limit, offset)).blocks)"
+        ],
         "fidelity": "Python defaults limit=0 (native unbounded), unlike binding positive bounded limit=100; no such unbounded request on Lua surfaces",
         "method": "list_memory_blocks",
         "native_operation": "ListMemoryBlocks",
@@ -31096,6 +31305,10 @@
       {
         "binding_body_sha256": "faa5f9a873931a33f8b3d85fa538ecabeceb4445b3b7c5eb36e2acb3e3cd5e19",
         "binding_extraction": "instruction",
+        "binding_return_expressions": [
+          "to_dict(resp.instruction.value())",
+          "nb::none()"
+        ],
         "method": "get_instruction",
         "native_operation": "GetInstruction",
         "native_response_fields_not_exported": [],
@@ -31112,6 +31325,9 @@
       {
         "binding_body_sha256": "98dc4aaf607bdbc62b5eea6dc36544fd1f540493697c707f65134a41a38933e1",
         "binding_extraction": "instructions",
+        "binding_return_expressions": [
+          "to_list(unwrap(self.ListInstructions(range_start, range_end, limit, offset)).instructions)"
+        ],
         "fidelity": "Python defaults limit=0 (native unbounded), unlike binding positive bounded limit=100; no such unbounded request on Lua surfaces",
         "method": "list_instructions",
         "native_operation": "ListInstructions",
@@ -31134,6 +31350,9 @@
       {
         "binding_body_sha256": "a2277bd568d905d06901351aacc2a10f7343c1244d5dd9a57fc2f7e83b46580d",
         "binding_extraction": "strings",
+        "binding_return_expressions": [
+          "to_list(unwrap(self.ListDefinedStrings(range_start, range_end, limit, offset)).strings)"
+        ],
         "fidelity": "Python defaults limit=0 (native unbounded), unlike binding positive bounded limit=100; no such unbounded request on Lua surfaces",
         "method": "list_defined_strings",
         "native_operation": "ListDefinedStrings",
@@ -31156,6 +31375,9 @@
       {
         "binding_body_sha256": "11e219314532b5e4bf1a68294268dacc02cf5147aa3ce151e49e7cc71d5faa40",
         "binding_extraction": "xrefs",
+        "binding_return_expressions": [
+          "to_list(unwrap(self.ListXrefs(range_start, range_end, limit, offset)).xrefs)"
+        ],
         "fidelity": "Python defaults limit=0 (native unbounded), unlike binding positive bounded limit=100; no such unbounded request on Lua surfaces",
         "method": "list_xrefs",
         "native_operation": "ListXrefs",
@@ -31178,6 +31400,10 @@
       {
         "binding_body_sha256": "c6a32c7f8a3a95a19f506a0e0ae1fa65bbc55c9f2bdb2b7c32561ae0b3f54a1e",
         "binding_extraction": "type",
+        "binding_return_expressions": [
+          "to_dict(resp.type.value())",
+          "nb::none()"
+        ],
         "fidelity": "Python returns bare TypeRecord/None, not GetTypeResponse; Lua lowlevel must preserve envelope",
         "method": "get_type",
         "native_operation": "GetType",
@@ -31195,6 +31421,9 @@
       {
         "binding_body_sha256": "16b052e5a3f63b67f6d1cba6c9d6d649d1267b79ac65e1fbe323793a98b92511",
         "binding_extraction": "types",
+        "binding_return_expressions": [
+          "to_list(unwrap(self.ListTypes(query, limit, offset)).types)"
+        ],
         "fidelity": "Python defaults limit=0 (native unbounded), unlike binding positive bounded limit=100; no such unbounded request on Lua surfaces",
         "method": "list_types",
         "native_operation": "ListTypes",
@@ -31216,6 +31445,9 @@
       {
         "binding_body_sha256": "9fb4ffb192508dc072d485e9e76f28f462cd73e360b7ea69522f4b40329dabc2",
         "binding_extraction": "members",
+        "binding_return_expressions": [
+          "to_list(unwrap(self.ListTypeMembers(type_id_or_path, limit, offset)).members)"
+        ],
         "fidelity": "Python defaults limit=0 (native unbounded), unlike binding positive bounded limit=100; no such unbounded request on Lua surfaces",
         "method": "list_type_members",
         "native_operation": "ListTypeMembers",

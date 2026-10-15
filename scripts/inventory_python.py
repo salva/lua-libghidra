@@ -72,13 +72,42 @@ def reconcile_python(u, operations, types):
             assert 'resp.'+extraction+'.has_value()' in text and 'nb::none()' in text
         if name in flags:
             assert '.'+extraction in text
+        # Match every native lambda return expression, not a field token that
+        # may occur only in a guard or an unrelated statement.
+        compact=lambda value: re.sub(r'\s+','',value)
+        actual_returns=re.findall(r'\breturn\s+([^;]+);',text)
+        call=re.search(r'self\.'+op['name']+r'\([^;]*?\)',text)
+        assert call, name
+        if name in lookup:
+            expected_returns=['to_dict(resp.'+extraction+'.value())','nb::none()']
+        elif name in flags:
+            if name=='read_bytes':
+                expected_returns=['nb::bytes(reinterpret_cast<const char*>(resp.data.data()), resp.data.size())']
+            elif name=='close_program': expected_returns=['resp.closed']
+            else: expected_returns=['unwrap('+call[0]+').'+extraction]
+        elif name in pages:
+            if name=='list_decompilations':
+                assert 'for (const auto& d : resp.decompilations) result.append(to_dict(d));' in text
+                expected_returns=['result']
+            elif 'auto resp =' in text: expected_returns=['to_list(resp.'+extraction+')']
+            else: expected_returns=['to_list(unwrap('+call[0]+').'+extraction+')']
+        elif name in {'open_program','rename_function','rename_symbol'}:
+            assignments=dict(re.findall(r'd\["(\w+)"\]\s*=\s*([^;]+);',text))
+            expected_keys={'program_name','language_id','compiler_spec','image_base'} if name=='open_program' else {'renamed','name'}
+            assert set(assignments)==expected_keys
+            assert all(expr.strip()=='resp.'+key for key,expr in assignments.items())
+            expected_returns=['d']
+        elif name=='get_status': expected_returns=['to_dict(unwrap(self.GetStatus()))']
+        elif name=='get_capabilities': expected_returns=['to_list(unwrap(self.GetCapabilities()))']
+        else: raise AssertionError(('unreviewed extraction',name))
+        assert list(map(compact,actual_returns))==list(map(compact,expected_returns)), (name,actual_returns,expected_returns)
         direct_fields = {f['name'] for f in types.get(op['response']['native_type'],{}).get('fields',[])}
         omitted=[]
         if name=='open_program':
             exported=set(re.findall(r'd\["(\w+)"\]\s*=',text))
             omitted=sorted(direct_fields-exported)
         defaults={a.arg:ast.unparse(v) for a,v in zip(n.args.args[-len(n.args.defaults):],n.args.defaults)} if n.args.defaults else {}
-        record={'method':name,'native_operation':op['name'],'source':{'path':LOCALPY,'line':n.lineno},'binding_extraction':extraction,'python_return_expressions':[ast.unparse(x.value) for x in ast.walk(n) if isinstance(x,ast.Return) and x.value], 'native_response_fields_not_exported':omitted,'python_defaults':defaults,'binding_body_sha256':hashlib.sha256(text.encode()).hexdigest(),'qualification':'source reviewed; runtime unqualified'}
+        record={'method':name,'native_operation':op['name'],'source':{'path':LOCALPY,'line':n.lineno},'binding_extraction':extraction,'binding_return_expressions':actual_returns,'python_return_expressions':[ast.unparse(x.value) for x in ast.walk(n) if isinstance(x,ast.Return) and x.value], 'native_response_fields_not_exported':omitted,'python_defaults':defaults,'binding_body_sha256':hashlib.sha256(text.encode()).hexdigest(),'qualification':'source reviewed; runtime unqualified'}
         if name in ['close_program','save_program','discard_program']:
             record['fidelity']='Python returns scalar bool, unlike faithful Lua response envelope; no extra native fields currently present'
         if name=='get_type': record['fidelity']='Python returns bare TypeRecord/None, not GetTypeResponse; Lua lowlevel must preserve envelope'
@@ -86,10 +115,27 @@ def reconcile_python(u, operations, types):
         if name in pages: record['fidelity']='Python defaults limit=0 (native unbounded), unlike binding positive bounded limit=100; no such unbounded request on Lua surfaces'
         op['python_reconciliation']=record
         audits.append(record)
+    # Independently specified AST shapes for dictionary reconstruction. Match
+    # statements as well as returns so wrong nested defaults cannot hide in hashes.
+    helper_models={'function':'FunctionRecord','symbol':'SymbolRecord',
+        'instruction':'InstructionRecord','memory_block':'MemoryBlockRecord',
+        'xref':'XrefRecord','type':'TypeRecord','type_member':'TypeMemberRecord',
+        'basic_block':'BasicBlockRecord','cfg_edge':'CFGEdgeRecord',
+        'defined_string':'DefinedStringRecord'}
+    expected_helpers={ '_to_'+key:'return '+model+'(**d)' for key,model in helper_models.items() }
+    expected_helpers.update({
+        '_to_decompile_local':'d["kind"] = DecompileLocalKind(d.get("kind", 0))\nreturn DecompileLocalRecord(**d)',
+        '_to_decompile_token':'d["kind"] = DecompileTokenKind(d.get("kind", 0))\nreturn DecompileTokenRecord(**d)',
+        '_to_decompilation':'d["locals"] = [_to_decompile_local(l) for l in d.get("locals", [])]\nd["tokens"] = [_to_decompile_token(t) for t in d.get("tokens", [])]\nreturn DecompilationRecord(**d)',
+    })
+    found={n.name:n for n in tree.body if isinstance(n,ast.FunctionDef) and n.name.startswith('_to_')}
+    assert set(found)==set(expected_helpers)
+    for name,expected in expected_helpers.items():
+        assert [ast.dump(n,include_attributes=False) for n in found[name].body]==[ast.dump(n,include_attributes=False) for n in ast.parse(expected).body],name
     helpers=[]
     for n in tree.body:
         if isinstance(n,ast.FunctionDef):
-            helpers.append({'name':n.name,'path':LOCALPY,'line':n.lineno,'calls':sorted(set(ast.unparse(x.func) for x in ast.walk(n) if isinstance(x,ast.Call))), 'body_sha256':hashlib.sha256(ast.dump(n,include_attributes=False).encode()).hexdigest()})
+            helpers.append({'name':n.name,'path':LOCALPY,'line':n.lineno,'calls':sorted(set(ast.unparse(x.func) for x in ast.walk(n) if isinstance(x,ast.Call))), 'body_sha256':hashlib.sha256(ast.dump(n,include_attributes=False).encode()).hexdigest(), 'reviewed_statements':[ast.unparse(x) for x in n.body] if n.name in expected_helpers else None, 'review_status':'exact reconstruction AST reconciled; runtime unqualified' if n.name in expected_helpers else 'non-converter helper; calls/hash inventoried, branch review separate'})
     return {'methods':audits,'record_converters':converters,'conversion_helpers':helpers,
             'errors':'nanobind unwrap throws ValueError(code + colon-space + message); Python _call catches ValueError and maps ErrorCode; unknown-code preservation not established by Python mapping; Lua must preserve upstream code/message',
             'architecture':'Python open may mutate request language/compiler from format detection; native echo is not authoritative detection; use identical explicit hints for oracle',

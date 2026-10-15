@@ -851,3 +851,23 @@ Remaining final audit must reconcile Python reconstruction/helper expressions,
 operation extraction expressions and all coverage ledgers before replacing stale
 broad unresolved claims. Runtime fixture/iterator slots remain unqualified and
 proposed non-first-slice grammar stays explicitly unapproved.
+
+## Exact extraction and reconstruction (forty-third increment)
+
+All 27 Python local native lambda return-expression sequences are independently
+checked: guarded optional value/None, scalar outcome/revision, length-preserving
+bytes, complete ordered vectors, health/capabilities and explicit open/rename
+dictionaries. A has_value guard alone no longer counts as proof of the extracted
+member. Dictionary keys must copy their corresponding response member.
+
+All thirteen `_to_` reconstruction helpers now have exact statement AST review:
+ten direct dataclass expansions, two kind enum/default mutations and ordered
+nested decompilation lists. Missing kind defaults to zero; missing local/token
+lists default to empty; enum constructors may reject unknown numeric values.
+No fixture or runtime equality is claimed. Non-converter detection/availability
+helpers remain individually inventoried but need final branch classification;
+public wrapper return expressions and call/default provenance are retained.
+Independent probes change only optional value extraction or enum default; both
+fail closed. Final cross-ledger classification remains open, not waived by 47
+passing source tests. Runtime slots and non-first-slice syntax proposals remain
+explicitly unqualified/unapproved, respectively.

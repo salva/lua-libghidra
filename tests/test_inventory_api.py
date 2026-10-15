@@ -489,6 +489,14 @@ class InventoryTests(unittest.TestCase):
             with self.assertRaises(AssertionError):
                 module.inventory(root)
             bindings.write_text(original_bindings)
+            bindings.write_text(original_bindings.replace('to_dict(resp.function.value())', 'to_dict(resp.symbol.value())'))
+            with self.assertRaises(AssertionError):module.inventory(root)
+            bindings.write_text(original_bindings)
+            py_local=root/'python/src/libghidra/local.py'
+            original_py=py_local.read_text()
+            py_local.write_text(original_py.replace('d.get("kind", 0)', 'd.get("kind", 1)',1))
+            with self.assertRaises(AssertionError):module.inventory(root)
+            py_local.write_text(original_py)
             header = root/'cpp/src/local_arch_adapter.hpp'
             header.write_text(header.read_text().replace('std::map<std::pair<std::uint64_t, int>, std::string> comments_', 'std::multimap<std::pair<std::uint64_t, int>, std::string> comments_'))
             with self.assertRaises(AssertionError):
@@ -747,6 +755,16 @@ class InventoryTests(unittest.TestCase):
         self.assertTrue(next(r for r in req if r['name']=='name_filter')['ignored'])
         self.assertIn('NO_STATE_PATH', self.ops['CloseProgram']['surface_contract']['facade']['save_policy'])
         self.assertIn('size', self.ops['ReadBytes']['surface_contract']['lowlevel']['argument_alias'])
+
+    def test_python_extraction_and_reconstruction_are_expression_reviewed(self):
+        audit=self.data['python_reconciliation']
+        self.assertEqual(len(audit['methods']),27)
+        self.assertTrue(all(row['binding_return_expressions'] for row in audit['methods']))
+        helpers=[h for h in audit['conversion_helpers'] if h['name'].startswith('_to_')]
+        self.assertEqual(len(helpers),13)
+        self.assertTrue(all(h['reviewed_statements'] for h in helpers))
+        row=next(r for r in audit['methods'] if r['method']=='get_function')
+        self.assertEqual(row['binding_return_expressions'],['to_dict(resp.function.value())','nb::none()'])
 
     def test_python_converter_value_provenance_not_just_keys(self):
         converters=self.data['python_reconciliation']['record_converters']
