@@ -1,0 +1,12 @@
+# Saivage state and credentials; reviewed configuration can be added explicitly.
+/.saivage/
+/.saivage-work/
+.env
+.env.*
+
+# Local builds and tool caches.
+/build/
+/dist/
+/.cache/
+__pycache__/
+*.py[cod]
