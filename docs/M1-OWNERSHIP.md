@@ -244,3 +244,24 @@ native response cleanup under C-built Lua longjmp, not just successful native
 exception handling. It remains bounded response-storage evidence, not semantic
 destructor counting, all-frame proof, partial-engine cleanup or full native heap
 instrumentation. Reproduce through the existing read_bytes_dispatch_order test.
+
+### Independently loaded module copies: failing process-wide guard regression
+
+`ownership_loaded_copy` loads the production module and a byte-identical copy
+at a distinct inode using package.loadlib. With an owner from A still live, B
+must return CLIENT_IN_USE/binding; after A closes, B must construct and work.
+The fixture includes reversed order and explicitly cleans up both owners before
+asserting exclusion, so a teardown crash cannot replace the primary failure.
+CMake creates the test copy after linking lua_ghidra; no engine or Lua mock is
+used. Build lua_ghidra, then run `ctest --test-dir build -R
+'^ownership_loaded_copy$' --output-on-failure`.
+
+At the current implementation this test FAILS: the second loaded copy admits a
+second owner. A repeat confirms it, with identical SHA256 but distinct inodes.
+owner.cpp's anonymous-namespace engine mutex and occupied flag are per-DSO, not
+process-wide. Prior single-module independent-state exclusion remains valid in
+its bounded scope; it does not establish the specified loaded-copy guard or
+native serialization across copies. This is an exposed product defect, not an
+expected-failure test or full M1 acceptance. Reverse-order/reuse assertions are
+present but not reached after the first exclusion failure. Repair belongs at the
+shared guard/serialization owning primitive, not loader-name special cases.

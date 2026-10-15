@@ -80,3 +80,13 @@ if(BUILD_TESTING)
   add_test(NAME ownership_deterministic_recheck COMMAND reentry_host)
   set_tests_properties(ownership_deterministic_recheck PROPERTIES TIMEOUT 30)
 endif()
+if(BUILD_TESTING)
+  # Distinct file/inode forces the loader to instantiate a second module copy.
+  add_custom_command(TARGET lua_ghidra POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_BINARY_DIR}/loaded-copy"
+    COMMAND ${CMAKE_COMMAND} -E copy "$<TARGET_FILE:lua_ghidra>"
+      "${CMAKE_BINARY_DIR}/loaded-copy/_native.so")
+  add_test(NAME ownership_loaded_copy COMMAND ${LUA_EXECUTABLE}
+    ${PROJECT_SOURCE_DIR}/tests/ownership_loaded_copy.lua ${CMAKE_BINARY_DIR})
+  set_tests_properties(ownership_loaded_copy PROPERTIES TIMEOUT 30)
+endif()
