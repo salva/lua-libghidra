@@ -23,6 +23,8 @@ static lua_State* state(struct allocator* a,const char* root,const char* build) 
  lua_getglobal(L,"package");
  lua_pushfstring(L,"%s/lua/?.lua;%s/lua/?/init.lua",root,root); lua_setfield(L,-2,"path");
  lua_pushfstring(L,"%s/?.so",build); lua_setfield(L,-2,"cpath"); lua_pop(L,1);
+ lua_pushfstring(L,"%s/tests/fixtures/project/authored.gpr",root); lua_setglobal(L,"project");
+ lua_pushfstring(L,"%s/tests/fixtures/inputs/authored.elf",root); lua_setglobal(L,"binary");
  assert(!run(L,"low=require'libghidra.lowlevel'; high=require'libghidra'")); return L;
 }
 static void finish(lua_State* L,struct allocator* a) { a->fail=SIZE_MAX; lua_close(L); assert(!a->bytes); }
@@ -44,9 +46,13 @@ int main(int argc,char** argv) {
  /* Persistent allocator denial, across all allocations in construction, native
     dispatch result conversion and error conversion. Restoring allocations must
     allow recovery in the SAME state, then a NEW client in a new state. */
- const char* script="local c=assert(low.local_client()); local s=c:get_status(); assert(s.ok); "
+ const char* scripts[]={"local c=assert(low.local_client()); local s=c:get_status(); assert(s.ok); "
    "assert(c:get_capabilities()); local r,e=c:open_program{program_path='/no/such/file'}; "
-   "assert(not r and e.backend=='local'); c:close()";
+   "assert(not r and e.backend=='local'); c:close()",
+   "local s,e,r=high.open{program={project_path=project,program_path=binary}}; "
+   "assert(s,e and e.message); assert(r.program_name); assert(s:native():get_status().ok); s:close()"};
+ for(size_t scenario=0;scenario<2;++scenario) {
+ const char* script=scripts[scenario];
  size_t count=0;
  for(size_t point=0; point<=count+1; ++point) {
   struct allocator a={0,SIZE_MAX,0}; lua_State* L=state(&a,argv[1],argv[2]);
@@ -57,7 +63,8 @@ int main(int argc,char** argv) {
   lua_gc(L,LUA_GCCOLLECT);
   assert(!run(L,"assert(low.local_client()):close()")); finish(L,&a);
  }
- printf("ownership allocator sweep: %zu failure points + baseline PASS\n",count+1);
+ printf("ownership allocator scenario %zu: %zu failure points + baseline PASS\n",scenario,count+1);
+ }
  /* Deliberate manual finalization and double-finalization resistance. */
  struct allocator a={0,SIZE_MAX,0}; lua_State* L=state(&a,argv[1],argv[2]);
  assert(!run(L,"c=assert(low.local_client()); "
