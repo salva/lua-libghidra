@@ -20,23 +20,10 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-Third-party dependency notice (not an additional condition of the MIT License)
-----------------------------------------------------------------------------
+Third-party dependency notice
+-----------------------------
 
-The MIT License above applies to this wrapper's original code and documentation.
-It does not relicense the underlying libghidra library by Elias Bachaalany:
-https://github.com/0xeb/libghidra
-
-At the pinned revision d51ca813ae1b6b59519551a9be8c0b1ad74d862d, libghidra uses
-the Human-Origin Source License v1.0, a custom source-available license that is
-not OSI-approved. It permits unchanged dependency use subject to its terms,
-including attribution and distribution requirements, and restricts certain
-modifications and derivative implementations, including qualifying wrappers.
-Such uses may require prior written permission from its author. The MIT License
-for this wrapper does not grant rights to libghidra beyond its own license.
-
-The full license governing that revision is available at:
+The underlying libghidra library by Elias Bachaalany is separately licensed
+under the Human-Origin Source License v1.0, which contains nonstandard terms.
+Please consult its original license:
 https://github.com/0xeb/libghidra/blob/d51ca813ae1b6b59519551a9be8c0b1ad74d862d/LICENSE
-
-This notice is a summary, not a replacement for libghidra's license. Other
-third-party components retain their respective licenses and notices.
