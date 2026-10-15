@@ -62,6 +62,51 @@ def reconcile_python(u, operations, types):
     lookup={'get_function':'function', 'get_decompilation':'decompilation', 'get_symbol':'symbol', 'get_instruction':'instruction', 'get_type':'type'}
     flags={'close_program':'closed','save_program':'saved','discard_program':'discarded','get_revision':'modification_number','read_bytes':'data'}
     pages={'list_functions':'functions','list_leaf_functions':'functions','list_basic_blocks':'blocks','list_cfg_edges':'edges','list_decompilations':'decompilations','list_symbols':'symbols','list_memory_blocks':'blocks','list_instructions':'instructions','list_defined_strings':'strings','list_xrefs':'xrefs','list_types':'types','list_type_members':'members'}
+    def statements(node):
+        return [ast.dump(x,include_attributes=False) for x in node.body
+                if not (isinstance(x,ast.Expr) and isinstance(x.value,ast.Constant) and isinstance(x.value.value,str))]
+    def expected_statements(text):
+        return statements(ast.parse(text))
+    page_models={
+        'list_functions':('ListFunctionsResponse','functions','function'),
+        'list_leaf_functions':('ListFunctionsResponse','functions','function'),
+        'list_basic_blocks':('ListBasicBlocksResponse','blocks','basic_block'),
+        'list_cfg_edges':('ListCFGEdgesResponse','edges','cfg_edge'),
+        'list_decompilations':('ListDecompilationsResponse','decompilations','decompilation'),
+        'list_symbols':('ListSymbolsResponse','symbols','symbol'),
+        'list_memory_blocks':('ListMemoryBlocksResponse','blocks','memory_block'),
+        'list_instructions':('ListInstructionsResponse','instructions','instruction'),
+        'list_defined_strings':('ListDefinedStringsResponse','strings','defined_string'),
+        'list_xrefs':('ListXrefsResponse','xrefs','xref'),
+        'list_types':('ListTypesResponse','types','type'),
+        'list_type_members':('ListTypeMembersResponse','members','type_member')}
+    wrapper_contracts={}
+    for name,node in methods.items():
+        args=', '.join(a.arg for a in node.args.args if a.arg!='self')
+        call='self._call(self._client.'+name+(', '+args if args else '')+')'
+        if name in page_models:
+            model,key,convert=page_models[name]
+            expected='items = '+call+'\nreturn '+model+'('+key+'=[_to_'+convert+'(d) for d in items])'
+        elif name in lookup:
+            key=lookup[name]
+            if name=='get_type':expected='d = '+call+'\nreturn _to_type(d) if d is not None else None'
+            else:
+                variable={'function':'func','decompilation':'dec','symbol':'sym','instruction':'insn'}[key]
+                model={'function':'GetFunctionResponse','decompilation':'GetDecompilationResponse','symbol':'GetSymbolResponse','instruction':'GetInstructionResponse'}[key]
+                expected='d = '+call+'\n'+variable+' = _to_'+key+'(d) if d is not None else None\nreturn '+model+'('+key+'='+variable+')'
+        elif name in {'close_program','save_program','discard_program'}:expected='return '+call
+        elif name=='get_revision':expected='rev = '+call+'\nreturn RevisionResponse(modification_number=rev)'
+        elif name=='read_bytes':expected='data = '+call+'\nreturn ReadBytesResponse(data=data)'
+        elif name=='get_status':expected='d = '+call+'\nreturn HealthStatus(**d)'
+        elif name=='get_capabilities':expected='items = '+call+'\nreturn [Capability(**d) for d in items]'
+        elif name in {'rename_function','rename_symbol'}:
+            model='RenameFunctionResponse' if name=='rename_function' else 'RenameSymbolResponse'
+            expected='d = '+call+'\nreturn '+model+'(**d)'
+        elif name=='open_program':
+            expected='if isinstance(request, str):\n    request = OpenProgramRequest(program_path=request)\nif self._auto_detect and request.program_path and not request.language_id:\n    detected = detect(request.program_path)\n    request.language_id = detected.language_id\n    if not request.compiler_spec_id:\n        request.compiler_spec_id = detected.compiler_spec_id\nd = self._call(self._client.open_program, program_path=request.program_path, read_only=request.read_only, project_path=request.project_path, project_name=request.project_name, language_id=request.language_id, compiler_spec_id=request.compiler_spec_id, format=request.format, base_address=request.base_address)\nreturn OpenProgramResponse(**d)'
+        else:raise AssertionError(('unreviewed wrapper',name))
+        assert statements(node)==expected_statements(expected),('Python wrapper',name)
+        wrapper_contracts[name]={'statements':expected.splitlines(),'status':'exact AST reconstruction/dispatch/control flow reviewed; runtime unqualified'}
     for name,n in methods.items():
         op = next(o for o in operations if o['lowlevel']==name)
         text=exports[name]
@@ -107,7 +152,7 @@ def reconcile_python(u, operations, types):
             exported=set(re.findall(r'd\["(\w+)"\]\s*=',text))
             omitted=sorted(direct_fields-exported)
         defaults={a.arg:ast.unparse(v) for a,v in zip(n.args.args[-len(n.args.defaults):],n.args.defaults)} if n.args.defaults else {}
-        record={'method':name,'native_operation':op['name'],'source':{'path':LOCALPY,'line':n.lineno},'binding_extraction':extraction,'binding_return_expressions':actual_returns,'python_return_expressions':[ast.unparse(x.value) for x in ast.walk(n) if isinstance(x,ast.Return) and x.value], 'native_response_fields_not_exported':omitted,'python_defaults':defaults,'binding_body_sha256':hashlib.sha256(text.encode()).hexdigest(),'qualification':'source reviewed; runtime unqualified'}
+        record={'method':name,'native_operation':op['name'],'source':{'path':LOCALPY,'line':n.lineno},'binding_extraction':extraction,'binding_return_expressions':actual_returns,'wrapper_contract':wrapper_contracts[name],'python_return_expressions':[ast.unparse(x.value) for x in ast.walk(n) if isinstance(x,ast.Return) and x.value], 'native_response_fields_not_exported':omitted,'python_defaults':defaults,'binding_body_sha256':hashlib.sha256(text.encode()).hexdigest(),'qualification':'source reviewed; runtime unqualified'}
         if name in ['close_program','save_program','discard_program']:
             record['fidelity']='Python returns scalar bool, unlike faithful Lua response envelope; no extra native fields currently present'
         if name=='get_type': record['fidelity']='Python returns bare TypeRecord/None, not GetTypeResponse; Lua lowlevel must preserve envelope'
@@ -132,11 +177,32 @@ def reconcile_python(u, operations, types):
     assert set(found)==set(expected_helpers)
     for name,expected in expected_helpers.items():
         assert [ast.dump(n,include_attributes=False) for n in found[name].body]==[ast.dump(n,include_attributes=False) for n in ast.parse(expected).body],name
+    # Local Python ownership and error transformation are not service methods.
+    private={n.name:n for n in client.body if isinstance(n,ast.FunctionDef) and n.name.startswith('_')}
+    private_expected={
+        '__init__': '_require_native()\nopts = options or LocalClientOptions()\nself._opts = opts\nself._auto_detect = opts.default_arch in ("", "auto")\nself._client = _native.create_local_client(ghidra_root=opts.ghidra_root, state_path=opts.state_path, default_arch="" if self._auto_detect else opts.default_arch, pool_size=opts.pool_size)',
+        '_call': 'try:\n    return method(*args, **kwargs)\nexcept ValueError as e:\n    msg = str(e)\n    if ":" in msg:\n        code_str, _, message = msg.partition(": ")\n        code = ErrorCode.from_rpc_code(code_str)\n    else:\n        code = ErrorCode.API_ERROR\n        message = msg\n    raise GhidraError(code, message)'}
+    assert set(private)==set(private_expected)
+    for name,node in private.items():
+        assert statements(node)==expected_statements(private_expected[name]),name
+    other_helpers={n.name:n for n in tree.body if isinstance(n,ast.FunctionDef) and not n.name.startswith('_to_')}
+    assert set(other_helpers)=={'detect_arch','_require_native'}
+    detect_expected='try:\n    return detect(filepath).language_id\nexcept (OSError, UnsupportedFormatError):\n    return None\nreturn None'
+    assert statements(other_helpers['detect_arch'])==expected_statements(detect_expected)
+    require=other_helpers['_require_native']
+    assert len(require.body)==1 and isinstance(require.body[0],ast.If)
+    guard=require.body[0]
+    assert ast.unparse(guard.test)=='_native is None' and not guard.orelse
+    assert len(guard.body)==1 and isinstance(guard.body[0],ast.Raise)
+    exc=guard.body[0].exc
+    assert isinstance(exc,ast.Call) and ast.unparse(exc.func)=='ImportError' and len(exc.args)==1 and not exc.keywords
+    assert isinstance(exc.args[0],ast.Constant) and isinstance(exc.args[0].value,str)
+    private_audit={name:{'statements':text.splitlines(),'qualification':'source only; runtime unqualified'} for name,text in private_expected.items()}
     helpers=[]
     for n in tree.body:
         if isinstance(n,ast.FunctionDef):
-            helpers.append({'name':n.name,'path':LOCALPY,'line':n.lineno,'calls':sorted(set(ast.unparse(x.func) for x in ast.walk(n) if isinstance(x,ast.Call))), 'body_sha256':hashlib.sha256(ast.dump(n,include_attributes=False).encode()).hexdigest(), 'reviewed_statements':[ast.unparse(x) for x in n.body] if n.name in expected_helpers else None, 'review_status':'exact reconstruction AST reconciled; runtime unqualified' if n.name in expected_helpers else 'non-converter helper; calls/hash inventoried, branch review separate'})
-    return {'methods':audits,'record_converters':converters,'conversion_helpers':helpers,
+            helpers.append({'name':n.name,'path':LOCALPY,'line':n.lineno,'calls':sorted(set(ast.unparse(x.func) for x in ast.walk(n) if isinstance(x,ast.Call))), 'body_sha256':hashlib.sha256(ast.dump(n,include_attributes=False).encode()).hexdigest(), 'reviewed_statements':[ast.unparse(x) for x in n.body] if n.name in expected_helpers else None, 'review_status':'exact reconstruction AST reconciled; runtime unqualified' if n.name in expected_helpers else 'control flow reviewed; diagnostic text not a behavior gate; runtime unqualified'})
+    return {'methods':audits,'record_converters':converters,'conversion_helpers':helpers,'private_lifecycle_and_errors':private_audit,'non_converter_helpers':{'detect_arch':'detect language ID; OSError/UnsupportedFormatError -> None; other exceptions propagate','_require_native':'only _native is None raises ImportError with diagnostic string; otherwise returns None'},
             'errors':'nanobind unwrap throws ValueError(code + colon-space + message); Python _call catches ValueError and maps ErrorCode; unknown-code preservation not established by Python mapping; Lua must preserve upstream code/message',
             'architecture':'Python open may mutate request language/compiler from format detection; native echo is not authoritative detection; use identical explicit hints for oracle',
             'nested_enums':'Python _to_decompilation converts locals/tokens and their enum kinds via Python IntEnum constructors; unknown values can raise ValueError unlike Lua numeric unknown-value preservation',

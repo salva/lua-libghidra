@@ -871,3 +871,24 @@ Independent probes change only optional value extraction or enum default; both
 fail closed. Final cross-ledger classification remains open, not waived by 47
 passing source tests. Runtime slots and non-first-slice syntax proposals remain
 explicitly unqualified/unapproved, respectively.
+
+## Python wrapper branch reconciliation (forty-fourth increment)
+
+All 27 public LocalClient wrappers now independently match statement ASTs, not
+only hashes/return lists: exact dispatch argument order, None rather than
+truthiness for optionals, reconstruction keys, ordered list comprehensions,
+scalar envelopes and open auto-detection branch order. Open mutates the supplied
+request language, and compiler only if absent; detection exceptions propagate.
+Constructor checks availability before constructing; empty/auto default_arch
+selects detection and forwards empty native architecture. There is no Python
+owner-close/destructor method here; Lua owner lifetime remains separately scoped.
+
+_call catches only ValueError. Its colon membership test differs from its ': '
+partition delimiter: a colon without space still takes the mapping branch but
+can produce an empty message. Other exception types propagate. Mapping is a
+Python-oracle transformation, never authority to replace Lua upstream codes.
+Detect_arch suppresses only OSError/UnsupportedFormatError; availability checks
+only _native is None and raises ImportError with diagnostic build guidance.
+All these are source claims; runtime fixtures remain unqualified. Independent
+probes change optional truthiness, error delimiter and compiler branch and must
+fail. Final cross-ledger/unknown classification remains separate work.

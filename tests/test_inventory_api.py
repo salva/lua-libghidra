@@ -497,6 +497,14 @@ class InventoryTests(unittest.TestCase):
             py_local.write_text(original_py.replace('d.get("kind", 0)', 'd.get("kind", 1)',1))
             with self.assertRaises(AssertionError):module.inventory(root)
             py_local.write_text(original_py)
+            for old,new in [('if d is not None else None','if d else None'),
+                            ('msg.partition(": ")','msg.partition(":")'),
+                            ('if not request.compiler_spec_id:', 'if request.compiler_spec_id:')]:
+                self.assertIn(old,original_py)
+                py_local.write_text(original_py.replace(old,new,1))
+                with self.assertRaises(AssertionError):module.inventory(root)
+                py_local.write_text(original_py)
+
             header = root/'cpp/src/local_arch_adapter.hpp'
             header.write_text(header.read_text().replace('std::map<std::pair<std::uint64_t, int>, std::string> comments_', 'std::multimap<std::pair<std::uint64_t, int>, std::string> comments_'))
             with self.assertRaises(AssertionError):
@@ -755,6 +763,16 @@ class InventoryTests(unittest.TestCase):
         self.assertTrue(next(r for r in req if r['name']=='name_filter')['ignored'])
         self.assertIn('NO_STATE_PATH', self.ops['CloseProgram']['surface_contract']['facade']['save_policy'])
         self.assertIn('size', self.ops['ReadBytes']['surface_contract']['lowlevel']['argument_alias'])
+
+    def test_python_wrapper_branch_and_lifecycle_contracts(self):
+        audit=self.data['python_reconciliation']
+        self.assertEqual(set(audit['private_lifecycle_and_errors']),{'__init__','_call'})
+        self.assertEqual(set(audit['non_converter_helpers']),{'detect_arch','_require_native'})
+        for row in audit['methods']:
+            self.assertTrue(row['wrapper_contract']['statements'])
+            self.assertIn('runtime unqualified',row['wrapper_contract']['status'])
+        optional=next(r for r in audit['methods'] if r['method']=='get_function')
+        self.assertTrue(any('is not None' in s for s in optional['wrapper_contract']['statements']))
 
     def test_python_extraction_and_reconstruction_are_expression_reviewed(self):
         audit=self.data['python_reconciliation']

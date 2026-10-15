@@ -1384,6 +1384,12 @@
         "source": {
           "line": 225,
           "path": "python/src/libghidra/local.py"
+        },
+        "wrapper_contract": {
+          "statements": [
+            "return self._call(self._client.close_program, policy)"
+          ],
+          "status": "exact AST reconstruction/dispatch/control flow reviewed; runtime unqualified"
         }
       },
       "request": [
@@ -3867,6 +3873,12 @@
         "source": {
           "line": 231,
           "path": "python/src/libghidra/local.py"
+        },
+        "wrapper_contract": {
+          "statements": [
+            "return self._call(self._client.discard_program)"
+          ],
+          "status": "exact AST reconstruction/dispatch/control flow reviewed; runtime unqualified"
         }
       },
       "request": [],
@@ -4051,6 +4063,13 @@
         "source": {
           "line": 195,
           "path": "python/src/libghidra/local.py"
+        },
+        "wrapper_contract": {
+          "statements": [
+            "items = self._call(self._client.get_capabilities)",
+            "return [Capability(**d) for d in items]"
+          ],
+          "status": "exact AST reconstruction/dispatch/control flow reviewed; runtime unqualified"
         }
       },
       "request": [],
@@ -4443,6 +4462,14 @@
         "source": {
           "line": 276,
           "path": "python/src/libghidra/local.py"
+        },
+        "wrapper_contract": {
+          "statements": [
+            "d = self._call(self._client.get_decompilation, address, timeout_ms)",
+            "dec = _to_decompilation(d) if d is not None else None",
+            "return GetDecompilationResponse(decompilation=dec)"
+          ],
+          "status": "exact AST reconstruction/dispatch/control flow reviewed; runtime unqualified"
         }
       },
       "record_field_reviews": [
@@ -4956,6 +4983,14 @@
         "source": {
           "line": 240,
           "path": "python/src/libghidra/local.py"
+        },
+        "wrapper_contract": {
+          "statements": [
+            "d = self._call(self._client.get_function, address)",
+            "func = _to_function(d) if d is not None else None",
+            "return GetFunctionResponse(function=func)"
+          ],
+          "status": "exact AST reconstruction/dispatch/control flow reviewed; runtime unqualified"
         }
       },
       "record_field_reviews": [
@@ -5659,6 +5694,14 @@
         "source": {
           "line": 316,
           "path": "python/src/libghidra/local.py"
+        },
+        "wrapper_contract": {
+          "statements": [
+            "d = self._call(self._client.get_instruction, address)",
+            "insn = _to_instruction(d) if d is not None else None",
+            "return GetInstructionResponse(instruction=insn)"
+          ],
+          "status": "exact AST reconstruction/dispatch/control flow reviewed; runtime unqualified"
         }
       },
       "record_field_reviews": [
@@ -6164,6 +6207,13 @@
         "source": {
           "line": 234,
           "path": "python/src/libghidra/local.py"
+        },
+        "wrapper_contract": {
+          "statements": [
+            "rev = self._call(self._client.get_revision)",
+            "return RevisionResponse(modification_number=rev)"
+          ],
+          "status": "exact AST reconstruction/dispatch/control flow reviewed; runtime unqualified"
         }
       },
       "request": [],
@@ -6352,6 +6402,13 @@
         "source": {
           "line": 191,
           "path": "python/src/libghidra/local.py"
+        },
+        "wrapper_contract": {
+          "statements": [
+            "d = self._call(self._client.get_status)",
+            "return HealthStatus(**d)"
+          ],
+          "status": "exact AST reconstruction/dispatch/control flow reviewed; runtime unqualified"
         }
       },
       "request": [],
@@ -6567,6 +6624,14 @@
         "source": {
           "line": 290,
           "path": "python/src/libghidra/local.py"
+        },
+        "wrapper_contract": {
+          "statements": [
+            "d = self._call(self._client.get_symbol, address)",
+            "sym = _to_symbol(d) if d is not None else None",
+            "return GetSymbolResponse(symbol=sym)"
+          ],
+          "status": "exact AST reconstruction/dispatch/control flow reviewed; runtime unqualified"
         }
       },
       "record_field_reviews": [
@@ -6926,6 +6991,13 @@
         "source": {
           "line": 340,
           "path": "python/src/libghidra/local.py"
+        },
+        "wrapper_contract": {
+          "statements": [
+            "d = self._call(self._client.get_type, path)",
+            "return _to_type(d) if d is not None else None"
+          ],
+          "status": "exact AST reconstruction/dispatch/control flow reviewed; runtime unqualified"
         }
       },
       "record_field_reviews": [
@@ -7658,6 +7730,13 @@
         "source": {
           "line": 264,
           "path": "python/src/libghidra/local.py"
+        },
+        "wrapper_contract": {
+          "statements": [
+            "items = self._call(self._client.list_basic_blocks, range_start, range_end, limit, offset)",
+            "return ListBasicBlocksResponse(blocks=[_to_basic_block(d) for d in items])"
+          ],
+          "status": "exact AST reconstruction/dispatch/control flow reviewed; runtime unqualified"
         }
       },
       "record_field_reviews": [
@@ -8299,6 +8378,13 @@
         "source": {
           "line": 269,
           "path": "python/src/libghidra/local.py"
+        },
+        "wrapper_contract": {
+          "statements": [
+            "items = self._call(self._client.list_cfg_edges, range_start, range_end, limit, offset)",
+            "return ListCFGEdgesResponse(edges=[_to_cfg_edge(d) for d in items])"
+          ],
+          "status": "exact AST reconstruction/dispatch/control flow reviewed; runtime unqualified"
         }
       },
       "record_field_reviews": [
@@ -8868,6 +8954,13 @@
         "source": {
           "line": 281,
           "path": "python/src/libghidra/local.py"
+        },
+        "wrapper_contract": {
+          "statements": [
+            "items = self._call(self._client.list_decompilations, range_start, range_end, limit, offset, timeout_ms)",
+            "return ListDecompilationsResponse(decompilations=[_to_decompilation(d) for d in items])"
+          ],
+          "status": "exact AST reconstruction/dispatch/control flow reviewed; runtime unqualified"
         }
       },
       "record_field_reviews": [
@@ -9415,6 +9508,13 @@
         "source": {
           "line": 326,
           "path": "python/src/libghidra/local.py"
+        },
+        "wrapper_contract": {
+          "statements": [
+            "items = self._call(self._client.list_defined_strings, range_start, range_end, limit, offset)",
+            "return ListDefinedStringsResponse(strings=[_to_defined_string(d) for d in items])"
+          ],
+          "status": "exact AST reconstruction/dispatch/control flow reviewed; runtime unqualified"
         }
       },
       "request": [
@@ -10710,6 +10810,13 @@
         "source": {
           "line": 245,
           "path": "python/src/libghidra/local.py"
+        },
+        "wrapper_contract": {
+          "statements": [
+            "items = self._call(self._client.list_functions, range_start, range_end, limit, offset)",
+            "return ListFunctionsResponse(functions=[_to_function(d) for d in items])"
+          ],
+          "status": "exact AST reconstruction/dispatch/control flow reviewed; runtime unqualified"
         }
       },
       "record_field_reviews": [
@@ -11243,6 +11350,13 @@
         "source": {
           "line": 321,
           "path": "python/src/libghidra/local.py"
+        },
+        "wrapper_contract": {
+          "statements": [
+            "items = self._call(self._client.list_instructions, range_start, range_end, limit, offset)",
+            "return ListInstructionsResponse(instructions=[_to_instruction(d) for d in items])"
+          ],
+          "status": "exact AST reconstruction/dispatch/control flow reviewed; runtime unqualified"
         }
       },
       "record_field_reviews": [
@@ -11562,6 +11676,13 @@
         "source": {
           "line": 250,
           "path": "python/src/libghidra/local.py"
+        },
+        "wrapper_contract": {
+          "statements": [
+            "items = self._call(self._client.list_leaf_functions, range_start, range_end, limit, offset)",
+            "return ListFunctionsResponse(functions=[_to_function(d) for d in items])"
+          ],
+          "status": "exact AST reconstruction/dispatch/control flow reviewed; runtime unqualified"
         }
       },
       "record_field_reviews": [
@@ -12102,6 +12223,13 @@
         "source": {
           "line": 310,
           "path": "python/src/libghidra/local.py"
+        },
+        "wrapper_contract": {
+          "statements": [
+            "items = self._call(self._client.list_memory_blocks, limit, offset)",
+            "return ListMemoryBlocksResponse(blocks=[_to_memory_block(d) for d in items])"
+          ],
+          "status": "exact AST reconstruction/dispatch/control flow reviewed; runtime unqualified"
         }
       },
       "record_field_reviews": [
@@ -13342,6 +13470,13 @@
         "source": {
           "line": 295,
           "path": "python/src/libghidra/local.py"
+        },
+        "wrapper_contract": {
+          "statements": [
+            "items = self._call(self._client.list_symbols, range_start, range_end, limit, offset)",
+            "return ListSymbolsResponse(symbols=[_to_symbol(d) for d in items])"
+          ],
+          "status": "exact AST reconstruction/dispatch/control flow reviewed; runtime unqualified"
         }
       },
       "record_field_reviews": [
@@ -14736,6 +14871,13 @@
         "source": {
           "line": 348,
           "path": "python/src/libghidra/local.py"
+        },
+        "wrapper_contract": {
+          "statements": [
+            "items = self._call(self._client.list_type_members, type_id_or_path, limit, offset)",
+            "return ListTypeMembersResponse(members=[_to_type_member(d) for d in items])"
+          ],
+          "status": "exact AST reconstruction/dispatch/control flow reviewed; runtime unqualified"
         }
       },
       "record_field_reviews": [
@@ -15378,6 +15520,13 @@
         "source": {
           "line": 344,
           "path": "python/src/libghidra/local.py"
+        },
+        "wrapper_contract": {
+          "statements": [
+            "items = self._call(self._client.list_types, query, limit, offset)",
+            "return ListTypesResponse(types=[_to_type(d) for d in items])"
+          ],
+          "status": "exact AST reconstruction/dispatch/control flow reviewed; runtime unqualified"
         }
       },
       "record_field_reviews": [
@@ -15762,6 +15911,13 @@
         "source": {
           "line": 333,
           "path": "python/src/libghidra/local.py"
+        },
+        "wrapper_contract": {
+          "statements": [
+            "items = self._call(self._client.list_xrefs, range_start, range_end, limit, offset)",
+            "return ListXrefsResponse(xrefs=[_to_xref(d) for d in items])"
+          ],
+          "status": "exact AST reconstruction/dispatch/control flow reviewed; runtime unqualified"
         }
       },
       "record_field_reviews": [
@@ -16394,6 +16550,20 @@
         "source": {
           "line": 201,
           "path": "python/src/libghidra/local.py"
+        },
+        "wrapper_contract": {
+          "statements": [
+            "if isinstance(request, str):",
+            "    request = OpenProgramRequest(program_path=request)",
+            "if self._auto_detect and request.program_path and not request.language_id:",
+            "    detected = detect(request.program_path)",
+            "    request.language_id = detected.language_id",
+            "    if not request.compiler_spec_id:",
+            "        request.compiler_spec_id = detected.compiler_spec_id",
+            "d = self._call(self._client.open_program, program_path=request.program_path, read_only=request.read_only, project_path=request.project_path, project_name=request.project_name, language_id=request.language_id, compiler_spec_id=request.compiler_spec_id, format=request.format, base_address=request.base_address)",
+            "return OpenProgramResponse(**d)"
+          ],
+          "status": "exact AST reconstruction/dispatch/control flow reviewed; runtime unqualified"
         }
       },
       "request": [
@@ -17147,6 +17317,13 @@
         "source": {
           "line": 306,
           "path": "python/src/libghidra/local.py"
+        },
+        "wrapper_contract": {
+          "statements": [
+            "data = self._call(self._client.read_bytes, address, length)",
+            "return ReadBytesResponse(data=data)"
+          ],
+          "status": "exact AST reconstruction/dispatch/control flow reviewed; runtime unqualified"
         }
       },
       "request": [
@@ -17545,6 +17722,13 @@
         "source": {
           "line": 260,
           "path": "python/src/libghidra/local.py"
+        },
+        "wrapper_contract": {
+          "statements": [
+            "d = self._call(self._client.rename_function, address, new_name)",
+            "return RenameFunctionResponse(**d)"
+          ],
+          "status": "exact AST reconstruction/dispatch/control flow reviewed; runtime unqualified"
         }
       },
       "request": [
@@ -18117,6 +18301,13 @@
         "source": {
           "line": 300,
           "path": "python/src/libghidra/local.py"
+        },
+        "wrapper_contract": {
+          "statements": [
+            "d = self._call(self._client.rename_symbol, address, new_name)",
+            "return RenameSymbolResponse(**d)"
+          ],
+          "status": "exact AST reconstruction/dispatch/control flow reviewed; runtime unqualified"
         }
       },
       "request": [
@@ -18799,6 +18990,12 @@
         "source": {
           "line": 228,
           "path": "python/src/libghidra/local.py"
+        },
+        "wrapper_contract": {
+          "statements": [
+            "return self._call(self._client.save_program)"
+          ],
+          "status": "exact AST reconstruction/dispatch/control flow reviewed; runtime unqualified"
         }
       },
       "request": [],
@@ -30667,7 +30864,7 @@
         "line": 74,
         "name": "detect_arch",
         "path": "python/src/libghidra/local.py",
-        "review_status": "non-converter helper; calls/hash inventoried, branch review separate",
+        "review_status": "control flow reviewed; diagnostic text not a behavior gate; runtime unqualified",
         "reviewed_statements": null
       },
       {
@@ -30678,7 +30875,7 @@
         "line": 83,
         "name": "_require_native",
         "path": "python/src/libghidra/local.py",
-        "review_status": "non-converter helper; calls/hash inventoried, branch review separate",
+        "review_status": "control flow reviewed; diagnostic text not a behavior gate; runtime unqualified",
         "reviewed_statements": null
       },
       {
@@ -30881,6 +31078,13 @@
         "source": {
           "line": 191,
           "path": "python/src/libghidra/local.py"
+        },
+        "wrapper_contract": {
+          "statements": [
+            "d = self._call(self._client.get_status)",
+            "return HealthStatus(**d)"
+          ],
+          "status": "exact AST reconstruction/dispatch/control flow reviewed; runtime unqualified"
         }
       },
       {
@@ -30900,6 +31104,13 @@
         "source": {
           "line": 195,
           "path": "python/src/libghidra/local.py"
+        },
+        "wrapper_contract": {
+          "statements": [
+            "items = self._call(self._client.get_capabilities)",
+            "return [Capability(**d) for d in items]"
+          ],
+          "status": "exact AST reconstruction/dispatch/control flow reviewed; runtime unqualified"
         }
       },
       {
@@ -30926,6 +31137,20 @@
         "source": {
           "line": 201,
           "path": "python/src/libghidra/local.py"
+        },
+        "wrapper_contract": {
+          "statements": [
+            "if isinstance(request, str):",
+            "    request = OpenProgramRequest(program_path=request)",
+            "if self._auto_detect and request.program_path and not request.language_id:",
+            "    detected = detect(request.program_path)",
+            "    request.language_id = detected.language_id",
+            "    if not request.compiler_spec_id:",
+            "        request.compiler_spec_id = detected.compiler_spec_id",
+            "d = self._call(self._client.open_program, program_path=request.program_path, read_only=request.read_only, project_path=request.project_path, project_name=request.project_name, language_id=request.language_id, compiler_spec_id=request.compiler_spec_id, format=request.format, base_address=request.base_address)",
+            "return OpenProgramResponse(**d)"
+          ],
+          "status": "exact AST reconstruction/dispatch/control flow reviewed; runtime unqualified"
         }
       },
       {
@@ -30948,6 +31173,12 @@
         "source": {
           "line": 225,
           "path": "python/src/libghidra/local.py"
+        },
+        "wrapper_contract": {
+          "statements": [
+            "return self._call(self._client.close_program, policy)"
+          ],
+          "status": "exact AST reconstruction/dispatch/control flow reviewed; runtime unqualified"
         }
       },
       {
@@ -30968,6 +31199,12 @@
         "source": {
           "line": 228,
           "path": "python/src/libghidra/local.py"
+        },
+        "wrapper_contract": {
+          "statements": [
+            "return self._call(self._client.save_program)"
+          ],
+          "status": "exact AST reconstruction/dispatch/control flow reviewed; runtime unqualified"
         }
       },
       {
@@ -30988,6 +31225,12 @@
         "source": {
           "line": 231,
           "path": "python/src/libghidra/local.py"
+        },
+        "wrapper_contract": {
+          "statements": [
+            "return self._call(self._client.discard_program)"
+          ],
+          "status": "exact AST reconstruction/dispatch/control flow reviewed; runtime unqualified"
         }
       },
       {
@@ -31007,6 +31250,13 @@
         "source": {
           "line": 234,
           "path": "python/src/libghidra/local.py"
+        },
+        "wrapper_contract": {
+          "statements": [
+            "rev = self._call(self._client.get_revision)",
+            "return RevisionResponse(modification_number=rev)"
+          ],
+          "status": "exact AST reconstruction/dispatch/control flow reviewed; runtime unqualified"
         }
       },
       {
@@ -31027,6 +31277,14 @@
         "source": {
           "line": 240,
           "path": "python/src/libghidra/local.py"
+        },
+        "wrapper_contract": {
+          "statements": [
+            "d = self._call(self._client.get_function, address)",
+            "func = _to_function(d) if d is not None else None",
+            "return GetFunctionResponse(function=func)"
+          ],
+          "status": "exact AST reconstruction/dispatch/control flow reviewed; runtime unqualified"
         }
       },
       {
@@ -31052,6 +31310,13 @@
         "source": {
           "line": 245,
           "path": "python/src/libghidra/local.py"
+        },
+        "wrapper_contract": {
+          "statements": [
+            "items = self._call(self._client.list_functions, range_start, range_end, limit, offset)",
+            "return ListFunctionsResponse(functions=[_to_function(d) for d in items])"
+          ],
+          "status": "exact AST reconstruction/dispatch/control flow reviewed; runtime unqualified"
         }
       },
       {
@@ -31077,6 +31342,13 @@
         "source": {
           "line": 250,
           "path": "python/src/libghidra/local.py"
+        },
+        "wrapper_contract": {
+          "statements": [
+            "items = self._call(self._client.list_leaf_functions, range_start, range_end, limit, offset)",
+            "return ListFunctionsResponse(functions=[_to_function(d) for d in items])"
+          ],
+          "status": "exact AST reconstruction/dispatch/control flow reviewed; runtime unqualified"
         }
       },
       {
@@ -31096,6 +31368,13 @@
         "source": {
           "line": 260,
           "path": "python/src/libghidra/local.py"
+        },
+        "wrapper_contract": {
+          "statements": [
+            "d = self._call(self._client.rename_function, address, new_name)",
+            "return RenameFunctionResponse(**d)"
+          ],
+          "status": "exact AST reconstruction/dispatch/control flow reviewed; runtime unqualified"
         }
       },
       {
@@ -31121,6 +31400,13 @@
         "source": {
           "line": 264,
           "path": "python/src/libghidra/local.py"
+        },
+        "wrapper_contract": {
+          "statements": [
+            "items = self._call(self._client.list_basic_blocks, range_start, range_end, limit, offset)",
+            "return ListBasicBlocksResponse(blocks=[_to_basic_block(d) for d in items])"
+          ],
+          "status": "exact AST reconstruction/dispatch/control flow reviewed; runtime unqualified"
         }
       },
       {
@@ -31146,6 +31432,13 @@
         "source": {
           "line": 269,
           "path": "python/src/libghidra/local.py"
+        },
+        "wrapper_contract": {
+          "statements": [
+            "items = self._call(self._client.list_cfg_edges, range_start, range_end, limit, offset)",
+            "return ListCFGEdgesResponse(edges=[_to_cfg_edge(d) for d in items])"
+          ],
+          "status": "exact AST reconstruction/dispatch/control flow reviewed; runtime unqualified"
         }
       },
       {
@@ -31168,6 +31461,14 @@
         "source": {
           "line": 276,
           "path": "python/src/libghidra/local.py"
+        },
+        "wrapper_contract": {
+          "statements": [
+            "d = self._call(self._client.get_decompilation, address, timeout_ms)",
+            "dec = _to_decompilation(d) if d is not None else None",
+            "return GetDecompilationResponse(decompilation=dec)"
+          ],
+          "status": "exact AST reconstruction/dispatch/control flow reviewed; runtime unqualified"
         }
       },
       {
@@ -31194,6 +31495,13 @@
         "source": {
           "line": 281,
           "path": "python/src/libghidra/local.py"
+        },
+        "wrapper_contract": {
+          "statements": [
+            "items = self._call(self._client.list_decompilations, range_start, range_end, limit, offset, timeout_ms)",
+            "return ListDecompilationsResponse(decompilations=[_to_decompilation(d) for d in items])"
+          ],
+          "status": "exact AST reconstruction/dispatch/control flow reviewed; runtime unqualified"
         }
       },
       {
@@ -31214,6 +31522,14 @@
         "source": {
           "line": 290,
           "path": "python/src/libghidra/local.py"
+        },
+        "wrapper_contract": {
+          "statements": [
+            "d = self._call(self._client.get_symbol, address)",
+            "sym = _to_symbol(d) if d is not None else None",
+            "return GetSymbolResponse(symbol=sym)"
+          ],
+          "status": "exact AST reconstruction/dispatch/control flow reviewed; runtime unqualified"
         }
       },
       {
@@ -31239,6 +31555,13 @@
         "source": {
           "line": 295,
           "path": "python/src/libghidra/local.py"
+        },
+        "wrapper_contract": {
+          "statements": [
+            "items = self._call(self._client.list_symbols, range_start, range_end, limit, offset)",
+            "return ListSymbolsResponse(symbols=[_to_symbol(d) for d in items])"
+          ],
+          "status": "exact AST reconstruction/dispatch/control flow reviewed; runtime unqualified"
         }
       },
       {
@@ -31258,6 +31581,13 @@
         "source": {
           "line": 300,
           "path": "python/src/libghidra/local.py"
+        },
+        "wrapper_contract": {
+          "statements": [
+            "d = self._call(self._client.rename_symbol, address, new_name)",
+            "return RenameSymbolResponse(**d)"
+          ],
+          "status": "exact AST reconstruction/dispatch/control flow reviewed; runtime unqualified"
         }
       },
       {
@@ -31277,6 +31607,13 @@
         "source": {
           "line": 306,
           "path": "python/src/libghidra/local.py"
+        },
+        "wrapper_contract": {
+          "statements": [
+            "data = self._call(self._client.read_bytes, address, length)",
+            "return ReadBytesResponse(data=data)"
+          ],
+          "status": "exact AST reconstruction/dispatch/control flow reviewed; runtime unqualified"
         }
       },
       {
@@ -31300,6 +31637,13 @@
         "source": {
           "line": 310,
           "path": "python/src/libghidra/local.py"
+        },
+        "wrapper_contract": {
+          "statements": [
+            "items = self._call(self._client.list_memory_blocks, limit, offset)",
+            "return ListMemoryBlocksResponse(blocks=[_to_memory_block(d) for d in items])"
+          ],
+          "status": "exact AST reconstruction/dispatch/control flow reviewed; runtime unqualified"
         }
       },
       {
@@ -31320,6 +31664,14 @@
         "source": {
           "line": 316,
           "path": "python/src/libghidra/local.py"
+        },
+        "wrapper_contract": {
+          "statements": [
+            "d = self._call(self._client.get_instruction, address)",
+            "insn = _to_instruction(d) if d is not None else None",
+            "return GetInstructionResponse(instruction=insn)"
+          ],
+          "status": "exact AST reconstruction/dispatch/control flow reviewed; runtime unqualified"
         }
       },
       {
@@ -31345,6 +31697,13 @@
         "source": {
           "line": 321,
           "path": "python/src/libghidra/local.py"
+        },
+        "wrapper_contract": {
+          "statements": [
+            "items = self._call(self._client.list_instructions, range_start, range_end, limit, offset)",
+            "return ListInstructionsResponse(instructions=[_to_instruction(d) for d in items])"
+          ],
+          "status": "exact AST reconstruction/dispatch/control flow reviewed; runtime unqualified"
         }
       },
       {
@@ -31370,6 +31729,13 @@
         "source": {
           "line": 326,
           "path": "python/src/libghidra/local.py"
+        },
+        "wrapper_contract": {
+          "statements": [
+            "items = self._call(self._client.list_defined_strings, range_start, range_end, limit, offset)",
+            "return ListDefinedStringsResponse(strings=[_to_defined_string(d) for d in items])"
+          ],
+          "status": "exact AST reconstruction/dispatch/control flow reviewed; runtime unqualified"
         }
       },
       {
@@ -31395,6 +31761,13 @@
         "source": {
           "line": 333,
           "path": "python/src/libghidra/local.py"
+        },
+        "wrapper_contract": {
+          "statements": [
+            "items = self._call(self._client.list_xrefs, range_start, range_end, limit, offset)",
+            "return ListXrefsResponse(xrefs=[_to_xref(d) for d in items])"
+          ],
+          "status": "exact AST reconstruction/dispatch/control flow reviewed; runtime unqualified"
         }
       },
       {
@@ -31416,6 +31789,13 @@
         "source": {
           "line": 340,
           "path": "python/src/libghidra/local.py"
+        },
+        "wrapper_contract": {
+          "statements": [
+            "d = self._call(self._client.get_type, path)",
+            "return _to_type(d) if d is not None else None"
+          ],
+          "status": "exact AST reconstruction/dispatch/control flow reviewed; runtime unqualified"
         }
       },
       {
@@ -31440,6 +31820,13 @@
         "source": {
           "line": 344,
           "path": "python/src/libghidra/local.py"
+        },
+        "wrapper_contract": {
+          "statements": [
+            "items = self._call(self._client.list_types, query, limit, offset)",
+            "return ListTypesResponse(types=[_to_type(d) for d in items])"
+          ],
+          "status": "exact AST reconstruction/dispatch/control flow reviewed; runtime unqualified"
         }
       },
       {
@@ -31463,10 +31850,49 @@
         "source": {
           "line": 348,
           "path": "python/src/libghidra/local.py"
+        },
+        "wrapper_contract": {
+          "statements": [
+            "items = self._call(self._client.list_type_members, type_id_or_path, limit, offset)",
+            "return ListTypeMembersResponse(members=[_to_type_member(d) for d in items])"
+          ],
+          "status": "exact AST reconstruction/dispatch/control flow reviewed; runtime unqualified"
         }
       }
     ],
     "nested_enums": "Python _to_decompilation converts locals/tokens and their enum kinds via Python IntEnum constructors; unknown values can raise ValueError unlike Lua numeric unknown-value preservation",
+    "non_converter_helpers": {
+      "_require_native": "only _native is None raises ImportError with diagnostic string; otherwise returns None",
+      "detect_arch": "detect language ID; OSError/UnsupportedFormatError -> None; other exceptions propagate"
+    },
+    "private_lifecycle_and_errors": {
+      "__init__": {
+        "qualification": "source only; runtime unqualified",
+        "statements": [
+          "_require_native()",
+          "opts = options or LocalClientOptions()",
+          "self._opts = opts",
+          "self._auto_detect = opts.default_arch in (\"\", \"auto\")",
+          "self._client = _native.create_local_client(ghidra_root=opts.ghidra_root, state_path=opts.state_path, default_arch=\"\" if self._auto_detect else opts.default_arch, pool_size=opts.pool_size)"
+        ]
+      },
+      "_call": {
+        "qualification": "source only; runtime unqualified",
+        "statements": [
+          "try:",
+          "    return method(*args, **kwargs)",
+          "except ValueError as e:",
+          "    msg = str(e)",
+          "    if \":\" in msg:",
+          "        code_str, _, message = msg.partition(\": \")",
+          "        code = ErrorCode.from_rpc_code(code_str)",
+          "    else:",
+          "        code = ErrorCode.API_ERROR",
+          "        message = msg",
+          "    raise GhidraError(code, message)"
+        ]
+      }
+    },
     "record_converters": {
       "BasicBlockRecord": {
         "body_sha256": "025b03f3c7b0ddc89a27b2b9725ea9432e4d16451aa46a122f57d9ad3026a747",
