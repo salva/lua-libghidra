@@ -169,6 +169,7 @@ def review_session_records(u, operations):
             if name in ['AddPerfBenchmark','DeletePerfBenchmark']:
                 assert '"invalid_argument"' in text
             if name=='AddPerfBenchmark':
+                assert 'perf_benchmarks_.erase' in text and 'perf_benchmarks_.push_back(record)' in text
                 assert text.index('perf_benchmarks_.erase') < text.index('perf_benchmarks_.push_back(record)')
             if name=='DeletePerfBenchmark': assert 'if (deleted) revision_++' in text
             if name=='ListPerfBenchmarks':

@@ -480,3 +480,24 @@ Independent probes alter inclusive block end and primary-reference flag; both
 must fail reviewed assertions. Twenty-three focused tests pass. Generic response
 paths remain audited; performance/direct fields and request/default/helper/domain/
 final grammar review remain open. Runtime qualification remains unqualified.
+
+## Performance fields are caller data, not measurements (twentieth increment)
+
+`inventory_performance_fields.py` accounts all ten nested request/list record
+fields and five direct response fields. Native add stores the supplied record
+verbatim after bench_id upsert; it computes no timing, percentile, throughput,
+regression or status. Empty labels/status and unvalidated numeric signs/nonfinite
+values are native behavior, not promises about a Lua adapter accepting them.
+Native double maps to Lua number, not an unresolved table/enum; lua_Number
+precision/binary64 roundtrip remains runtime-unqualified. Zero defaults are not
+measured zero latency. Add true includes replacements; clear true includes empty
+store; removed_count is pre-clear uint32-cast size; delete false is absent success.
+The list remains complete insertion/upsert-order data, not a page or benchmark run.
+
+Independent probes replace record storage and listing copy. The first initially
+exposed a ValueError in an older review's unchecked substring index; that primitive
+now asserts token presence before ordering, yielding the intended fail-closed
+AssertionError. Fresh generation/check and all twenty-four tests pass after this
+repair. Generic response paths decrease from 120 to 105; remaining direct/member
+fields and request/helper/domain/final grammar review remain open. Runtime slots
+remain unqualified; no M1 or native behavior changes.

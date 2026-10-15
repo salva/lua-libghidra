@@ -208,10 +208,33 @@ class InventoryTests(unittest.TestCase):
             with self.assertRaises(AssertionError):
                 module.inventory(root)
             adapter.write_text(adapter_original)
+            local.write_text(local_original.replace('perf_benchmarks_.push_back(record)', 'perf_benchmarks_.push_back(PerfBenchmarkRecord{})'))
+            with self.assertRaises(AssertionError):
+                module.inventory(root)
+            local.write_text(local_original)
+            local.write_text(local_original.replace('resp.records = perf_benchmarks_', 'resp.records = {}'))
+            with self.assertRaises(AssertionError):
+                module.inventory(root)
+            local.write_text(local_original)
             header = root/'cpp/src/local_arch_adapter.hpp'
             header.write_text(header.read_text().replace('std::map<std::pair<std::uint64_t, int>, std::string> comments_', 'std::multimap<std::pair<std::uint64_t, int>, std::string> comments_'))
             with self.assertRaises(AssertionError):
                 module.inventory(root)
+
+    def test_performance_is_caller_data_and_double_is_number(self):
+        op=self.ops['AddPerfBenchmark']
+        request={f['name']:f for f in op['request'][0]['nested_fields']}
+        self.assertIn('Lua number',request['cold_ms_p50']['lua'])
+        self.assertIn('no timing/percentile calculation',request['cold_ms_p50']['semantics'])
+        self.assertIn('not a native pass/fail',request['status']['semantics'])
+        self.assertIn('sole upsert/delete key',request['bench_id']['semantics'])
+        fields=self.ops['ListPerfBenchmarks']['response']['fields']
+        self.assertIn('caller-supplied',next(f['semantics'] for f in fields if f['name']=='throughput_qps'))
+        clear=self.ops['ClearPerfBenchmarks']['response']['fields']
+        self.assertIn('UINT32_MAX',next(f['semantics'] for f in clear if f['name']=='removed_count'))
+        self.assertIn('already empty',next(f['semantics'] for f in clear if f['name']=='cleared'))
+        self.assertIn('replacement',op['response']['fields'][0]['semantics'])
+        self.assertIn('not new-insertion',op['response']['fields'][0]['semantics'])
 
     def test_graph_reference_branch_fields_and_defaults(self):
         def sem(op,name):

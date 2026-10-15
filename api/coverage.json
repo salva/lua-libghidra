@@ -333,6 +333,26 @@
         "invalid_argument"
       ],
       "pagination": null,
+      "performance_field_review": {
+        "body_sha256": "bc9fc07906bb8525b1ba1adb87b567a59f2bc5b84f9d686fe6c2b845f2ebb79d",
+        "path": "cpp/src/local_client.cpp",
+        "qualification": "source storage semantics only; no benchmark result or runtime evidence generated",
+        "record_fields": [
+          "bench_id",
+          "cold_ms_p50",
+          "cold_ms_p95",
+          "dataset_profile",
+          "query_family",
+          "regression_pct",
+          "status",
+          "throughput_qps",
+          "warm_ms_p50",
+          "warm_ms_p95"
+        ],
+        "response_fields": [
+          "added"
+        ]
+      },
       "program_state": "loaded required; empty bench_id -> lowercase invalid_argument",
       "request": [
         {
@@ -351,7 +371,7 @@
               "native_type": "std::string",
               "optional": false,
               "path": "bench_id",
-              "semantics": "native field preserved; no truthiness substitution"
+              "semantics": "caller-supplied nonempty string, sole upsert/delete key; empty rejected invalid_argument; stored verbatim and listed unchanged"
             },
             {
               "ignored": false,
@@ -362,7 +382,7 @@
               "native_type": "std::string",
               "optional": false,
               "path": "query_family",
-              "semantics": "native field preserved; no truthiness substitution"
+              "semantics": "caller-supplied label, empty allowed natively; no native family validation or measurement"
             },
             {
               "ignored": false,
@@ -373,73 +393,73 @@
               "native_type": "std::string",
               "optional": false,
               "path": "dataset_profile",
-              "semantics": "native field preserved; no truthiness substitution"
+              "semantics": "caller-supplied label, empty allowed natively; no native dataset validation"
             },
             {
               "ignored": false,
-              "lua": "double table/enum; resolve in types/enums",
+              "lua": "Lua number (native double; lua_Number precision/runtime qualification required)",
               "model": "PerfBenchmarkRecord",
               "name": "cold_ms_p50",
               "native_default": "0.0",
               "native_type": "double",
               "optional": false,
               "path": "cold_ms_p50",
-              "semantics": "native field preserved; no truthiness substitution"
+              "semantics": "caller-supplied double, conventional milliseconds; native stores/copies unchanged, no timing/percentile calculation, nonnegative or finite validation; Lua number uses runtime lua_Number precision, binary64 roundtrip unqualified"
             },
             {
               "ignored": false,
-              "lua": "double table/enum; resolve in types/enums",
+              "lua": "Lua number (native double; lua_Number precision/runtime qualification required)",
               "model": "PerfBenchmarkRecord",
               "name": "cold_ms_p95",
               "native_default": "0.0",
               "native_type": "double",
               "optional": false,
               "path": "cold_ms_p95",
-              "semantics": "native field preserved; no truthiness substitution"
+              "semantics": "caller-supplied double, conventional milliseconds; native stores/copies unchanged, no timing/percentile calculation, nonnegative or finite validation; Lua number uses runtime lua_Number precision, binary64 roundtrip unqualified"
             },
             {
               "ignored": false,
-              "lua": "double table/enum; resolve in types/enums",
+              "lua": "Lua number (native double; lua_Number precision/runtime qualification required)",
               "model": "PerfBenchmarkRecord",
               "name": "warm_ms_p50",
               "native_default": "0.0",
               "native_type": "double",
               "optional": false,
               "path": "warm_ms_p50",
-              "semantics": "native field preserved; no truthiness substitution"
+              "semantics": "caller-supplied double, conventional milliseconds; native stores/copies unchanged, no timing/percentile calculation, nonnegative or finite validation; Lua number uses runtime lua_Number precision, binary64 roundtrip unqualified"
             },
             {
               "ignored": false,
-              "lua": "double table/enum; resolve in types/enums",
+              "lua": "Lua number (native double; lua_Number precision/runtime qualification required)",
               "model": "PerfBenchmarkRecord",
               "name": "warm_ms_p95",
               "native_default": "0.0",
               "native_type": "double",
               "optional": false,
               "path": "warm_ms_p95",
-              "semantics": "native field preserved; no truthiness substitution"
+              "semantics": "caller-supplied double, conventional milliseconds; native stores/copies unchanged, no timing/percentile calculation, nonnegative or finite validation; Lua number uses runtime lua_Number precision, binary64 roundtrip unqualified"
             },
             {
               "ignored": false,
-              "lua": "double table/enum; resolve in types/enums",
+              "lua": "Lua number (native double; lua_Number precision/runtime qualification required)",
               "model": "PerfBenchmarkRecord",
               "name": "throughput_qps",
               "native_default": "0.0",
               "native_type": "double",
               "optional": false,
               "path": "throughput_qps",
-              "semantics": "native field preserved; no truthiness substitution"
+              "semantics": "caller-supplied double, conventional queries/second; native stores/copies unchanged, no computation or finite/sign/range validation; Lua number precision is runtime-dependent, binary64 roundtrip unqualified"
             },
             {
               "ignored": false,
-              "lua": "double table/enum; resolve in types/enums",
+              "lua": "Lua number (native double; lua_Number precision/runtime qualification required)",
               "model": "PerfBenchmarkRecord",
               "name": "regression_pct",
               "native_default": "0.0",
               "native_type": "double",
               "optional": false,
               "path": "regression_pct",
-              "semantics": "native field preserved; no truthiness substitution"
+              "semantics": "caller-supplied double, conventional percent; native stores/copies unchanged, no computation or finite/sign/range validation; Lua number precision is runtime-dependent, binary64 roundtrip unqualified"
             },
             {
               "ignored": false,
@@ -450,7 +470,7 @@
               "native_type": "std::string",
               "optional": false,
               "path": "status",
-              "semantics": "native field preserved; no truthiness substitution"
+              "semantics": "caller-supplied string, empty allowed natively; not a native pass/fail result or validated enum"
             }
           ]
         }
@@ -465,7 +485,7 @@
             "native_type": "bool",
             "optional": false,
             "path": "added",
-            "semantics": "native field preserved; no truthiness substitution"
+            "semantics": "literal true after erase-then-append upsert; true also for replacement, not new-insertion indicator"
           }
         ],
         "lua": "AddPerfBenchmarkResponse table/enum; resolve in types/enums",
@@ -978,6 +998,16 @@
         "NO_PROGRAM"
       ],
       "pagination": null,
+      "performance_field_review": {
+        "body_sha256": "2c09130cb833ae7983058593835c13ddfec1e4fe7c14eff619f498e2b56a873b",
+        "path": "cpp/src/local_client.cpp",
+        "qualification": "source storage semantics only; no benchmark result or runtime evidence generated",
+        "record_fields": [],
+        "response_fields": [
+          "cleared",
+          "removed_count"
+        ]
+      },
       "program_state": "loaded required",
       "request": [],
       "response": {
@@ -990,7 +1020,7 @@
             "native_type": "bool",
             "optional": false,
             "path": "cleared",
-            "semantics": "native field preserved; no truthiness substitution"
+            "semantics": "literal true, even if vector already empty"
           },
           {
             "lua": "checked Lua integer (std::uint32_t)",
@@ -1000,7 +1030,7 @@
             "native_type": "std::uint32_t",
             "optional": false,
             "path": "removed_count",
-            "semantics": "native field preserved; no truthiness substitution"
+            "semantics": "pre-clear vector size cast uint32; exact only for count<=UINT32_MAX, otherwise modulo conversion; not number of runtime measurements"
           }
         ],
         "lua": "ClearPerfBenchmarksResponse table/enum; resolve in types/enums",
@@ -2382,6 +2412,15 @@
         "invalid_argument"
       ],
       "pagination": null,
+      "performance_field_review": {
+        "body_sha256": "9239c5d6119bae7a1f51d3a9dcc76d7f09d9e7c934e9c4de6f86e6163a30b095",
+        "path": "cpp/src/local_client.cpp",
+        "qualification": "source storage semantics only; no benchmark result or runtime evidence generated",
+        "record_fields": [],
+        "response_fields": [
+          "deleted"
+        ]
+      },
       "program_state": "loaded required; empty bench_id -> lowercase invalid_argument",
       "request": [
         {
@@ -2403,7 +2442,7 @@
             "native_type": "bool",
             "optional": false,
             "path": "deleted",
-            "semantics": "native field preserved; no truthiness substitution"
+            "semantics": "true iff stored vector size decreased after bench_id erase; absent key yields successful false and unchanged native revision"
           }
         ],
         "lua": "DeletePerfBenchmarkResponse table/enum; resolve in types/enums",
@@ -10795,6 +10834,26 @@
         "NO_PROGRAM"
       ],
       "pagination": null,
+      "performance_field_review": {
+        "body_sha256": "377a5743fb176b83ea0773b3155fb6f0ad0f879f7b1b860a964c207add0cd1ef",
+        "path": "cpp/src/local_client.cpp",
+        "qualification": "source storage semantics only; no benchmark result or runtime evidence generated",
+        "record_fields": [
+          "bench_id",
+          "cold_ms_p50",
+          "cold_ms_p95",
+          "dataset_profile",
+          "query_family",
+          "regression_pct",
+          "status",
+          "throughput_qps",
+          "warm_ms_p50",
+          "warm_ms_p95"
+        ],
+        "response_fields": [
+          "records"
+        ]
+      },
       "program_state": "loaded required",
       "request": [],
       "response": {
@@ -10807,7 +10866,7 @@
             "native_type": "std::vector<PerfBenchmarkRecord>",
             "optional": false,
             "path": "records",
-            "semantics": "native field preserved; no truthiness substitution"
+            "semantics": "complete copy of caller-supplied records in insertion/upsert order; replacement moves to tail; no pagination, filtering or native measurement"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -10817,7 +10876,7 @@
             "native_type": "std::string",
             "optional": false,
             "path": "records.bench_id",
-            "semantics": "native field preserved; no truthiness substitution"
+            "semantics": "caller-supplied nonempty string, sole upsert/delete key; empty rejected invalid_argument; stored verbatim and listed unchanged"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -10827,7 +10886,7 @@
             "native_type": "std::string",
             "optional": false,
             "path": "records.query_family",
-            "semantics": "native field preserved; no truthiness substitution"
+            "semantics": "caller-supplied label, empty allowed natively; no native family validation or measurement"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -10837,67 +10896,67 @@
             "native_type": "std::string",
             "optional": false,
             "path": "records.dataset_profile",
-            "semantics": "native field preserved; no truthiness substitution"
+            "semantics": "caller-supplied label, empty allowed natively; no native dataset validation"
           },
           {
-            "lua": "double table/enum; resolve in types/enums",
+            "lua": "Lua number (native double; lua_Number precision/runtime qualification required)",
             "model": "PerfBenchmarkRecord",
             "name": "cold_ms_p50",
             "native_default": "0.0",
             "native_type": "double",
             "optional": false,
             "path": "records.cold_ms_p50",
-            "semantics": "native field preserved; no truthiness substitution"
+            "semantics": "caller-supplied double, conventional milliseconds; native stores/copies unchanged, no timing/percentile calculation, nonnegative or finite validation; Lua number uses runtime lua_Number precision, binary64 roundtrip unqualified"
           },
           {
-            "lua": "double table/enum; resolve in types/enums",
+            "lua": "Lua number (native double; lua_Number precision/runtime qualification required)",
             "model": "PerfBenchmarkRecord",
             "name": "cold_ms_p95",
             "native_default": "0.0",
             "native_type": "double",
             "optional": false,
             "path": "records.cold_ms_p95",
-            "semantics": "native field preserved; no truthiness substitution"
+            "semantics": "caller-supplied double, conventional milliseconds; native stores/copies unchanged, no timing/percentile calculation, nonnegative or finite validation; Lua number uses runtime lua_Number precision, binary64 roundtrip unqualified"
           },
           {
-            "lua": "double table/enum; resolve in types/enums",
+            "lua": "Lua number (native double; lua_Number precision/runtime qualification required)",
             "model": "PerfBenchmarkRecord",
             "name": "warm_ms_p50",
             "native_default": "0.0",
             "native_type": "double",
             "optional": false,
             "path": "records.warm_ms_p50",
-            "semantics": "native field preserved; no truthiness substitution"
+            "semantics": "caller-supplied double, conventional milliseconds; native stores/copies unchanged, no timing/percentile calculation, nonnegative or finite validation; Lua number uses runtime lua_Number precision, binary64 roundtrip unqualified"
           },
           {
-            "lua": "double table/enum; resolve in types/enums",
+            "lua": "Lua number (native double; lua_Number precision/runtime qualification required)",
             "model": "PerfBenchmarkRecord",
             "name": "warm_ms_p95",
             "native_default": "0.0",
             "native_type": "double",
             "optional": false,
             "path": "records.warm_ms_p95",
-            "semantics": "native field preserved; no truthiness substitution"
+            "semantics": "caller-supplied double, conventional milliseconds; native stores/copies unchanged, no timing/percentile calculation, nonnegative or finite validation; Lua number uses runtime lua_Number precision, binary64 roundtrip unqualified"
           },
           {
-            "lua": "double table/enum; resolve in types/enums",
+            "lua": "Lua number (native double; lua_Number precision/runtime qualification required)",
             "model": "PerfBenchmarkRecord",
             "name": "throughput_qps",
             "native_default": "0.0",
             "native_type": "double",
             "optional": false,
             "path": "records.throughput_qps",
-            "semantics": "native field preserved; no truthiness substitution"
+            "semantics": "caller-supplied double, conventional queries/second; native stores/copies unchanged, no computation or finite/sign/range validation; Lua number precision is runtime-dependent, binary64 roundtrip unqualified"
           },
           {
-            "lua": "double table/enum; resolve in types/enums",
+            "lua": "Lua number (native double; lua_Number precision/runtime qualification required)",
             "model": "PerfBenchmarkRecord",
             "name": "regression_pct",
             "native_default": "0.0",
             "native_type": "double",
             "optional": false,
             "path": "records.regression_pct",
-            "semantics": "native field preserved; no truthiness substitution"
+            "semantics": "caller-supplied double, conventional percent; native stores/copies unchanged, no computation or finite/sign/range validation; Lua number precision is runtime-dependent, binary64 roundtrip unqualified"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -10907,7 +10966,7 @@
             "native_type": "std::string",
             "optional": false,
             "path": "records.status",
-            "semantics": "native field preserved; no truthiness substitution"
+            "semantics": "caller-supplied string, empty allowed natively; not a native pass/fail result or validated enum"
           }
         ],
         "lua": "ListPerfBenchmarksResponse table/enum; resolve in types/enums",
@@ -28374,11 +28433,6 @@
     "response_field_semantics_unreviewed": [
       {
         "native_type": "bool",
-        "operation": "AddPerfBenchmark",
-        "path": "added"
-      },
-      {
-        "native_type": "bool",
         "operation": "AddTypeEnumMember",
         "path": "updated"
       },
@@ -28396,16 +28450,6 @@
         "native_type": "std::string",
         "operation": "ApplyDataType",
         "path": "data_type"
-      },
-      {
-        "native_type": "bool",
-        "operation": "ClearPerfBenchmarks",
-        "path": "cleared"
-      },
-      {
-        "native_type": "std::uint32_t",
-        "operation": "ClearPerfBenchmarks",
-        "path": "removed_count"
       },
       {
         "native_type": "bool",
@@ -28435,11 +28479,6 @@
       {
         "native_type": "bool",
         "operation": "DeleteDataItem",
-        "path": "deleted"
-      },
-      {
-        "native_type": "bool",
-        "operation": "DeletePerfBenchmark",
         "path": "deleted"
       },
       {
@@ -28666,61 +28705,6 @@
         "native_type": "std::vector<MemoryBlockRecord>",
         "operation": "ListMemoryBlocks",
         "path": "blocks"
-      },
-      {
-        "native_type": "std::vector<PerfBenchmarkRecord>",
-        "operation": "ListPerfBenchmarks",
-        "path": "records"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "ListPerfBenchmarks",
-        "path": "records.bench_id"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "ListPerfBenchmarks",
-        "path": "records.query_family"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "ListPerfBenchmarks",
-        "path": "records.dataset_profile"
-      },
-      {
-        "native_type": "double",
-        "operation": "ListPerfBenchmarks",
-        "path": "records.cold_ms_p50"
-      },
-      {
-        "native_type": "double",
-        "operation": "ListPerfBenchmarks",
-        "path": "records.cold_ms_p95"
-      },
-      {
-        "native_type": "double",
-        "operation": "ListPerfBenchmarks",
-        "path": "records.warm_ms_p50"
-      },
-      {
-        "native_type": "double",
-        "operation": "ListPerfBenchmarks",
-        "path": "records.warm_ms_p95"
-      },
-      {
-        "native_type": "double",
-        "operation": "ListPerfBenchmarks",
-        "path": "records.throughput_qps"
-      },
-      {
-        "native_type": "double",
-        "operation": "ListPerfBenchmarks",
-        "path": "records.regression_pct"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "ListPerfBenchmarks",
-        "path": "records.status"
       },
       {
         "native_type": "std::vector<SymbolRecord>",
@@ -32214,7 +32198,7 @@
           "semantics": "native field preserved; no truthiness substitution"
         },
         {
-          "lua": "double table/enum; resolve in types/enums",
+          "lua": "Lua number (native double; lua_Number precision/runtime qualification required)",
           "name": "cold_ms_p50",
           "native_default": "0.0",
           "native_type": "double",
@@ -32222,7 +32206,7 @@
           "semantics": "native field preserved; no truthiness substitution"
         },
         {
-          "lua": "double table/enum; resolve in types/enums",
+          "lua": "Lua number (native double; lua_Number precision/runtime qualification required)",
           "name": "cold_ms_p95",
           "native_default": "0.0",
           "native_type": "double",
@@ -32230,7 +32214,7 @@
           "semantics": "native field preserved; no truthiness substitution"
         },
         {
-          "lua": "double table/enum; resolve in types/enums",
+          "lua": "Lua number (native double; lua_Number precision/runtime qualification required)",
           "name": "warm_ms_p50",
           "native_default": "0.0",
           "native_type": "double",
@@ -32238,7 +32222,7 @@
           "semantics": "native field preserved; no truthiness substitution"
         },
         {
-          "lua": "double table/enum; resolve in types/enums",
+          "lua": "Lua number (native double; lua_Number precision/runtime qualification required)",
           "name": "warm_ms_p95",
           "native_default": "0.0",
           "native_type": "double",
@@ -32246,7 +32230,7 @@
           "semantics": "native field preserved; no truthiness substitution"
         },
         {
-          "lua": "double table/enum; resolve in types/enums",
+          "lua": "Lua number (native double; lua_Number precision/runtime qualification required)",
           "name": "throughput_qps",
           "native_default": "0.0",
           "native_type": "double",
@@ -32254,7 +32238,7 @@
           "semantics": "native field preserved; no truthiness substitution"
         },
         {
-          "lua": "double table/enum; resolve in types/enums",
+          "lua": "Lua number (native double; lua_Number precision/runtime qualification required)",
           "name": "regression_pct",
           "native_default": "0.0",
           "native_type": "double",

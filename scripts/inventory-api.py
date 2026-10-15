@@ -17,6 +17,7 @@ from inventory_page_wrappers import review_page_wrappers
 from inventory_record_fields import review_record_fields
 from inventory_decompilation_fields import review_decompilation_fields
 from inventory_graph_fields import review_graph_fields
+from inventory_performance_fields import review_performance_fields
 
 PIN = 'd51ca813ae1b6b59519551a9be8c0b1ad74d862d'
 ROOT = Path(__file__).resolve().parents[1]
@@ -46,6 +47,7 @@ def lua(t):
     if t.startswith('std::vector<'): return 'dense 1-based array of ' + lua(t[12:-1])
     if t == 'std::uint64_t': return 'exact UInt64'
     if t in ['std::uint32_t', 'std::int64_t', 'int', 'std::uint8_t']: return 'checked Lua integer (' + t + ')'
+    if t == 'double': return 'Lua number (native double; lua_Number precision/runtime qualification required)'
     if t == 'bool': return 'boolean (preserve false)'
     if t == 'std::string': return 'Lua string (no transcoding)'
     return t + ' table/enum; resolve in types/enums'
@@ -159,6 +161,7 @@ def inventory(u):
     review_record_fields(u, ops, types)
     review_decompilation_fields(u, ops, types)
     review_graph_fields(u, ops, types)
+    review_performance_fields(u, ops, types)
     surfaces(ops)
     python=[]
     # Independent public operations and model fields, including HTTP/async/headless exclusions.
