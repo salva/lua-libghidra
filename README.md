@@ -1,15 +1,16 @@
 # lua-libghidra
 
-Lua bindings for libghidra. The project is in requirements preparation; no
-binding implementation or Saivage deployment exists yet.
+Lua bindings for [0xeb/libghidra](https://github.com/0xeb/libghidra), designed
+around its C++ SDK and inspired by its Python API. Specification and design are
+drafted for review; no binding implementation or Saivage deployment exists yet.
 
-## Intended documents
+## Project documents
 
-- `docs/SPEC.md`: agreed scope, public API requirements and acceptance criteria.
-- `docs/DESIGN.md`: upstream integration, binding architecture and API design.
-- `docs/PLAN.md`: sequenced implementation work and validation gates.
+- [Specification](docs/SPEC.md): proposed scope, Lua API and acceptance criteria.
+- [Design](docs/DESIGN.md): integration architecture and binding-tool comparison.
+- [Plan](docs/PLAN.md): sequenced implementation work and validation gates.
 - [Automation operations](workflows/OPERATIONS.md): Saivage setup and launch policy.
 
-Specification and design come first. Lua versions, the exact libghidra upstream
-and revision, supported platforms, packaging and initial API coverage remain to
-be agreed. Do not treat these as implicit implementation choices.
+The proposed baseline is Lua 5.4 on Linux x86-64, C++20 with sol2, local and HTTP
+backends, CMake and LuaRocks. The plan records decisions to confirm before
+implementation. Python supplies API inspiration, not a runtime dependency.
