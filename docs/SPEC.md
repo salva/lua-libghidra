@@ -84,7 +84,7 @@ use those separate tables; only low-level open additionally accepts ignored
 | --- | --- |
 | Both: `get_status()`, `get_capabilities()` | Complete native value (health table / capability array), or nil,error |
 | Both: `get_function(address)`, `get_instruction(address)` | Low-level envelope; facade record,nil,envelope or missing-result tuple |
-| Both: `read_bytes(address, size)` | size checked uint32; low-level envelope; facade binary string,nil,envelope |
+| Both: `read_bytes(address, size)` | Public native size is uint32; binding accepts only 0..INT32_MAX before dispatch/allocation; low-level envelope; facade binary string,nil,envelope |
 | Both: `get_decompilation(address, options)` | options defaults {}; low-level timeout_ms defaults 30000 (ignored); facade permits no timeout key; return as above |
 | Both: `list_functions(options)`, `list_instructions(options)` | Complete page envelope; options defaults {} |
 | Facade: `iter_functions(options)` | Lazy zero-argument iterator function yielding one record, then nil; raises structured errors |
@@ -95,6 +95,16 @@ Page options are `range_start` (default UInt64 zero), `range_end` (default UInt6
 maximum), `limit` (100), `offset` (0). Iterator options replace `limit` with
 `page_size` (100); same range/offset defaults. Native inclusive ranges and compound
 integer checks apply. There is no instruction iterator in the first slice.
+For ListFunctions and ListInstructions, explicit `range_end=0` is the native
+sentinel for UINT64_MAX, not a literal upper address of zero. Thus (0,0) requests
+the full range and (positive_start,0) requests that start through the maximum;
+these list requests cannot express a singleton upper bound at address zero.
+Preserve this behavior on both surfaces, including with UInt64 zero.
+ListInstructions is a contiguous linear decode starting exactly at range_start,
+stopping at the first undecodable/zero-length instruction or range/count limit.
+It does not find mapped executable regions: default start zero can produce an
+empty page despite code elsewhere. Supply a known mapped instruction start;
+an empty page does not prove the program has no instructions beyond a gap.
 Other families require their recorded per-operation contract before expansion.
 See [proposed examples](EXAMPLES.md); M2 executes them with fixture-manifest inputs.
 
@@ -106,6 +116,9 @@ member or parameter ordinal. Optional absence is nil; preserve false and zero.
 Bytes are length-preserving Lua strings (including NUL); text is not transcoded.
 Enums use documented lowercase names; unknown response values retain their
 numeric native value. Ranges retain native inclusive end semantics.
+The zero-end sentinel above is an explicit exception; it also applies to native
+symbol, comment and data-item range queries. The manifest records applicability
+per operation rather than inferring it for every method with range fields.
 
 Every native `uint64_t` field uses exact UInt64 outputs: addresses, IDs,
 revision counters, sizes, lengths, offsets and ordinals, even when small.
@@ -114,6 +127,12 @@ uint64 member ordinal is UInt64 while an `int` parameter ordinal is a Lua intege
 array positions are unrelated. The field manifest must record native type and
 Lua representation for every request/response field, including nested records,
 before its adapter ships.
+Public field width does not override narrower downstream restrictions:
+ReadBytes passes length to signed 32-bit `int4` after allocating a native buffer.
+Both surfaces must reject size above INT32_MAX as binding `INVALID_ARGUMENT`
+before dispatch or requested-buffer allocation. Zero is allowed. The upper
+allowed value is a validation boundary, not a promise of memory availability or
+a required multi-gigabyte successful read.
 
 Concrete pinned model examples (the native field name is preserved):
 
@@ -158,6 +177,23 @@ scope error; `__gc` finally destroys the userdata exactly once. An alias can
 survive scope exit but stays closed. Detached responses survive all closure.
 `close_program` and local `shutdown` close program context, not the client owner.
 Neither client release nor GC saves state.
+Here program close is **logical access closure**, not engine unloading:
+upstream resets adapters, clears benchmark records and marks no program loaded,
+but retains slot-owned engines and their architecture until owner release or
+subsequent native replacement. Only binding `close()`/`__close`/GC releases the
+native owner and the process client slot.
+
+The two public views share owner-closed state and dispatch generation; they do
+not maintain independent facade program state. After successful close_program
+or shutdown through either view, program-dependent reads through either return
+native `NO_PROGRAM` (backend local), not `CLOSED`. Owner-level status/capabilities
+remain usable. `session:native():open_program(...)` may reopen the same owner;
+the existing Session then reads that new program. Previously created iterators
+stay invalidated and prior open-response tables remain historical. After binding
+owner close, SDK calls through both views return binding `CLOSED`; reopening that
+owner is impossible. Native close failures preserve their native error/outcome,
+not a fabricated successful-close state; generation still invalidates iterators
+for dispatched lifecycle calls. Do not infer resource release from response.closed.
 
 The following are pinned source observations, not experimental acceptance:
 
@@ -166,7 +202,7 @@ The following are pinned source observations, not experimental acceptance:
 | `save_program` | Requires open program and state_path; reports save failure | Preserve response/error; never promise binary patch persistence |
 | `discard_program` | Returns discarded=true without reverting anything | Available through native(); no rollback convenience |
 | `close_program(save)` | With empty state_path can close without saving | Reject missing state_path with binding `NO_STATE_PATH` before dispatch |
-| `close_program(discard)` | Unloads program; no transactional restore | Explicit unload only; preserve outcome |
+| `close_program(discard)` | Logically closes context; engines retained; no transactional restore | Access closure only; preserve outcome |
 | `shutdown` | Local program close policy, not remote host termination | Native escape hatch; same empty-path save caveat |
 | Open with state_path | Best-effort reload into slot 0, types/symbols only | Same limited reload; pool_size=1; no complete restoration promise |
 | `write_bytes` / patch batch | Copy-on-write overlay, not persisted patches | Preserve per-call outcomes; no invented atomicity |

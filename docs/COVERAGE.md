@@ -50,6 +50,19 @@ GetCapabilities preserves upstream coarse subsystem labels verbatim; it is not
 proof of per-operation support (including strings, type kinds or enum deletion).
 The explicit inventory and qualification evidence govern binding support claims.
 
+- ReadBytes' public uint32 length has a narrower binding domain, 0..INT32_MAX,
+  because loadFill receives signed int4. Reject larger lengths before native
+  dispatch/allocation on both surfaces, independent of the output byte string.
+- Functions, symbols, instructions, comments and data-item range calls use zero
+  range_end as UINT64_MAX sentinel, not a literal zero upper bound. Record this
+  per method. ListInstructions starts decoding at range_start and stops at the
+  first decode gap; it is not mapped-region enumeration and default zero start
+  may return empty despite valid code elsewhere.
+- CloseProgram/Shutdown logically close native program access; they retain
+  engines/architectures. Session and native view share that state, generation
+  and owner lifetime. Reopen on the same owner is distinct from binding close,
+  which releases the owner and makes all its aliases CLOSED.
+
 - ListFunctionSignatures is pages-only: limit/offset count candidate functions,
   and absent signatures are filtered after pagination. Empty output does not
   establish exhaustion. No signature iterator is promised.
@@ -76,6 +89,7 @@ conveniences. This is intentional facade coverage, not missing native coverage.
 Before each adapter lands, `api/coverage.*` expands this inventory to one row per
 operation: exact low/high names, every field's native type/Lua representation,
 defaults/ignored keys, response extraction, mutation classification, pagination
+range sentinels, effective downstream numeric bounds, program-state requirements,
 identity/order, cursor domain and post-pagination filtering, supported fixture,
 success assertions and negative evidence. Apply SPEC's compatibility exception
 for defined strings rather than demanding unattainable discovery evidence.

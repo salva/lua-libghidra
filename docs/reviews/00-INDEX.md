@@ -1,8 +1,9 @@
 # Review correction index
 
-2026-10-15 fresh1 writer corrections. IDs remain stable across rounds. All six
+2026-10-15 fresh2 writer corrections. IDs remain stable across rounds. All six
 original dimensions have documentation approval (upstream after UL-01 follow-up).
-Fresh1 has five changes-requested verdicts and one native-safety approval.
+All six fresh1 dimensions approved after re-review, recorded in 7cc4caa.
+Fresh2 has API/upstream change requests and four approvals.
 **Corrected, pending re-review** is not reviewer acceptance or a runtime pass.
 The new corrections below await review; no convergence is claimed.
 
@@ -27,6 +28,15 @@ The new corrections below await review; no convergence is claimed.
 | R17 | Medium | Fresh1 build F2: external-root versus empty-root embedded-cache profiles; DESIGN §5 and PLAN M5 require constructor/path evidence. Corrected, pending re-review. Source: decompiler_pool.cpp:52–61; engine/ghidra_decompiler.cpp:189–203 | External valid/missing/unreadable roots; embedded cold/warm/unwritable HOME |
 | R18 | Medium | Fresh1 layering L1: open returns session,nil,open_response; full detached initial metadata, no repeat open; SPEC §2, EXAMPLES, PLAN M2. Corrected, pending re-review. Source: models.hpp:47–61 | Initial metadata including false/zero retained through closure/reopen |
 | R19 | Medium | Fresh1 layering L2: SPEC first-slice signatures/options/helper exports and EXAMPLES; M2 executes first slice, M3 executes mutation/invalidation extension. Corrected, pending re-review. Source: local.hpp:16–33, session.hpp:14–23 and public operation signatures | Real fixture examples, third results, bounded pages/errors, same-owner closure |
+| R20 | High | Fresh2 API-1 / upstream U1: SPEC grammar/value restrictions, DESIGN boundary validation, COVERAGE effective numeric bounds, PLAN M1/M2; public uint32 ReadBytes restricted to 0..INT32_MAX before allocation/dispatch. Corrected, pending re-review. Source: local_arch_adapter.cpp:502–514 | Reject INT32_MAX+1/UINT32_MAX without requested allocation; validator-only upper-bound acceptance and small real reads |
+| R21 | Medium | Fresh2 API-2 / upstream U2 (sentinel): SPEC, DESIGN, COVERAGE and EXAMPLES explicitly preserve zero range_end as UINT64_MAX in applicable methods; no literal zero upper-bound promise. Corrected, pending re-review. Source: local_arch_adapter.cpp:41–50 and normalization call sites | M2 explicit zero/omitted/max/nonzero inclusive bounds, positive start with zero end |
+| R22 | Medium | Fresh2 upstream U2 (scan): SPEC/EXAMPLES document linear ListInstructions from exact start until first decode gap; DESIGN/COVERAGE/PLAN require mapped/unmapped/gap cases, no replacement region scanner. Corrected, pending re-review. Source: local_arch_adapter.cpp:547–577 | M2 known-start positive and unmapped/gap negatives, no global absence inference |
+| R23 | Medium | Fresh2 upstream U3: SPEC lifecycle matrix/shared public state, DESIGN ownership, COVERAGE and EXAMPLES distinguish logical close from native-owner release; PLAN M2 cross-view close/reopen/NO_PROGRAM/CLOSED and process-slot gates. Corrected, pending re-review. Source: local_client.cpp:1670–1689; decompiler_pool.cpp:102–105 | Program close retains engines/slot; owner close releases owner; historical metadata and invalid iterators persist |
+
+R13–R19's “pending re-review” phrases above preserve the original correction
+entries; their current disposition is **reviewer-approved in fresh1 follow-ups**
+linked below. R20–R23 are new corrections awaiting re-review. No runtime gate is
+passed by either documentation disposition.
 
 ## Subsystems and metaplan
 
@@ -55,5 +65,12 @@ The new corrections below await review; no convergence is claimed.
 | Fresh1 native safety | Approved; audit reminders incorporated into DESIGN §2 | [Report](fresh1-native.md) |
 | Fresh1 upstream | Changes requested: F1 → R14, F2 → R15, F3 → R13 | [Report](fresh1-upstream.md) |
 | Fresh1 validation | Changes requested: V1 → R14 | [Report](fresh1-validation.md) |
-| Fresh1 writer corrections | R13–R19 corrected in product docs; pending reviewer acceptance | No native experiments performed; reports preserved unchanged |
+| Fresh1 writer corrections | be084da; R13–R19 approved in all six follow-ups, recorded in 7cc4caa | Follow-up dispositions in each fresh1 report above; initial findings retained |
+| Fresh2 API | Changes requested: API-1 → R20, API-2 → R21 | [Report](fresh2-api.md) |
+| Fresh2 build | Approved | [Report](fresh2-build.md) |
+| Fresh2 layering | Approved | [Report](fresh2-layering.md) |
+| Fresh2 native safety | Approved | [Report](fresh2-native.md) |
+| Fresh2 upstream | Changes requested: U1 → R20, U2 → R21/R22, U3 → R23 | [Report](fresh2-upstream.md) |
+| Fresh2 validation | Approved | [Report](fresh2-validation.md) |
+| Fresh2 writer corrections | R20–R23 corrected; pending reviewer acceptance | Source evidence checked; no native experiments performed; reports preserved |
 | Subsequent review rounds | Pending owning-session dispatch | Append actual results; convergence not yet established |

@@ -43,6 +43,10 @@ do
   print(#bytes, bytes:byte(1))
   local page = check(session:list_functions{limit = 2, offset = 0})
   for _, record in ipairs(page.functions) do print(record.name) end
+  local instructions = check(session:list_instructions{
+    range_start = address, range_end = 0, limit = 2,
+  }) -- zero end means UINT64_MAX; decoding starts exactly at address
+  -- Stops at the first decode gap; empty does not imply no code elsewhere.
   local ok, iteration_err = pcall(function()
     for record in session:iter_functions{page_size = 2} do
       print(record.entry_address:hex(), record.name)
@@ -53,7 +57,18 @@ do
   local dec, _, envelope = session:get_decompilation(address)
   assert(dec ~= nil and envelope.decompilation == dec)
   -- Qualification checks completed/nonfallback semantics; presence isn't enough.
-  check(session:close_program{policy = "discard"}) -- unload, not rollback
+  check(alias:close_program{policy = "discard"}) -- logical close, engines retained
+  local no_function, no_program = session:get_function(address)
+  assert(no_function == nil and no_program.code == "NO_PROGRAM")
+  check(alias:get_status()) -- owner still live; not CLOSED
+  local reopened = check(alias:open_program{
+    program_path = fixture.binary_path,
+    language_id = fixture.language_id,
+    compiler_spec_id = fixture.compiler_spec_id,
+  })
+  check(session:get_function(address)) -- same Session now sees reopened context
+  -- opened/metadata still describe the earlier open, not reopened.
+  check(session:close_program{policy = "discard"})
 end -- __close resets shared owner
 local status, closed = alias:get_status()
 assert(status == nil and closed.code == "CLOSED")

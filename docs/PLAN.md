@@ -35,6 +35,10 @@ conversion, native exceptions, __close error preservation, surviving aliases,
 double-finalization resistance and ASan/UBSan. Test process guard across states,
 client B after A close, and engine globals/init/destruction. Retain sol2 only if
 audit passes; otherwise direct C API with unchanged public surfaces. No SWIG.
+Test ReadBytes boundary validation at zero, INT32_MAX, INT32_MAX+1 and UINT32_MAX:
+oversized rejection must precede native dispatch/requested-buffer allocation.
+Upper accepted-bound validation needs no multi-gigabyte read; real small reads
+are M2's positive integration cases.
 
 Exit: reproducible local-enabled installed load, no second VM, exact numeric
 conversion and safe failure/teardown; no broad adapters before this gate passes.
@@ -53,6 +57,17 @@ verify open's third-result metadata without reopening, including false/zero
 fields and retention after later close. Capability output must remain faithful
 without being treated as a precise operation-support oracle. The mutation example
 is an M3 extension, not an extra first-slice adapter requirement.
+Test explicit zero range_end (Lua integer and UInt64), omitted/default maximum
+and ordinary inclusive bounds, including positive start with zero end. For
+instructions use a manifest-known code start and unmapped/gap cases: empty output
+is not evidence of no code elsewhere. Check ReadBytes oversized errors through
+both views without allocating requested buffers.
+Test logical close through one view and NO_PROGRAM reads through the other,
+usable owner-level status, reopening the same owner through native(), permanently
+invalid old iterators and retained historical metadata. A program close must not
+release the process client slot; owner close must release it and make aliases
+CLOSED. Verify source/resource lifecycle without treating logical close as engine
+unloading or claiming failed close succeeded.
 
 Exit: positive real-engine cases through both surfaces, installed examples and
 negative/fallback diagnostics; no runtime Python/Java/network dependency.

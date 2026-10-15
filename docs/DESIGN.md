@@ -21,6 +21,14 @@ native owner but do not destroy the enclosing C++ handle; __gc destroys that
 handle once, with a construction marker for partial publication. All aliases
 share it. __close ignores its error argument and never raises, preserving an
 unrelated active error. Explicit close_program is separately fallible.
+Keep owner closure distinct from native logical program state: successful native
+closeProgramLocked resets adapters/loaded flag and benchmarks, not slot engines.
+No facade-only cached Program state may hide changes made via native(). Both
+views observe the same native NO_PROGRAM/open context and binding owner-closed
+flag/generation. Preserve lifecycle errors; don't mark a failed close successful.
+Closing a program keeps the process client slot reserved; releasing the native
+owner releases it. Qualify close/reopen through alternate public views, including
+old iterator invalidation and unchanged historical open metadata.
 
 A process guard rejects a second live client and serializes construction,
 dispatch and destruction across Lua states. Do not hold a mutex across a Lua
@@ -63,6 +71,12 @@ before native dispatch. Sanitizers supplement, not replace, the all-frame proof.
 
 ## 3. Pagination and generation
 
+Validate ReadBytes' public uint32 size against the stricter downstream int4
+domain: 0..INT32_MAX on both surfaces, before native allocation/dispatch. Record
+public type and effective range separately. Boundary rejection tests use a
+dispatch/allocation observer to prove INT32_MAX+1 and UINT32_MAX never reach the
+SDK; validator-only acceptance of INT32_MAX does not allocate that buffer.
+
 Apply SPEC compound integer validation to every paged adapter, including
 ListInstructions' native limit+offset scan argument. Native paginate also casts
 container size to int: qualification must establish supported collection sizes
@@ -70,6 +84,13 @@ below INT_MAX; this release does not support larger native collections.
 pool_size=1 is mandatory: multi-engine CFG/block aggregation appends by completion
 order, so repeated scans can duplicate/omit records across pages; state reload
 also targets only slot 0. Per-page sorting cannot solve that problem.
+Record range normalization separately from cursor semantics. Native functions,
+symbols, instructions, comments and data items normalize zero range_end to
+UINT64_MAX; never reject (positive_start,0) as a reversed range before applying
+that semantics. For ordinary nonzero bounds preserve native inclusive behavior.
+Instruction pages decode linearly from range_start and stop at the first gap,
+not at the end of all executable mappings. Test a known code start, unmapped
+start and decode gap without introducing a replacement scanner/iterator.
 
 Each iterator has a fixed extraction field, canonical identity and qualification
 fixture. Compound keys use exact UInt64 hex and length-delimited text:
