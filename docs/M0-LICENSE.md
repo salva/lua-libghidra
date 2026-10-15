@@ -207,6 +207,52 @@ Other evidenced constraints and remaining inventory:
    choose no-BFD or a license unilaterally. A final answer also needs the actual
    binutils/dependency lock and link closure, not the illustrative 2.44 texts.
 
+## Follow-up: planned-artifact/provenance discriminator
+
+A second bounded pass maps the planned files to the provenance already recorded
+in the accepted design. This is analysis of the proposed work, not implementation
+or a claim that an uncreated artifact has copied expression. Sources are the
+unchanged SPEC §§1–6, DESIGN §§1–6, COVERAGE and the committed historical review
+`docs/reviews/fresh3-upstream.md`. That review reports source locations and its
+own documentation approval; it is corroborating provenance, not legal authority
+or runtime acceptance. `git ls-files src lua api '*lock*'` found no such tracked
+implementation or lock at this pass, so there is no actual new binding body or
+selected BFD build to compare or clear.
+
+| Planned artifact / decision | Traceable influence | What this does and does not establish |
+| --- | --- | --- |
+| `src/client.*`, shared owner and process guard | DESIGN §1 names IClient ownership, logical program close versus retained slot engines, plus independent Lua lifecycle restrictions. Historical upstream review cites local_client.cpp and decompiler_pool.cpp for native lifecycle facts. | Calling the factory and preserving observable close/error semantics is compatible with mere interoperability. Copying upstream owner/adapter implementation would be different. The plan does not require copying that implementation; its new Lua state/process guard is binding policy, not demonstrated upstream expression. |
+| `src/convert/`, `src/bindings/`, `api/coverage.*` | DESIGN §1 explicitly requires field converters, native operation relationships, defaults and complete field inventory; SPEC §3/COVERAGE identify types and names from public models and headers. | Strongest planned direct correspondence is model/API mapping. A list of native names, field widths and callable relationships can be compatibility facts; reproducing a protectable selection/organization or translating expressive bodies may cross the boundary. No implemented converter exists to establish which method is used. Fidelity alone does not decide protectedness. |
+| `lua/libghidra/lowlevel.lua` and Session facade | DESIGN §1 and SPEC §2 propose separate Lua modules, shared-owner alias, detached responses, error tuples and explicit Lua validation. | New interface/language choices are not evidence of copying upstream code. Neither a new file nor a new language makes an expression-derived adaptation independent. No evidence here that upstream facade code is to be translated. |
+| Page validation, generation and iterator algorithms | DESIGN §3 adds bounded progress checks, compound integer validation and invalidation policies; its reasons include source observations about candidate filtering, zero-end sentinel and gap stopping. Historical review identifies local_client.cpp/local_arch_adapter.cpp as observation sources. | Distinguish factual native limitations from an algorithm body. These facts justify compatibility constraints; the proposed rejection/invalidation policy is not shown to be an upstream algorithm copy. A blanket inference that all source-informed debugging facts are protected would exceed the evidence. |
+| Build scripts and tests/docs | DESIGN §§5–6 cite whole-archive registration, dependency pins, spec-loading paths and source limitations; SPEC §6 requires real/Python comparisons. | A fresh build description or black-box oracle comparison need not be derivative. Copy/adaptation of HOS build/example/test bodies for a covered derivative remains conditional restricted conduct. Current evidence specifies requirements and observations but no selected copied body. |
+
+**Refined finding:** the current architecture describes an adapter around an
+unchanged dependency, not an engine replacement or upstream source fork. This
+makes the public-compatibility branch a genuine possibility, not merely a label.
+However the plan deliberately draws from upstream model/API structure and
+source-derived design/debugging observations. The available documents do not
+identify a particular protected body that must be copied, nor establish a
+rights-holder/legal determination that the planned structural reliance is
+outside §§1.14–1.15. Thus source exposure is established but material reliance
+on protected expression remains unproven in either direction. This mapping
+narrows the missing decision: assess **this adapter's intended model mapping,
+structure and development inputs**, not AI use in the abstract. It does not
+supply legal clearance and cannot choose the owner's binding license.
+
+This pass exhausts the useful planned-artifact comparison available before
+implementation within this task. No further upstream reading is proposed merely
+to repeat the conditional terms. A prospective independent-development route
+would require an explicit provenance/method determination consistent with the
+accepted plan; it is not silently adopted here as a replacement scope. Existing
+private permission, intended use and licensing authority must be supplied by the
+owner; a request would require authorization and would itself prove no grant.
+Actual transitive lock/member evidence belongs to outstanding dependency work,
+not a fictional selected binutils version. Research is ready for assessment on
+this bounded evidence, with the three owner questions above still open. This
+is a completed inconclusive applicability determination plus precise external
+inputs, not an indefinitely renewable evidence gap or an M0 clearance.
+
 These are concrete missing authority/use decisions, not requests to reconfirm
 already authorized Lua 5.4/Linux/local-only engineering scope. Research is ready
 for assessment with a precise external decision gate; implementation is not
