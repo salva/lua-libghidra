@@ -114,10 +114,29 @@ class InventoryTests(unittest.TestCase):
             with self.assertRaises(AssertionError):
                 module.inventory(root)
             pool.write_text(pool_original)
+            bindings = root/'cpp/bindings/python_bindings.cpp'
+            bindings_original = bindings.read_text()
+            bindings.write_text(bindings_original.replace('return unwrap(self.SaveProgram()).saved;', 'return unwrap(self.SaveProgram()).discarded;'))
+            with self.assertRaises(AssertionError):
+                module.inventory(root)
+            bindings.write_text(bindings_original)
             header = root/'cpp/src/local_arch_adapter.hpp'
             header.write_text(header.read_text().replace('std::map<std::pair<std::uint64_t, int>, std::string> comments_', 'std::multimap<std::pair<std::uint64_t, int>, std::string> comments_'))
             with self.assertRaises(AssertionError):
                 module.inventory(root)
+
+    def test_python_binding_fidelity_exceptions(self):
+        audit = self.data['python_reconciliation']
+        self.assertEqual(len(audit['methods']), 27)
+        opening = self.ops['OpenProgram']['python_reconciliation']
+        self.assertEqual(opening['native_response_fields_not_exported'],
+                         ['entry_point', 'executable_format', 'has_entry_point', 'md5', 'sha256'])
+        self.assertEqual(audit['record_converters']['XrefRecord']['omitted_native_fields'],
+                         ['from_function_address', 'from_function_name', 'to_function_address', 'to_function_name'])
+        self.assertEqual(self.ops['ListFunctions']['python_reconciliation']['python_defaults']['limit'], '0')
+        self.assertEqual(self.ops['SaveProgram']['python_reconciliation']['binding_extraction'], 'saved')
+        self.assertIn('bare TypeRecord', self.ops['GetType']['python_reconciliation']['fidelity'])
+        self.assertTrue(audit['conversion_helpers'])
 
     def test_session_and_performance_branches(self):
         self.assertIn('even unloaded', self.ops['DiscardProgram']['state_transitions'])

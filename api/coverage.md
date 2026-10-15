@@ -182,3 +182,36 @@ incorrectly prohibited all reset calls; source review corrected it to prohibit
 engine reset while requiring adapter reset. That failed check was resolved, not
 counted as a passing run. Nine tests now pass. Remaining exhaustive conversion,
 mutation, field and facade review gates are still explicit.
+
+## Python/nanobind extraction reconciliation (sixth repair attempt)
+
+`inventory_python.py` independently enumerates nanobind exports, separates its
+factory, and reconciles the exact 27 public LocalClient methods to native calls.
+Each included Python operation now has native response extraction, return
+expressions, defaults and source/body provenance. Direct converter assignments
+are compared to every native model field and omissions are explicit:
+
+- Python open exports only program_name/language_id/compiler_spec/image_base;
+  entry_point, has_entry_point, executable_format, md5 and sha256 are omitted.
+  Dataclass defaults are not observed native metadata. Lua must retain all fields.
+- Python XrefRecord conversion omits from/to function address/name metadata.
+- Close/save/discard become scalar bools; revision a scalar then rebuilt wrapper;
+  read_bytes bytes then wrapper; optional lookups use None. get_type is a bare
+  TypeRecord/None rather than GetTypeResponse. Lua lowlevel remains full-envelope.
+- Python page defaults use limit=0; Lua requires positive bounded pages, default
+  100. Python is not a source for Lua defaults or validation domains.
+- Python open can mutate request architecture hints using format detection.
+  Equivalent-oracle fixtures require identical explicit architecture/compiler.
+- Nested decompilation local/token enum conversion uses Python IntEnum and may
+  reject unknown values, unlike Lua's numeric unknown-response preservation.
+- nanobind unwrap throws ValueError with native code/message; Python catches and
+  maps ErrorCode. That mapping is not proof of unknown native-code fidelity.
+
+The parser initially counted module create_local_client as a client method; its
+set reconciliation failed. It now explicitly separates and validates the factory
+rather than silently dropping the mismatch. A new independent negative drift
+probe changes SaveProgram's extracted outcome field; generation must fail.
+Ten tests pass. This is source accounting, not Python-oracle execution or full
+nested conversion equivalence. Remaining mutation/open/health branches, exact
+Lua facade signatures and conditional field/effective-domain review still block
+exhaustive acceptance. All positive/negative runtime slots remain unqualified.

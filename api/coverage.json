@@ -921,6 +921,25 @@
       ],
       "pagination": null,
       "program_state": "unloaded -> NO_PROGRAM",
+      "python_reconciliation": {
+        "binding_body_sha256": "ac1b42a1fd40cc8ac6a11b24b660afc28990667de3385745091cb158dca7e607",
+        "binding_extraction": "closed",
+        "fidelity": "Python returns scalar bool, unlike faithful Lua response envelope; no extra native fields currently present",
+        "method": "close_program",
+        "native_operation": "CloseProgram",
+        "native_response_fields_not_exported": [],
+        "python_defaults": {
+          "policy": "0"
+        },
+        "python_return_expressions": [
+          "self._call(self._client.close_program, policy)"
+        ],
+        "qualification": "source reviewed; runtime unqualified",
+        "source": {
+          "line": 225,
+          "path": "python/src/libghidra/local.py"
+        }
+      },
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
@@ -2541,6 +2560,23 @@
       "native_literal_errors": [],
       "pagination": null,
       "program_state": "owner open; no loaded-program guard",
+      "python_reconciliation": {
+        "binding_body_sha256": "d0202b3086da645cdc2cc2f97362b179a2cb6d43c2c2a6537aabc555e5c6fe60",
+        "binding_extraction": "discarded",
+        "fidelity": "Python returns scalar bool, unlike faithful Lua response envelope; no extra native fields currently present",
+        "method": "discard_program",
+        "native_operation": "DiscardProgram",
+        "native_response_fields_not_exported": [],
+        "python_defaults": {},
+        "python_return_expressions": [
+          "self._call(self._client.discard_program)"
+        ],
+        "qualification": "source reviewed; runtime unqualified",
+        "source": {
+          "line": 231,
+          "path": "python/src/libghidra/local.py"
+        }
+      },
       "request": [],
       "response": {
         "fields": [
@@ -2609,6 +2645,22 @@
       "native_literal_errors": [],
       "pagination": null,
       "program_state": "no ensure_loaded guard in override; inspect lifecycle/helper",
+      "python_reconciliation": {
+        "binding_body_sha256": "aef93e9a1ff262faf3059d30fbb383bd8d7f3d7fe5f0235a150843b7f80fce71",
+        "binding_extraction": "complete dict/array",
+        "method": "get_capabilities",
+        "native_operation": "GetCapabilities",
+        "native_response_fields_not_exported": [],
+        "python_defaults": {},
+        "python_return_expressions": [
+          "[Capability(**d) for d in items]"
+        ],
+        "qualification": "source reviewed; runtime unqualified",
+        "source": {
+          "line": 195,
+          "path": "python/src/libghidra/local.py"
+        }
+      },
       "request": [],
       "response": {
         "fields": [
@@ -2842,6 +2894,24 @@
       "native_literal_errors": [],
       "pagination": null,
       "program_state": "requires loaded program",
+      "python_reconciliation": {
+        "binding_body_sha256": "290eaeecafbf51ee1bc3860695b636b38486d1e15406a79a6b8ad7a12bc4c98a",
+        "binding_extraction": "decompilation",
+        "method": "get_decompilation",
+        "native_operation": "GetDecompilation",
+        "native_response_fields_not_exported": [],
+        "python_defaults": {
+          "timeout_ms": "30000"
+        },
+        "python_return_expressions": [
+          "GetDecompilationResponse(decompilation=dec)"
+        ],
+        "qualification": "source reviewed; runtime unqualified",
+        "source": {
+          "line": 276,
+          "path": "python/src/libghidra/local.py"
+        }
+      },
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
@@ -3138,6 +3208,22 @@
       "native_literal_errors": [],
       "pagination": null,
       "program_state": "requires loaded program",
+      "python_reconciliation": {
+        "binding_body_sha256": "90209e6055ddd593b1a79eee50c06f1e81d4a4f79f9cfa01e6e27f7c0fc81d2d",
+        "binding_extraction": "function",
+        "method": "get_function",
+        "native_operation": "GetFunction",
+        "native_response_fields_not_exported": [],
+        "python_defaults": {},
+        "python_return_expressions": [
+          "GetFunctionResponse(function=func)"
+        ],
+        "qualification": "source reviewed; runtime unqualified",
+        "source": {
+          "line": 240,
+          "path": "python/src/libghidra/local.py"
+        }
+      },
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
@@ -3496,6 +3582,22 @@
       "native_literal_errors": [],
       "pagination": null,
       "program_state": "requires loaded program",
+      "python_reconciliation": {
+        "binding_body_sha256": "faa5f9a873931a33f8b3d85fa538ecabeceb4445b3b7c5eb36e2acb3e3cd5e19",
+        "binding_extraction": "instruction",
+        "method": "get_instruction",
+        "native_operation": "GetInstruction",
+        "native_response_fields_not_exported": [],
+        "python_defaults": {},
+        "python_return_expressions": [
+          "GetInstructionResponse(instruction=insn)"
+        ],
+        "qualification": "source reviewed; runtime unqualified",
+        "source": {
+          "line": 316,
+          "path": "python/src/libghidra/local.py"
+        }
+      },
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
@@ -3892,6 +3994,22 @@
       "native_literal_errors": [],
       "pagination": null,
       "program_state": "owner open; usable without program",
+      "python_reconciliation": {
+        "binding_body_sha256": "6329cfdfcaee7220eec21e6d4d449f4f98b1cafa7790aae8f56c574cdd5e2f0b",
+        "binding_extraction": "modification_number",
+        "method": "get_revision",
+        "native_operation": "GetRevision",
+        "native_response_fields_not_exported": [],
+        "python_defaults": {},
+        "python_return_expressions": [
+          "RevisionResponse(modification_number=rev)"
+        ],
+        "qualification": "source reviewed; runtime unqualified",
+        "source": {
+          "line": 234,
+          "path": "python/src/libghidra/local.py"
+        }
+      },
       "request": [],
       "response": {
         "fields": [
@@ -4010,6 +4128,22 @@
       "native_literal_errors": [],
       "pagination": null,
       "program_state": "no ensure_loaded guard in override; inspect lifecycle/helper",
+      "python_reconciliation": {
+        "binding_body_sha256": "4d19feeca1159a9fbf3b749799f9db694af92a0d10f318404786bc03e631fc4d",
+        "binding_extraction": "complete dict/array",
+        "method": "get_status",
+        "native_operation": "GetStatus",
+        "native_response_fields_not_exported": [],
+        "python_defaults": {},
+        "python_return_expressions": [
+          "HealthStatus(**d)"
+        ],
+        "qualification": "source reviewed; runtime unqualified",
+        "source": {
+          "line": 191,
+          "path": "python/src/libghidra/local.py"
+        }
+      },
       "request": [],
       "response": {
         "fields": [
@@ -4121,6 +4255,22 @@
       "native_literal_errors": [],
       "pagination": null,
       "program_state": "requires loaded program",
+      "python_reconciliation": {
+        "binding_body_sha256": "6287250268bdf5d5f73cb8eaff5d20f22c8d83968dd16cb9dc89e7903e7be838",
+        "binding_extraction": "symbol",
+        "method": "get_symbol",
+        "native_operation": "GetSymbol",
+        "native_response_fields_not_exported": [],
+        "python_defaults": {},
+        "python_return_expressions": [
+          "GetSymbolResponse(symbol=sym)"
+        ],
+        "qualification": "source reviewed; runtime unqualified",
+        "source": {
+          "line": 290,
+          "path": "python/src/libghidra/local.py"
+        }
+      },
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
@@ -4300,6 +4450,23 @@
       "native_literal_errors": [],
       "pagination": null,
       "program_state": "requires loaded program",
+      "python_reconciliation": {
+        "binding_body_sha256": "c6a32c7f8a3a95a19f506a0e0ae1fa65bbc55c9f2bdb2b7c32561ae0b3f54a1e",
+        "binding_extraction": "type",
+        "fidelity": "Python returns bare TypeRecord/None, not GetTypeResponse; Lua lowlevel must preserve envelope",
+        "method": "get_type",
+        "native_operation": "GetType",
+        "native_response_fields_not_exported": [],
+        "python_defaults": {},
+        "python_return_expressions": [
+          "_to_type(d) if d is not None else None"
+        ],
+        "qualification": "source reviewed; runtime unqualified",
+        "source": {
+          "line": 340,
+          "path": "python/src/libghidra/local.py"
+        }
+      },
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
@@ -4867,6 +5034,28 @@
         }
       },
       "program_state": "requires loaded program",
+      "python_reconciliation": {
+        "binding_body_sha256": "3b8100ae3f774bd000747a3a832ad42598edc19db85a81604e0ab1eb08d646d8",
+        "binding_extraction": "blocks",
+        "fidelity": "Python defaults limit=0 (native unbounded), unlike binding positive bounded limit=100; no such unbounded request on Lua surfaces",
+        "method": "list_basic_blocks",
+        "native_operation": "ListBasicBlocks",
+        "native_response_fields_not_exported": [],
+        "python_defaults": {
+          "limit": "0",
+          "offset": "0",
+          "range_end": "0",
+          "range_start": "0"
+        },
+        "python_return_expressions": [
+          "ListBasicBlocksResponse(blocks=[_to_basic_block(d) for d in items])"
+        ],
+        "qualification": "source reviewed; runtime unqualified",
+        "source": {
+          "line": 264,
+          "path": "python/src/libghidra/local.py"
+        }
+      },
       "request": [
         {
           "binding_default": "0",
@@ -5355,6 +5544,28 @@
         }
       },
       "program_state": "requires loaded program",
+      "python_reconciliation": {
+        "binding_body_sha256": "354391623c1479c431675d471a84da47cd3b4fc01c30ea3e432d509254d5d768",
+        "binding_extraction": "edges",
+        "fidelity": "Python defaults limit=0 (native unbounded), unlike binding positive bounded limit=100; no such unbounded request on Lua surfaces",
+        "method": "list_cfg_edges",
+        "native_operation": "ListCFGEdges",
+        "native_response_fields_not_exported": [],
+        "python_defaults": {
+          "limit": "0",
+          "offset": "0",
+          "range_end": "0",
+          "range_start": "0"
+        },
+        "python_return_expressions": [
+          "ListCFGEdgesResponse(edges=[_to_cfg_edge(d) for d in items])"
+        ],
+        "qualification": "source reviewed; runtime unqualified",
+        "source": {
+          "line": 269,
+          "path": "python/src/libghidra/local.py"
+        }
+      },
       "request": [
         {
           "binding_default": "0",
@@ -5691,6 +5902,29 @@
         }
       },
       "program_state": "requires loaded program",
+      "python_reconciliation": {
+        "binding_body_sha256": "3ceaffe850787309ab7beb763fe708b93498a9c7b08ca63fafa54f52ad9c53b3",
+        "binding_extraction": "decompilations",
+        "fidelity": "Python defaults limit=0 (native unbounded), unlike binding positive bounded limit=100; no such unbounded request on Lua surfaces",
+        "method": "list_decompilations",
+        "native_operation": "ListDecompilations",
+        "native_response_fields_not_exported": [],
+        "python_defaults": {
+          "limit": "0",
+          "offset": "0",
+          "range_end": "0",
+          "range_start": "0",
+          "timeout_ms": "30000"
+        },
+        "python_return_expressions": [
+          "ListDecompilationsResponse(decompilations=[_to_decompilation(d) for d in items])"
+        ],
+        "qualification": "source reviewed; runtime unqualified",
+        "source": {
+          "line": 281,
+          "path": "python/src/libghidra/local.py"
+        }
+      },
       "request": [
         {
           "binding_default": "0",
@@ -6021,6 +6255,28 @@
         "range_zero_end": "UNRESOLVED: downstream normalization review required"
       },
       "program_state": "requires loaded program",
+      "python_reconciliation": {
+        "binding_body_sha256": "a2277bd568d905d06901351aacc2a10f7343c1244d5dd9a57fc2f7e83b46580d",
+        "binding_extraction": "strings",
+        "fidelity": "Python defaults limit=0 (native unbounded), unlike binding positive bounded limit=100; no such unbounded request on Lua surfaces",
+        "method": "list_defined_strings",
+        "native_operation": "ListDefinedStrings",
+        "native_response_fields_not_exported": [],
+        "python_defaults": {
+          "limit": "0",
+          "offset": "0",
+          "range_end": "0",
+          "range_start": "0"
+        },
+        "python_return_expressions": [
+          "ListDefinedStringsResponse(strings=[_to_defined_string(d) for d in items])"
+        ],
+        "qualification": "source reviewed; runtime unqualified",
+        "source": {
+          "line": 326,
+          "path": "python/src/libghidra/local.py"
+        }
+      },
       "request": [
         {
           "binding_default": "0",
@@ -6999,6 +7255,28 @@
         }
       },
       "program_state": "requires loaded program",
+      "python_reconciliation": {
+        "binding_body_sha256": "2ee5c9f792c7bf59a7f8eab9fed9d39491935e6bfb8e4fa6181d7f983af2de88",
+        "binding_extraction": "functions",
+        "fidelity": "Python defaults limit=0 (native unbounded), unlike binding positive bounded limit=100; no such unbounded request on Lua surfaces",
+        "method": "list_functions",
+        "native_operation": "ListFunctions",
+        "native_response_fields_not_exported": [],
+        "python_defaults": {
+          "limit": "0",
+          "offset": "0",
+          "range_end": "0",
+          "range_start": "0"
+        },
+        "python_return_expressions": [
+          "ListFunctionsResponse(functions=[_to_function(d) for d in items])"
+        ],
+        "qualification": "source reviewed; runtime unqualified",
+        "source": {
+          "line": 245,
+          "path": "python/src/libghidra/local.py"
+        }
+      },
       "request": [
         {
           "binding_default": "0",
@@ -7353,6 +7631,28 @@
         }
       },
       "program_state": "requires loaded program",
+      "python_reconciliation": {
+        "binding_body_sha256": "98dc4aaf607bdbc62b5eea6dc36544fd1f540493697c707f65134a41a38933e1",
+        "binding_extraction": "instructions",
+        "fidelity": "Python defaults limit=0 (native unbounded), unlike binding positive bounded limit=100; no such unbounded request on Lua surfaces",
+        "method": "list_instructions",
+        "native_operation": "ListInstructions",
+        "native_response_fields_not_exported": [],
+        "python_defaults": {
+          "limit": "0",
+          "offset": "0",
+          "range_end": "0",
+          "range_start": "0"
+        },
+        "python_return_expressions": [
+          "ListInstructionsResponse(instructions=[_to_instruction(d) for d in items])"
+        ],
+        "qualification": "source reviewed; runtime unqualified",
+        "source": {
+          "line": 321,
+          "path": "python/src/libghidra/local.py"
+        }
+      },
       "request": [
         {
           "binding_default": "0",
@@ -7523,6 +7823,28 @@
         }
       },
       "program_state": "requires loaded program",
+      "python_reconciliation": {
+        "binding_body_sha256": "f8c0128a6e60aed6dede51e40c728d0b36cb1d8680fba0bbb3f880a163dfaebf",
+        "binding_extraction": "functions",
+        "fidelity": "Python defaults limit=0 (native unbounded), unlike binding positive bounded limit=100; no such unbounded request on Lua surfaces",
+        "method": "list_leaf_functions",
+        "native_operation": "ListLeafFunctions",
+        "native_response_fields_not_exported": [],
+        "python_defaults": {
+          "limit": "0",
+          "offset": "0",
+          "range_end": "0",
+          "range_start": "0"
+        },
+        "python_return_expressions": [
+          "ListFunctionsResponse(functions=[_to_function(d) for d in items])"
+        ],
+        "qualification": "source reviewed; runtime unqualified",
+        "source": {
+          "line": 250,
+          "path": "python/src/libghidra/local.py"
+        }
+      },
       "request": [
         {
           "binding_default": "0",
@@ -7886,6 +8208,26 @@
         }
       },
       "program_state": "requires loaded program",
+      "python_reconciliation": {
+        "binding_body_sha256": "4964ff19ef8070572c9faf1dc72daac1fe3566d31012a309686a68096f446d25",
+        "binding_extraction": "blocks",
+        "fidelity": "Python defaults limit=0 (native unbounded), unlike binding positive bounded limit=100; no such unbounded request on Lua surfaces",
+        "method": "list_memory_blocks",
+        "native_operation": "ListMemoryBlocks",
+        "native_response_fields_not_exported": [],
+        "python_defaults": {
+          "limit": "0",
+          "offset": "0"
+        },
+        "python_return_expressions": [
+          "ListMemoryBlocksResponse(blocks=[_to_memory_block(d) for d in items])"
+        ],
+        "qualification": "source reviewed; runtime unqualified",
+        "source": {
+          "line": 310,
+          "path": "python/src/libghidra/local.py"
+        }
+      },
       "request": [
         {
           "binding_default": "100",
@@ -8891,6 +9233,28 @@
         }
       },
       "program_state": "requires loaded program",
+      "python_reconciliation": {
+        "binding_body_sha256": "2c4b8815f1d87d0a553b70dafaf892b1aa1c636372606cd31598362e70b29c3c",
+        "binding_extraction": "symbols",
+        "fidelity": "Python defaults limit=0 (native unbounded), unlike binding positive bounded limit=100; no such unbounded request on Lua surfaces",
+        "method": "list_symbols",
+        "native_operation": "ListSymbols",
+        "native_response_fields_not_exported": [],
+        "python_defaults": {
+          "limit": "0",
+          "offset": "0",
+          "range_end": "0",
+          "range_start": "0"
+        },
+        "python_return_expressions": [
+          "ListSymbolsResponse(symbols=[_to_symbol(d) for d in items])"
+        ],
+        "qualification": "source reviewed; runtime unqualified",
+        "source": {
+          "line": 295,
+          "path": "python/src/libghidra/local.py"
+        }
+      },
       "request": [
         {
           "binding_default": "0",
@@ -9731,6 +10095,26 @@
         }
       },
       "program_state": "requires loaded program",
+      "python_reconciliation": {
+        "binding_body_sha256": "9fb4ffb192508dc072d485e9e76f28f462cd73e360b7ea69522f4b40329dabc2",
+        "binding_extraction": "members",
+        "fidelity": "Python defaults limit=0 (native unbounded), unlike binding positive bounded limit=100; no such unbounded request on Lua surfaces",
+        "method": "list_type_members",
+        "native_operation": "ListTypeMembers",
+        "native_response_fields_not_exported": [],
+        "python_defaults": {
+          "limit": "0",
+          "offset": "0"
+        },
+        "python_return_expressions": [
+          "ListTypeMembersResponse(members=[_to_type_member(d) for d in items])"
+        ],
+        "qualification": "source reviewed; runtime unqualified",
+        "source": {
+          "line": 348,
+          "path": "python/src/libghidra/local.py"
+        }
+      },
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
@@ -10093,6 +10477,27 @@
         }
       },
       "program_state": "requires loaded program",
+      "python_reconciliation": {
+        "binding_body_sha256": "16b052e5a3f63b67f6d1cba6c9d6d649d1267b79ac65e1fbe323793a98b92511",
+        "binding_extraction": "types",
+        "fidelity": "Python defaults limit=0 (native unbounded), unlike binding positive bounded limit=100; no such unbounded request on Lua surfaces",
+        "method": "list_types",
+        "native_operation": "ListTypes",
+        "native_response_fields_not_exported": [],
+        "python_defaults": {
+          "limit": "0",
+          "offset": "0",
+          "query": "''"
+        },
+        "python_return_expressions": [
+          "ListTypesResponse(types=[_to_type(d) for d in items])"
+        ],
+        "qualification": "source reviewed; runtime unqualified",
+        "source": {
+          "line": 344,
+          "path": "python/src/libghidra/local.py"
+        }
+      },
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
@@ -10306,6 +10711,28 @@
         }
       },
       "program_state": "requires loaded program",
+      "python_reconciliation": {
+        "binding_body_sha256": "11e219314532b5e4bf1a68294268dacc02cf5147aa3ce151e49e7cc71d5faa40",
+        "binding_extraction": "xrefs",
+        "fidelity": "Python defaults limit=0 (native unbounded), unlike binding positive bounded limit=100; no such unbounded request on Lua surfaces",
+        "method": "list_xrefs",
+        "native_operation": "ListXrefs",
+        "native_response_fields_not_exported": [],
+        "python_defaults": {
+          "limit": "0",
+          "offset": "0",
+          "range_end": "0",
+          "range_start": "0"
+        },
+        "python_return_expressions": [
+          "ListXrefsResponse(xrefs=[_to_xref(d) for d in items])"
+        ],
+        "qualification": "source reviewed; runtime unqualified",
+        "source": {
+          "line": 333,
+          "path": "python/src/libghidra/local.py"
+        }
+      },
       "request": [
         {
           "binding_default": "0",
@@ -10736,6 +11163,29 @@
       ],
       "pagination": null,
       "program_state": "no ensure_loaded guard in override; inspect lifecycle/helper",
+      "python_reconciliation": {
+        "binding_body_sha256": "7f6ffef9b8941320f8089878c3cea17aa3285ca6c01abe8072c6e437fd3bf025",
+        "binding_extraction": "complete dict/array",
+        "fidelity": "Python native binding exports only program_name/language_id/compiler_spec/image_base; Python model defaults must not be mistaken for native metadata",
+        "method": "open_program",
+        "native_operation": "OpenProgram",
+        "native_response_fields_not_exported": [
+          "entry_point",
+          "executable_format",
+          "has_entry_point",
+          "md5",
+          "sha256"
+        ],
+        "python_defaults": {},
+        "python_return_expressions": [
+          "OpenProgramResponse(**d)"
+        ],
+        "qualification": "source reviewed; runtime unqualified",
+        "source": {
+          "line": 201,
+          "path": "python/src/libghidra/local.py"
+        }
+      },
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
@@ -11275,6 +11725,22 @@
       "native_literal_errors": [],
       "pagination": null,
       "program_state": "requires loaded program",
+      "python_reconciliation": {
+        "binding_body_sha256": "5ed06888585d188a90162ed75ac9915359c6d088b55386804647ad8abf186067",
+        "binding_extraction": "data",
+        "method": "read_bytes",
+        "native_operation": "ReadBytes",
+        "native_response_fields_not_exported": [],
+        "python_defaults": {},
+        "python_return_expressions": [
+          "ReadBytesResponse(data=data)"
+        ],
+        "qualification": "source reviewed; runtime unqualified",
+        "source": {
+          "line": 306,
+          "path": "python/src/libghidra/local.py"
+        }
+      },
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
@@ -11504,6 +11970,22 @@
       ],
       "pagination": null,
       "program_state": "requires loaded program",
+      "python_reconciliation": {
+        "binding_body_sha256": "5519ee0d5261ced38f9aea2fbab72e22f4804bff3283bdab4d6ba4cc82463236",
+        "binding_extraction": "complete dict/array",
+        "method": "rename_function",
+        "native_operation": "RenameFunction",
+        "native_response_fields_not_exported": [],
+        "python_defaults": {},
+        "python_return_expressions": [
+          "RenameFunctionResponse(**d)"
+        ],
+        "qualification": "source reviewed; runtime unqualified",
+        "source": {
+          "line": 260,
+          "path": "python/src/libghidra/local.py"
+        }
+      },
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
@@ -11797,6 +12279,22 @@
       ],
       "pagination": null,
       "program_state": "requires loaded program",
+      "python_reconciliation": {
+        "binding_body_sha256": "cc63f95179a0b11161af069342ebb0b8213e357126a26463dc21a0dfdcc74de2",
+        "binding_extraction": "complete dict/array",
+        "method": "rename_symbol",
+        "native_operation": "RenameSymbol",
+        "native_response_fields_not_exported": [],
+        "python_defaults": {},
+        "python_return_expressions": [
+          "RenameSymbolResponse(**d)"
+        ],
+        "qualification": "source reviewed; runtime unqualified",
+        "source": {
+          "line": 300,
+          "path": "python/src/libghidra/local.py"
+        }
+      },
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
@@ -12149,6 +12647,23 @@
       ],
       "pagination": null,
       "program_state": "loaded program; empty state_path -> NO_STATE_PATH",
+      "python_reconciliation": {
+        "binding_body_sha256": "a0be90fdbcf2ff60659f4e649074a36b4315f578994a3ae3dcb04c741335441a",
+        "binding_extraction": "saved",
+        "fidelity": "Python returns scalar bool, unlike faithful Lua response envelope; no extra native fields currently present",
+        "method": "save_program",
+        "native_operation": "SaveProgram",
+        "native_response_fields_not_exported": [],
+        "python_defaults": {},
+        "python_return_expressions": [
+          "self._call(self._client.save_program)"
+        ],
+        "qualification": "source reviewed; runtime unqualified",
+        "source": {
+          "line": 228,
+          "path": "python/src/libghidra/local.py"
+        }
+      },
       "request": [],
       "response": {
         "fields": [
@@ -23053,8 +23568,928 @@
       "native_model": "AnalysisJobRecord"
     }
   ],
+  "python_reconciliation": {
+    "architecture": "Python open may mutate request language/compiler from format detection; native echo is not authoritative detection; use identical explicit hints for oracle",
+    "conversion_helpers": [
+      {
+        "body_sha256": "15ae88431b191d94b19173aca55ce3f06ac2dc872dd034db1eacd07e17ce38b8",
+        "calls": [
+          "detect"
+        ],
+        "line": 74,
+        "name": "detect_arch",
+        "path": "python/src/libghidra/local.py"
+      },
+      {
+        "body_sha256": "045afa348082abceacdbe03bac628cb7c83e34ea1d3c159231226adea5e2eb73",
+        "calls": [
+          "ImportError"
+        ],
+        "line": 83,
+        "name": "_require_native",
+        "path": "python/src/libghidra/local.py"
+      },
+      {
+        "body_sha256": "d47d9deff03b3f9d8aef5208974f2d4ec789105406aaeb6083b2e0ed90dd1849",
+        "calls": [
+          "FunctionRecord"
+        ],
+        "line": 98,
+        "name": "_to_function",
+        "path": "python/src/libghidra/local.py"
+      },
+      {
+        "body_sha256": "dabf97e8a3fdbbbfda0d2782cb95888af2945b38b71f13db1f84338bd7bd117f",
+        "calls": [
+          "SymbolRecord"
+        ],
+        "line": 102,
+        "name": "_to_symbol",
+        "path": "python/src/libghidra/local.py"
+      },
+      {
+        "body_sha256": "17e005835a41f6cd12b1d9cde1ab0087d3ae2f0241a9b2b7301fc059d9f3f2d3",
+        "calls": [
+          "DecompileLocalKind",
+          "DecompileLocalRecord",
+          "d.get"
+        ],
+        "line": 106,
+        "name": "_to_decompile_local",
+        "path": "python/src/libghidra/local.py"
+      },
+      {
+        "body_sha256": "d70015ea5774405267075999c9288e4cdf24d5c2f32940b601d93578c1608774",
+        "calls": [
+          "DecompileTokenKind",
+          "DecompileTokenRecord",
+          "d.get"
+        ],
+        "line": 111,
+        "name": "_to_decompile_token",
+        "path": "python/src/libghidra/local.py"
+      },
+      {
+        "body_sha256": "41882e422259a8af03e342152e2436cdf6f2038ccdc91d9b11139f3a56859696",
+        "calls": [
+          "DecompilationRecord",
+          "_to_decompile_local",
+          "_to_decompile_token",
+          "d.get"
+        ],
+        "line": 116,
+        "name": "_to_decompilation",
+        "path": "python/src/libghidra/local.py"
+      },
+      {
+        "body_sha256": "ff0448f004b932d85ce4fb0eb0d46092181796fb3dcbbc2c0416f33dfa165815",
+        "calls": [
+          "InstructionRecord"
+        ],
+        "line": 122,
+        "name": "_to_instruction",
+        "path": "python/src/libghidra/local.py"
+      },
+      {
+        "body_sha256": "41b5ce23564aeeb1d24d19c48f6432f4badc66d8e4df35bd70d225b0ec45498f",
+        "calls": [
+          "MemoryBlockRecord"
+        ],
+        "line": 126,
+        "name": "_to_memory_block",
+        "path": "python/src/libghidra/local.py"
+      },
+      {
+        "body_sha256": "7a3a3283472552ca8752358258745f53dce21884a22258363347dcca13a079d2",
+        "calls": [
+          "XrefRecord"
+        ],
+        "line": 130,
+        "name": "_to_xref",
+        "path": "python/src/libghidra/local.py"
+      },
+      {
+        "body_sha256": "f69fd8c8f6e3c416ee4749aaef4a70d94eecc6369f47473131a7c629560a9873",
+        "calls": [
+          "TypeRecord"
+        ],
+        "line": 134,
+        "name": "_to_type",
+        "path": "python/src/libghidra/local.py"
+      },
+      {
+        "body_sha256": "2c83304e05593cf77c2842619a6e22a9a5dd4e22d7939b72f4c0b72942831edb",
+        "calls": [
+          "TypeMemberRecord"
+        ],
+        "line": 138,
+        "name": "_to_type_member",
+        "path": "python/src/libghidra/local.py"
+      },
+      {
+        "body_sha256": "84be54da780bae20b30b44bae19ab0b897f6a7b256e570b1084cfb84a2e1427b",
+        "calls": [
+          "BasicBlockRecord"
+        ],
+        "line": 142,
+        "name": "_to_basic_block",
+        "path": "python/src/libghidra/local.py"
+      },
+      {
+        "body_sha256": "0ea53ddc60a78e253c8e900b69dad97218f4d300e54571e84d826601145f2f96",
+        "calls": [
+          "CFGEdgeRecord"
+        ],
+        "line": 146,
+        "name": "_to_cfg_edge",
+        "path": "python/src/libghidra/local.py"
+      },
+      {
+        "body_sha256": "67648705effba00df72723a058f4a6fb1bd5af629f7dd3bccaba58dd9cdf1229",
+        "calls": [
+          "DefinedStringRecord"
+        ],
+        "line": 150,
+        "name": "_to_defined_string",
+        "path": "python/src/libghidra/local.py"
+      }
+    ],
+    "errors": "nanobind unwrap throws ValueError(code + colon-space + message); Python _call catches ValueError and maps ErrorCode; unknown-code preservation not established by Python mapping; Lua must preserve upstream code/message",
+    "methods": [
+      {
+        "binding_body_sha256": "4d19feeca1159a9fbf3b749799f9db694af92a0d10f318404786bc03e631fc4d",
+        "binding_extraction": "complete dict/array",
+        "method": "get_status",
+        "native_operation": "GetStatus",
+        "native_response_fields_not_exported": [],
+        "python_defaults": {},
+        "python_return_expressions": [
+          "HealthStatus(**d)"
+        ],
+        "qualification": "source reviewed; runtime unqualified",
+        "source": {
+          "line": 191,
+          "path": "python/src/libghidra/local.py"
+        }
+      },
+      {
+        "binding_body_sha256": "aef93e9a1ff262faf3059d30fbb383bd8d7f3d7fe5f0235a150843b7f80fce71",
+        "binding_extraction": "complete dict/array",
+        "method": "get_capabilities",
+        "native_operation": "GetCapabilities",
+        "native_response_fields_not_exported": [],
+        "python_defaults": {},
+        "python_return_expressions": [
+          "[Capability(**d) for d in items]"
+        ],
+        "qualification": "source reviewed; runtime unqualified",
+        "source": {
+          "line": 195,
+          "path": "python/src/libghidra/local.py"
+        }
+      },
+      {
+        "binding_body_sha256": "7f6ffef9b8941320f8089878c3cea17aa3285ca6c01abe8072c6e437fd3bf025",
+        "binding_extraction": "complete dict/array",
+        "fidelity": "Python native binding exports only program_name/language_id/compiler_spec/image_base; Python model defaults must not be mistaken for native metadata",
+        "method": "open_program",
+        "native_operation": "OpenProgram",
+        "native_response_fields_not_exported": [
+          "entry_point",
+          "executable_format",
+          "has_entry_point",
+          "md5",
+          "sha256"
+        ],
+        "python_defaults": {},
+        "python_return_expressions": [
+          "OpenProgramResponse(**d)"
+        ],
+        "qualification": "source reviewed; runtime unqualified",
+        "source": {
+          "line": 201,
+          "path": "python/src/libghidra/local.py"
+        }
+      },
+      {
+        "binding_body_sha256": "ac1b42a1fd40cc8ac6a11b24b660afc28990667de3385745091cb158dca7e607",
+        "binding_extraction": "closed",
+        "fidelity": "Python returns scalar bool, unlike faithful Lua response envelope; no extra native fields currently present",
+        "method": "close_program",
+        "native_operation": "CloseProgram",
+        "native_response_fields_not_exported": [],
+        "python_defaults": {
+          "policy": "0"
+        },
+        "python_return_expressions": [
+          "self._call(self._client.close_program, policy)"
+        ],
+        "qualification": "source reviewed; runtime unqualified",
+        "source": {
+          "line": 225,
+          "path": "python/src/libghidra/local.py"
+        }
+      },
+      {
+        "binding_body_sha256": "a0be90fdbcf2ff60659f4e649074a36b4315f578994a3ae3dcb04c741335441a",
+        "binding_extraction": "saved",
+        "fidelity": "Python returns scalar bool, unlike faithful Lua response envelope; no extra native fields currently present",
+        "method": "save_program",
+        "native_operation": "SaveProgram",
+        "native_response_fields_not_exported": [],
+        "python_defaults": {},
+        "python_return_expressions": [
+          "self._call(self._client.save_program)"
+        ],
+        "qualification": "source reviewed; runtime unqualified",
+        "source": {
+          "line": 228,
+          "path": "python/src/libghidra/local.py"
+        }
+      },
+      {
+        "binding_body_sha256": "d0202b3086da645cdc2cc2f97362b179a2cb6d43c2c2a6537aabc555e5c6fe60",
+        "binding_extraction": "discarded",
+        "fidelity": "Python returns scalar bool, unlike faithful Lua response envelope; no extra native fields currently present",
+        "method": "discard_program",
+        "native_operation": "DiscardProgram",
+        "native_response_fields_not_exported": [],
+        "python_defaults": {},
+        "python_return_expressions": [
+          "self._call(self._client.discard_program)"
+        ],
+        "qualification": "source reviewed; runtime unqualified",
+        "source": {
+          "line": 231,
+          "path": "python/src/libghidra/local.py"
+        }
+      },
+      {
+        "binding_body_sha256": "6329cfdfcaee7220eec21e6d4d449f4f98b1cafa7790aae8f56c574cdd5e2f0b",
+        "binding_extraction": "modification_number",
+        "method": "get_revision",
+        "native_operation": "GetRevision",
+        "native_response_fields_not_exported": [],
+        "python_defaults": {},
+        "python_return_expressions": [
+          "RevisionResponse(modification_number=rev)"
+        ],
+        "qualification": "source reviewed; runtime unqualified",
+        "source": {
+          "line": 234,
+          "path": "python/src/libghidra/local.py"
+        }
+      },
+      {
+        "binding_body_sha256": "90209e6055ddd593b1a79eee50c06f1e81d4a4f79f9cfa01e6e27f7c0fc81d2d",
+        "binding_extraction": "function",
+        "method": "get_function",
+        "native_operation": "GetFunction",
+        "native_response_fields_not_exported": [],
+        "python_defaults": {},
+        "python_return_expressions": [
+          "GetFunctionResponse(function=func)"
+        ],
+        "qualification": "source reviewed; runtime unqualified",
+        "source": {
+          "line": 240,
+          "path": "python/src/libghidra/local.py"
+        }
+      },
+      {
+        "binding_body_sha256": "2ee5c9f792c7bf59a7f8eab9fed9d39491935e6bfb8e4fa6181d7f983af2de88",
+        "binding_extraction": "functions",
+        "fidelity": "Python defaults limit=0 (native unbounded), unlike binding positive bounded limit=100; no such unbounded request on Lua surfaces",
+        "method": "list_functions",
+        "native_operation": "ListFunctions",
+        "native_response_fields_not_exported": [],
+        "python_defaults": {
+          "limit": "0",
+          "offset": "0",
+          "range_end": "0",
+          "range_start": "0"
+        },
+        "python_return_expressions": [
+          "ListFunctionsResponse(functions=[_to_function(d) for d in items])"
+        ],
+        "qualification": "source reviewed; runtime unqualified",
+        "source": {
+          "line": 245,
+          "path": "python/src/libghidra/local.py"
+        }
+      },
+      {
+        "binding_body_sha256": "f8c0128a6e60aed6dede51e40c728d0b36cb1d8680fba0bbb3f880a163dfaebf",
+        "binding_extraction": "functions",
+        "fidelity": "Python defaults limit=0 (native unbounded), unlike binding positive bounded limit=100; no such unbounded request on Lua surfaces",
+        "method": "list_leaf_functions",
+        "native_operation": "ListLeafFunctions",
+        "native_response_fields_not_exported": [],
+        "python_defaults": {
+          "limit": "0",
+          "offset": "0",
+          "range_end": "0",
+          "range_start": "0"
+        },
+        "python_return_expressions": [
+          "ListFunctionsResponse(functions=[_to_function(d) for d in items])"
+        ],
+        "qualification": "source reviewed; runtime unqualified",
+        "source": {
+          "line": 250,
+          "path": "python/src/libghidra/local.py"
+        }
+      },
+      {
+        "binding_body_sha256": "5519ee0d5261ced38f9aea2fbab72e22f4804bff3283bdab4d6ba4cc82463236",
+        "binding_extraction": "complete dict/array",
+        "method": "rename_function",
+        "native_operation": "RenameFunction",
+        "native_response_fields_not_exported": [],
+        "python_defaults": {},
+        "python_return_expressions": [
+          "RenameFunctionResponse(**d)"
+        ],
+        "qualification": "source reviewed; runtime unqualified",
+        "source": {
+          "line": 260,
+          "path": "python/src/libghidra/local.py"
+        }
+      },
+      {
+        "binding_body_sha256": "3b8100ae3f774bd000747a3a832ad42598edc19db85a81604e0ab1eb08d646d8",
+        "binding_extraction": "blocks",
+        "fidelity": "Python defaults limit=0 (native unbounded), unlike binding positive bounded limit=100; no such unbounded request on Lua surfaces",
+        "method": "list_basic_blocks",
+        "native_operation": "ListBasicBlocks",
+        "native_response_fields_not_exported": [],
+        "python_defaults": {
+          "limit": "0",
+          "offset": "0",
+          "range_end": "0",
+          "range_start": "0"
+        },
+        "python_return_expressions": [
+          "ListBasicBlocksResponse(blocks=[_to_basic_block(d) for d in items])"
+        ],
+        "qualification": "source reviewed; runtime unqualified",
+        "source": {
+          "line": 264,
+          "path": "python/src/libghidra/local.py"
+        }
+      },
+      {
+        "binding_body_sha256": "354391623c1479c431675d471a84da47cd3b4fc01c30ea3e432d509254d5d768",
+        "binding_extraction": "edges",
+        "fidelity": "Python defaults limit=0 (native unbounded), unlike binding positive bounded limit=100; no such unbounded request on Lua surfaces",
+        "method": "list_cfg_edges",
+        "native_operation": "ListCFGEdges",
+        "native_response_fields_not_exported": [],
+        "python_defaults": {
+          "limit": "0",
+          "offset": "0",
+          "range_end": "0",
+          "range_start": "0"
+        },
+        "python_return_expressions": [
+          "ListCFGEdgesResponse(edges=[_to_cfg_edge(d) for d in items])"
+        ],
+        "qualification": "source reviewed; runtime unqualified",
+        "source": {
+          "line": 269,
+          "path": "python/src/libghidra/local.py"
+        }
+      },
+      {
+        "binding_body_sha256": "290eaeecafbf51ee1bc3860695b636b38486d1e15406a79a6b8ad7a12bc4c98a",
+        "binding_extraction": "decompilation",
+        "method": "get_decompilation",
+        "native_operation": "GetDecompilation",
+        "native_response_fields_not_exported": [],
+        "python_defaults": {
+          "timeout_ms": "30000"
+        },
+        "python_return_expressions": [
+          "GetDecompilationResponse(decompilation=dec)"
+        ],
+        "qualification": "source reviewed; runtime unqualified",
+        "source": {
+          "line": 276,
+          "path": "python/src/libghidra/local.py"
+        }
+      },
+      {
+        "binding_body_sha256": "3ceaffe850787309ab7beb763fe708b93498a9c7b08ca63fafa54f52ad9c53b3",
+        "binding_extraction": "decompilations",
+        "fidelity": "Python defaults limit=0 (native unbounded), unlike binding positive bounded limit=100; no such unbounded request on Lua surfaces",
+        "method": "list_decompilations",
+        "native_operation": "ListDecompilations",
+        "native_response_fields_not_exported": [],
+        "python_defaults": {
+          "limit": "0",
+          "offset": "0",
+          "range_end": "0",
+          "range_start": "0",
+          "timeout_ms": "30000"
+        },
+        "python_return_expressions": [
+          "ListDecompilationsResponse(decompilations=[_to_decompilation(d) for d in items])"
+        ],
+        "qualification": "source reviewed; runtime unqualified",
+        "source": {
+          "line": 281,
+          "path": "python/src/libghidra/local.py"
+        }
+      },
+      {
+        "binding_body_sha256": "6287250268bdf5d5f73cb8eaff5d20f22c8d83968dd16cb9dc89e7903e7be838",
+        "binding_extraction": "symbol",
+        "method": "get_symbol",
+        "native_operation": "GetSymbol",
+        "native_response_fields_not_exported": [],
+        "python_defaults": {},
+        "python_return_expressions": [
+          "GetSymbolResponse(symbol=sym)"
+        ],
+        "qualification": "source reviewed; runtime unqualified",
+        "source": {
+          "line": 290,
+          "path": "python/src/libghidra/local.py"
+        }
+      },
+      {
+        "binding_body_sha256": "2c4b8815f1d87d0a553b70dafaf892b1aa1c636372606cd31598362e70b29c3c",
+        "binding_extraction": "symbols",
+        "fidelity": "Python defaults limit=0 (native unbounded), unlike binding positive bounded limit=100; no such unbounded request on Lua surfaces",
+        "method": "list_symbols",
+        "native_operation": "ListSymbols",
+        "native_response_fields_not_exported": [],
+        "python_defaults": {
+          "limit": "0",
+          "offset": "0",
+          "range_end": "0",
+          "range_start": "0"
+        },
+        "python_return_expressions": [
+          "ListSymbolsResponse(symbols=[_to_symbol(d) for d in items])"
+        ],
+        "qualification": "source reviewed; runtime unqualified",
+        "source": {
+          "line": 295,
+          "path": "python/src/libghidra/local.py"
+        }
+      },
+      {
+        "binding_body_sha256": "cc63f95179a0b11161af069342ebb0b8213e357126a26463dc21a0dfdcc74de2",
+        "binding_extraction": "complete dict/array",
+        "method": "rename_symbol",
+        "native_operation": "RenameSymbol",
+        "native_response_fields_not_exported": [],
+        "python_defaults": {},
+        "python_return_expressions": [
+          "RenameSymbolResponse(**d)"
+        ],
+        "qualification": "source reviewed; runtime unqualified",
+        "source": {
+          "line": 300,
+          "path": "python/src/libghidra/local.py"
+        }
+      },
+      {
+        "binding_body_sha256": "5ed06888585d188a90162ed75ac9915359c6d088b55386804647ad8abf186067",
+        "binding_extraction": "data",
+        "method": "read_bytes",
+        "native_operation": "ReadBytes",
+        "native_response_fields_not_exported": [],
+        "python_defaults": {},
+        "python_return_expressions": [
+          "ReadBytesResponse(data=data)"
+        ],
+        "qualification": "source reviewed; runtime unqualified",
+        "source": {
+          "line": 306,
+          "path": "python/src/libghidra/local.py"
+        }
+      },
+      {
+        "binding_body_sha256": "4964ff19ef8070572c9faf1dc72daac1fe3566d31012a309686a68096f446d25",
+        "binding_extraction": "blocks",
+        "fidelity": "Python defaults limit=0 (native unbounded), unlike binding positive bounded limit=100; no such unbounded request on Lua surfaces",
+        "method": "list_memory_blocks",
+        "native_operation": "ListMemoryBlocks",
+        "native_response_fields_not_exported": [],
+        "python_defaults": {
+          "limit": "0",
+          "offset": "0"
+        },
+        "python_return_expressions": [
+          "ListMemoryBlocksResponse(blocks=[_to_memory_block(d) for d in items])"
+        ],
+        "qualification": "source reviewed; runtime unqualified",
+        "source": {
+          "line": 310,
+          "path": "python/src/libghidra/local.py"
+        }
+      },
+      {
+        "binding_body_sha256": "faa5f9a873931a33f8b3d85fa538ecabeceb4445b3b7c5eb36e2acb3e3cd5e19",
+        "binding_extraction": "instruction",
+        "method": "get_instruction",
+        "native_operation": "GetInstruction",
+        "native_response_fields_not_exported": [],
+        "python_defaults": {},
+        "python_return_expressions": [
+          "GetInstructionResponse(instruction=insn)"
+        ],
+        "qualification": "source reviewed; runtime unqualified",
+        "source": {
+          "line": 316,
+          "path": "python/src/libghidra/local.py"
+        }
+      },
+      {
+        "binding_body_sha256": "98dc4aaf607bdbc62b5eea6dc36544fd1f540493697c707f65134a41a38933e1",
+        "binding_extraction": "instructions",
+        "fidelity": "Python defaults limit=0 (native unbounded), unlike binding positive bounded limit=100; no such unbounded request on Lua surfaces",
+        "method": "list_instructions",
+        "native_operation": "ListInstructions",
+        "native_response_fields_not_exported": [],
+        "python_defaults": {
+          "limit": "0",
+          "offset": "0",
+          "range_end": "0",
+          "range_start": "0"
+        },
+        "python_return_expressions": [
+          "ListInstructionsResponse(instructions=[_to_instruction(d) for d in items])"
+        ],
+        "qualification": "source reviewed; runtime unqualified",
+        "source": {
+          "line": 321,
+          "path": "python/src/libghidra/local.py"
+        }
+      },
+      {
+        "binding_body_sha256": "a2277bd568d905d06901351aacc2a10f7343c1244d5dd9a57fc2f7e83b46580d",
+        "binding_extraction": "strings",
+        "fidelity": "Python defaults limit=0 (native unbounded), unlike binding positive bounded limit=100; no such unbounded request on Lua surfaces",
+        "method": "list_defined_strings",
+        "native_operation": "ListDefinedStrings",
+        "native_response_fields_not_exported": [],
+        "python_defaults": {
+          "limit": "0",
+          "offset": "0",
+          "range_end": "0",
+          "range_start": "0"
+        },
+        "python_return_expressions": [
+          "ListDefinedStringsResponse(strings=[_to_defined_string(d) for d in items])"
+        ],
+        "qualification": "source reviewed; runtime unqualified",
+        "source": {
+          "line": 326,
+          "path": "python/src/libghidra/local.py"
+        }
+      },
+      {
+        "binding_body_sha256": "11e219314532b5e4bf1a68294268dacc02cf5147aa3ce151e49e7cc71d5faa40",
+        "binding_extraction": "xrefs",
+        "fidelity": "Python defaults limit=0 (native unbounded), unlike binding positive bounded limit=100; no such unbounded request on Lua surfaces",
+        "method": "list_xrefs",
+        "native_operation": "ListXrefs",
+        "native_response_fields_not_exported": [],
+        "python_defaults": {
+          "limit": "0",
+          "offset": "0",
+          "range_end": "0",
+          "range_start": "0"
+        },
+        "python_return_expressions": [
+          "ListXrefsResponse(xrefs=[_to_xref(d) for d in items])"
+        ],
+        "qualification": "source reviewed; runtime unqualified",
+        "source": {
+          "line": 333,
+          "path": "python/src/libghidra/local.py"
+        }
+      },
+      {
+        "binding_body_sha256": "c6a32c7f8a3a95a19f506a0e0ae1fa65bbc55c9f2bdb2b7c32561ae0b3f54a1e",
+        "binding_extraction": "type",
+        "fidelity": "Python returns bare TypeRecord/None, not GetTypeResponse; Lua lowlevel must preserve envelope",
+        "method": "get_type",
+        "native_operation": "GetType",
+        "native_response_fields_not_exported": [],
+        "python_defaults": {},
+        "python_return_expressions": [
+          "_to_type(d) if d is not None else None"
+        ],
+        "qualification": "source reviewed; runtime unqualified",
+        "source": {
+          "line": 340,
+          "path": "python/src/libghidra/local.py"
+        }
+      },
+      {
+        "binding_body_sha256": "16b052e5a3f63b67f6d1cba6c9d6d649d1267b79ac65e1fbe323793a98b92511",
+        "binding_extraction": "types",
+        "fidelity": "Python defaults limit=0 (native unbounded), unlike binding positive bounded limit=100; no such unbounded request on Lua surfaces",
+        "method": "list_types",
+        "native_operation": "ListTypes",
+        "native_response_fields_not_exported": [],
+        "python_defaults": {
+          "limit": "0",
+          "offset": "0",
+          "query": "''"
+        },
+        "python_return_expressions": [
+          "ListTypesResponse(types=[_to_type(d) for d in items])"
+        ],
+        "qualification": "source reviewed; runtime unqualified",
+        "source": {
+          "line": 344,
+          "path": "python/src/libghidra/local.py"
+        }
+      },
+      {
+        "binding_body_sha256": "9fb4ffb192508dc072d485e9e76f28f462cd73e360b7ea69522f4b40329dabc2",
+        "binding_extraction": "members",
+        "fidelity": "Python defaults limit=0 (native unbounded), unlike binding positive bounded limit=100; no such unbounded request on Lua surfaces",
+        "method": "list_type_members",
+        "native_operation": "ListTypeMembers",
+        "native_response_fields_not_exported": [],
+        "python_defaults": {
+          "limit": "0",
+          "offset": "0"
+        },
+        "python_return_expressions": [
+          "ListTypeMembersResponse(members=[_to_type_member(d) for d in items])"
+        ],
+        "qualification": "source reviewed; runtime unqualified",
+        "source": {
+          "line": 348,
+          "path": "python/src/libghidra/local.py"
+        }
+      }
+    ],
+    "nested_enums": "Python _to_decompilation converts locals/tokens and their enum kinds via Python IntEnum constructors; unknown values can raise ValueError unlike Lua numeric unknown-value preservation",
+    "record_converters": {
+      "BasicBlockRecord": {
+        "body_sha256": "025b03f3c7b0ddc89a27b2b9725ea9432e4d16451aa46a122f57d9ad3026a747",
+        "exported_fields": [
+          "end_address",
+          "function_entry",
+          "in_degree",
+          "out_degree",
+          "start_address"
+        ],
+        "line": 178,
+        "omitted_native_fields": [],
+        "path": "cpp/bindings/python_bindings.cpp",
+        "unknown_exported_fields": []
+      },
+      "CFGEdgeRecord": {
+        "body_sha256": "aefba1ca9289ee2a3f38a465d79f97a061addc62ebd5e3f1759ff822df720c9b",
+        "exported_fields": [
+          "dst_block_start",
+          "edge_kind",
+          "function_entry",
+          "src_block_start"
+        ],
+        "line": 188,
+        "omitted_native_fields": [],
+        "path": "cpp/bindings/python_bindings.cpp",
+        "unknown_exported_fields": []
+      },
+      "Capability": {
+        "body_sha256": "eb790af7011f77b05435568348d93ba1974eb909a9887aaa948d24af2e85d6f8",
+        "exported_fields": [
+          "id",
+          "note",
+          "status"
+        ],
+        "line": 222,
+        "omitted_native_fields": [],
+        "path": "cpp/bindings/python_bindings.cpp",
+        "unknown_exported_fields": []
+      },
+      "DecompilationRecord": {
+        "body_sha256": "553d2e4ae74ca257c8c5459a3ed80537c4ea16631729b4f3b6a0d1f74c1781c6",
+        "exported_fields": [
+          "completed",
+          "error_message",
+          "function_entry_address",
+          "function_name",
+          "is_fallback",
+          "locals",
+          "prototype",
+          "pseudocode",
+          "tokens"
+        ],
+        "line": 90,
+        "omitted_native_fields": [],
+        "path": "cpp/bindings/python_bindings.cpp",
+        "unknown_exported_fields": []
+      },
+      "DecompileLocalRecord": {
+        "body_sha256": "ea68d429ea894e04bcbccb4d9690d8e777be7ef26f49e5e1ce659a535fcc1de3",
+        "exported_fields": [
+          "data_type",
+          "kind",
+          "local_id",
+          "name",
+          "ordinal",
+          "storage"
+        ],
+        "line": 67,
+        "omitted_native_fields": [],
+        "path": "cpp/bindings/python_bindings.cpp",
+        "unknown_exported_fields": []
+      },
+      "DecompileTokenRecord": {
+        "body_sha256": "b1273ad9f498bf8bf1386c4fe87f69c9b3affed1c857b475b7f2b469b8f25ddc",
+        "exported_fields": [
+          "column_offset",
+          "kind",
+          "line_number",
+          "text",
+          "var_name",
+          "var_storage",
+          "var_type"
+        ],
+        "line": 78,
+        "omitted_native_fields": [],
+        "path": "cpp/bindings/python_bindings.cpp",
+        "unknown_exported_fields": []
+      },
+      "DefinedStringRecord": {
+        "body_sha256": "3ccfc5b2b80bfeee1cb0de66a4ab0e76335c89dd131b8981e0d80990cabe4532",
+        "exported_fields": [
+          "address",
+          "data_type",
+          "encoding",
+          "length",
+          "value"
+        ],
+        "line": 197,
+        "omitted_native_fields": [],
+        "path": "cpp/bindings/python_bindings.cpp",
+        "unknown_exported_fields": []
+      },
+      "FunctionRecord": {
+        "body_sha256": "1217b2556dc5ae389428141adf9b86a7b04745c9513195e97edf317d7ceadc75",
+        "exported_fields": [
+          "end_address",
+          "entry_address",
+          "is_thunk",
+          "name",
+          "namespace_name",
+          "parameter_count",
+          "prototype",
+          "size",
+          "start_address"
+        ],
+        "line": 37,
+        "omitted_native_fields": [],
+        "path": "cpp/bindings/python_bindings.cpp",
+        "unknown_exported_fields": []
+      },
+      "HealthStatus": {
+        "body_sha256": "74dd8ab5f109b7ea4c22a3d076e486379b03342785afbfd6b14148a3c92a8928",
+        "exported_fields": [
+          "host_mode",
+          "modification_number",
+          "ok",
+          "service_name",
+          "service_version",
+          "warnings"
+        ],
+        "line": 207,
+        "omitted_native_fields": [],
+        "path": "cpp/bindings/python_bindings.cpp",
+        "unknown_exported_fields": []
+      },
+      "InstructionRecord": {
+        "body_sha256": "c55cae74e591ec0c17bd0925ff137492cb8e6b1df5a1dabdb7d95d41a658d4a1",
+        "exported_fields": [
+          "address",
+          "disassembly",
+          "length",
+          "mnemonic",
+          "operand_text"
+        ],
+        "line": 108,
+        "omitted_native_fields": [],
+        "path": "cpp/bindings/python_bindings.cpp",
+        "unknown_exported_fields": []
+      },
+      "MemoryBlockRecord": {
+        "body_sha256": "9323fa4e6aff55b98ef813ce310518c6f12114c9eef4e1b3f89b5cf1153606a0",
+        "exported_fields": [
+          "comment",
+          "end_address",
+          "is_execute",
+          "is_initialized",
+          "is_read",
+          "is_volatile",
+          "is_write",
+          "name",
+          "size",
+          "source_name",
+          "start_address"
+        ],
+        "line": 118,
+        "omitted_native_fields": [],
+        "path": "cpp/bindings/python_bindings.cpp",
+        "unknown_exported_fields": []
+      },
+      "SymbolRecord": {
+        "body_sha256": "316b90af1bb7ab56ba140ce2bb18a2b5ef0eb9ca1e9bacdeb552d8f31092a523",
+        "exported_fields": [
+          "address",
+          "full_name",
+          "is_dynamic",
+          "is_external",
+          "is_external_entry_point",
+          "is_primary",
+          "name",
+          "namespace_name",
+          "source",
+          "symbol_id",
+          "type"
+        ],
+        "line": 51,
+        "omitted_native_fields": [],
+        "path": "cpp/bindings/python_bindings.cpp",
+        "unknown_exported_fields": []
+      },
+      "TypeMemberRecord": {
+        "body_sha256": "f3e1e14718fcd28d593cc464f99236f24cb15812aab67489344e70aa3ba977b5",
+        "exported_fields": [
+          "comment",
+          "member_type",
+          "name",
+          "offset",
+          "ordinal",
+          "parent_type_id",
+          "parent_type_name",
+          "parent_type_path_name",
+          "size"
+        ],
+        "line": 164,
+        "omitted_native_fields": [],
+        "path": "cpp/bindings/python_bindings.cpp",
+        "unknown_exported_fields": []
+      },
+      "TypeRecord": {
+        "body_sha256": "9122e04cc58e96a181567eafd3f85ec8aa67ff6121fd42bdc953fd0f88f48749",
+        "exported_fields": [
+          "category_path",
+          "display_name",
+          "is_not_yet_defined",
+          "kind",
+          "length",
+          "name",
+          "path_name",
+          "source_archive",
+          "type_id",
+          "universal_id"
+        ],
+        "line": 149,
+        "omitted_native_fields": [],
+        "path": "cpp/bindings/python_bindings.cpp",
+        "unknown_exported_fields": []
+      },
+      "XrefRecord": {
+        "body_sha256": "b9c2e75443e145db1450de9508282a24bdb20bf2907846c200e6c0cfbb1f5de8",
+        "exported_fields": [
+          "from_address",
+          "is_external",
+          "is_flow",
+          "is_memory",
+          "is_primary",
+          "operand_index",
+          "ref_type",
+          "source",
+          "symbol_id",
+          "to_address"
+        ],
+        "line": 134,
+        "omitted_native_fields": [
+          "from_function_address",
+          "from_function_name",
+          "to_function_address",
+          "to_function_name"
+        ],
+        "path": "cpp/bindings/python_bindings.cpp",
+        "unknown_exported_fields": []
+      }
+    },
+    "remaining": "record converter omitted fields enumerated below, not silently supplied as native evidence; defaults/enum behavior need real positive and negative fixtures"
+  },
   "qualification": "M0 inventory only; no adapters or runtime qualification",
   "sources": {
+    "cpp/bindings/python_bindings.cpp": "f5b4b713b8183f9a88b27d2fca132a4c18ae4c5d43810ef8a20847c0ab461b1e",
     "cpp/include/libghidra/analysis.hpp": "c4b0a6b18f0fa127f7f2a11094659749d3611c03c7d206055d4f5177efb49b91",
     "cpp/include/libghidra/api.hpp": "b945cd35bd942b86b5dad341601f64e509c68aef57670db09b825a41d07f4a8b",
     "cpp/include/libghidra/decompiler.hpp": "c035c397febd238b2289177c05235c5c8e66d11e6b39c91396c169c77aa52e64",
