@@ -183,3 +183,22 @@ injecting an exception at an artificial callback. Denial remains enabled through
 catch and conversion. It is bounded native-allocation failure/recovery evidence,
 not partial-engine-construction cleanup, exhaustive native fault sweeps,
 destructor accounting, malloc/aligned faults or full dependency sanitizer proof.
+
+## Deterministic finalization at the owner recheck edge
+
+`ownership_deterministic_recheck` builds the real owner sources and SDK with a
+test-only Lua-running callback after dispatch stack reservation and immediately
+before slot lookup. It forces actual Lua GC exactly there, once per armed call.
+An unreachable finalizable table closes the dispatch receiver, constructs and
+closes a replacement client, and increments a hit counter. Both ReadBytes and
+OpenProgram (with rooted parsed strings) must return CLOSED/binding with correct
+operation instead of dispatching into the closed/replaced owner. Hit/edge counts
+and subsequent fresh construction are asserted. The one-shot arm is cleared
+before GC to permit finalizer reentrancy; CTest has a 30s deadlock timeout.
+
+This pins a genuine Lua finalizer to the last pre-recheck edge and exercises
+release/reconstruction with no native lock held. The callback is absent in
+production. It is **not** allocator-driven GC scheduling inside parsing or
+stack growth, nor conversion-edge finalization or native cleanup accounting.
+Those independent exact-edge qualification requirements remain open. Reproduce
+with target `reentry_host` and CTest regex `ownership_deterministic_recheck`.

@@ -8,6 +8,9 @@
 #include <cstdio>
 #include <stdexcept>
 namespace llg {
+#ifdef LLG_REENTRY_OBSERVER
+void before_owner_recheck(lua_State*);
+#endif
 #ifdef LLG_READ_OBSERVER
 // Test-build-only observer: no Lua calls, allocations or production exports.
 void observe_read_phase(int phase, uint32_t size) noexcept;
@@ -161,6 +164,9 @@ int dispatch(lua_State* L) {
  if(kind==6) observe_read_phase(0,size); // validated, before native request/lock
 #endif
  luaL_checkstack(L,32,"dispatch stack");
+#ifdef LLG_REENTRY_OBSERVER
+ before_owner_recheck(L); // test-only deterministic GC at the recheck edge
+#endif
  Slot* s=slot(L); // Revalidate AFTER all Lua-running parsing/stack growth.
  int top=lua_gettop(L),rc,n;
  {
