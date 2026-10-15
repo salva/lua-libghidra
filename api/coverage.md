@@ -328,3 +328,32 @@ revision/error branches separately from binding dispatched-mutation generation.
 New independent probes invert the rename kind test and erase outcome predicate;
 both fail reviewed assertions. Sixteen tests pass; remaining lookup/helper,
 conditional-field, numerical-domain and final surface grammar audit remains open.
+
+## Lookup failure fidelity and actionable semantic audit (thirteenth increment)
+
+`inventory_lookups.py` reviews six lookup/read adapter branches plus decompilation,
+constant-empty strings and remaining simple function/enum wrappers. Optional
+lookups conflate true absence and caught/logged adapter failure into successful
+absent optionals. Lua lowlevel must retain that fidelity; facade NOT_FOUND is
+synthetic, not a native code for these absent lookups. GetType forwards literal
+name unchanged to findByName (no member-style slash normalization). Function,
+symbol, instruction and signature record assigned/default-only fields are now
+explicitly enumerated by lookup, not inferred from populated model declarations.
+
+GetDecompilation failure is a **present** completed=false record using dl.error,
+not a missing optional or nil,error; this wrapper assigns no tokens. ReadBytes
+zero request and caught loader/allocation error both yield empty success; resize
+precedes signed int4 cast, reinforcing rejection above INT32_MAX before dispatch.
+Function/signature analysis side effects remain distinct from revision/generation.
+AddTypeEnumMember rebuilds an enumerated enum with signed-to-uint64 append, not
+an early missing-parent error. These are source contracts, not runtime fixtures.
+
+New semantic_audit explicitly lists the 18 page wrappers still lacking a separate
+state-transition review and 327 response field paths retaining generic
+preservation-only semantics. Existing reviewed page source/order contracts are
+not erased, but neither generic field text nor a source hash is counted as full
+semantic accounting. This is a concrete machine-readable remaining-work ledger,
+not a claim that all required semantics are resolved. New independent drift
+probes change lookup normalization and decompile failure reason; both are rejected.
+Seventeen focused tests pass. Remaining field/helper/domain/final-grammar review
+still prevents exhaustive acceptance; runtime evidence slots stay unqualified.

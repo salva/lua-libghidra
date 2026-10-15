@@ -534,14 +534,21 @@
           "path": "cpp/src/local_client.cpp"
         }
       },
-      "limitations": [],
+      "limitations": [
+        "normalize one slash, enumerate then append signed-int64 value cast uint64 and redefine entire enum; missing/wrong-kind lookup may enumerate empty before defineEnum attempt, not early NOT_FOUND; no comment ordinal remapping"
+      ],
+      "lookup_source_review": {
+        "body_sha256": "7e7c1b2b79d7fedf979ab0ddefb507923e1d6d3c6550e56812d683280c0ecabf",
+        "line": 760,
+        "path": "cpp/src/local_client.cpp"
+      },
       "lowlevel": "add_type_enum_member",
       "name": "AddTypeEnumMember",
       "native_literal_errors": [
         "ADD_ENUM_MEMBER_FAILED"
       ],
       "pagination": null,
-      "program_state": "requires loaded program",
+      "program_state": "loaded program and valid primary adapter required; otherwise NO_PROGRAM",
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
@@ -584,6 +591,8 @@
         "lua": "AddTypeEnumMemberResponse table/enum; resolve in types/enums",
         "native_type": "AddTypeEnumMemberResponse"
       },
+      "semantic_review": "lookup/wrapper branch review; runtime positive/negative fixture slots remain unqualified",
+      "state_transitions": "loaded required; all-slot mutation; false -> ADD_ENUM_MEMBER_FAILED; native revision only on success; error does not imply rollback",
       "surface_contract": {
         "facade": {
           "disposition": "native escape hatch",
@@ -3492,13 +3501,19 @@
         }
       },
       "limitations": [
-        "timeout_ms ignored; facade rejects explicit timeout; completed=false/fallback preserved"
+        "timeout_ms ignored; facade rejects explicit timeout; completed=false/fallback preserved",
+        "tokens and other unassigned DecompilationRecord fields remain model defaults in this override; failure is not missing optional or nil,error; ignored timeout cannot promise cancellation"
       ],
+      "lookup_source_review": {
+        "body_sha256": "450bfbca3479e69cb5cdd4a775794e7e7a93c7a9a0a7ab58d32e7a77cffe2321",
+        "line": 295,
+        "path": "cpp/src/local_client.cpp"
+      },
       "lowlevel": "get_decompilation",
       "name": "GetDecompilation",
       "native_literal_errors": [],
       "pagination": null,
-      "program_state": "requires loaded program",
+      "program_state": "loaded program and valid primary adapter required; otherwise NO_PROGRAM",
       "python_reconciliation": {
         "binding_body_sha256": "290eaeecafbf51ee1bc3860695b636b38486d1e15406a79a6b8ad7a12bc4c98a",
         "binding_extraction": "decompilation",
@@ -3771,6 +3786,8 @@
         "lua": "GetDecompilationResponse table/enum; resolve in types/enums",
         "native_type": "GetDecompilationResponse"
       },
+      "semantic_review": "lookup/wrapper branch review; runtime positive/negative fixture slots remain unqualified",
+      "state_transitions": "loaded required; dl.ok false returns present completed=false record with requested address and actual dl.error; dl.ok true returns present completed=true record with pseudocode and locals; both are StatusOr success",
       "surface_contract": {
         "facade": {
           "disposition": "direct extraction",
@@ -3829,12 +3846,41 @@
           "path": "cpp/src/local_client.cpp"
         }
       },
-      "limitations": [],
+      "limitations": [
+        "queryFunction then function-symbol fallback; inclusive end=start+size-1 (zero size -> start); native unsigned end arithmetic can wrap; default-only prototype/namespace/thunk/count fields not populated by this lookup"
+      ],
+      "lookup_adapter_review": {
+        "body_sha256": "9b8cadaf6909addfb3b6f4553a24f99d63e9c05a21abfaada9c7f189d12da5bb",
+        "line": 254,
+        "path": "cpp/src/local_arch_adapter.cpp"
+      },
+      "lookup_record_fields": {
+        "assigned": [
+          "end_address",
+          "entry_address",
+          "name",
+          "size",
+          "start_address"
+        ],
+        "default_only": [
+          "is_thunk",
+          "namespace_name",
+          "parameter_count",
+          "prototype"
+        ],
+        "model": "FunctionRecord",
+        "qualification": "source branch accounting; model defaults are not measured metadata"
+      },
+      "lookup_source_review": {
+        "body_sha256": "780c03fcdb7404eb824d0aa3cae3fa0b32ccae566f53cc96d8745d18fc56768d",
+        "line": 355,
+        "path": "cpp/src/local_client.cpp"
+      },
       "lowlevel": "get_function",
       "name": "GetFunction",
       "native_literal_errors": [],
       "pagination": null,
-      "program_state": "requires loaded program",
+      "program_state": "loaded program and valid primary adapter required; otherwise NO_PROGRAM",
       "python_reconciliation": {
         "binding_body_sha256": "90209e6055ddd593b1a79eee50c06f1e81d4a4f79f9cfa01e6e27f7c0fc81d2d",
         "binding_extraction": "function",
@@ -3967,6 +4013,8 @@
         "lua": "GetFunctionResponse table/enum; resolve in types/enums",
         "native_type": "GetFunctionResponse"
       },
+      "semantic_review": "lookup/wrapper branch review; runtime positive/negative fixture slots remain unqualified",
+      "state_transitions": "loaded required; adapter absence or caught/logged exception becomes successful absent optional; native does not return NOT_FOUND for absent lookup; facade synthesizes NOT_FOUND with full response",
       "surface_contract": {
         "facade": {
           "disposition": "direct extraction",
@@ -4023,12 +4071,43 @@
           "path": "cpp/src/local_client.cpp"
         }
       },
-      "limitations": [],
+      "limitations": [
+        "decompileAt invoked before extraction but return not tested; no function or caught extraction error -> absent; read dispatch can populate native analysis without revision increment"
+      ],
+      "lookup_adapter_review": {
+        "body_sha256": "5acdfb9c22673a79ac7cc499b966082aadbe673bb8aa17c90a8555a23a2d8d20",
+        "line": 774,
+        "path": "cpp/src/local_arch_adapter.cpp"
+      },
+      "lookup_record_fields": {
+        "assigned": [
+          "calling_convention",
+          "data_type",
+          "formal_data_type",
+          "function_entry_address",
+          "function_name",
+          "has_var_args",
+          "name",
+          "ordinal",
+          "prototype",
+          "return_type"
+        ],
+        "default_only": [
+          "parameters"
+        ],
+        "model": "FunctionSignatureRecord",
+        "qualification": "source branch accounting; model defaults are not measured metadata"
+      },
+      "lookup_source_review": {
+        "body_sha256": "b501cb425d3d8879054c007df2a98827fd4ad35661102a424a2ea6ba44310fc6",
+        "line": 1040,
+        "path": "cpp/src/local_client.cpp"
+      },
       "lowlevel": "get_function_signature",
       "name": "GetFunctionSignature",
       "native_literal_errors": [],
       "pagination": null,
-      "program_state": "requires loaded program",
+      "program_state": "loaded program and valid primary adapter required; otherwise NO_PROGRAM",
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
@@ -4185,6 +4264,8 @@
         "lua": "GetFunctionSignatureResponse table/enum; resolve in types/enums",
         "native_type": "GetFunctionSignatureResponse"
       },
+      "semantic_review": "lookup/wrapper branch review; runtime positive/negative fixture slots remain unqualified",
+      "state_transitions": "loaded required; adapter absence or caught/logged exception becomes successful absent optional; native does not return NOT_FOUND for absent lookup; facade synthesizes NOT_FOUND with full response",
       "surface_contract": {
         "facade": {
           "disposition": "direct extraction",
@@ -4241,12 +4322,36 @@
           "path": "cpp/src/local_client.cpp"
         }
       },
-      "limitations": [],
+      "limitations": [
+        "decode exact requested address via printAssembly; len<=0 or exception -> absent; disassembly joins mnemonic and operand with space only when nonempty; instruction bytes and unrelated metadata default unless assigned"
+      ],
+      "lookup_adapter_review": {
+        "body_sha256": "def7faa4671a51c13bd6bf2bb4f41e6b8e87c0feb8992092ab442906cdcb48c8",
+        "line": 520,
+        "path": "cpp/src/local_arch_adapter.cpp"
+      },
+      "lookup_record_fields": {
+        "assigned": [
+          "address",
+          "disassembly",
+          "length",
+          "mnemonic",
+          "operand_text"
+        ],
+        "default_only": [],
+        "model": "InstructionRecord",
+        "qualification": "source branch accounting; model defaults are not measured metadata"
+      },
+      "lookup_source_review": {
+        "body_sha256": "3f01657fa4a5a536ac5ec4bba4c948a5509ebfda18808ed93650b1a42027ec64",
+        "line": 1191,
+        "path": "cpp/src/local_client.cpp"
+      },
       "lowlevel": "get_instruction",
       "name": "GetInstruction",
       "native_literal_errors": [],
       "pagination": null,
-      "program_state": "requires loaded program",
+      "program_state": "loaded program and valid primary adapter required; otherwise NO_PROGRAM",
       "python_reconciliation": {
         "binding_body_sha256": "faa5f9a873931a33f8b3d85fa538ecabeceb4445b3b7c5eb36e2acb3e3cd5e19",
         "binding_extraction": "instruction",
@@ -4339,6 +4444,8 @@
         "lua": "GetInstructionResponse table/enum; resolve in types/enums",
         "native_type": "GetInstructionResponse"
       },
+      "semantic_review": "lookup/wrapper branch review; runtime positive/negative fixture slots remain unqualified",
+      "state_transitions": "loaded required; adapter absence or caught/logged exception becomes successful absent optional; native does not return NOT_FOUND for absent lookup; facade synthesizes NOT_FOUND with full response",
       "surface_contract": {
         "facade": {
           "disposition": "direct extraction",
@@ -4979,12 +5086,43 @@
           "path": "cpp/src/local_client.cpp"
         }
       },
-      "limitations": [],
+      "limitations": [
+        "findAddr in default code space; address echoes request, name/full_name identical, primary=true, type function or label; symbol ID and other unassigned fields remain defaults"
+      ],
+      "lookup_adapter_review": {
+        "body_sha256": "8ace80984323c8fa29e5b25b05c10763851933ddcf1e93e5520573e9140ee5b9",
+        "line": 344,
+        "path": "cpp/src/local_arch_adapter.cpp"
+      },
+      "lookup_record_fields": {
+        "assigned": [
+          "address",
+          "full_name",
+          "is_primary",
+          "name",
+          "type"
+        ],
+        "default_only": [
+          "is_dynamic",
+          "is_external",
+          "is_external_entry_point",
+          "namespace_name",
+          "source",
+          "symbol_id"
+        ],
+        "model": "SymbolRecord",
+        "qualification": "source branch accounting; model defaults are not measured metadata"
+      },
+      "lookup_source_review": {
+        "body_sha256": "725ec33437c0a3ac19d6e9f797dc463ab2352a82978c3938ca351f70065a2653",
+        "line": 508,
+        "path": "cpp/src/local_client.cpp"
+      },
       "lowlevel": "get_symbol",
       "name": "GetSymbol",
       "native_literal_errors": [],
       "pagination": null,
-      "program_state": "requires loaded program",
+      "program_state": "loaded program and valid primary adapter required; otherwise NO_PROGRAM",
       "python_reconciliation": {
         "binding_body_sha256": "6287250268bdf5d5f73cb8eaff5d20f22c8d83968dd16cb9dc89e7903e7be838",
         "binding_extraction": "symbol",
@@ -5137,6 +5275,8 @@
         "lua": "GetSymbolResponse table/enum; resolve in types/enums",
         "native_type": "GetSymbolResponse"
       },
+      "semantic_review": "lookup/wrapper branch review; runtime positive/negative fixture slots remain unqualified",
+      "state_transitions": "loaded required; adapter absence or caught/logged exception becomes successful absent optional; native does not return NOT_FOUND for absent lookup; facade synthesizes NOT_FOUND with full response",
       "surface_contract": {
         "facade": {
           "disposition": "direct extraction",
@@ -5193,12 +5333,42 @@
           "path": "cpp/src/local_client.cpp"
         }
       },
-      "limitations": [],
+      "limitations": [
+        "get_type forwards literal name unchanged to findByName; unlike member mutation, no slash normalization; generated path_name does not prove that slash path is accepted for lookup; type_id=0"
+      ],
+      "lookup_adapter_review": {
+        "body_sha256": "79dee899c83d6ecdbb7d0ec75ae177250506abb90e7759011be5f9cc4e5cf58b",
+        "line": 664,
+        "path": "cpp/src/local_arch_adapter.cpp"
+      },
+      "lookup_record_fields": {
+        "assigned": [
+          "display_name",
+          "kind",
+          "length",
+          "name",
+          "path_name",
+          "type_id"
+        ],
+        "default_only": [
+          "category_path",
+          "is_not_yet_defined",
+          "source_archive",
+          "universal_id"
+        ],
+        "model": "TypeRecord",
+        "qualification": "source branch accounting; model defaults are not measured metadata"
+      },
+      "lookup_source_review": {
+        "body_sha256": "0f79605670d0200f14d77b77c84c48599b9687c7bc6a0d3b1de3bb1dc728edfb",
+        "line": 634,
+        "path": "cpp/src/local_client.cpp"
+      },
       "lowlevel": "get_type",
       "name": "GetType",
       "native_literal_errors": [],
       "pagination": null,
-      "program_state": "requires loaded program",
+      "program_state": "loaded program and valid primary adapter required; otherwise NO_PROGRAM",
       "python_reconciliation": {
         "binding_body_sha256": "c6a32c7f8a3a95a19f506a0e0ae1fa65bbc55c9f2bdb2b7c32561ae0b3f54a1e",
         "binding_extraction": "type",
@@ -5342,6 +5512,8 @@
         "lua": "GetTypeResponse table/enum; resolve in types/enums",
         "native_type": "GetTypeResponse"
       },
+      "semantic_review": "lookup/wrapper branch review; runtime positive/negative fixture slots remain unqualified",
+      "state_transitions": "loaded required; adapter absence or caught/logged exception becomes successful absent optional; native does not return NOT_FOUND for absent lookup; facade synthesizes NOT_FOUND with full response",
       "surface_contract": {
         "facade": {
           "disposition": "direct extraction",
@@ -7131,6 +7303,11 @@
       "limitations": [
         "constant-empty loaded-program success; ignores range/page fields; fidelity-only positive gate on known-string fixture; no discovery, scanner or iterator"
       ],
+      "lookup_source_review": {
+        "body_sha256": "d7009928c318c61e98a5464dead4cc40edb7465fe8f65272da63a458753fe047",
+        "line": 1299,
+        "path": "cpp/src/local_client.cpp"
+      },
       "lowlevel": "list_defined_strings",
       "name": "ListDefinedStrings",
       "native_literal_errors": [],
@@ -7145,7 +7322,7 @@
         "post_page_filter": "none observed in LocalClient; downstream adapter filtering must be resolved",
         "range_zero_end": "UNRESOLVED: downstream normalization review required"
       },
-      "program_state": "requires loaded program",
+      "program_state": "loaded program and valid primary adapter required; otherwise NO_PROGRAM",
       "python_reconciliation": {
         "binding_body_sha256": "a2277bd568d905d06901351aacc2a10f7343c1244d5dd9a57fc2f7e83b46580d",
         "binding_extraction": "strings",
@@ -7268,6 +7445,8 @@
         "lua": "ListDefinedStringsResponse table/enum; resolve in types/enums",
         "native_type": "ListDefinedStringsResponse"
       },
+      "semantic_review": "lookup/wrapper branch review; runtime positive/negative fixture slots remain unqualified",
+      "state_transitions": "loaded required; unconditional empty response success, ranges/pages ignored natively; binding still validates supplied options before dispatch; compatibility fidelity exception, no discovery iterator",
       "surface_contract": {
         "facade": {
           "disposition": "native escape hatch compatibility page; no discovery iterator",
@@ -13104,13 +13283,24 @@
         }
       },
       "limitations": [
-        "public uint32 length; binding 0..INT32_MAX due signed int4 loadFill; reject before dispatch/allocation"
+        "public uint32 length; binding 0..INT32_MAX due signed int4 loadFill; reject before dispatch/allocation",
+        "requested vector allocated before signed int4 cast; Lua must reject length>INT32_MAX before dispatch/allocation; empty data conflates zero request and caught read failure; do not synthesize native success length"
       ],
+      "lookup_adapter_review": {
+        "body_sha256": "1cd22a2529f3b44e61a1d1e772bdf76e56a34db95bc0ef88a943f4be8d040b14",
+        "line": 502,
+        "path": "cpp/src/local_arch_adapter.cpp"
+      },
+      "lookup_source_review": {
+        "body_sha256": "d3d8ca07d477e57af2a394a11be8999330e8e145f4a408cebb054383951a3f9a",
+        "line": 1165,
+        "path": "cpp/src/local_client.cpp"
+      },
       "lowlevel": "read_bytes",
       "name": "ReadBytes",
       "native_literal_errors": [],
       "pagination": null,
-      "program_state": "requires loaded program",
+      "program_state": "loaded program and valid primary adapter required; otherwise NO_PROGRAM",
       "python_reconciliation": {
         "binding_body_sha256": "5ed06888585d188a90162ed75ac9915359c6d088b55386804647ad8abf186067",
         "binding_extraction": "data",
@@ -13161,6 +13351,8 @@
         "lua": "ReadBytesResponse table/enum; resolve in types/enums",
         "native_type": "ReadBytesResponse"
       },
+      "semantic_review": "lookup/wrapper branch review; runtime positive/negative fixture slots remain unqualified",
+      "state_transitions": "loaded required; zero length -> empty success; loader/allocation exception caught/logged in adapter -> empty data success, not native read error; no partial returned bytes on caught failure",
       "surface_contract": {
         "facade": {
           "disposition": "direct extraction",
@@ -13404,13 +13596,18 @@
         }
       },
       "limitations": [],
+      "lookup_source_review": {
+        "body_sha256": "a60633333e50194d806e33b8fcc52c9778ea46e0f8903b557dfa6d86cc151d3b",
+        "line": 406,
+        "path": "cpp/src/local_client.cpp"
+      },
       "lowlevel": "rename_function",
       "name": "RenameFunction",
       "native_literal_errors": [
         "RENAME_FAILED"
       ],
       "pagination": null,
-      "program_state": "requires loaded program",
+      "program_state": "loaded program and valid primary adapter required; otherwise NO_PROGRAM",
       "python_reconciliation": {
         "binding_body_sha256": "5519ee0d5261ced38f9aea2fbab72e22f4804bff3283bdab4d6ba4cc82463236",
         "binding_extraction": "complete dict/array",
@@ -13471,6 +13668,8 @@
         "lua": "RenameFunctionResponse table/enum; resolve in types/enums",
         "native_type": "RenameFunctionResponse"
       },
+      "semantic_review": "lookup/wrapper branch review; runtime positive/negative fixture slots remain unqualified",
+      "state_transitions": "loaded required; all-slot mutation; false -> RENAME_FAILED; native revision only on success; error does not imply rollback",
       "surface_contract": {
         "facade": {
           "disposition": "complete response convenience/page",
@@ -15173,13 +15372,18 @@
         }
       },
       "limitations": [],
+      "lookup_source_review": {
+        "body_sha256": "94fc2b2d84ba8333f0c1f069ce178e7966ca9f4aeff77b9d817ef11d5f4cabff",
+        "line": 667,
+        "path": "cpp/src/local_client.cpp"
+      },
       "lowlevel": "set_function_signature",
       "name": "SetFunctionSignature",
       "native_literal_errors": [
         "SET_PROTOTYPE_FAILED"
       ],
       "pagination": null,
-      "program_state": "requires loaded program",
+      "program_state": "loaded program and valid primary adapter required; otherwise NO_PROGRAM",
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
@@ -15234,6 +15438,8 @@
         "lua": "SetFunctionSignatureResponse table/enum; resolve in types/enums",
         "native_type": "SetFunctionSignatureResponse"
       },
+      "semantic_review": "lookup/wrapper branch review; runtime positive/negative fixture slots remain unqualified",
+      "state_transitions": "loaded required; all-slot mutation; false -> SET_PROTOTYPE_FAILED; native revision only on success; error does not imply rollback",
       "surface_contract": {
         "facade": {
           "disposition": "native escape hatch",
@@ -26572,6 +26778,1672 @@
     "remaining": "record converter omitted fields enumerated below, not silently supplied as native evidence; defaults/enum behavior need real positive and negative fixtures"
   },
   "qualification": "M0 inventory only; no adapters or runtime qualification",
+  "semantic_audit": {
+    "included_operations": 70,
+    "remaining_gates": [
+      "Audit every generic field semantic against owning adapter/default source",
+      "Finalize non-first-slice facade call grammar rather than positional proposals",
+      "Qualify runtime fixtures separately; preserve all unqualified slots"
+    ],
+    "response_field_semantics_unreviewed": [
+      {
+        "native_type": "bool",
+        "operation": "AddPerfBenchmark",
+        "path": "added"
+      },
+      {
+        "native_type": "bool",
+        "operation": "AddTypeEnumMember",
+        "path": "updated"
+      },
+      {
+        "native_type": "bool",
+        "operation": "AddTypeMember",
+        "path": "updated"
+      },
+      {
+        "native_type": "bool",
+        "operation": "ApplyDataType",
+        "path": "updated"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "ApplyDataType",
+        "path": "data_type"
+      },
+      {
+        "native_type": "bool",
+        "operation": "ClearPerfBenchmarks",
+        "path": "cleared"
+      },
+      {
+        "native_type": "std::uint32_t",
+        "operation": "ClearPerfBenchmarks",
+        "path": "removed_count"
+      },
+      {
+        "native_type": "bool",
+        "operation": "CloseProgram",
+        "path": "closed"
+      },
+      {
+        "native_type": "bool",
+        "operation": "CreateType",
+        "path": "updated"
+      },
+      {
+        "native_type": "bool",
+        "operation": "CreateTypeAlias",
+        "path": "updated"
+      },
+      {
+        "native_type": "bool",
+        "operation": "CreateTypeEnum",
+        "path": "updated"
+      },
+      {
+        "native_type": "bool",
+        "operation": "DeleteComment",
+        "path": "deleted"
+      },
+      {
+        "native_type": "bool",
+        "operation": "DeleteDataItem",
+        "path": "deleted"
+      },
+      {
+        "native_type": "bool",
+        "operation": "DeletePerfBenchmark",
+        "path": "deleted"
+      },
+      {
+        "native_type": "bool",
+        "operation": "DeleteSymbol",
+        "path": "deleted"
+      },
+      {
+        "native_type": "std::uint32_t",
+        "operation": "DeleteSymbol",
+        "path": "deleted_count"
+      },
+      {
+        "native_type": "bool",
+        "operation": "DeleteType",
+        "path": "deleted"
+      },
+      {
+        "native_type": "bool",
+        "operation": "DeleteTypeAlias",
+        "path": "deleted"
+      },
+      {
+        "native_type": "bool",
+        "operation": "DeleteTypeEnumMember",
+        "path": "deleted"
+      },
+      {
+        "native_type": "bool",
+        "operation": "DeleteTypeMember",
+        "path": "deleted"
+      },
+      {
+        "native_type": "bool",
+        "operation": "DiscardProgram",
+        "path": "discarded"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "GetCapabilities",
+        "path": "id"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "GetCapabilities",
+        "path": "status"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "GetCapabilities",
+        "path": "note"
+      },
+      {
+        "native_type": "std::vector<CommentRecord>",
+        "operation": "GetComments",
+        "path": "comments"
+      },
+      {
+        "native_type": "std::uint64_t",
+        "operation": "GetComments",
+        "path": "comments.address"
+      },
+      {
+        "native_type": "CommentKind",
+        "operation": "GetComments",
+        "path": "comments.kind"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "GetComments",
+        "path": "comments.text"
+      },
+      {
+        "native_type": "std::optional<DecompilationRecord>",
+        "operation": "GetDecompilation",
+        "path": "decompilation"
+      },
+      {
+        "native_type": "std::uint64_t",
+        "operation": "GetDecompilation",
+        "path": "decompilation.function_entry_address"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "GetDecompilation",
+        "path": "decompilation.function_name"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "GetDecompilation",
+        "path": "decompilation.prototype"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "GetDecompilation",
+        "path": "decompilation.pseudocode"
+      },
+      {
+        "native_type": "bool",
+        "operation": "GetDecompilation",
+        "path": "decompilation.completed"
+      },
+      {
+        "native_type": "bool",
+        "operation": "GetDecompilation",
+        "path": "decompilation.is_fallback"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "GetDecompilation",
+        "path": "decompilation.error_message"
+      },
+      {
+        "native_type": "std::vector<DecompileLocalRecord>",
+        "operation": "GetDecompilation",
+        "path": "decompilation.locals"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "GetDecompilation",
+        "path": "decompilation.locals.local_id"
+      },
+      {
+        "native_type": "DecompileLocalKind",
+        "operation": "GetDecompilation",
+        "path": "decompilation.locals.kind"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "GetDecompilation",
+        "path": "decompilation.locals.name"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "GetDecompilation",
+        "path": "decompilation.locals.data_type"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "GetDecompilation",
+        "path": "decompilation.locals.storage"
+      },
+      {
+        "native_type": "int",
+        "operation": "GetDecompilation",
+        "path": "decompilation.locals.ordinal"
+      },
+      {
+        "native_type": "std::vector<DecompileTokenRecord>",
+        "operation": "GetDecompilation",
+        "path": "decompilation.tokens"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "GetDecompilation",
+        "path": "decompilation.tokens.text"
+      },
+      {
+        "native_type": "DecompileTokenKind",
+        "operation": "GetDecompilation",
+        "path": "decompilation.tokens.kind"
+      },
+      {
+        "native_type": "int",
+        "operation": "GetDecompilation",
+        "path": "decompilation.tokens.line_number"
+      },
+      {
+        "native_type": "int",
+        "operation": "GetDecompilation",
+        "path": "decompilation.tokens.column_offset"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "GetDecompilation",
+        "path": "decompilation.tokens.var_name"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "GetDecompilation",
+        "path": "decompilation.tokens.var_type"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "GetDecompilation",
+        "path": "decompilation.tokens.var_storage"
+      },
+      {
+        "native_type": "std::optional<FunctionRecord>",
+        "operation": "GetFunction",
+        "path": "function"
+      },
+      {
+        "native_type": "std::uint64_t",
+        "operation": "GetFunction",
+        "path": "function.entry_address"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "GetFunction",
+        "path": "function.name"
+      },
+      {
+        "native_type": "std::uint64_t",
+        "operation": "GetFunction",
+        "path": "function.start_address"
+      },
+      {
+        "native_type": "std::uint64_t",
+        "operation": "GetFunction",
+        "path": "function.end_address"
+      },
+      {
+        "native_type": "std::uint64_t",
+        "operation": "GetFunction",
+        "path": "function.size"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "GetFunction",
+        "path": "function.namespace_name"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "GetFunction",
+        "path": "function.prototype"
+      },
+      {
+        "native_type": "bool",
+        "operation": "GetFunction",
+        "path": "function.is_thunk"
+      },
+      {
+        "native_type": "std::uint32_t",
+        "operation": "GetFunction",
+        "path": "function.parameter_count"
+      },
+      {
+        "native_type": "std::optional<FunctionSignatureRecord>",
+        "operation": "GetFunctionSignature",
+        "path": "signature"
+      },
+      {
+        "native_type": "std::uint64_t",
+        "operation": "GetFunctionSignature",
+        "path": "signature.function_entry_address"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "GetFunctionSignature",
+        "path": "signature.function_name"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "GetFunctionSignature",
+        "path": "signature.prototype"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "GetFunctionSignature",
+        "path": "signature.return_type"
+      },
+      {
+        "native_type": "bool",
+        "operation": "GetFunctionSignature",
+        "path": "signature.has_var_args"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "GetFunctionSignature",
+        "path": "signature.calling_convention"
+      },
+      {
+        "native_type": "std::vector<ParameterRecord>",
+        "operation": "GetFunctionSignature",
+        "path": "signature.parameters"
+      },
+      {
+        "native_type": "int",
+        "operation": "GetFunctionSignature",
+        "path": "signature.parameters.ordinal"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "GetFunctionSignature",
+        "path": "signature.parameters.name"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "GetFunctionSignature",
+        "path": "signature.parameters.data_type"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "GetFunctionSignature",
+        "path": "signature.parameters.formal_data_type"
+      },
+      {
+        "native_type": "bool",
+        "operation": "GetFunctionSignature",
+        "path": "signature.parameters.is_auto_parameter"
+      },
+      {
+        "native_type": "bool",
+        "operation": "GetFunctionSignature",
+        "path": "signature.parameters.is_forced_indirect"
+      },
+      {
+        "native_type": "std::optional<InstructionRecord>",
+        "operation": "GetInstruction",
+        "path": "instruction"
+      },
+      {
+        "native_type": "std::uint64_t",
+        "operation": "GetInstruction",
+        "path": "instruction.address"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "GetInstruction",
+        "path": "instruction.mnemonic"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "GetInstruction",
+        "path": "instruction.operand_text"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "GetInstruction",
+        "path": "instruction.disassembly"
+      },
+      {
+        "native_type": "std::uint32_t",
+        "operation": "GetInstruction",
+        "path": "instruction.length"
+      },
+      {
+        "native_type": "std::uint64_t",
+        "operation": "GetRevision",
+        "path": "program_id"
+      },
+      {
+        "native_type": "std::uint64_t",
+        "operation": "GetRevision",
+        "path": "modification_number"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "GetRevision",
+        "path": "program_path"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "GetRevision",
+        "path": "file_id"
+      },
+      {
+        "native_type": "std::int32_t",
+        "operation": "GetRevision",
+        "path": "file_version"
+      },
+      {
+        "native_type": "std::int64_t",
+        "operation": "GetRevision",
+        "path": "file_last_modified_time"
+      },
+      {
+        "native_type": "bool",
+        "operation": "GetStatus",
+        "path": "ok"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "GetStatus",
+        "path": "service_name"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "GetStatus",
+        "path": "service_version"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "GetStatus",
+        "path": "host_mode"
+      },
+      {
+        "native_type": "std::uint64_t",
+        "operation": "GetStatus",
+        "path": "modification_number"
+      },
+      {
+        "native_type": "std::vector<std::string>",
+        "operation": "GetStatus",
+        "path": "warnings"
+      },
+      {
+        "native_type": "std::optional<SymbolRecord>",
+        "operation": "GetSymbol",
+        "path": "symbol"
+      },
+      {
+        "native_type": "std::uint64_t",
+        "operation": "GetSymbol",
+        "path": "symbol.symbol_id"
+      },
+      {
+        "native_type": "std::uint64_t",
+        "operation": "GetSymbol",
+        "path": "symbol.address"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "GetSymbol",
+        "path": "symbol.name"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "GetSymbol",
+        "path": "symbol.full_name"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "GetSymbol",
+        "path": "symbol.type"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "GetSymbol",
+        "path": "symbol.namespace_name"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "GetSymbol",
+        "path": "symbol.source"
+      },
+      {
+        "native_type": "bool",
+        "operation": "GetSymbol",
+        "path": "symbol.is_primary"
+      },
+      {
+        "native_type": "bool",
+        "operation": "GetSymbol",
+        "path": "symbol.is_external"
+      },
+      {
+        "native_type": "bool",
+        "operation": "GetSymbol",
+        "path": "symbol.is_dynamic"
+      },
+      {
+        "native_type": "bool",
+        "operation": "GetSymbol",
+        "path": "symbol.is_external_entry_point"
+      },
+      {
+        "native_type": "std::optional<TypeRecord>",
+        "operation": "GetType",
+        "path": "type"
+      },
+      {
+        "native_type": "std::uint64_t",
+        "operation": "GetType",
+        "path": "type.type_id"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "GetType",
+        "path": "type.name"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "GetType",
+        "path": "type.path_name"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "GetType",
+        "path": "type.category_path"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "GetType",
+        "path": "type.display_name"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "GetType",
+        "path": "type.kind"
+      },
+      {
+        "native_type": "int",
+        "operation": "GetType",
+        "path": "type.length"
+      },
+      {
+        "native_type": "bool",
+        "operation": "GetType",
+        "path": "type.is_not_yet_defined"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "GetType",
+        "path": "type.source_archive"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "GetType",
+        "path": "type.universal_id"
+      },
+      {
+        "native_type": "std::vector<BasicBlockRecord>",
+        "operation": "ListBasicBlocks",
+        "path": "blocks"
+      },
+      {
+        "native_type": "std::uint64_t",
+        "operation": "ListBasicBlocks",
+        "path": "blocks.function_entry"
+      },
+      {
+        "native_type": "std::uint64_t",
+        "operation": "ListBasicBlocks",
+        "path": "blocks.start_address"
+      },
+      {
+        "native_type": "std::uint64_t",
+        "operation": "ListBasicBlocks",
+        "path": "blocks.end_address"
+      },
+      {
+        "native_type": "std::uint32_t",
+        "operation": "ListBasicBlocks",
+        "path": "blocks.in_degree"
+      },
+      {
+        "native_type": "std::uint32_t",
+        "operation": "ListBasicBlocks",
+        "path": "blocks.out_degree"
+      },
+      {
+        "native_type": "std::vector<CFGEdgeRecord>",
+        "operation": "ListCFGEdges",
+        "path": "edges"
+      },
+      {
+        "native_type": "std::uint64_t",
+        "operation": "ListCFGEdges",
+        "path": "edges.function_entry"
+      },
+      {
+        "native_type": "std::uint64_t",
+        "operation": "ListCFGEdges",
+        "path": "edges.src_block_start"
+      },
+      {
+        "native_type": "std::uint64_t",
+        "operation": "ListCFGEdges",
+        "path": "edges.dst_block_start"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "ListCFGEdges",
+        "path": "edges.edge_kind"
+      },
+      {
+        "native_type": "std::vector<DataItemRecord>",
+        "operation": "ListDataItems",
+        "path": "data_items"
+      },
+      {
+        "native_type": "std::uint64_t",
+        "operation": "ListDataItems",
+        "path": "data_items.address"
+      },
+      {
+        "native_type": "std::uint64_t",
+        "operation": "ListDataItems",
+        "path": "data_items.end_address"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "ListDataItems",
+        "path": "data_items.name"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "ListDataItems",
+        "path": "data_items.data_type"
+      },
+      {
+        "native_type": "std::uint64_t",
+        "operation": "ListDataItems",
+        "path": "data_items.size"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "ListDataItems",
+        "path": "data_items.value_repr"
+      },
+      {
+        "native_type": "std::vector<DecompilationRecord>",
+        "operation": "ListDecompilations",
+        "path": "decompilations"
+      },
+      {
+        "native_type": "std::uint64_t",
+        "operation": "ListDecompilations",
+        "path": "decompilations.function_entry_address"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "ListDecompilations",
+        "path": "decompilations.function_name"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "ListDecompilations",
+        "path": "decompilations.prototype"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "ListDecompilations",
+        "path": "decompilations.pseudocode"
+      },
+      {
+        "native_type": "bool",
+        "operation": "ListDecompilations",
+        "path": "decompilations.completed"
+      },
+      {
+        "native_type": "bool",
+        "operation": "ListDecompilations",
+        "path": "decompilations.is_fallback"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "ListDecompilations",
+        "path": "decompilations.error_message"
+      },
+      {
+        "native_type": "std::vector<DecompileLocalRecord>",
+        "operation": "ListDecompilations",
+        "path": "decompilations.locals"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "ListDecompilations",
+        "path": "decompilations.locals.local_id"
+      },
+      {
+        "native_type": "DecompileLocalKind",
+        "operation": "ListDecompilations",
+        "path": "decompilations.locals.kind"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "ListDecompilations",
+        "path": "decompilations.locals.name"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "ListDecompilations",
+        "path": "decompilations.locals.data_type"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "ListDecompilations",
+        "path": "decompilations.locals.storage"
+      },
+      {
+        "native_type": "int",
+        "operation": "ListDecompilations",
+        "path": "decompilations.locals.ordinal"
+      },
+      {
+        "native_type": "std::vector<DecompileTokenRecord>",
+        "operation": "ListDecompilations",
+        "path": "decompilations.tokens"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "ListDecompilations",
+        "path": "decompilations.tokens.text"
+      },
+      {
+        "native_type": "DecompileTokenKind",
+        "operation": "ListDecompilations",
+        "path": "decompilations.tokens.kind"
+      },
+      {
+        "native_type": "int",
+        "operation": "ListDecompilations",
+        "path": "decompilations.tokens.line_number"
+      },
+      {
+        "native_type": "int",
+        "operation": "ListDecompilations",
+        "path": "decompilations.tokens.column_offset"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "ListDecompilations",
+        "path": "decompilations.tokens.var_name"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "ListDecompilations",
+        "path": "decompilations.tokens.var_type"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "ListDecompilations",
+        "path": "decompilations.tokens.var_storage"
+      },
+      {
+        "native_type": "std::vector<DefinedStringRecord>",
+        "operation": "ListDefinedStrings",
+        "path": "strings"
+      },
+      {
+        "native_type": "std::uint64_t",
+        "operation": "ListDefinedStrings",
+        "path": "strings.address"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "ListDefinedStrings",
+        "path": "strings.value"
+      },
+      {
+        "native_type": "std::uint32_t",
+        "operation": "ListDefinedStrings",
+        "path": "strings.length"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "ListDefinedStrings",
+        "path": "strings.data_type"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "ListDefinedStrings",
+        "path": "strings.encoding"
+      },
+      {
+        "native_type": "std::vector<FunctionSignatureRecord>",
+        "operation": "ListFunctionSignatures",
+        "path": "signatures"
+      },
+      {
+        "native_type": "std::uint64_t",
+        "operation": "ListFunctionSignatures",
+        "path": "signatures.function_entry_address"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "ListFunctionSignatures",
+        "path": "signatures.function_name"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "ListFunctionSignatures",
+        "path": "signatures.prototype"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "ListFunctionSignatures",
+        "path": "signatures.return_type"
+      },
+      {
+        "native_type": "bool",
+        "operation": "ListFunctionSignatures",
+        "path": "signatures.has_var_args"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "ListFunctionSignatures",
+        "path": "signatures.calling_convention"
+      },
+      {
+        "native_type": "std::vector<ParameterRecord>",
+        "operation": "ListFunctionSignatures",
+        "path": "signatures.parameters"
+      },
+      {
+        "native_type": "int",
+        "operation": "ListFunctionSignatures",
+        "path": "signatures.parameters.ordinal"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "ListFunctionSignatures",
+        "path": "signatures.parameters.name"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "ListFunctionSignatures",
+        "path": "signatures.parameters.data_type"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "ListFunctionSignatures",
+        "path": "signatures.parameters.formal_data_type"
+      },
+      {
+        "native_type": "bool",
+        "operation": "ListFunctionSignatures",
+        "path": "signatures.parameters.is_auto_parameter"
+      },
+      {
+        "native_type": "bool",
+        "operation": "ListFunctionSignatures",
+        "path": "signatures.parameters.is_forced_indirect"
+      },
+      {
+        "native_type": "std::vector<FunctionRecord>",
+        "operation": "ListFunctions",
+        "path": "functions"
+      },
+      {
+        "native_type": "std::uint64_t",
+        "operation": "ListFunctions",
+        "path": "functions.entry_address"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "ListFunctions",
+        "path": "functions.name"
+      },
+      {
+        "native_type": "std::uint64_t",
+        "operation": "ListFunctions",
+        "path": "functions.start_address"
+      },
+      {
+        "native_type": "std::uint64_t",
+        "operation": "ListFunctions",
+        "path": "functions.end_address"
+      },
+      {
+        "native_type": "std::uint64_t",
+        "operation": "ListFunctions",
+        "path": "functions.size"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "ListFunctions",
+        "path": "functions.namespace_name"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "ListFunctions",
+        "path": "functions.prototype"
+      },
+      {
+        "native_type": "bool",
+        "operation": "ListFunctions",
+        "path": "functions.is_thunk"
+      },
+      {
+        "native_type": "std::uint32_t",
+        "operation": "ListFunctions",
+        "path": "functions.parameter_count"
+      },
+      {
+        "native_type": "std::vector<InstructionRecord>",
+        "operation": "ListInstructions",
+        "path": "instructions"
+      },
+      {
+        "native_type": "std::uint64_t",
+        "operation": "ListInstructions",
+        "path": "instructions.address"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "ListInstructions",
+        "path": "instructions.mnemonic"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "ListInstructions",
+        "path": "instructions.operand_text"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "ListInstructions",
+        "path": "instructions.disassembly"
+      },
+      {
+        "native_type": "std::uint32_t",
+        "operation": "ListInstructions",
+        "path": "instructions.length"
+      },
+      {
+        "native_type": "std::vector<FunctionRecord>",
+        "operation": "ListLeafFunctions",
+        "path": "functions"
+      },
+      {
+        "native_type": "std::uint64_t",
+        "operation": "ListLeafFunctions",
+        "path": "functions.entry_address"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "ListLeafFunctions",
+        "path": "functions.name"
+      },
+      {
+        "native_type": "std::uint64_t",
+        "operation": "ListLeafFunctions",
+        "path": "functions.start_address"
+      },
+      {
+        "native_type": "std::uint64_t",
+        "operation": "ListLeafFunctions",
+        "path": "functions.end_address"
+      },
+      {
+        "native_type": "std::uint64_t",
+        "operation": "ListLeafFunctions",
+        "path": "functions.size"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "ListLeafFunctions",
+        "path": "functions.namespace_name"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "ListLeafFunctions",
+        "path": "functions.prototype"
+      },
+      {
+        "native_type": "bool",
+        "operation": "ListLeafFunctions",
+        "path": "functions.is_thunk"
+      },
+      {
+        "native_type": "std::uint32_t",
+        "operation": "ListLeafFunctions",
+        "path": "functions.parameter_count"
+      },
+      {
+        "native_type": "std::vector<MemoryBlockRecord>",
+        "operation": "ListMemoryBlocks",
+        "path": "blocks"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "ListMemoryBlocks",
+        "path": "blocks.name"
+      },
+      {
+        "native_type": "std::uint64_t",
+        "operation": "ListMemoryBlocks",
+        "path": "blocks.start_address"
+      },
+      {
+        "native_type": "std::uint64_t",
+        "operation": "ListMemoryBlocks",
+        "path": "blocks.end_address"
+      },
+      {
+        "native_type": "std::uint64_t",
+        "operation": "ListMemoryBlocks",
+        "path": "blocks.size"
+      },
+      {
+        "native_type": "bool",
+        "operation": "ListMemoryBlocks",
+        "path": "blocks.is_read"
+      },
+      {
+        "native_type": "bool",
+        "operation": "ListMemoryBlocks",
+        "path": "blocks.is_write"
+      },
+      {
+        "native_type": "bool",
+        "operation": "ListMemoryBlocks",
+        "path": "blocks.is_execute"
+      },
+      {
+        "native_type": "bool",
+        "operation": "ListMemoryBlocks",
+        "path": "blocks.is_volatile"
+      },
+      {
+        "native_type": "bool",
+        "operation": "ListMemoryBlocks",
+        "path": "blocks.is_initialized"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "ListMemoryBlocks",
+        "path": "blocks.source_name"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "ListMemoryBlocks",
+        "path": "blocks.comment"
+      },
+      {
+        "native_type": "std::vector<PerfBenchmarkRecord>",
+        "operation": "ListPerfBenchmarks",
+        "path": "records"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "ListPerfBenchmarks",
+        "path": "records.bench_id"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "ListPerfBenchmarks",
+        "path": "records.query_family"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "ListPerfBenchmarks",
+        "path": "records.dataset_profile"
+      },
+      {
+        "native_type": "double",
+        "operation": "ListPerfBenchmarks",
+        "path": "records.cold_ms_p50"
+      },
+      {
+        "native_type": "double",
+        "operation": "ListPerfBenchmarks",
+        "path": "records.cold_ms_p95"
+      },
+      {
+        "native_type": "double",
+        "operation": "ListPerfBenchmarks",
+        "path": "records.warm_ms_p50"
+      },
+      {
+        "native_type": "double",
+        "operation": "ListPerfBenchmarks",
+        "path": "records.warm_ms_p95"
+      },
+      {
+        "native_type": "double",
+        "operation": "ListPerfBenchmarks",
+        "path": "records.throughput_qps"
+      },
+      {
+        "native_type": "double",
+        "operation": "ListPerfBenchmarks",
+        "path": "records.regression_pct"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "ListPerfBenchmarks",
+        "path": "records.status"
+      },
+      {
+        "native_type": "std::vector<SymbolRecord>",
+        "operation": "ListSymbols",
+        "path": "symbols"
+      },
+      {
+        "native_type": "std::uint64_t",
+        "operation": "ListSymbols",
+        "path": "symbols.symbol_id"
+      },
+      {
+        "native_type": "std::uint64_t",
+        "operation": "ListSymbols",
+        "path": "symbols.address"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "ListSymbols",
+        "path": "symbols.name"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "ListSymbols",
+        "path": "symbols.full_name"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "ListSymbols",
+        "path": "symbols.type"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "ListSymbols",
+        "path": "symbols.namespace_name"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "ListSymbols",
+        "path": "symbols.source"
+      },
+      {
+        "native_type": "bool",
+        "operation": "ListSymbols",
+        "path": "symbols.is_primary"
+      },
+      {
+        "native_type": "bool",
+        "operation": "ListSymbols",
+        "path": "symbols.is_external"
+      },
+      {
+        "native_type": "bool",
+        "operation": "ListSymbols",
+        "path": "symbols.is_dynamic"
+      },
+      {
+        "native_type": "bool",
+        "operation": "ListSymbols",
+        "path": "symbols.is_external_entry_point"
+      },
+      {
+        "native_type": "std::vector<TypeAliasRecord>",
+        "operation": "ListTypeAliases",
+        "path": "aliases"
+      },
+      {
+        "native_type": "std::uint64_t",
+        "operation": "ListTypeAliases",
+        "path": "aliases.type_id"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "ListTypeAliases",
+        "path": "aliases.path_name"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "ListTypeAliases",
+        "path": "aliases.name"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "ListTypeAliases",
+        "path": "aliases.target_type"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "ListTypeAliases",
+        "path": "aliases.declaration"
+      },
+      {
+        "native_type": "std::vector<TypeEnumMemberRecord>",
+        "operation": "ListTypeEnumMembers",
+        "path": "members"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "ListTypeEnumMembers",
+        "path": "members.type_path_name"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "ListTypeEnumMembers",
+        "path": "members.type_name"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "ListTypeEnumMembers",
+        "path": "members.name"
+      },
+      {
+        "native_type": "std::vector<TypeEnumRecord>",
+        "operation": "ListTypeEnums",
+        "path": "enums"
+      },
+      {
+        "native_type": "std::uint64_t",
+        "operation": "ListTypeEnums",
+        "path": "enums.type_id"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "ListTypeEnums",
+        "path": "enums.path_name"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "ListTypeEnums",
+        "path": "enums.name"
+      },
+      {
+        "native_type": "std::uint64_t",
+        "operation": "ListTypeEnums",
+        "path": "enums.width"
+      },
+      {
+        "native_type": "bool",
+        "operation": "ListTypeEnums",
+        "path": "enums.is_signed"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "ListTypeEnums",
+        "path": "enums.declaration"
+      },
+      {
+        "native_type": "std::vector<TypeMemberRecord>",
+        "operation": "ListTypeMembers",
+        "path": "members"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "ListTypeMembers",
+        "path": "members.parent_type_path_name"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "ListTypeMembers",
+        "path": "members.parent_type_name"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "ListTypeMembers",
+        "path": "members.name"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "ListTypeMembers",
+        "path": "members.member_type"
+      },
+      {
+        "native_type": "std::vector<TypeUnionRecord>",
+        "operation": "ListTypeUnions",
+        "path": "unions"
+      },
+      {
+        "native_type": "std::uint64_t",
+        "operation": "ListTypeUnions",
+        "path": "unions.type_id"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "ListTypeUnions",
+        "path": "unions.path_name"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "ListTypeUnions",
+        "path": "unions.name"
+      },
+      {
+        "native_type": "std::uint64_t",
+        "operation": "ListTypeUnions",
+        "path": "unions.size"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "ListTypeUnions",
+        "path": "unions.declaration"
+      },
+      {
+        "native_type": "std::vector<TypeRecord>",
+        "operation": "ListTypes",
+        "path": "types"
+      },
+      {
+        "native_type": "std::uint64_t",
+        "operation": "ListTypes",
+        "path": "types.type_id"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "ListTypes",
+        "path": "types.name"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "ListTypes",
+        "path": "types.path_name"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "ListTypes",
+        "path": "types.category_path"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "ListTypes",
+        "path": "types.display_name"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "ListTypes",
+        "path": "types.kind"
+      },
+      {
+        "native_type": "int",
+        "operation": "ListTypes",
+        "path": "types.length"
+      },
+      {
+        "native_type": "bool",
+        "operation": "ListTypes",
+        "path": "types.is_not_yet_defined"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "ListTypes",
+        "path": "types.source_archive"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "ListTypes",
+        "path": "types.universal_id"
+      },
+      {
+        "native_type": "std::vector<XrefRecord>",
+        "operation": "ListXrefs",
+        "path": "xrefs"
+      },
+      {
+        "native_type": "std::uint64_t",
+        "operation": "ListXrefs",
+        "path": "xrefs.from_address"
+      },
+      {
+        "native_type": "std::uint64_t",
+        "operation": "ListXrefs",
+        "path": "xrefs.to_address"
+      },
+      {
+        "native_type": "int",
+        "operation": "ListXrefs",
+        "path": "xrefs.operand_index"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "ListXrefs",
+        "path": "xrefs.ref_type"
+      },
+      {
+        "native_type": "bool",
+        "operation": "ListXrefs",
+        "path": "xrefs.is_primary"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "ListXrefs",
+        "path": "xrefs.source"
+      },
+      {
+        "native_type": "std::int64_t",
+        "operation": "ListXrefs",
+        "path": "xrefs.symbol_id"
+      },
+      {
+        "native_type": "bool",
+        "operation": "ListXrefs",
+        "path": "xrefs.is_external"
+      },
+      {
+        "native_type": "bool",
+        "operation": "ListXrefs",
+        "path": "xrefs.is_memory"
+      },
+      {
+        "native_type": "bool",
+        "operation": "ListXrefs",
+        "path": "xrefs.is_flow"
+      },
+      {
+        "native_type": "std::uint64_t",
+        "operation": "ListXrefs",
+        "path": "xrefs.from_function_address"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "ListXrefs",
+        "path": "xrefs.from_function_name"
+      },
+      {
+        "native_type": "std::uint64_t",
+        "operation": "ListXrefs",
+        "path": "xrefs.to_function_address"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "ListXrefs",
+        "path": "xrefs.to_function_name"
+      },
+      {
+        "native_type": "std::uint32_t",
+        "operation": "PatchBytesBatch",
+        "path": "patch_count"
+      },
+      {
+        "native_type": "std::uint32_t",
+        "operation": "PatchBytesBatch",
+        "path": "bytes_written"
+      },
+      {
+        "native_type": "std::vector<std::uint8_t>",
+        "operation": "ReadBytes",
+        "path": "data"
+      },
+      {
+        "native_type": "bool",
+        "operation": "RenameDataItem",
+        "path": "updated"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "RenameDataItem",
+        "path": "name"
+      },
+      {
+        "native_type": "bool",
+        "operation": "RenameFunction",
+        "path": "renamed"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "RenameFunction",
+        "path": "name"
+      },
+      {
+        "native_type": "bool",
+        "operation": "RenameFunctionLocal",
+        "path": "updated"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "RenameFunctionLocal",
+        "path": "local_id"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "RenameFunctionLocal",
+        "path": "name"
+      },
+      {
+        "native_type": "bool",
+        "operation": "RenameFunctionParameter",
+        "path": "updated"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "RenameFunctionParameter",
+        "path": "name"
+      },
+      {
+        "native_type": "bool",
+        "operation": "RenameSymbol",
+        "path": "renamed"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "RenameSymbol",
+        "path": "name"
+      },
+      {
+        "native_type": "bool",
+        "operation": "RenameType",
+        "path": "updated"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "RenameType",
+        "path": "name"
+      },
+      {
+        "native_type": "bool",
+        "operation": "RenameTypeEnumMember",
+        "path": "updated"
+      },
+      {
+        "native_type": "bool",
+        "operation": "RenameTypeMember",
+        "path": "updated"
+      },
+      {
+        "native_type": "bool",
+        "operation": "SaveProgram",
+        "path": "saved"
+      },
+      {
+        "native_type": "bool",
+        "operation": "SetComment",
+        "path": "updated"
+      },
+      {
+        "native_type": "bool",
+        "operation": "SetFunctionLocalType",
+        "path": "updated"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "SetFunctionLocalType",
+        "path": "local_id"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "SetFunctionLocalType",
+        "path": "data_type"
+      },
+      {
+        "native_type": "bool",
+        "operation": "SetFunctionParameterType",
+        "path": "updated"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "SetFunctionParameterType",
+        "path": "data_type"
+      },
+      {
+        "native_type": "bool",
+        "operation": "SetFunctionSignature",
+        "path": "updated"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "SetFunctionSignature",
+        "path": "function_name"
+      },
+      {
+        "native_type": "std::string",
+        "operation": "SetFunctionSignature",
+        "path": "prototype"
+      },
+      {
+        "native_type": "bool",
+        "operation": "SetTypeAliasTarget",
+        "path": "updated"
+      },
+      {
+        "native_type": "bool",
+        "operation": "SetTypeEnumMemberComment",
+        "path": "updated"
+      },
+      {
+        "native_type": "bool",
+        "operation": "SetTypeEnumMemberValue",
+        "path": "updated"
+      },
+      {
+        "native_type": "bool",
+        "operation": "SetTypeMemberComment",
+        "path": "updated"
+      },
+      {
+        "native_type": "bool",
+        "operation": "SetTypeMemberType",
+        "path": "updated"
+      },
+      {
+        "native_type": "bool",
+        "operation": "Shutdown",
+        "path": "accepted"
+      },
+      {
+        "native_type": "std::uint32_t",
+        "operation": "WriteBytes",
+        "path": "bytes_written"
+      }
+    ],
+    "scope": "Explicit accounting audit only; empty wrapper list would not establish full nested/default/domain review or runtime qualification",
+    "wrapper_transition_review_missing": [
+      "GetComments",
+      "ListBasicBlocks",
+      "ListCFGEdges",
+      "ListDataItems",
+      "ListDecompilations",
+      "ListFunctionSignatures",
+      "ListFunctions",
+      "ListInstructions",
+      "ListLeafFunctions",
+      "ListMemoryBlocks",
+      "ListSymbols",
+      "ListTypeAliases",
+      "ListTypeEnumMembers",
+      "ListTypeEnums",
+      "ListTypeMembers",
+      "ListTypeUnions",
+      "ListTypes",
+      "ListXrefs"
+    ]
+  },
   "sources": {
     "cpp/bindings/python_bindings.cpp": "f5b4b713b8183f9a88b27d2fca132a4c18ae4c5d43810ef8a20847c0ab461b1e",
     "cpp/include/libghidra/analysis.hpp": "c4b0a6b18f0fa127f7f2a11094659749d3611c03c7d206055d4f5177efb49b91",

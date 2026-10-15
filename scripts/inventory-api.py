@@ -12,6 +12,7 @@ from inventory_semantics import review_pages, review_aggregate_pages, review_ses
 
 from inventory_python import reconcile_python
 from inventory_surfaces import surfaces
+from inventory_lookups import review_lookups, semantic_audit
 
 PIN = 'd51ca813ae1b6b59519551a9be8c0b1ad74d862d'
 ROOT = Path(__file__).resolve().parents[1]
@@ -149,6 +150,7 @@ def inventory(u):
     review_member_reconstruction(u, ops)
     review_local_and_data_edits(u, ops)
     review_alias_symbol_comments(u, ops)
+    review_lookups(u, ops, types)
     surfaces(ops)
     python=[]
     # Independent public operations and model fields, including HTTP/async/headless exclusions.
@@ -169,7 +171,7 @@ def inventory(u):
     read('cpp/src/local_arch_adapter.hpp')
     read('cpp/bindings/python_bindings.cpp')
     python_audit = reconcile_python(u, ops, types)
-    return {'format':1,'pin':PIN,'qualification':'M0 inventory only; no adapters or runtime qualification','sources':files,'types':types,'enums':enums,'operations':ops,'python':python,'python_reconciliation':python_audit,'lifecycle':{'factory':'CreateLocalClient(LocalClientOptions) -> unique_ptr<IClient>; lowlevel local_client, facade open constructs once then opens; failure releases new owner','factory_fields':fields('LocalClientOptions'),'restrictions':'pool_size exactly 1; process-wide single live client; serialize engine dispatch/destruction','owner_close':'binding close/__close/GC releases native owner and process slot; aliases CLOSED; no autosave; __close nonraising','native_close':'CloseProgram/Shutdown logically close access, retain engines; aliases NO_PROGRAM; reopen same owner invalidates prior iterators; detached open metadata historical','factory_tier':'slice'},'error_envelope':{'native':'StatusOr<T>: Status.code/message plus optional<T> value; status.ok && value present','lua':'response or nil,error; preserve unknown code/message/upstream_code; backend local vs binding; exceptions caught; allocation errors remain Lua errors','facade':'lookup value,nil,response; absent optional nil,NOT_FOUND,response; flags/pages preserve envelope'},'unresolved':['Exact downstream identity/order/comparator and effective numeric constraints beyond documented exceptions require operation-by-operation review; no iterators qualified','Independent semantic reconciliation of Python conversion/extraction bodies remains open; AST signatures are not behavioral equivalence evidence']}
+    return {'format':1,'pin':PIN,'qualification':'M0 inventory only; no adapters or runtime qualification','sources':files,'types':types,'enums':enums,'operations':ops,'semantic_audit':semantic_audit(ops),'python':python,'python_reconciliation':python_audit,'lifecycle':{'factory':'CreateLocalClient(LocalClientOptions) -> unique_ptr<IClient>; lowlevel local_client, facade open constructs once then opens; failure releases new owner','factory_fields':fields('LocalClientOptions'),'restrictions':'pool_size exactly 1; process-wide single live client; serialize engine dispatch/destruction','owner_close':'binding close/__close/GC releases native owner and process slot; aliases CLOSED; no autosave; __close nonraising','native_close':'CloseProgram/Shutdown logically close access, retain engines; aliases NO_PROGRAM; reopen same owner invalidates prior iterators; detached open metadata historical','factory_tier':'slice'},'error_envelope':{'native':'StatusOr<T>: Status.code/message plus optional<T> value; status.ok && value present','lua':'response or nil,error; preserve unknown code/message/upstream_code; backend local vs binding; exceptions caught; allocation errors remain Lua errors','facade':'lookup value,nil,response; absent optional nil,NOT_FOUND,response; flags/pages preserve envelope'},'unresolved':['Exact downstream identity/order/comparator and effective numeric constraints beyond documented exceptions require operation-by-operation review; no iterators qualified','Independent semantic reconciliation of Python conversion/extraction bodies remains open; AST signatures are not behavioral equivalence evidence']}
 
 def main():
     ap=argparse.ArgumentParser(); ap.add_argument('--source',type=Path,default=DEFAULT); ap.add_argument('--check',action='store_true'); args=ap.parse_args()
