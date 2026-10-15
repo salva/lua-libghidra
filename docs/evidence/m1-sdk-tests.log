@@ -24,8 +24,8 @@ test 2
 2: Test command: /work/lua-libghidra/build/boundary_host
 2: Working Directory: /work/lua-libghidra/build
 2: Test timeout computed to be: 1500
-2: detached conversions + persistent OOM sweep: 110 allocation boundaries PASS
-2/4 Test #2: boundary_host ....................   Passed    0.05 sec
+2: detached conversions + persistent OOM sweep: 108 allocation boundaries PASS
+2/4 Test #2: boundary_host ....................   Passed    0.09 sec
 test 3
     Start 3: boundary_static_vm
 
@@ -33,7 +33,7 @@ test 3
 3: Working Directory: /work/lua-libghidra/build
 3: Test timeout computed to be: 1500
 3: boundary: exact UInt64, errors, page and no-buffer size validation PASS
-3/4 Test #3: boundary_static_vm ...............   Passed    0.02 sec
+3/4 Test #3: boundary_static_vm ...............   Passed    0.03 sec
 test 4
     Start 4: boundary_shared_vm
 
@@ -41,8 +41,8 @@ test 4
 4: Working Directory: /work/lua-libghidra/build
 4: Test timeout computed to be: 1500
 4: boundary: exact UInt64, errors, page and no-buffer size validation PASS
-4/4 Test #4: boundary_shared_vm ...............   Passed    0.01 sec
+4/4 Test #4: boundary_shared_vm ...............   Passed    0.03 sec
 
 100% tests passed, 0 tests failed out of 4
 
-Total Test time (real) =   0.12 sec
+Total Test time (real) =   0.18 sec

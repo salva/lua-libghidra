@@ -101,6 +101,34 @@ void value(lua_State* L, int64_t n) { lua_pushinteger(L, n); }
 void value(lua_State* L, uint32_t n) { lua_pushinteger(L, n); }
 void value(lua_State* L, int n) { lua_pushinteger(L, n); }
 void value(lua_State* L, bool b) { lua_pushboolean(L, b); }
+bool read_integer(lua_State* L, int i, lua_Integer min, lua_Integer max, lua_Integer* out) {
+    if (!lua_isinteger(L, i)) return false;
+    lua_Integer n = lua_tointeger(L, i);
+    if (n < min || n > max) return false;
+    *out = n; return true;
+}
+bool read_boolean(lua_State* L, int i, bool* out) {
+    if (lua_type(L, i) != LUA_TBOOLEAN) return false;
+    *out = lua_toboolean(L, i); return true;
+}
+bool read_text(lua_State* L, int i, const char** out, size_t* len) {
+    if (lua_type(L, i) != LUA_TSTRING) return false;
+    *out = lua_tolstring(L, i, len); return true;
+}
+bool known_keys(lua_State* L, int i, const char* const* allowed) {
+    if (!lua_istable(L, i)) return false;
+    i = lua_absindex(L, i); lua_pushnil(L);
+    while (lua_next(L, i)) {
+        size_t len; const char* k; bool found = false;
+        if (read_text(L, -2, &k, &len)) {
+            for (size_t j = 0; allowed[j]; ++j)
+                if (strlen(allowed[j]) == len && !memcmp(k, allowed[j], len)) { found = true; break; }
+        }
+        lua_pop(L, 1);
+        if (!found) { lua_pop(L, 1); return false; }
+    }
+    return true;
+}
 bool read_size(lua_State* L, int i, uint32_t* n) {
     if (!lua_isinteger(L, i)) return false;
     lua_Integer v = lua_tointeger(L, i);

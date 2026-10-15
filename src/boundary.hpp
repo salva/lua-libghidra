@@ -39,5 +39,11 @@ inline int protected_convert(lua_State* L, lua_CFunction thunk, void* owner) {
 }
 struct Page { uint64_t start = 0, end = UINT64_MAX; int limit = 100, offset = 0; };
 bool read_size(lua_State*, int, uint32_t*);
+bool read_integer(lua_State*, int, lua_Integer minimum, lua_Integer maximum, lua_Integer*);
+bool read_boolean(lua_State*, int, bool*);
+// Returns a borrowed string pointer only for a Lua string; never coerces numbers.
+bool read_text(lua_State*, int, const char**, size_t*);
+// allowed is a null-terminated key array; raw iteration never invokes metamethods.
+bool known_keys(lua_State*, int, const char* const* allowed);
 bool read_page(lua_State*, int, Page*, bool iterator = false);
 }

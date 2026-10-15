@@ -621,3 +621,788 @@ In file included from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/
   181 |     std::derived_from<std::remove_pointer_t<To>,
       |     ^
       |     requires 
+[145/437] Building CXX object _deps/protobuf-build/CMakeFiles/libprotobuf.dir/src/google/protobuf/arena_align.cc.o
+[146/437] Building CXX object _deps/protobuf-build/CMakeFiles/libprotobuf.dir/src/google/protobuf/wrappers.pb.cc.o
+In file included from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/arena.h:38,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/wrappers.pb.h:21,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/wrappers.pb.cc:6:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h: In function ‘void google::protobuf::internal::AssertDownCast(From*)’:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h:181:5: warning: testing if a concept-id is a valid expression; add ‘requires’ to check satisfaction [-Wmissing-requires]
+  181 |     std::derived_from<std::remove_pointer_t<To>,
+      |     ^
+      |     requires 
+[147/437] Building CXX object _deps/protobuf-build/CMakeFiles/libprotobuf.dir/src/google/protobuf/arenastring.cc.o
+In file included from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/arena.h:38,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/arenastring.h:19,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/arenastring.cc:8:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h: In function ‘void google::protobuf::internal::AssertDownCast(From*)’:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h:181:5: warning: testing if a concept-id is a valid expression; add ‘requires’ to check satisfaction [-Wmissing-requires]
+  181 |     std::derived_from<std::remove_pointer_t<To>,
+      |     ^
+      |     requires 
+[148/437] Building CXX object _deps/protobuf-build/CMakeFiles/libprotobuf.dir/src/google/protobuf/cpp_features.pb.cc.o
+In file included from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/arena.h:38,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/cpp_features.pb.h:21,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/cpp_features.pb.cc:6:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h: In function ‘void google::protobuf::internal::AssertDownCast(From*)’:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h:181:5: warning: testing if a concept-id is a valid expression; add ‘requires’ to check satisfaction [-Wmissing-requires]
+  181 |     std::derived_from<std::remove_pointer_t<To>,
+      |     ^
+      |     requires 
+[149/437] Building CXX object _deps/protobuf-build/CMakeFiles/libprotobuf.dir/src/google/protobuf/compiler/importer.cc.o
+In file included from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/extension_set.h:36,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/descriptor.h:56,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/compiler/parser.h:24,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/compiler/importer.h:22,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/compiler/importer.cc:12:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h: In function ‘void google::protobuf::internal::AssertDownCast(From*)’:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h:181:5: warning: testing if a concept-id is a valid expression; add ‘requires’ to check satisfaction [-Wmissing-requires]
+  181 |     std::derived_from<std::remove_pointer_t<To>,
+      |     ^
+      |     requires 
+[150/437] Building CXX object _deps/protobuf-build/CMakeFiles/libprotobuf.dir/src/google/protobuf/dynamic_message.cc.o
+In file included from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/extension_set.h:36,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/descriptor.h:56,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/dynamic_message.h:27,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/dynamic_message.cc:42:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h: In function ‘void google::protobuf::internal::AssertDownCast(From*)’:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h:181:5: warning: testing if a concept-id is a valid expression; add ‘requires’ to check satisfaction [-Wmissing-requires]
+  181 |     std::derived_from<std::remove_pointer_t<To>,
+      |     ^
+      |     requires 
+[151/437] Building CXX object _deps/protobuf-build/CMakeFiles/libprotobuf.dir/src/google/protobuf/compiler/parser.cc.o
+In file included from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/extension_set.h:36,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/descriptor.h:56,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/compiler/parser.h:24,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/compiler/parser.cc:14:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h: In function ‘void google::protobuf::internal::AssertDownCast(From*)’:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h:181:5: warning: testing if a concept-id is a valid expression; add ‘requires’ to check satisfaction [-Wmissing-requires]
+  181 |     std::derived_from<std::remove_pointer_t<To>,
+      |     ^
+      |     requires 
+[152/437] Building CXX object _deps/protobuf-build/CMakeFiles/libprotobuf.dir/src/google/protobuf/extension_set_heavy.cc.o
+In file included from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/arena.h:38,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/extension_set_heavy.cc:22:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h: In function ‘void google::protobuf::internal::AssertDownCast(From*)’:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h:181:5: warning: testing if a concept-id is a valid expression; add ‘requires’ to check satisfaction [-Wmissing-requires]
+  181 |     std::derived_from<std::remove_pointer_t<To>,
+      |     ^
+      |     requires 
+[153/437] Building CXX object _deps/protobuf-build/CMakeFiles/libprotobuf.dir/src/google/protobuf/descriptor.pb.cc.o
+In file included from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/arena.h:38,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/descriptor.pb.h:21,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/descriptor.pb.cc:6:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h: In function ‘void google::protobuf::internal::AssertDownCast(From*)’:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h:181:5: warning: testing if a concept-id is a valid expression; add ‘requires’ to check satisfaction [-Wmissing-requires]
+  181 |     std::derived_from<std::remove_pointer_t<To>,
+      |     ^
+      |     requires 
+[154/437] Building CXX object _deps/protobuf-build/CMakeFiles/libprotobuf.dir/src/google/protobuf/descriptor_database.cc.o
+In file included from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/extension_set.h:36,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/descriptor.h:56,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/descriptor_database.h:22,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/descriptor_database.cc:12:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h: In function ‘void google::protobuf::internal::AssertDownCast(From*)’:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h:181:5: warning: testing if a concept-id is a valid expression; add ‘requires’ to check satisfaction [-Wmissing-requires]
+  181 |     std::derived_from<std::remove_pointer_t<To>,
+      |     ^
+      |     requires 
+[155/437] Building CXX object _deps/protobuf-build/CMakeFiles/libprotobuf.dir/src/google/protobuf/generated_enum_util.cc.o
+In file included from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/arena.h:38,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/message_lite.h:34,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/generated_enum_util.h:20,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/generated_enum_util.cc:8:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h: In function ‘void google::protobuf::internal::AssertDownCast(From*)’:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h:181:5: warning: testing if a concept-id is a valid expression; add ‘requires’ to check satisfaction [-Wmissing-requires]
+  181 |     std::derived_from<std::remove_pointer_t<To>,
+      |     ^
+      |     requires 
+[156/437] Building CXX object upstream/cpp/CMakeFiles/libghidra_local.dir/generated/embedded_specs.cpp.o
+[157/437] Building CXX object _deps/protobuf-build/CMakeFiles/libprotobuf.dir/src/google/protobuf/extension_set.cc.o
+In file included from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/extension_set.h:36,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/extension_set.cc:12:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h: In function ‘void google::protobuf::internal::AssertDownCast(From*)’:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h:181:5: warning: testing if a concept-id is a valid expression; add ‘requires’ to check satisfaction [-Wmissing-requires]
+  181 |     std::derived_from<std::remove_pointer_t<To>,
+      |     ^
+      |     requires 
+[158/437] Building CXX object _deps/protobuf-build/CMakeFiles/libprotobuf.dir/src/google/protobuf/generated_message_bases.cc.o
+In file included from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/arena.h:38,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/generated_message_bases.h:15,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/generated_message_bases.cc:8:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h: In function ‘void google::protobuf::internal::AssertDownCast(From*)’:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h:181:5: warning: testing if a concept-id is a valid expression; add ‘requires’ to check satisfaction [-Wmissing-requires]
+  181 |     std::derived_from<std::remove_pointer_t<To>,
+      |     ^
+      |     requires 
+[159/437] Building CXX object _deps/protobuf-build/CMakeFiles/libprotobuf.dir/src/google/protobuf/feature_resolver.cc.o
+In file included from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/extension_set.h:36,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/descriptor.h:56,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/feature_resolver.h:21,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/feature_resolver.cc:8:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h: In function ‘void google::protobuf::internal::AssertDownCast(From*)’:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h:181:5: warning: testing if a concept-id is a valid expression; add ‘requires’ to check satisfaction [-Wmissing-requires]
+  181 |     std::derived_from<std::remove_pointer_t<To>,
+      |     ^
+      |     requires 
+[160/437] Building CXX object _deps/protobuf-build/CMakeFiles/libprotobuf.dir/src/google/protobuf/generated_message_tctable_full.cc.o
+In file included from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/extension_set.h:36,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/generated_message_tctable_full.cc:33:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h: In function ‘void google::protobuf::internal::AssertDownCast(From*)’:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h:181:5: warning: testing if a concept-id is a valid expression; add ‘requires’ to check satisfaction [-Wmissing-requires]
+  181 |     std::derived_from<std::remove_pointer_t<To>,
+      |     ^
+      |     requires 
+[161/437] Building CXX object _deps/protobuf-build/CMakeFiles/libprotobuf.dir/src/google/protobuf/implicit_weak_message.cc.o
+In file included from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/arena.h:38,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/implicit_weak_message.h:14,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/implicit_weak_message.cc:8:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h: In function ‘void google::protobuf::internal::AssertDownCast(From*)’:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h:181:5: warning: testing if a concept-id is a valid expression; add ‘requires’ to check satisfaction [-Wmissing-requires]
+  181 |     std::derived_from<std::remove_pointer_t<To>,
+      |     ^
+      |     requires 
+[162/437] Building CXX object _deps/protobuf-build/CMakeFiles/libprotobuf.dir/src/google/protobuf/io/gzip_stream.cc.o
+[163/437] Building CXX object _deps/protobuf-build/CMakeFiles/libprotobuf.dir/src/google/protobuf/io/io_win32.cc.o
+[164/437] Building CXX object _deps/protobuf-build/CMakeFiles/libprotobuf.dir/src/google/protobuf/generated_message_util.cc.o
+In file included from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/any.h:14,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/generated_message_util.h:36,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/generated_message_util.cc:12:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h: In function ‘void google::protobuf::internal::AssertDownCast(From*)’:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h:181:5: warning: testing if a concept-id is a valid expression; add ‘requires’ to check satisfaction [-Wmissing-requires]
+  181 |     std::derived_from<std::remove_pointer_t<To>,
+      |     ^
+      |     requires 
+[165/437] Building CXX object _deps/protobuf-build/CMakeFiles/libprotobuf.dir/src/google/protobuf/inlined_string_field.cc.o
+In file included from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/arena.h:38,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/arenastring.h:19,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/inlined_string_field.h:16,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/inlined_string_field.cc:8:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h: In function ‘void google::protobuf::internal::AssertDownCast(From*)’:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h:181:5: warning: testing if a concept-id is a valid expression; add ‘requires’ to check satisfaction [-Wmissing-requires]
+  181 |     std::derived_from<std::remove_pointer_t<To>,
+      |     ^
+      |     requires 
+[166/437] Building CXX object _deps/protobuf-build/CMakeFiles/libprotobuf.dir/src/google/protobuf/generated_message_tctable_gen.cc.o
+In file included from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/extension_set.h:36,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/descriptor.h:56,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/generated_message_tctable_gen.h:19,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/generated_message_tctable_gen.cc:8:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h: In function ‘void google::protobuf::internal::AssertDownCast(From*)’:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h:181:5: warning: testing if a concept-id is a valid expression; add ‘requires’ to check satisfaction [-Wmissing-requires]
+  181 |     std::derived_from<std::remove_pointer_t<To>,
+      |     ^
+      |     requires 
+[167/437] Building CXX object _deps/protobuf-build/CMakeFiles/libprotobuf.dir/src/google/protobuf/io/strtod.cc.o
+[168/437] Building CXX object _deps/protobuf-build/CMakeFiles/libprotobuf.dir/src/google/protobuf/io/coded_stream.cc.o
+In file included from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/arena.h:38,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/io/coded_stream.cc:37:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h: In function ‘void google::protobuf::internal::AssertDownCast(From*)’:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h:181:5: warning: testing if a concept-id is a valid expression; add ‘requires’ to check satisfaction [-Wmissing-requires]
+  181 |     std::derived_from<std::remove_pointer_t<To>,
+      |     ^
+      |     requires 
+[169/437] Building CXX object _deps/protobuf-build/CMakeFiles/libprotobuf.dir/src/google/protobuf/io/zero_copy_sink.cc.o
+In file included from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/io/zero_copy_stream.h:89,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/io/zero_copy_sink.h:13,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/io/zero_copy_sink.cc:8:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h: In function ‘void google::protobuf::internal::AssertDownCast(From*)’:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h:181:5: warning: testing if a concept-id is a valid expression; add ‘requires’ to check satisfaction [-Wmissing-requires]
+  181 |     std::derived_from<std::remove_pointer_t<To>,
+      |     ^
+      |     requires 
+[170/437] Building CXX object _deps/protobuf-build/CMakeFiles/libprotobuf.dir/src/google/protobuf/io/tokenizer.cc.o
+In file included from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/io/tokenizer.h:23,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/io/tokenizer.cc:68:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h: In function ‘void google::protobuf::internal::AssertDownCast(From*)’:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h:181:5: warning: testing if a concept-id is a valid expression; add ‘requires’ to check satisfaction [-Wmissing-requires]
+  181 |     std::derived_from<std::remove_pointer_t<To>,
+      |     ^
+      |     requires 
+[171/437] Building CXX object _deps/protobuf-build/CMakeFiles/libprotobuf.dir/src/google/protobuf/io/zero_copy_stream.cc.o
+In file included from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/io/zero_copy_stream.h:89,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/io/zero_copy_stream.cc:12:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h: In function ‘void google::protobuf::internal::AssertDownCast(From*)’:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h:181:5: warning: testing if a concept-id is a valid expression; add ‘requires’ to check satisfaction [-Wmissing-requires]
+  181 |     std::derived_from<std::remove_pointer_t<To>,
+      |     ^
+      |     requires 
+[172/437] Building CXX object _deps/protobuf-build/CMakeFiles/libprotobuf.dir/src/google/protobuf/io/zero_copy_stream_impl.cc.o
+In file included from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/io/zero_copy_stream.h:89,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/io/zero_copy_stream_impl.h:24,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/io/zero_copy_stream_impl.cc:28:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h: In function ‘void google::protobuf::internal::AssertDownCast(From*)’:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h:181:5: warning: testing if a concept-id is a valid expression; add ‘requires’ to check satisfaction [-Wmissing-requires]
+  181 |     std::derived_from<std::remove_pointer_t<To>,
+      |     ^
+      |     requires 
+[173/437] Building CXX object _deps/protobuf-build/CMakeFiles/libprotobuf.dir/src/google/protobuf/generated_message_reflection.cc.o
+In file included from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/extension_set.h:36,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/descriptor.h:56,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/generated_message_reflection.h:25,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/generated_message_reflection.cc:12:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h: In function ‘void google::protobuf::internal::AssertDownCast(From*)’:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h:181:5: warning: testing if a concept-id is a valid expression; add ‘requires’ to check satisfaction [-Wmissing-requires]
+  181 |     std::derived_from<std::remove_pointer_t<To>,
+      |     ^
+      |     requires 
+[174/437] Building CXX object _deps/protobuf-build/CMakeFiles/libprotobuf.dir/src/google/protobuf/io/zero_copy_stream_impl_lite.cc.o
+In file included from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/io/zero_copy_stream.h:89,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/io/zero_copy_stream_impl_lite.h:35,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/io/zero_copy_stream_impl_lite.cc:12:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h: In function ‘void google::protobuf::internal::AssertDownCast(From*)’:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h:181:5: warning: testing if a concept-id is a valid expression; add ‘requires’ to check satisfaction [-Wmissing-requires]
+  181 |     std::derived_from<std::remove_pointer_t<To>,
+      |     ^
+      |     requires 
+[175/437] Building CXX object _deps/protobuf-build/CMakeFiles/libprotobuf.dir/src/google/protobuf/io/printer.cc.o
+In file included from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/io/zero_copy_stream.h:89,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/io/zero_copy_sink.h:13,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/io/printer.h:36,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/io/printer.cc:12:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h: In function ‘void google::protobuf::internal::AssertDownCast(From*)’:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h:181:5: warning: testing if a concept-id is a valid expression; add ‘requires’ to check satisfaction [-Wmissing-requires]
+  181 |     std::derived_from<std::remove_pointer_t<To>,
+      |     ^
+      |     requires 
+[176/437] Building CXX object _deps/protobuf-build/CMakeFiles/libprotobuf.dir/src/google/protobuf/generated_message_tctable_lite.cc.o
+In file included from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/arena.h:38,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/arenastring.h:19,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/generated_message_tctable_lite.cc:24:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h: In function ‘void google::protobuf::internal::AssertDownCast(From*)’:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h:181:5: warning: testing if a concept-id is a valid expression; add ‘requires’ to check satisfaction [-Wmissing-requires]
+  181 |     std::derived_from<std::remove_pointer_t<To>,
+      |     ^
+      |     requires 
+[177/437] Building CXX object _deps/protobuf-build/CMakeFiles/libprotobuf.dir/src/google/protobuf/json/internal/message_path.cc.o
+In file included from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/extension_set.h:36,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/descriptor.h:56,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/json/internal/message_path.h:16,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/json/internal/message_path.cc:8:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h: In function ‘void google::protobuf::internal::AssertDownCast(From*)’:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h:181:5: warning: testing if a concept-id is a valid expression; add ‘requires’ to check satisfaction [-Wmissing-requires]
+  181 |     std::derived_from<std::remove_pointer_t<To>,
+      |     ^
+      |     requires 
+[178/437] Building CXX object _deps/protobuf-build/CMakeFiles/libprotobuf.dir/src/google/protobuf/json/internal/writer.cc.o
+In file included from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/io/zero_copy_stream.h:89,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/io/zero_copy_sink.h:13,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/json/internal/writer.h:25,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/json/internal/writer.cc:8:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h: In function ‘void google::protobuf::internal::AssertDownCast(From*)’:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h:181:5: warning: testing if a concept-id is a valid expression; add ‘requires’ to check satisfaction [-Wmissing-requires]
+  181 |     std::derived_from<std::remove_pointer_t<To>,
+      |     ^
+      |     requires 
+[179/437] Building CXX object _deps/protobuf-build/CMakeFiles/libprotobuf.dir/src/google/protobuf/json/internal/zero_copy_buffered_stream.cc.o
+In file included from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/io/zero_copy_stream.h:89,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/json/internal/zero_copy_buffered_stream.h:24,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/json/internal/zero_copy_buffered_stream.cc:8:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h: In function ‘void google::protobuf::internal::AssertDownCast(From*)’:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h:181:5: warning: testing if a concept-id is a valid expression; add ‘requires’ to check satisfaction [-Wmissing-requires]
+  181 |     std::derived_from<std::remove_pointer_t<To>,
+      |     ^
+      |     requires 
+[180/437] Building CXX object _deps/protobuf-build/CMakeFiles/libprotobuf.dir/src/google/protobuf/json/internal/lexer.cc.o
+In file included from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/extension_set.h:36,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/descriptor.h:56,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/json/internal/lexer.h:27,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/json/internal/lexer.cc:8:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h: In function ‘void google::protobuf::internal::AssertDownCast(From*)’:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h:181:5: warning: testing if a concept-id is a valid expression; add ‘requires’ to check satisfaction [-Wmissing-requires]
+  181 |     std::derived_from<std::remove_pointer_t<To>,
+      |     ^
+      |     requires 
+[181/437] Building CXX object _deps/protobuf-build/CMakeFiles/libprotobuf.dir/src/google/protobuf/descriptor.cc.o
+In file included from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/extension_set.h:36,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/descriptor.h:56,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/descriptor.cc:12:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h: In function ‘void google::protobuf::internal::AssertDownCast(From*)’:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h:181:5: warning: testing if a concept-id is a valid expression; add ‘requires’ to check satisfaction [-Wmissing-requires]
+  181 |     std::derived_from<std::remove_pointer_t<To>,
+      |     ^
+      |     requires 
+[182/437] Building CXX object _deps/protobuf-build/CMakeFiles/libprotobuf.dir/src/google/protobuf/json/json.cc.o
+In file included from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/arena.h:38,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/message.h:105,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/json/json.h:17,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/json/json.cc:8:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h: In function ‘void google::protobuf::internal::AssertDownCast(From*)’:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h:181:5: warning: testing if a concept-id is a valid expression; add ‘requires’ to check satisfaction [-Wmissing-requires]
+  181 |     std::derived_from<std::remove_pointer_t<To>,
+      |     ^
+      |     requires 
+[183/437] Building CXX object _deps/protobuf-build/CMakeFiles/libprotobuf.dir/src/google/protobuf/map.cc.o
+In file included from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/arena.h:38,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/map.h:39,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/map.cc:8:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h: In function ‘void google::protobuf::internal::AssertDownCast(From*)’:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h:181:5: warning: testing if a concept-id is a valid expression; add ‘requires’ to check satisfaction [-Wmissing-requires]
+  181 |     std::derived_from<std::remove_pointer_t<To>,
+      |     ^
+      |     requires 
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/map.cc: In lambda function:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/map.cc:119:23: warning: implicit capture of ‘this’ via ‘[=]’ is deprecated in C++20 [-Wdeprecated]
+  119 |     const auto loop = [=](auto destroy_node) {
+      |                       ^
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/map.cc:119:23: note: add explicit ‘this’ or ‘*this’ capture
+[184/437] Building CXX object _deps/protobuf-build/CMakeFiles/libprotobuf.dir/src/google/protobuf/port.cc.o
+In file included from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.cc:8:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h: In function ‘void google::protobuf::internal::AssertDownCast(From*)’:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h:181:5: warning: testing if a concept-id is a valid expression; add ‘requires’ to check satisfaction [-Wmissing-requires]
+  181 |     std::derived_from<std::remove_pointer_t<To>,
+      |     ^
+      |     requires 
+[185/437] Building CXX object _deps/protobuf-build/CMakeFiles/libprotobuf.dir/src/google/protobuf/json/internal/untyped_message.cc.o
+In file included from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/arena.h:38,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/type.pb.h:21,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/json/internal/untyped_message.h:19,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/json/internal/untyped_message.cc:8:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h: In function ‘void google::protobuf::internal::AssertDownCast(From*)’:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h:181:5: warning: testing if a concept-id is a valid expression; add ‘requires’ to check satisfaction [-Wmissing-requires]
+  181 |     std::derived_from<std::remove_pointer_t<To>,
+      |     ^
+      |     requires 
+[186/437] Building CXX object _deps/protobuf-build/CMakeFiles/libprotobuf.dir/src/google/protobuf/reflection_mode.cc.o
+[187/437] Building CXX object _deps/protobuf-build/CMakeFiles/libprotobuf.dir/src/google/protobuf/message_lite.cc.o
+In file included from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/arena.h:38,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/message_lite.h:34,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/message_lite.cc:13:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h: In function ‘void google::protobuf::internal::AssertDownCast(From*)’:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h:181:5: warning: testing if a concept-id is a valid expression; add ‘requires’ to check satisfaction [-Wmissing-requires]
+  181 |     std::derived_from<std::remove_pointer_t<To>,
+      |     ^
+      |     requires 
+[188/437] Building CXX object _deps/protobuf-build/CMakeFiles/libprotobuf.dir/src/google/protobuf/raw_ptr.cc.o
+[189/437] Building CXX object _deps/protobuf-build/CMakeFiles/libprotobuf.dir/src/google/protobuf/json/internal/unparser.cc.o
+In file included from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/io/zero_copy_stream.h:89,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/io/zero_copy_sink.h:13,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/json/internal/writer.h:25,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/json/internal/unparser.h:14,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/json/internal/unparser.cc:8:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h: In function ‘void google::protobuf::internal::AssertDownCast(From*)’:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h:181:5: warning: testing if a concept-id is a valid expression; add ‘requires’ to check satisfaction [-Wmissing-requires]
+  181 |     std::derived_from<std::remove_pointer_t<To>,
+      |     ^
+      |     requires 
+[190/437] Building CXX object _deps/protobuf-build/CMakeFiles/libprotobuf.dir/src/google/protobuf/map_field.cc.o
+In file included from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/arena.h:38,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/map_field.h:23,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/map_field.cc:8:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h: In function ‘void google::protobuf::internal::AssertDownCast(From*)’:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h:181:5: warning: testing if a concept-id is a valid expression; add ‘requires’ to check satisfaction [-Wmissing-requires]
+  181 |     std::derived_from<std::remove_pointer_t<To>,
+      |     ^
+      |     requires 
+[191/437] Building CXX object _deps/protobuf-build/CMakeFiles/libprotobuf.dir/src/google/protobuf/parse_context.cc.o
+In file included from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/arena.h:38,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/parse_context.h:24,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/parse_context.cc:8:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h: In function ‘void google::protobuf::internal::AssertDownCast(From*)’:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h:181:5: warning: testing if a concept-id is a valid expression; add ‘requires’ to check satisfaction [-Wmissing-requires]
+  181 |     std::derived_from<std::remove_pointer_t<To>,
+      |     ^
+      |     requires 
+[192/437] Building CXX object _deps/protobuf-build/CMakeFiles/libprotobuf.dir/src/google/protobuf/json/internal/parser.cc.o
+In file included from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/extension_set.h:36,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/descriptor.h:56,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/json/internal/lexer.h:27,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/json/internal/parser.h:13,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/json/internal/parser.cc:8:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h: In function ‘void google::protobuf::internal::AssertDownCast(From*)’:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h:181:5: warning: testing if a concept-id is a valid expression; add ‘requires’ to check satisfaction [-Wmissing-requires]
+  181 |     std::derived_from<std::remove_pointer_t<To>,
+      |     ^
+      |     requires 
+[193/437] Building CXX object _deps/protobuf-build/CMakeFiles/libprotobuf.dir/src/google/protobuf/service.cc.o
+In file included from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/service.h:84,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/service.cc:12:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h: In function ‘void google::protobuf::internal::AssertDownCast(From*)’:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h:181:5: warning: testing if a concept-id is a valid expression; add ‘requires’ to check satisfaction [-Wmissing-requires]
+  181 |     std::derived_from<std::remove_pointer_t<To>,
+      |     ^
+      |     requires 
+[194/437] Building CXX object _deps/protobuf-build/CMakeFiles/libprotobuf.dir/src/google/protobuf/repeated_field.cc.o
+In file included from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/arena.h:38,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/repeated_field.h:40,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/repeated_field.cc:12:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h: In function ‘void google::protobuf::internal::AssertDownCast(From*)’:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h:181:5: warning: testing if a concept-id is a valid expression; add ‘requires’ to check satisfaction [-Wmissing-requires]
+  181 |     std::derived_from<std::remove_pointer_t<To>,
+      |     ^
+      |     requires 
+[195/437] Building CXX object _deps/protobuf-build/CMakeFiles/libprotobuf.dir/src/google/protobuf/message.cc.o
+In file included from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/arena.h:38,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/message.h:105,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/message.cc:12:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h: In function ‘void google::protobuf::internal::AssertDownCast(From*)’:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h:181:5: warning: testing if a concept-id is a valid expression; add ‘requires’ to check satisfaction [-Wmissing-requires]
+  181 |     std::derived_from<std::remove_pointer_t<To>,
+      |     ^
+      |     requires 
+[196/437] Building CXX object _deps/protobuf-build/CMakeFiles/libprotobuf.dir/src/google/protobuf/repeated_ptr_field.cc.o
+In file included from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/arena.h:38,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/repeated_ptr_field.h:38,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/repeated_ptr_field.cc:12:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h: In function ‘void google::protobuf::internal::AssertDownCast(From*)’:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h:181:5: warning: testing if a concept-id is a valid expression; add ‘requires’ to check satisfaction [-Wmissing-requires]
+  181 |     std::derived_from<std::remove_pointer_t<To>,
+      |     ^
+      |     requires 
+[197/437] Building CXX object _deps/protobuf-build/CMakeFiles/libprotobuf.dir/src/google/protobuf/stubs/common.cc.o
+[198/437] Building CXX object _deps/protobuf-build/CMakeFiles/libprotobuf.dir/src/google/protobuf/util/delimited_message_util.cc.o
+In file included from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/io/zero_copy_stream.h:89,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/io/zero_copy_stream_impl.h:24,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/util/delimited_message_util.h:17,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/util/delimited_message_util.cc:11:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h: In function ‘void google::protobuf::internal::AssertDownCast(From*)’:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h:181:5: warning: testing if a concept-id is a valid expression; add ‘requires’ to check satisfaction [-Wmissing-requires]
+  181 |     std::derived_from<std::remove_pointer_t<To>,
+      |     ^
+      |     requires 
+[199/437] Building CXX object _deps/protobuf-build/CMakeFiles/libprotobuf.dir/src/google/protobuf/reflection_ops.cc.o
+In file included from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/arena.h:38,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/message.h:105,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/reflection_ops.h:18,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/reflection_ops.cc:11:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h: In function ‘void google::protobuf::internal::AssertDownCast(From*)’:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h:181:5: warning: testing if a concept-id is a valid expression; add ‘requires’ to check satisfaction [-Wmissing-requires]
+  181 |     std::derived_from<std::remove_pointer_t<To>,
+      |     ^
+      |     requires 
+[200/437] Building CXX object _deps/protobuf-build/CMakeFiles/libprotobuf.dir/src/google/protobuf/unknown_field_set.cc.o
+In file included from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/arena.h:38,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/unknown_field_set.h:27,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/unknown_field_set.cc:12:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h: In function ‘void google::protobuf::internal::AssertDownCast(From*)’:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h:181:5: warning: testing if a concept-id is a valid expression; add ‘requires’ to check satisfaction [-Wmissing-requires]
+  181 |     std::derived_from<std::remove_pointer_t<To>,
+      |     ^
+      |     requires 
+[201/437] Building CXX object _deps/protobuf-build/CMakeFiles/libprotobuf.dir/src/google/protobuf/util/field_comparator.cc.o
+In file included from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/util/field_comparator.h:19,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/util/field_comparator.cc:10:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h: In function ‘void google::protobuf::internal::AssertDownCast(From*)’:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h:181:5: warning: testing if a concept-id is a valid expression; add ‘requires’ to check satisfaction [-Wmissing-requires]
+  181 |     std::derived_from<std::remove_pointer_t<To>,
+      |     ^
+      |     requires 
+[202/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/base/CMakeFiles/absl_log_severity.dir/log_severity.cc.o
+[203/437] Linking CXX static library _deps/protobuf-build/third_party/abseil-cpp/absl/base/libabsl_log_severity.a
+[204/437] Building CXX object _deps/protobuf-build/CMakeFiles/libprotobuf.dir/src/google/protobuf/util/time_util.cc.o
+In file included from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/arena.h:38,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/duration.pb.h:21,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/util/time_util.h:30,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/util/time_util.cc:8:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h: In function ‘void google::protobuf::internal::AssertDownCast(From*)’:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h:181:5: warning: testing if a concept-id is a valid expression; add ‘requires’ to check satisfaction [-Wmissing-requires]
+  181 |     std::derived_from<std::remove_pointer_t<To>,
+      |     ^
+      |     requires 
+[205/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/base/CMakeFiles/absl_spinlock_wait.dir/internal/spinlock_wait.cc.o
+[206/437] Linking CXX static library _deps/protobuf-build/third_party/abseil-cpp/absl/base/libabsl_spinlock_wait.a
+[207/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/base/CMakeFiles/absl_raw_logging_internal.dir/internal/raw_logging.cc.o
+[208/437] Linking CXX static library _deps/protobuf-build/third_party/abseil-cpp/absl/base/libabsl_raw_logging_internal.a
+[209/437] Building CXX object _deps/protobuf-build/CMakeFiles/libprotobuf.dir/src/google/protobuf/util/field_mask_util.cc.o
+In file included from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/arena.h:38,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/field_mask.pb.h:21,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/util/field_mask_util.h:17,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/util/field_mask_util.cc:8:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h: In function ‘void google::protobuf::internal::AssertDownCast(From*)’:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h:181:5: warning: testing if a concept-id is a valid expression; add ‘requires’ to check satisfaction [-Wmissing-requires]
+  181 |     std::derived_from<std::remove_pointer_t<To>,
+      |     ^
+      |     requires 
+[210/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/base/CMakeFiles/absl_malloc_internal.dir/internal/low_level_alloc.cc.o
+[211/437] Building CXX object _deps/protobuf-build/CMakeFiles/libprotobuf.dir/src/google/protobuf/wire_format_lite.cc.o
+In file included from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/arena.h:38,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/arenastring.h:19,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/wire_format_lite.h:30,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/wire_format_lite.cc:12:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h: In function ‘void google::protobuf::internal::AssertDownCast(From*)’:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h:181:5: warning: testing if a concept-id is a valid expression; add ‘requires’ to check satisfaction [-Wmissing-requires]
+  181 |     std::derived_from<std::remove_pointer_t<To>,
+      |     ^
+      |     requires 
+[212/437] Building CXX object _deps/protobuf-build/CMakeFiles/libprotobuf.dir/src/google/protobuf/util/type_resolver_util.cc.o
+In file included from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/arena.h:38,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/type.pb.h:21,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/util/type_resolver_util.h:13,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/util/type_resolver_util.cc:8:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h: In function ‘void google::protobuf::internal::AssertDownCast(From*)’:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h:181:5: warning: testing if a concept-id is a valid expression; add ‘requires’ to check satisfaction [-Wmissing-requires]
+  181 |     std::derived_from<std::remove_pointer_t<To>,
+      |     ^
+      |     requires 
+[213/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/base/CMakeFiles/absl_base.dir/internal/unscaledcycleclock.cc.o
+[214/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/base/CMakeFiles/absl_base.dir/internal/cycleclock.cc.o
+[215/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/base/CMakeFiles/absl_base.dir/internal/spinlock.cc.o
+[216/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/base/CMakeFiles/absl_strerror.dir/internal/strerror.cc.o
+[217/437] Linking CXX static library _deps/protobuf-build/third_party/abseil-cpp/absl/base/libabsl_strerror.a
+[218/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/base/CMakeFiles/absl_base.dir/internal/thread_identity.cc.o
+[219/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/base/CMakeFiles/absl_throw_delegate.dir/internal/throw_delegate.cc.o
+[220/437] Linking CXX static library _deps/protobuf-build/third_party/abseil-cpp/absl/base/libabsl_throw_delegate.a
+[221/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/base/CMakeFiles/absl_base.dir/internal/sysinfo.cc.o
+[222/437] Linking CXX static library _deps/protobuf-build/third_party/abseil-cpp/absl/base/libabsl_base.a
+[223/437] Linking CXX static library _deps/protobuf-build/third_party/abseil-cpp/absl/base/libabsl_malloc_internal.a
+[224/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/crc/CMakeFiles/absl_crc_cpu_detect.dir/internal/cpu_detect.cc.o
+[225/437] Linking CXX static library _deps/protobuf-build/third_party/abseil-cpp/absl/crc/libabsl_crc_cpu_detect.a
+[226/437] Building CXX object _deps/protobuf-build/CMakeFiles/libprotobuf.dir/src/google/protobuf/text_format.cc.o
+In file included from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/extension_set.h:36,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/descriptor.h:56,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/text_format.h:27,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/text_format.cc:12:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h: In function ‘void google::protobuf::internal::AssertDownCast(From*)’:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h:181:5: warning: testing if a concept-id is a valid expression; add ‘requires’ to check satisfaction [-Wmissing-requires]
+  181 |     std::derived_from<std::remove_pointer_t<To>,
+      |     ^
+      |     requires 
+[227/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/crc/CMakeFiles/absl_crc_internal.dir/internal/crc.cc.o
+[228/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/crc/CMakeFiles/absl_crc_internal.dir/internal/crc_x86_arm_combined.cc.o
+[229/437] Linking CXX static library _deps/protobuf-build/third_party/abseil-cpp/absl/crc/libabsl_crc_internal.a
+[230/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/container/CMakeFiles/absl_hashtablez_sampler.dir/internal/hashtablez_sampler_force_weak_definition.cc.o
+[231/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/container/CMakeFiles/absl_hashtablez_sampler.dir/internal/hashtablez_sampler.cc.o
+[232/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/crc/CMakeFiles/absl_crc32c.dir/internal/crc_memcpy_fallback.cc.o
+[233/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/crc/CMakeFiles/absl_crc32c.dir/crc32c.cc.o
+[234/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/container/CMakeFiles/absl_raw_hash_set.dir/internal/raw_hash_set.cc.o
+[235/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/crc/CMakeFiles/absl_crc32c.dir/internal/crc_memcpy_x86_arm_combined.cc.o
+[236/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/debugging/CMakeFiles/absl_stacktrace.dir/stacktrace.cc.o
+[237/437] Building CXX object _deps/protobuf-build/CMakeFiles/libprotobuf.dir/src/google/protobuf/wire_format.cc.o
+In file included from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/extension_set.h:36,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/descriptor.h:56,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/wire_format.h:26,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/wire_format.cc:12:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h: In function ‘void google::protobuf::internal::AssertDownCast(From*)’:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h:181:5: warning: testing if a concept-id is a valid expression; add ‘requires’ to check satisfaction [-Wmissing-requires]
+  181 |     std::derived_from<std::remove_pointer_t<To>,
+      |     ^
+      |     requires 
+[238/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/crc/CMakeFiles/absl_crc32c.dir/internal/crc_non_temporal_memcpy.cc.o
+[239/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/debugging/CMakeFiles/absl_debugging_internal.dir/internal/address_is_readable.cc.o
+[240/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/crc/CMakeFiles/absl_crc_cord_state.dir/internal/crc_cord_state.cc.o
+[241/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/debugging/CMakeFiles/absl_debugging_internal.dir/internal/elf_mem_image.cc.o
+[242/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/debugging/CMakeFiles/absl_utf8_for_code_point.dir/internal/utf8_for_code_point.cc.o
+[243/437] Linking CXX static library _deps/protobuf-build/third_party/abseil-cpp/absl/debugging/libabsl_utf8_for_code_point.a
+[244/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/debugging/CMakeFiles/absl_leak_check.dir/leak_check.cc.o
+[245/437] Linking CXX static library _deps/protobuf-build/third_party/abseil-cpp/absl/debugging/libabsl_leak_check.a
+[246/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/debugging/CMakeFiles/absl_examine_stack.dir/internal/examine_stack.cc.o
+[247/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/debugging/CMakeFiles/absl_debugging_internal.dir/internal/vdso_support.cc.o
+[248/437] Linking CXX static library _deps/protobuf-build/third_party/abseil-cpp/absl/debugging/libabsl_debugging_internal.a
+[249/437] Linking CXX static library _deps/protobuf-build/third_party/abseil-cpp/absl/debugging/libabsl_stacktrace.a
+[250/437] Building CXX object _deps/protobuf-build/CMakeFiles/libprotobuf.dir/src/google/protobuf/util/message_differencer.cc.o
+In file included from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/extension_set.h:36,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/descriptor.h:56,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/util/message_differencer.h:33,
+                 from /work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/util/message_differencer.cc:12:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h: In function ‘void google::protobuf::internal::AssertDownCast(From*)’:
+/work/lua-libghidra/.cache/native-inputs-patched/protobuf/src/google/protobuf/port.h:181:5: warning: testing if a concept-id is a valid expression; add ‘requires’ to check satisfaction [-Wmissing-requires]
+  181 |     std::derived_from<std::remove_pointer_t<To>,
+      |     ^
+      |     requires 
+[251/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/flags/CMakeFiles/absl_flags_commandlineflag_internal.dir/internal/commandlineflag.cc.o
+[252/437] Linking CXX static library _deps/protobuf-build/third_party/abseil-cpp/absl/flags/libabsl_flags_commandlineflag_internal.a
+[253/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/debugging/CMakeFiles/absl_symbolize.dir/symbolize.cc.o
+[254/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/debugging/CMakeFiles/absl_decode_rust_punycode.dir/internal/decode_rust_punycode.cc.o
+[255/437] Linking CXX static library _deps/protobuf-build/third_party/abseil-cpp/absl/debugging/libabsl_decode_rust_punycode.a
+[256/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/debugging/CMakeFiles/absl_demangle_rust.dir/internal/demangle_rust.cc.o
+[257/437] Linking CXX static library _deps/protobuf-build/third_party/abseil-cpp/absl/debugging/libabsl_demangle_rust.a
+[258/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/flags/CMakeFiles/absl_flags_commandlineflag.dir/commandlineflag.cc.o
+[259/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/flags/CMakeFiles/absl_flags_private_handle_accessor.dir/internal/private_handle_accessor.cc.o
+[260/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/debugging/CMakeFiles/absl_demangle_internal.dir/internal/demangle.cc.o
+[261/437] Linking CXX static library _deps/protobuf-build/third_party/abseil-cpp/absl/debugging/libabsl_demangle_internal.a
+[262/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/flags/CMakeFiles/absl_flags_program_name.dir/internal/program_name.cc.o
+[263/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/flags/CMakeFiles/absl_flags_config.dir/usage_config.cc.o
+[264/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/hash/CMakeFiles/absl_city.dir/internal/city.cc.o
+[265/437] Linking CXX static library _deps/protobuf-build/third_party/abseil-cpp/absl/hash/libabsl_city.a
+[266/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/log/CMakeFiles/absl_log_internal_conditions.dir/internal/conditions.cc.o
+[267/437] Linking CXX static library _deps/protobuf-build/third_party/abseil-cpp/absl/log/libabsl_log_internal_conditions.a
+[268/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/flags/CMakeFiles/absl_flags_marshalling.dir/marshalling.cc.o
+[269/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/hash/CMakeFiles/absl_low_level_hash.dir/internal/low_level_hash.cc.o
+[270/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/hash/CMakeFiles/absl_hash.dir/internal/hash.cc.o
+[271/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/log/CMakeFiles/absl_log_internal_proto.dir/internal/proto.cc.o
+[272/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/log/CMakeFiles/absl_log_internal_nullguard.dir/internal/nullguard.cc.o
+[273/437] Linking CXX static library _deps/protobuf-build/third_party/abseil-cpp/absl/log/libabsl_log_internal_nullguard.a
+[274/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/flags/CMakeFiles/absl_flags_internal.dir/internal/flag.cc.o
+[275/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/log/CMakeFiles/absl_log_internal_check_op.dir/internal/check_op.cc.o
+[276/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/log/CMakeFiles/absl_log_internal_format.dir/internal/log_format.cc.o
+[277/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/log/CMakeFiles/absl_log_internal_globals.dir/internal/globals.cc.o
+[278/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/flags/CMakeFiles/absl_flags_reflection.dir/reflection.cc.o
+[279/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/log/CMakeFiles/absl_log_internal_message.dir/internal/log_message.cc.o
+[280/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/log/CMakeFiles/absl_log_internal_log_sink_set.dir/internal/log_sink_set.cc.o
+[281/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/log/CMakeFiles/absl_log_globals.dir/globals.cc.o
+[282/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/log/CMakeFiles/absl_die_if_null.dir/die_if_null.cc.o
+[283/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/log/CMakeFiles/absl_log_initialize.dir/initialize.cc.o
+[284/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/profiling/CMakeFiles/absl_exponential_biased.dir/internal/exponential_biased.cc.o
+[285/437] Linking CXX static library _deps/protobuf-build/third_party/abseil-cpp/absl/profiling/libabsl_exponential_biased.a
+[286/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/log/CMakeFiles/absl_log_internal_fnmatch.dir/internal/fnmatch.cc.o
+[287/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/log/CMakeFiles/absl_log_sink.dir/log_sink.cc.o
+[288/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/log/CMakeFiles/absl_log_entry.dir/log_entry.cc.o
+[289/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/random/CMakeFiles/absl_random_seed_gen_exception.dir/seed_gen_exception.cc.o
+[290/437] Linking CXX static library _deps/protobuf-build/third_party/abseil-cpp/absl/random/libabsl_random_seed_gen_exception.a
+[291/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/random/CMakeFiles/absl_random_internal_platform.dir/internal/randen_round_keys.cc.o
+[292/437] Linking CXX static library _deps/protobuf-build/third_party/abseil-cpp/absl/random/libabsl_random_internal_platform.a
+[293/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/numeric/CMakeFiles/absl_int128.dir/int128.cc.o
+[294/437] Linking CXX static library _deps/protobuf-build/third_party/abseil-cpp/absl/numeric/libabsl_int128.a
+[295/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/random/CMakeFiles/absl_random_distributions.dir/discrete_distribution.cc.o
+[296/437] Linking CXX static library _deps/protobuf-build/third_party/abseil-cpp/absl/hash/libabsl_low_level_hash.a
+[297/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/random/CMakeFiles/absl_random_internal_randen_hwaes.dir/internal/randen_detect.cc.o
+[298/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/random/CMakeFiles/absl_random_distributions.dir/gaussian_distribution.cc.o
+[299/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/random/CMakeFiles/absl_random_internal_randen.dir/internal/randen.cc.o
+[300/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/random/CMakeFiles/absl_random_internal_seed_material.dir/internal/seed_material.cc.o
+[301/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/random/CMakeFiles/absl_random_seed_sequences.dir/seed_sequences.cc.o
+[302/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/random/CMakeFiles/absl_random_internal_pool_urbg.dir/internal/pool_urbg.cc.o
+[303/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/log/CMakeFiles/absl_vlog_config_internal.dir/internal/vlog_config.cc.o
+[304/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/random/CMakeFiles/absl_random_internal_randen_slow.dir/internal/randen_slow.cc.o
+[305/437] Linking CXX static library _deps/protobuf-build/third_party/abseil-cpp/absl/random/libabsl_random_internal_randen_slow.a
+[306/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/random/CMakeFiles/absl_random_internal_randen_hwaes_impl.dir/internal/randen_hwaes.cc.o
+[307/437] Linking CXX static library _deps/protobuf-build/third_party/abseil-cpp/absl/random/libabsl_random_internal_randen_hwaes_impl.a
+[308/437] Linking CXX static library _deps/protobuf-build/third_party/abseil-cpp/absl/random/libabsl_random_internal_randen_hwaes.a
+[309/437] Linking CXX static library _deps/protobuf-build/third_party/abseil-cpp/absl/random/libabsl_random_internal_randen.a
+[310/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/strings/CMakeFiles/absl_string_view.dir/string_view.cc.o
+[311/437] Linking CXX static library _deps/protobuf-build/third_party/abseil-cpp/absl/strings/libabsl_string_view.a
+[312/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/strings/CMakeFiles/absl_strings.dir/ascii.cc.o
+[313/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/strings/CMakeFiles/absl_strings.dir/charconv.cc.o
+[314/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/status/CMakeFiles/absl_status.dir/status_payload_printer.cc.o
+[315/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/status/CMakeFiles/absl_status.dir/internal/status_internal.cc.o
+[316/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/status/CMakeFiles/absl_status.dir/status.cc.o
+[317/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/status/CMakeFiles/absl_statusor.dir/statusor.cc.o
+[318/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/strings/CMakeFiles/absl_strings.dir/internal/charconv_parse.cc.o
+[319/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/strings/CMakeFiles/absl_strings.dir/internal/memutil.cc.o
+[320/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/strings/CMakeFiles/absl_strings.dir/internal/stringify_sink.cc.o
+[321/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/strings/CMakeFiles/absl_strings.dir/internal/damerau_levenshtein_distance.cc.o
+[322/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/strings/CMakeFiles/absl_strings.dir/escaping.cc.o
+[323/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/strings/CMakeFiles/absl_strings.dir/match.cc.o
+[324/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/strings/CMakeFiles/absl_strings_internal.dir/internal/utf8.cc.o
+[325/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/strings/CMakeFiles/absl_strings.dir/internal/charconv_bigint.cc.o
+[326/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/strings/CMakeFiles/absl_strings.dir/str_cat.cc.o
+[327/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/strings/CMakeFiles/absl_strings_internal.dir/internal/ostringstream.cc.o
+[328/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/strings/CMakeFiles/absl_strings.dir/numbers.cc.o
+[329/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/strings/CMakeFiles/absl_strings.dir/str_split.cc.o
+[330/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/strings/CMakeFiles/absl_strings_internal.dir/internal/escaping.cc.o
+[331/437] Linking CXX static library _deps/protobuf-build/third_party/abseil-cpp/absl/strings/libabsl_strings_internal.a
+[332/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/strings/CMakeFiles/absl_strings.dir/str_replace.cc.o
+[333/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/strings/CMakeFiles/absl_strings.dir/substitute.cc.o
+[334/437] Linking CXX static library _deps/protobuf-build/third_party/abseil-cpp/absl/strings/libabsl_strings.a
+[335/437] Linking CXX static library _deps/protobuf-build/third_party/abseil-cpp/absl/debugging/libabsl_symbolize.a
+[336/437] Linking CXX static library _deps/protobuf-build/third_party/abseil-cpp/absl/debugging/libabsl_examine_stack.a
+[337/437] Linking CXX static library _deps/protobuf-build/third_party/abseil-cpp/absl/log/libabsl_log_internal_proto.a
+[338/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/strings/CMakeFiles/absl_str_format_internal.dir/internal/str_format/extension.cc.o
+[339/437] Linking CXX static library _deps/protobuf-build/third_party/abseil-cpp/absl/log/libabsl_log_internal_fnmatch.a
+[340/437] Linking CXX static library _deps/protobuf-build/third_party/abseil-cpp/absl/random/libabsl_random_distributions.a
+[341/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/strings/CMakeFiles/absl_str_format_internal.dir/internal/str_format/output.cc.o
+[342/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/strings/CMakeFiles/absl_str_format_internal.dir/internal/str_format/bind.cc.o
+[343/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/strings/CMakeFiles/absl_str_format_internal.dir/internal/str_format/arg.cc.o
+[344/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/strings/CMakeFiles/absl_cord_internal.dir/internal/cord_internal.cc.o
+[345/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/strings/CMakeFiles/absl_cord_internal.dir/internal/cord_rep_btree_navigator.cc.o
+[346/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/strings/CMakeFiles/absl_str_format_internal.dir/internal/str_format/parser.cc.o
+[347/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/strings/CMakeFiles/absl_cord_internal.dir/internal/cord_rep_btree_reader.cc.o
+[348/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/strings/CMakeFiles/absl_cord_internal.dir/internal/cord_rep_consume.cc.o
+[349/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/strings/CMakeFiles/absl_str_format_internal.dir/internal/str_format/float_conversion.cc.o
+[350/437] Linking CXX static library _deps/protobuf-build/third_party/abseil-cpp/absl/strings/libabsl_str_format_internal.a
+[351/437] Linking CXX static library _deps/protobuf-build/third_party/abseil-cpp/absl/crc/libabsl_crc32c.a
+[352/437] Linking CXX static library _deps/protobuf-build/third_party/abseil-cpp/absl/crc/libabsl_crc_cord_state.a
+[353/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/strings/CMakeFiles/absl_cordz_functions.dir/internal/cordz_functions.cc.o
+[354/437] Linking CXX static library _deps/protobuf-build/third_party/abseil-cpp/absl/strings/libabsl_cordz_functions.a
+[355/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/strings/CMakeFiles/absl_cord_internal.dir/internal/cord_rep_crc.cc.o
+[356/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/strings/CMakeFiles/absl_cord.dir/cord_buffer.cc.o
+[357/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/strings/CMakeFiles/absl_cordz_handle.dir/internal/cordz_handle.cc.o
+[358/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/strings/CMakeFiles/absl_cord.dir/cord_analysis.cc.o
+[359/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/synchronization/CMakeFiles/absl_graphcycles_internal.dir/internal/graphcycles.cc.o
+[360/437] Linking CXX static library _deps/protobuf-build/third_party/abseil-cpp/absl/synchronization/libabsl_graphcycles_internal.a
+[361/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/strings/CMakeFiles/absl_cordz_info.dir/internal/cordz_info.cc.o
+[362/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/strings/CMakeFiles/absl_cord_internal.dir/internal/cord_rep_btree.cc.o
+[363/437] Linking CXX static library _deps/protobuf-build/third_party/abseil-cpp/absl/strings/libabsl_cord_internal.a
+[364/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/synchronization/CMakeFiles/absl_kernel_timeout_internal.dir/internal/kernel_timeout.cc.o
+[365/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/synchronization/CMakeFiles/absl_synchronization.dir/barrier.cc.o
+[366/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/synchronization/CMakeFiles/absl_synchronization.dir/blocking_counter.cc.o
+[367/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/synchronization/CMakeFiles/absl_synchronization.dir/internal/create_thread_identity.cc.o
+[368/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/synchronization/CMakeFiles/absl_synchronization.dir/internal/win32_waiter.cc.o
+[369/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/synchronization/CMakeFiles/absl_synchronization.dir/internal/futex_waiter.cc.o
+[370/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/synchronization/CMakeFiles/absl_synchronization.dir/internal/pthread_waiter.cc.o
+[371/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/synchronization/CMakeFiles/absl_synchronization.dir/internal/per_thread_sem.cc.o
+[372/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/synchronization/CMakeFiles/absl_synchronization.dir/internal/sem_waiter.cc.o
+[373/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/synchronization/CMakeFiles/absl_synchronization.dir/internal/stdcpp_waiter.cc.o
+[374/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/synchronization/CMakeFiles/absl_synchronization.dir/internal/waiter_base.cc.o
+[375/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/synchronization/CMakeFiles/absl_synchronization.dir/notification.cc.o
+[376/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/time/CMakeFiles/absl_time.dir/civil_time.cc.o
+[377/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/synchronization/CMakeFiles/absl_synchronization.dir/mutex.cc.o
+[378/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/time/CMakeFiles/absl_time.dir/clock.cc.o
+[379/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/strings/CMakeFiles/absl_cord.dir/cord.cc.o
+[380/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/time/CMakeFiles/absl_civil_time.dir/internal/cctz/src/civil_time_detail.cc.o
+[381/437] Linking CXX static library _deps/protobuf-build/third_party/abseil-cpp/absl/time/libabsl_civil_time.a
+[382/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/time/CMakeFiles/absl_time.dir/format.cc.o
+[383/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/time/CMakeFiles/absl_time.dir/duration.cc.o
+[384/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/time/CMakeFiles/absl_time_zone.dir/internal/cctz/src/time_zone_if.cc.o
+[385/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/time/CMakeFiles/absl_time_zone.dir/internal/cctz/src/time_zone_fixed.cc.o
+[386/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/time/CMakeFiles/absl_time.dir/time.cc.o
+[387/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/time/CMakeFiles/absl_time_zone.dir/internal/cctz/src/time_zone_posix.cc.o
+[388/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/types/CMakeFiles/absl_bad_optional_access.dir/bad_optional_access.cc.o
+[389/437] Linking CXX static library _deps/protobuf-build/third_party/abseil-cpp/absl/types/libabsl_bad_optional_access.a
+[390/437] Linking CXX static library _deps/protobuf-build/third_party/abseil-cpp/absl/flags/libabsl_flags_marshalling.a
+[391/437] Linking CXX static library _deps/protobuf-build/third_party/abseil-cpp/absl/flags/libabsl_flags_commandlineflag.a
+[392/437] Linking CXX static library _deps/protobuf-build/third_party/abseil-cpp/absl/flags/libabsl_flags_private_handle_accessor.a
+[393/437] Linking CXX static library _deps/protobuf-build/third_party/abseil-cpp/absl/random/libabsl_random_internal_seed_material.a
+[394/437] Linking CXX static library _deps/protobuf-build/third_party/abseil-cpp/absl/random/libabsl_random_internal_pool_urbg.a
+[395/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/time/CMakeFiles/absl_time_zone.dir/internal/cctz/src/time_zone_impl.cc.o
+[396/437] Linking CXX static library _deps/protobuf-build/third_party/abseil-cpp/absl/random/libabsl_random_seed_sequences.a
+[397/437] Building C object _deps/protobuf-build/third_party/utf8_range/CMakeFiles/utf8_validity.dir/utf8_range.c.o
+[398/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/time/CMakeFiles/absl_time_zone.dir/internal/cctz/src/zone_info_source.cc.o
+[399/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/types/CMakeFiles/absl_bad_variant_access.dir/bad_variant_access.cc.o
+[400/437] Linking CXX static library _deps/protobuf-build/third_party/abseil-cpp/absl/types/libabsl_bad_variant_access.a
+[401/437] Linking CXX static library _deps/protobuf-build/third_party/abseil-cpp/absl/hash/libabsl_hash.a
+[402/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/time/CMakeFiles/absl_time_zone.dir/internal/cctz/src/time_zone_lookup.cc.o
+[403/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/time/CMakeFiles/absl_time_zone.dir/internal/cctz/src/time_zone_libc.cc.o
+[404/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/time/CMakeFiles/absl_time_zone.dir/internal/cctz/src/time_zone_format.cc.o
+[405/437] Building CXX object _deps/protobuf-build/third_party/utf8_range/CMakeFiles/utf8_validity.dir/utf8_validity.cc.o
+[406/437] Linking CXX static library _deps/protobuf-build/third_party/utf8_range/libutf8_validity.a
+[407/437] Building CXX object _deps/protobuf-build/third_party/abseil-cpp/absl/time/CMakeFiles/absl_time_zone.dir/internal/cctz/src/time_zone_info.cc.o
+[408/437] Linking CXX static library _deps/protobuf-build/third_party/abseil-cpp/absl/time/libabsl_time_zone.a
+[409/437] Linking CXX static library _deps/protobuf-build/third_party/abseil-cpp/absl/time/libabsl_time.a
+[410/437] Linking CXX static library _deps/protobuf-build/third_party/abseil-cpp/absl/log/libabsl_log_internal_globals.a
+[411/437] Linking CXX static library _deps/protobuf-build/third_party/abseil-cpp/absl/log/libabsl_log_entry.a
+[412/437] Linking CXX static library _deps/protobuf-build/third_party/abseil-cpp/absl/synchronization/libabsl_kernel_timeout_internal.a
+[413/437] Linking CXX static library _deps/protobuf-build/third_party/abseil-cpp/absl/log/libabsl_log_sink.a
+[414/437] Linking CXX static library _deps/protobuf-build/third_party/abseil-cpp/absl/log/libabsl_log_internal_format.a
+[415/437] Linking CXX static library _deps/protobuf-build/third_party/abseil-cpp/absl/synchronization/libabsl_synchronization.a
+[416/437] Linking CXX static library _deps/protobuf-build/third_party/abseil-cpp/absl/flags/libabsl_flags_program_name.a
+[417/437] Linking CXX static library _deps/protobuf-build/third_party/abseil-cpp/absl/container/libabsl_hashtablez_sampler.a
+[418/437] Linking CXX static library _deps/protobuf-build/third_party/abseil-cpp/absl/log/libabsl_vlog_config_internal.a
+[419/437] Linking CXX static library _deps/protobuf-build/third_party/abseil-cpp/absl/strings/libabsl_cordz_handle.a
+[420/437] Linking CXX static library _deps/protobuf-build/third_party/abseil-cpp/absl/container/libabsl_raw_hash_set.a
+[421/437] Linking CXX static library _deps/protobuf-build/third_party/abseil-cpp/absl/log/libabsl_log_globals.a
+[422/437] Linking CXX static library _deps/protobuf-build/third_party/abseil-cpp/absl/strings/libabsl_cordz_info.a
+[423/437] Linking CXX static library _deps/protobuf-build/third_party/abseil-cpp/absl/flags/libabsl_flags_config.a
+[424/437] Linking CXX static library _deps/protobuf-build/third_party/abseil-cpp/absl/log/libabsl_log_initialize.a
+[425/437] Linking CXX static library _deps/protobuf-build/third_party/abseil-cpp/absl/log/libabsl_log_internal_log_sink_set.a
+[426/437] Linking CXX static library _deps/protobuf-build/third_party/abseil-cpp/absl/flags/libabsl_flags_internal.a
+[427/437] Linking CXX static library _deps/protobuf-build/third_party/abseil-cpp/absl/strings/libabsl_cord.a
+[428/437] Linking CXX static library _deps/protobuf-build/third_party/abseil-cpp/absl/log/libabsl_log_internal_message.a
+[429/437] Linking CXX static library _deps/protobuf-build/third_party/abseil-cpp/absl/flags/libabsl_flags_reflection.a
+[430/437] Linking CXX static library _deps/protobuf-build/third_party/abseil-cpp/absl/status/libabsl_status.a
+[431/437] Linking CXX static library _deps/protobuf-build/third_party/abseil-cpp/absl/log/libabsl_die_if_null.a
+[432/437] Linking CXX static library _deps/protobuf-build/third_party/abseil-cpp/absl/log/libabsl_log_internal_check_op.a
+[433/437] Linking CXX static library _deps/protobuf-build/third_party/abseil-cpp/absl/status/libabsl_statusor.a
+[434/437] Linking CXX static library _deps/protobuf-build/libprotobuf.a
+[435/437] Linking CXX static library upstream/cpp/liblibghidra_client.a
+[436/437] Linking CXX static library upstream/cpp/liblibghidra_local.a
+[437/437] Linking CXX shared module libghidra/_native.so
+[0/1] Re-running CMake...
+-- Found Python3: /usr/bin/python3 (found suitable version "3.12.3", minimum required is "3.10") found components: Interpreter 
+-- 
+-- 29.3.0
+-- libghidra: BFD-backed ELF loader enabled (lib=/usr/lib/x86_64-linux-gnu/libbfd.so)
+-- Found Python3: /usr/bin/python3 (found version "3.12.3") found components: Interpreter 
+-- Embedded specs up-to-date (385 files), skipping generation.
+
+-- Configuring done (0.5s)
+-- Generating done (0.1s)
+-- Build files have been written to: /work/lua-libghidra/.saivage/work/cards/card-b-a/source-profile/build
+[1/9] Building C object CMakeFiles/boundary_static_host.dir/tests/embedded.c.o
+[2/9] Linking C executable boundary_static_host
+[3/9] Building C object CMakeFiles/boundary_shared_host.dir/tests/embedded.c.o
+[4/9] Linking C executable boundary_shared_host
+[5/9] Building CXX object CMakeFiles/boundary_host.dir/tests/boundary_host.cpp.o
+[6/9] Building CXX object CMakeFiles/lua_ghidra.dir/src/boundary.cpp.o
+[7/9] Building CXX object CMakeFiles/boundary_host.dir/src/boundary.cpp.o
+[8/9] Linking CXX executable boundary_host
+[9/9] Linking CXX shared module libghidra/_native.so

@@ -1,0 +1,18 @@
+-- Configuring done (0.1s)
+-- Generating done (0.1s)
+-- Build files have been written to: /work/lua-libghidra/build
+ninja: no work to do.
+Internal ctest changing into directory: /work/lua-libghidra/build
+Test project /work/lua-libghidra/build
+    Start 1: boundary_lua
+1/4 Test #1: boundary_lua .....................   Passed    0.02 sec
+    Start 2: boundary_host
+2/4 Test #2: boundary_host ....................   Passed    0.03 sec
+    Start 3: boundary_static_vm
+3/4 Test #3: boundary_static_vm ...............   Passed    0.01 sec
+    Start 4: boundary_shared_vm
+4/4 Test #4: boundary_shared_vm ...............   Passed    0.02 sec
+
+100% tests passed, 0 tests failed out of 4
+
+Total Test time (real) =   0.08 sec

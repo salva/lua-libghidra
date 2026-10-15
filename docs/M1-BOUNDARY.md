@@ -79,3 +79,16 @@ reentrant-finalizer tests, ownership OOM sweeps and full sanitizer qualification
 Repeat all-frame audit for every new path. Full M1, M2 engine reads/examples,
 LuaRocks installation, release tooling migration/generator exception approval,
 packaging/notices/distribution and all-architecture support remain unqualified.
+
+Fault sweeps also retry the entire initialization/conversion script in the same
+state after restoring allocations, demonstrating recovery from partial module
+publication, not just successful cleanup at state close. Persistent denial is
+stronger than one-shot failure for Lua's retry path but does not replace tests
+of arbitrary finalizer reentrancy or native-owner publication in the next slice.
+
+The native observer directly calls `read_size` around Lua allocator counters at
+INT32_MAX acceptance and UINT32_MAX rejection. Both make zero Lua allocation
+calls; the primitive has no native allocation or SDK reference. Lua regression
+also covers 0/INT32_MAX/INT32_MAX+1/UINT32_MAX. Once operations exist, their caller
+must demonstrate this same check precedes dispatch/request-buffer allocation;
+these foundation tests do not assert an unimplemented read operation is safe.

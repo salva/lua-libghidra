@@ -23,3 +23,13 @@
 [2/3] Building CXX object CMakeFiles/boundary_host.dir/src/boundary.cpp.o
 [3/3] Linking CXX executable boundary_host
 detached conversions + persistent OOM sweep: 110 allocation boundaries PASS
+[1/2] Building CXX object CMakeFiles/boundary_host.dir/tests/boundary_host.cpp.o
+[2/2] Linking CXX executable boundary_host
+detached conversions + persistent OOM sweep: 110 allocation boundaries PASS
+[1/2] Building CXX object CMakeFiles/boundary_host.dir/tests/boundary_host.cpp.o
+[2/2] Linking CXX executable boundary_host
+detached conversions + persistent OOM sweep: 110 allocation boundaries PASS
+[1/3] Building CXX object CMakeFiles/boundary_host.dir/src/boundary.cpp.o
+[2/3] Building CXX object CMakeFiles/boundary_host.dir/tests/boundary_host.cpp.o
+[3/3] Linking CXX executable boundary_host
+detached conversions + persistent OOM sweep: 108 allocation boundaries PASS
