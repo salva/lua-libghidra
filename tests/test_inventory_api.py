@@ -40,7 +40,8 @@ class InventoryTests(unittest.TestCase):
     def test_nested_request_consumption_has_explicit_review_and_gaps(self):
         audit=self.data['request_audit']
         self.assertEqual(audit['nested_field_review_count'],20)
-        self.assertTrue(audit['direct_argument_review_missing'])
+        self.assertEqual(audit['direct_argument_review_missing'],[])
+        self.assertTrue(self.data['unresolved'])  # Request closure is not runtime or final grammar qualification.
         fields={f['name']:f for f in self.ops['OpenProgram']['request'][0]['nested_fields']}
         self.assertIn('never read',fields['project_name']['semantics'])
         self.assertIn('project route ignores',fields['base_address']['semantics'])
@@ -51,7 +52,7 @@ class InventoryTests(unittest.TestCase):
                     self.assertIn('must not be inferred',f['request_field_review']['native_absence'])
 
     def test_page_argument_domains_are_not_native_unbounded_defaults(self):
-        self.assertEqual(len(self.data['request_audit']['direct_arguments_reviewed']),138)
+        self.assertEqual(len(self.data['request_audit']['direct_arguments_reviewed']),156)
         for op in self.ops.values():
             if 'page_wrapper_review' not in op:continue
             args={a['name']:a for a in op['request']}
@@ -167,6 +168,18 @@ class InventoryTests(unittest.TestCase):
         self.assertIn('no implicit eol default',sem('DeleteComment','kind'))
         self.assertIn('NOT deletion/absence',sem('SetComment','text'))
         self.assertIn('successful deleted=false',sem('DeletePerfBenchmark','bench_id'))
+
+    def test_all_literal_address_consumers_close_request_ledger(self):
+        self.assertEqual(self.data['request_audit']['direct_argument_review_missing'],[])
+        reviewed=self.data['request_audit']['direct_arguments_reviewed']
+        self.assertEqual(len({(r['operation'],r['path']) for r in reviewed}),156)
+        for name in ['GetFunction','GetInstruction','GetSymbol','GetDecompilation','RenameFunctionLocal','SetComment']:
+            arg=next(a for a in self.ops[name]['request'] if a['name']=='address')
+            self.assertIn('ZERO IS LITERAL',arg['semantics'])
+            self.assertIn('unqualified',arg['semantics'])
+            self.assertIn('dispatch_tokens',arg['direct_argument_review'])
+        sem=next(a['semantics'] for a in self.ops['GetFunction']['request'] if a['name']=='address')
+        self.assertIn('actual entry',sem)
 
     def test_preserved_red_reproducer(self):
         # Exact acceptance trigger from red; stronger checks below prevent treating
@@ -458,6 +471,10 @@ class InventoryTests(unittest.TestCase):
                 module.inventory(root)
             local.write_text(local_original)
             local.write_text(local_original.replace('r.bench_id == bench_id', 'r.bench_id != bench_id'))
+            with self.assertRaises(AssertionError):
+                module.inventory(root)
+            local.write_text(local_original)
+            local.write_text(local_original.replace('a.deleteDataItem(address)', 'a.deleteDataItem(address + 1)'))
             with self.assertRaises(AssertionError):
                 module.inventory(root)
             local.write_text(local_original)

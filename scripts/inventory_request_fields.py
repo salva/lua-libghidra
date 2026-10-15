@@ -49,6 +49,46 @@ def review_request_fields(u, operations):
         code=_code_mask(text)
         for arg in op['request']:
             nested=arg['nested_fields']
+            address_consumers={
+                'ApplyDataType':(['getSymbol(address)','d.nameGlobal(address, name, data_type)'],'symbol lookup then global naming at supplied address; existing name or DAT_ fallback, no existing data-item requirement'),
+                'DeleteComment':(['a.deleteComment(address, static_cast<int>(kind))'],'literal address/kind side-map key; absent key NOT_FOUND, no address mapping/existence check'),
+                'DeleteDataItem':(['a.deleteDataItem(address)'],'default-code-space findAddr then remove non-function symbol; absent/ineligible/caught failure NOT_FOUND'),
+                'DeleteSymbol':(['a.deleteSymbol(address)'],'default-code-space findAddr then remove symbol; ignored name_filter is NOT guard; absent/caught failure NOT_FOUND'),
+                'GetDecompilation':(['decompileWithLocals(address)'],'single same-pass decompilation/local extraction; response echoes request function_entry_address in success AND failure, not canonical entry normalization; failure present completed=false with dl.error'),
+                'GetFunction':(['getFunction(address)'],'default-code-space queryFunction then FunctionSymbol findAddr fallback; Funcdata branch returns actual entry, fallback echoes request; no wrapper containing-function/canonical-entry guarantee'),
+                'GetFunctionSignature':(['decompileAt(address)','getFunctionSignature(address)'],'decompile first (return ignored), queryFunction signature extraction then optional absence; record echoes requested entry address not independently canonicalized'),
+                'GetInstruction':(['getInstruction(address)'],'decode exactly at supplied default-code-space address; nonpositive length/caught error absent success, no scan to next instruction or region discovery'),
+                'GetSymbol':(['getSymbol(address)'],'default-code-space findAddr lookup, response address echoes request; no wrapper uniqueness/exact-start/containing-symbol resolution guarantee'),
+                'RenameDataItem':(['a.renameDataItem(address, new_name)'],'default-code-space findAddr then non-function rename; missing/function/caught failure RENAME_FAILED'),
+                'RenameFunction':(['d.nameFunction(address, new_name)'],'address passed directly to nameFunction; downstream creation/entry resolution unqualified, false RENAME_FAILED'),
+                'RenameFunctionLocal':(['applyLocalRenameAllSlots(address, local_id, new_name)'],'function address scoped local resolver on all slots; missing local NOT_FOUND, decompile failure DECOMPILE_FAILED, no local_id reinterpretation'),
+                'RenameFunctionParameter':(['decompileAt(address)','getFunctionSignature(address)','d.setPrototype(address, proto)'],'same address for decompile, signature extraction and rebuilt prototype dispatch; absent signature NOT_FOUND before ordinal OUT_OF_RANGE'),
+                'RenameSymbol':(['getSymbol(address)','d.nameFunction(address, new_name)'],'symbol lookup absent NOT_FOUND, function-only branch nameFunction, non-function NOT_SUPPORTED; no rename of arbitrary data symbols'),
+                'SetComment':(['a.setComment(address, static_cast<int>(kind), text)'],'literal address/kind side-map key, no mapping/existence check; even empty/same text replaces and increments revision'),
+                'SetFunctionLocalType':(['applyLocalRetypeAllSlots(address, local_id, new_type)'],'function address scoped local retype on all slots; INVALID_TYPE/NOT_FOUND/DECOMPILE_FAILED distinct, runtime entry/local resolution unqualified'),
+                'SetFunctionParameterType':(['decompileAt(address)','getFunctionSignature(address)','d.setPrototype(address, proto)'],'same address for decompile, signature extraction and rebuilt prototype dispatch; absent signature NOT_FOUND before ordinal OUT_OF_RANGE'),
+                'SetFunctionSignature':(['d.setPrototype(address, prototype)'],'direct prototype dispatch at supplied address, no wrapper entry normalization; false SET_PROTOTYPE_FAILED'),
+            }
+            if not nested and arg['name']=='address' and name in address_consumers:
+                tokens,sem=address_consumers[name]
+                assert arg['native_type']=='std::uint64_t'
+                assert all(token in code for token in tokens)
+                assert 'ensure_loaded()' in code and code.index('ensure_loaded()')<code.index(tokens[0])
+                if name in {'GetFunctionSignature','RenameFunctionParameter','SetFunctionParameterType'}:
+                    assert code.index(tokens[0])<code.index(tokens[1])
+                adapter_calls={'GetFunction':'getFunction','GetInstruction':'getInstruction','GetSymbol':'getSymbol','GetFunctionSignature':'getFunctionSignature','DeleteSymbol':'deleteSymbol','DeleteDataItem':'deleteDataItem','RenameDataItem':'renameDataItem'}
+                if name in adapter_calls:
+                    _,producer=body(adapter,'ArchAdapter::'+adapter_calls[name]+'(')
+                    assert 'arch_->getDefaultCodeSpace()' in producer
+                    assert 'Address addr(space, static_cast<uintb>(address))' in producer
+                mutation=not name.startswith('Get')
+                if mutation: assert 'revision_++;' in code
+                arg['semantics']='required exact Lua UInt64 0..UINT64_MAX, no floating conversion or implicit default; ZERO IS LITERAL, NOT zero-end range sentinel; loaded guard first; '+sem+'; mapping, address-space width/truncation, alignment, overflow and actual entry resolution beyond recorded branches remain unqualified'
+                arg['semantics']+=('; dispatched mutation invalidates binding generation including failure/partial effects, validation-only rejection does not; native revision only after success except unconditional side-map SetComment acknowledgement' if mutation else '; read dispatch does not increment native revision; native analysis side effects are not proof of binding mutation/generation invalidation')
+                arg['semantics']+='; positive/negative boundary/runtime fixture slots unqualified'
+                arg['direct_argument_review']={'consumer':LOCAL,'dispatch_tokens':tokens,'qualification':'source only; runtime unqualified'}
+                reviewed.append({'operation':name,'path':arg['name']})
+                continue
             if not nested and name in {'CloseProgram','Shutdown'} and arg['name']=='policy':
                 assert arg['native_type']=='ShutdownPolicy' and 'closeProgramLocked(policy)' in code
                 _,helper=body(source,'StatusOr<CloseProgramResponse> closeProgramLocked(ShutdownPolicy policy)')

@@ -982,11 +982,20 @@
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "dispatch_tokens": [
+              "getSymbol(address)",
+              "d.nameGlobal(address, name, data_type)"
+            ],
+            "qualification": "source only; runtime unqualified"
+          },
           "ignored": false,
           "lua": "exact UInt64",
           "name": "address",
           "native_type": "std::uint64_t",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "required exact Lua UInt64 0..UINT64_MAX, no floating conversion or implicit default; ZERO IS LITERAL, NOT zero-end range sentinel; loaded guard first; symbol lookup then global naming at supplied address; existing name or DAT_ fallback, no existing data-item requirement; mapping, address-space width/truncation, alignment, overflow and actual entry resolution beyond recorded branches remain unqualified; dispatched mutation invalidates binding generation including failure/partial effects, validation-only rejection does not; native revision only after success except unconditional side-map SetComment acknowledgement; positive/negative boundary/runtime fixture slots unqualified"
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
@@ -2438,11 +2447,19 @@
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "dispatch_tokens": [
+              "a.deleteComment(address, static_cast<int>(kind))"
+            ],
+            "qualification": "source only; runtime unqualified"
+          },
           "ignored": false,
           "lua": "exact UInt64",
           "name": "address",
           "native_type": "std::uint64_t",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "required exact Lua UInt64 0..UINT64_MAX, no floating conversion or implicit default; ZERO IS LITERAL, NOT zero-end range sentinel; loaded guard first; literal address/kind side-map key; absent key NOT_FOUND, no address mapping/existence check; mapping, address-space width/truncation, alignment, overflow and actual entry resolution beyond recorded branches remain unqualified; dispatched mutation invalidates binding generation including failure/partial effects, validation-only rejection does not; native revision only after success except unconditional side-map SetComment acknowledgement; positive/negative boundary/runtime fixture slots unqualified"
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
@@ -2563,11 +2580,19 @@
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "dispatch_tokens": [
+              "a.deleteDataItem(address)"
+            ],
+            "qualification": "source only; runtime unqualified"
+          },
           "ignored": false,
           "lua": "exact UInt64",
           "name": "address",
           "native_type": "std::uint64_t",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "required exact Lua UInt64 0..UINT64_MAX, no floating conversion or implicit default; ZERO IS LITERAL, NOT zero-end range sentinel; loaded guard first; default-code-space findAddr then remove non-function symbol; absent/ineligible/caught failure NOT_FOUND; mapping, address-space width/truncation, alignment, overflow and actual entry resolution beyond recorded branches remain unqualified; dispatched mutation invalidates binding generation including failure/partial effects, validation-only rejection does not; native revision only after success except unconditional side-map SetComment acknowledgement; positive/negative boundary/runtime fixture slots unqualified"
         }
       ],
       "response": {
@@ -2860,11 +2885,19 @@
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "dispatch_tokens": [
+              "a.deleteSymbol(address)"
+            ],
+            "qualification": "source only; runtime unqualified"
+          },
           "ignored": false,
           "lua": "exact UInt64",
           "name": "address",
           "native_type": "std::uint64_t",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "required exact Lua UInt64 0..UINT64_MAX, no floating conversion or implicit default; ZERO IS LITERAL, NOT zero-end range sentinel; loaded guard first; default-code-space findAddr then remove symbol; ignored name_filter is NOT guard; absent/caught failure NOT_FOUND; mapping, address-space width/truncation, alignment, overflow and actual entry resolution beyond recorded branches remain unqualified; dispatched mutation invalidates binding generation including failure/partial effects, validation-only rejection does not; native revision only after success except unconditional side-map SetComment acknowledgement; positive/negative boundary/runtime fixture slots unqualified"
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
@@ -4151,11 +4184,19 @@
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "dispatch_tokens": [
+              "decompileWithLocals(address)"
+            ],
+            "qualification": "source only; runtime unqualified"
+          },
           "ignored": false,
           "lua": "exact UInt64",
           "name": "address",
           "native_type": "std::uint64_t",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "required exact Lua UInt64 0..UINT64_MAX, no floating conversion or implicit default; ZERO IS LITERAL, NOT zero-end range sentinel; loaded guard first; single same-pass decompilation/local extraction; response echoes request function_entry_address in success AND failure, not canonical entry normalization; failure present completed=false with dl.error; mapping, address-space width/truncation, alignment, overflow and actual entry resolution beyond recorded branches remain unqualified; read dispatch does not increment native revision; native analysis side effects are not proof of binding mutation/generation invalidation; positive/negative boundary/runtime fixture slots unqualified"
         },
         {
           "binding_default": "30000 (ignored)",
@@ -4640,11 +4681,19 @@
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "dispatch_tokens": [
+              "getFunction(address)"
+            ],
+            "qualification": "source only; runtime unqualified"
+          },
           "ignored": false,
           "lua": "exact UInt64",
           "name": "address",
           "native_type": "std::uint64_t",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "required exact Lua UInt64 0..UINT64_MAX, no floating conversion or implicit default; ZERO IS LITERAL, NOT zero-end range sentinel; loaded guard first; default-code-space queryFunction then FunctionSymbol findAddr fallback; Funcdata branch returns actual entry, fallback echoes request; no wrapper containing-function/canonical-entry guarantee; mapping, address-space width/truncation, alignment, overflow and actual entry resolution beyond recorded branches remain unqualified; read dispatch does not increment native revision; native analysis side effects are not proof of binding mutation/generation invalidation; positive/negative boundary/runtime fixture slots unqualified"
         }
       ],
       "response": {
@@ -4941,11 +4990,20 @@
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "dispatch_tokens": [
+              "decompileAt(address)",
+              "getFunctionSignature(address)"
+            ],
+            "qualification": "source only; runtime unqualified"
+          },
           "ignored": false,
           "lua": "exact UInt64",
           "name": "address",
           "native_type": "std::uint64_t",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "required exact Lua UInt64 0..UINT64_MAX, no floating conversion or implicit default; ZERO IS LITERAL, NOT zero-end range sentinel; loaded guard first; decompile first (return ignored), queryFunction signature extraction then optional absence; record echoes requested entry address not independently canonicalized; mapping, address-space width/truncation, alignment, overflow and actual entry resolution beyond recorded branches remain unqualified; read dispatch does not increment native revision; native analysis side effects are not proof of binding mutation/generation invalidation; positive/negative boundary/runtime fixture slots unqualified"
         }
       ],
       "response": {
@@ -5291,11 +5349,19 @@
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "dispatch_tokens": [
+              "getInstruction(address)"
+            ],
+            "qualification": "source only; runtime unqualified"
+          },
           "ignored": false,
           "lua": "exact UInt64",
           "name": "address",
           "native_type": "std::uint64_t",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "required exact Lua UInt64 0..UINT64_MAX, no floating conversion or implicit default; ZERO IS LITERAL, NOT zero-end range sentinel; loaded guard first; decode exactly at supplied default-code-space address; nonpositive length/caught error absent success, no scan to next instruction or region discovery; mapping, address-space width/truncation, alignment, overflow and actual entry resolution beyond recorded branches remain unqualified; read dispatch does not increment native revision; native analysis side effects are not proof of binding mutation/generation invalidation; positive/negative boundary/runtime fixture slots unqualified"
         }
       ],
       "response": {
@@ -6153,11 +6219,19 @@
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "dispatch_tokens": [
+              "getSymbol(address)"
+            ],
+            "qualification": "source only; runtime unqualified"
+          },
           "ignored": false,
           "lua": "exact UInt64",
           "name": "address",
           "native_type": "std::uint64_t",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "required exact Lua UInt64 0..UINT64_MAX, no floating conversion or implicit default; ZERO IS LITERAL, NOT zero-end range sentinel; loaded guard first; default-code-space findAddr lookup, response address echoes request; no wrapper uniqueness/exact-start/containing-symbol resolution guarantee; mapping, address-space width/truncation, alignment, overflow and actual entry resolution beyond recorded branches remain unqualified; read dispatch does not increment native revision; native analysis side effects are not proof of binding mutation/generation invalidation; positive/negative boundary/runtime fixture slots unqualified"
         }
       ],
       "response": {
@@ -16511,11 +16585,19 @@
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "dispatch_tokens": [
+              "a.renameDataItem(address, new_name)"
+            ],
+            "qualification": "source only; runtime unqualified"
+          },
           "ignored": false,
           "lua": "exact UInt64",
           "name": "address",
           "native_type": "std::uint64_t",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "required exact Lua UInt64 0..UINT64_MAX, no floating conversion or implicit default; ZERO IS LITERAL, NOT zero-end range sentinel; loaded guard first; default-code-space findAddr then non-function rename; missing/function/caught failure RENAME_FAILED; mapping, address-space width/truncation, alignment, overflow and actual entry resolution beyond recorded branches remain unqualified; dispatched mutation invalidates binding generation including failure/partial effects, validation-only rejection does not; native revision only after success except unconditional side-map SetComment acknowledgement; positive/negative boundary/runtime fixture slots unqualified"
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
@@ -16668,11 +16750,19 @@
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "dispatch_tokens": [
+              "d.nameFunction(address, new_name)"
+            ],
+            "qualification": "source only; runtime unqualified"
+          },
           "ignored": false,
           "lua": "exact UInt64",
           "name": "address",
           "native_type": "std::uint64_t",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "required exact Lua UInt64 0..UINT64_MAX, no floating conversion or implicit default; ZERO IS LITERAL, NOT zero-end range sentinel; loaded guard first; address passed directly to nameFunction; downstream creation/entry resolution unqualified, false RENAME_FAILED; mapping, address-space width/truncation, alignment, overflow and actual entry resolution beyond recorded branches remain unqualified; dispatched mutation invalidates binding generation including failure/partial effects, validation-only rejection does not; native revision only after success except unconditional side-map SetComment acknowledgement; positive/negative boundary/runtime fixture slots unqualified"
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
@@ -16814,11 +16904,19 @@
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "dispatch_tokens": [
+              "applyLocalRenameAllSlots(address, local_id, new_name)"
+            ],
+            "qualification": "source only; runtime unqualified"
+          },
           "ignored": false,
           "lua": "exact UInt64",
           "name": "address",
           "native_type": "std::uint64_t",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "required exact Lua UInt64 0..UINT64_MAX, no floating conversion or implicit default; ZERO IS LITERAL, NOT zero-end range sentinel; loaded guard first; function address scoped local resolver on all slots; missing local NOT_FOUND, decompile failure DECOMPILE_FAILED, no local_id reinterpretation; mapping, address-space width/truncation, alignment, overflow and actual entry resolution beyond recorded branches remain unqualified; dispatched mutation invalidates binding generation including failure/partial effects, validation-only rejection does not; native revision only after success except unconditional side-map SetComment acknowledgement; positive/negative boundary/runtime fixture slots unqualified"
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
@@ -16993,11 +17091,21 @@
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "dispatch_tokens": [
+              "decompileAt(address)",
+              "getFunctionSignature(address)",
+              "d.setPrototype(address, proto)"
+            ],
+            "qualification": "source only; runtime unqualified"
+          },
           "ignored": false,
           "lua": "exact UInt64",
           "name": "address",
           "native_type": "std::uint64_t",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "required exact Lua UInt64 0..UINT64_MAX, no floating conversion or implicit default; ZERO IS LITERAL, NOT zero-end range sentinel; loaded guard first; same address for decompile, signature extraction and rebuilt prototype dispatch; absent signature NOT_FOUND before ordinal OUT_OF_RANGE; mapping, address-space width/truncation, alignment, overflow and actual entry resolution beyond recorded branches remain unqualified; dispatched mutation invalidates binding generation including failure/partial effects, validation-only rejection does not; native revision only after success except unconditional side-map SetComment acknowledgement; positive/negative boundary/runtime fixture slots unqualified"
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
@@ -17167,11 +17275,20 @@
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "dispatch_tokens": [
+              "getSymbol(address)",
+              "d.nameFunction(address, new_name)"
+            ],
+            "qualification": "source only; runtime unqualified"
+          },
           "ignored": false,
           "lua": "exact UInt64",
           "name": "address",
           "native_type": "std::uint64_t",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "required exact Lua UInt64 0..UINT64_MAX, no floating conversion or implicit default; ZERO IS LITERAL, NOT zero-end range sentinel; loaded guard first; symbol lookup absent NOT_FOUND, function-only branch nameFunction, non-function NOT_SUPPORTED; no rename of arbitrary data symbols; mapping, address-space width/truncation, alignment, overflow and actual entry resolution beyond recorded branches remain unqualified; dispatched mutation invalidates binding generation including failure/partial effects, validation-only rejection does not; native revision only after success except unconditional side-map SetComment acknowledgement; positive/negative boundary/runtime fixture slots unqualified"
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
@@ -18262,11 +18379,19 @@
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "dispatch_tokens": [
+              "a.setComment(address, static_cast<int>(kind), text)"
+            ],
+            "qualification": "source only; runtime unqualified"
+          },
           "ignored": false,
           "lua": "exact UInt64",
           "name": "address",
           "native_type": "std::uint64_t",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "required exact Lua UInt64 0..UINT64_MAX, no floating conversion or implicit default; ZERO IS LITERAL, NOT zero-end range sentinel; loaded guard first; literal address/kind side-map key, no mapping/existence check; even empty/same text replaces and increments revision; mapping, address-space width/truncation, alignment, overflow and actual entry resolution beyond recorded branches remain unqualified; dispatched mutation invalidates binding generation including failure/partial effects, validation-only rejection does not; native revision only after success except unconditional side-map SetComment acknowledgement; positive/negative boundary/runtime fixture slots unqualified"
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
@@ -18408,11 +18533,19 @@
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "dispatch_tokens": [
+              "applyLocalRetypeAllSlots(address, local_id, new_type)"
+            ],
+            "qualification": "source only; runtime unqualified"
+          },
           "ignored": false,
           "lua": "exact UInt64",
           "name": "address",
           "native_type": "std::uint64_t",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "required exact Lua UInt64 0..UINT64_MAX, no floating conversion or implicit default; ZERO IS LITERAL, NOT zero-end range sentinel; loaded guard first; function address scoped local retype on all slots; INVALID_TYPE/NOT_FOUND/DECOMPILE_FAILED distinct, runtime entry/local resolution unqualified; mapping, address-space width/truncation, alignment, overflow and actual entry resolution beyond recorded branches remain unqualified; dispatched mutation invalidates binding generation including failure/partial effects, validation-only rejection does not; native revision only after success except unconditional side-map SetComment acknowledgement; positive/negative boundary/runtime fixture slots unqualified"
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
@@ -18587,11 +18720,21 @@
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "dispatch_tokens": [
+              "decompileAt(address)",
+              "getFunctionSignature(address)",
+              "d.setPrototype(address, proto)"
+            ],
+            "qualification": "source only; runtime unqualified"
+          },
           "ignored": false,
           "lua": "exact UInt64",
           "name": "address",
           "native_type": "std::uint64_t",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "required exact Lua UInt64 0..UINT64_MAX, no floating conversion or implicit default; ZERO IS LITERAL, NOT zero-end range sentinel; loaded guard first; same address for decompile, signature extraction and rebuilt prototype dispatch; absent signature NOT_FOUND before ordinal OUT_OF_RANGE; mapping, address-space width/truncation, alignment, overflow and actual entry resolution beyond recorded branches remain unqualified; dispatched mutation invalidates binding generation including failure/partial effects, validation-only rejection does not; native revision only after success except unconditional side-map SetComment acknowledgement; positive/negative boundary/runtime fixture slots unqualified"
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
@@ -18743,11 +18886,19 @@
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "dispatch_tokens": [
+              "d.setPrototype(address, prototype)"
+            ],
+            "qualification": "source only; runtime unqualified"
+          },
           "ignored": false,
           "lua": "exact UInt64",
           "name": "address",
           "native_type": "std::uint64_t",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "required exact Lua UInt64 0..UINT64_MAX, no floating conversion or implicit default; ZERO IS LITERAL, NOT zero-end range sentinel; loaded guard first; direct prototype dispatch at supplied address, no wrapper entry normalization; false SET_PROTOTYPE_FAILED; mapping, address-space width/truncation, alignment, overflow and actual entry resolution beyond recorded branches remain unqualified; dispatched mutation invalidates binding generation including failure/partial effects, validation-only rejection does not; native revision only after success except unconditional side-map SetComment acknowledgement; positive/negative boundary/runtime fixture slots unqualified"
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
@@ -30347,98 +30498,7 @@
   },
   "qualification": "M0 inventory only; no adapters or runtime qualification",
   "request_audit": {
-    "direct_argument_review_missing": [
-      {
-        "operation": "ApplyDataType",
-        "path": "address",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "DeleteComment",
-        "path": "address",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "DeleteDataItem",
-        "path": "address",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "DeleteSymbol",
-        "path": "address",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "GetDecompilation",
-        "path": "address",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "GetFunction",
-        "path": "address",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "GetFunctionSignature",
-        "path": "address",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "GetInstruction",
-        "path": "address",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "GetSymbol",
-        "path": "address",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "RenameDataItem",
-        "path": "address",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "RenameFunction",
-        "path": "address",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "RenameFunctionLocal",
-        "path": "address",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "RenameFunctionParameter",
-        "path": "address",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "RenameSymbol",
-        "path": "address",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "SetComment",
-        "path": "address",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "SetFunctionLocalType",
-        "path": "address",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "SetFunctionParameterType",
-        "path": "address",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "SetFunctionSignature",
-        "path": "address",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      }
-    ],
+    "direct_argument_review_missing": [],
     "direct_arguments_reviewed": [
       {
         "operation": "AddTypeEnumMember",
@@ -30467,6 +30527,10 @@
       {
         "operation": "AddTypeMember",
         "path": "size"
+      },
+      {
+        "operation": "ApplyDataType",
+        "path": "address"
       },
       {
         "operation": "ApplyDataType",
@@ -30510,11 +30574,23 @@
       },
       {
         "operation": "DeleteComment",
+        "path": "address"
+      },
+      {
+        "operation": "DeleteComment",
         "path": "kind"
+      },
+      {
+        "operation": "DeleteDataItem",
+        "path": "address"
       },
       {
         "operation": "DeletePerfBenchmark",
         "path": "bench_id"
+      },
+      {
+        "operation": "DeleteSymbol",
+        "path": "address"
       },
       {
         "operation": "DeleteSymbol",
@@ -30562,7 +30638,27 @@
       },
       {
         "operation": "GetDecompilation",
+        "path": "address"
+      },
+      {
+        "operation": "GetDecompilation",
         "path": "timeout_ms"
+      },
+      {
+        "operation": "GetFunction",
+        "path": "address"
+      },
+      {
+        "operation": "GetFunctionSignature",
+        "path": "address"
+      },
+      {
+        "operation": "GetInstruction",
+        "path": "address"
+      },
+      {
+        "operation": "GetSymbol",
+        "path": "address"
       },
       {
         "operation": "GetType",
@@ -30838,11 +30934,23 @@
       },
       {
         "operation": "RenameDataItem",
+        "path": "address"
+      },
+      {
+        "operation": "RenameDataItem",
         "path": "new_name"
       },
       {
         "operation": "RenameFunction",
+        "path": "address"
+      },
+      {
+        "operation": "RenameFunction",
         "path": "new_name"
+      },
+      {
+        "operation": "RenameFunctionLocal",
+        "path": "address"
       },
       {
         "operation": "RenameFunctionLocal",
@@ -30854,11 +30962,19 @@
       },
       {
         "operation": "RenameFunctionParameter",
+        "path": "address"
+      },
+      {
+        "operation": "RenameFunctionParameter",
         "path": "ordinal"
       },
       {
         "operation": "RenameFunctionParameter",
         "path": "new_name"
+      },
+      {
+        "operation": "RenameSymbol",
+        "path": "address"
       },
       {
         "operation": "RenameSymbol",
@@ -30898,11 +31014,19 @@
       },
       {
         "operation": "SetComment",
+        "path": "address"
+      },
+      {
+        "operation": "SetComment",
         "path": "kind"
       },
       {
         "operation": "SetComment",
         "path": "text"
+      },
+      {
+        "operation": "SetFunctionLocalType",
+        "path": "address"
       },
       {
         "operation": "SetFunctionLocalType",
@@ -30914,11 +31038,19 @@
       },
       {
         "operation": "SetFunctionParameterType",
+        "path": "address"
+      },
+      {
+        "operation": "SetFunctionParameterType",
         "path": "ordinal"
       },
       {
         "operation": "SetFunctionParameterType",
         "path": "data_type"
+      },
+      {
+        "operation": "SetFunctionSignature",
+        "path": "address"
       },
       {
         "operation": "SetFunctionSignature",

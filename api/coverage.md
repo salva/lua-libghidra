@@ -793,3 +793,19 @@ check; empty text stores replacement. Benchmark deletion exact ID equality retur
 deleted=false success if absent, unlike absent-comment NOT_FOUND. Native revision
 and binding generation remain distinct. Ledger 138 reviewed/18 remaining; 43 tests
 include independent inverted benchmark equality rejection. Runtime slots unqualified.
+
+## Literal address request closure (fortieth increment)
+
+All eighteen remaining direct request paths now bind exact source dispatch tokens
+and loaded-before-consumption ordering. Addresses are required exact UInt64,
+including literal zero, never range sentinels. Lookup default-code-space casts,
+function actual-entry versus fallback echo, exact instruction decode, same-address
+signature reconstruction, side-map keys and mutation eligibility/errors remain
+operation-specific. No inferred exact-start/containing-symbol resolution or
+runtime address-width/mapping/overflow qualification. Native revision and binding
+generation remain distinct, including read analysis side effects.
+
+Direct ledger is now 156 reviewed, zero missing; nested twenty and factory four
+remain separately reconciled. This closes request source accounting, NOT final
+exhaustive acceptance, proposed grammar decisions or runtime/iterator fixture
+slots. Forty-four tests include independent shifted-delete-address rejection.
