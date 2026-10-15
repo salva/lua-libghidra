@@ -284,3 +284,41 @@ def review_member_reconstruction(u, operations):
             if name.startswith('Delete'): assert 'if (i == ordinal) continue;' in text
         op['semantic_review']='member reconstruction/side-map comment branches reviewed; downstream defineStruct/defineEnum and runtime evidence unqualified'
     return operations
+
+
+def review_local_and_data_edits(u, operations):
+    """Status-switch errors are not generic bool outcomes."""
+    source=(u/LOCAL).read_text()
+    for op in operations:
+        name=op['name']
+        if name not in ['RenameFunctionLocal','SetFunctionLocalType','ApplyDataType','RenameDataItem','DeleteDataItem','GetStatus','GetCapabilities']: continue
+        start,text=body(source,' '+name+'(')
+        op['edit_source_review']={'path':LOCAL,'line':source.count('\n',0,start)+1,'body_sha256':hashlib.sha256(text.encode()).hexdigest()}
+        if name in ['GetStatus','GetCapabilities']:
+            op['program_state']='owner open; no loaded-program guard; usable after logical program close'
+            op['state_transitions']='read only; does not change native revision or binding generation'
+            if name=='GetStatus':
+                assert 'hs.ok = (pool_ != nullptr)' in text
+                op['limitations'].append('health ok means pool exists, not program loaded or operation readiness; service_version literal 1.0.0 is not dependency pin version')
+            else:
+                op['limitations'].append('capabilities are coarse native strings, not per-operation support proof; preserve order/text despite strings/full CRUD overstatement')
+        elif name in ['RenameFunctionLocal','SetFunctionLocalType']:
+            assert 'LocalMutationStatus::kNotFound' in text and 'LocalMutationStatus::kDecompileFailed' in text
+            assert text.index('"DECOMPILE_FAILED"') < text.index('revision_++')
+            op['state_transitions']='loaded required; all-slot local status switch returns NOT_FOUND or DECOMPILE_FAILED before native revision; success increments revision and echoes local_id plus changed field with updated=true'
+            if name=='SetFunctionLocalType':
+                assert '"INVALID_TYPE"' in text
+                op['state_transitions']+='; kInvalidType separately returns INVALID_TYPE'
+            else:
+                op['limitations'].append('rename maps nominally unreachable kInvalidType together with kDecompileFailed to DECOMPILE_FAILED; do not invent INVALID_TYPE branch')
+            op['limitations'].append('local_id is opaque native identity string, not ordinal/name; no cross-decompilation stable identity or all-slot atomicity established by this wrapper')
+        elif name=='ApplyDataType':
+            assert 'sym && !sym->name.empty()' in text and 'DAT_%08llx' in text
+            assert 'if (ok) revision_++' in text
+            op['state_transitions']='loaded required; reuse nonempty symbol name else DAT_ minimum-eight-digit lowercase hex address; nameGlobal with requested datatype on all slots; APPLY_FAILED on false; native revision only on success'
+            op['limitations'].append('creation via native nameGlobal, not a replacement data scanner; no readback/layout/persistence inferred from updated flag')
+        else:
+            assert text.index('if (!ok)') < text.index('revision_++')
+            op['state_transitions']='loaded required; all-slot adapter edit; false -> '+('RENAME_FAILED' if name=='RenameDataItem' else 'NOT_FOUND')+'; native revision only after success; functions are not eligible data items'
+        op['semantic_review']='LocalClient local/data/health branches reviewed; downstream mutation helper and runtime gates remain unqualified'
+    return operations

@@ -138,10 +138,22 @@ class InventoryTests(unittest.TestCase):
             with self.assertRaises(AssertionError):
                 module.inventory(root)
             adapter.write_text(adapter_original)
+            local.write_text(local_original.replace('hs.ok = (pool_ != nullptr)', 'hs.ok = program_loaded_'))
+            with self.assertRaises(AssertionError):
+                module.inventory(root)
+            local.write_text(local_original)
             header = root/'cpp/src/local_arch_adapter.hpp'
             header.write_text(header.read_text().replace('std::map<std::pair<std::uint64_t, int>, std::string> comments_', 'std::multimap<std::pair<std::uint64_t, int>, std::string> comments_'))
             with self.assertRaises(AssertionError):
                 module.inventory(root)
+
+    def test_local_status_errors_and_health_scope(self):
+        self.assertIn('INVALID_TYPE', self.ops['SetFunctionLocalType']['state_transitions'])
+        self.assertTrue(any('unreachable' in text for text in self.ops['RenameFunctionLocal']['limitations']))
+        self.assertIn('opaque', ' '.join(self.ops['RenameFunctionLocal']['limitations']))
+        self.assertIn('DAT_', self.ops['ApplyDataType']['state_transitions'])
+        self.assertIn('pool exists', ' '.join(self.ops['GetStatus']['limitations']))
+        self.assertIn('coarse', ' '.join(self.ops['GetCapabilities']['limitations']))
 
     def test_member_reconstruction_and_unvalidated_comments(self):
         self.assertIn('does not compact', ' '.join(self.ops['DeleteTypeMember']['limitations']))

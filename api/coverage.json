@@ -748,6 +748,11 @@
         }
       },
       "dispatch": "mutation",
+      "edit_source_review": {
+        "body_sha256": "2e0c3ff34e2f92dfe06ef6b9ff4ef53cc37e7ff91f2960f69658f43dba06dedd",
+        "line": 1520,
+        "path": "cpp/src/local_client.cpp"
+      },
       "evidence": {
         "negative": {
           "assertions": "unloaded/unsupported/validation and recorded limitations",
@@ -774,7 +779,9 @@
           "path": "cpp/src/local_client.cpp"
         }
       },
-      "limitations": [],
+      "limitations": [
+        "creation via native nameGlobal, not a replacement data scanner; no readback/layout/persistence inferred from updated flag"
+      ],
       "lowlevel": "apply_data_type",
       "name": "ApplyDataType",
       "native_literal_errors": [
@@ -826,6 +833,8 @@
         "lua": "ApplyDataTypeResponse table/enum; resolve in types/enums",
         "native_type": "ApplyDataTypeResponse"
       },
+      "semantic_review": "LocalClient local/data/health branches reviewed; downstream mutation helper and runtime gates remain unqualified",
+      "state_transitions": "loaded required; reuse nonempty symbol name else DAT_ minimum-eight-digit lowercase hex address; nameGlobal with requested datatype on all slots; APPLY_FAILED on false; native revision only on success",
       "surface_contract": {
         "facade": {
           "disposition": "native escape hatch",
@@ -2143,6 +2152,11 @@
         }
       },
       "dispatch": "mutation",
+      "edit_source_review": {
+        "body_sha256": "974511343e6f17be53d6148d019fc061c82e06532c2e36d5e08a8687ad975d52",
+        "line": 1430,
+        "path": "cpp/src/local_client.cpp"
+      },
       "evidence": {
         "negative": {
           "assertions": "unloaded/unsupported/validation and recorded limitations",
@@ -2203,6 +2217,8 @@
         "lua": "DeleteDataItemResponse table/enum; resolve in types/enums",
         "native_type": "DeleteDataItemResponse"
       },
+      "semantic_review": "LocalClient local/data/health branches reviewed; downstream mutation helper and runtime gates remain unqualified",
+      "state_transitions": "loaded required; all-slot adapter edit; false -> NOT_FOUND; native revision only after success; functions are not eligible data items",
       "surface_contract": {
         "facade": {
           "disposition": "native escape hatch",
@@ -3094,6 +3110,11 @@
         }
       },
       "dispatch": "read",
+      "edit_source_review": {
+        "body_sha256": "f849d382317a68a410eeb099b3f1980539a4fd469beef60811cd6ed697a57f54",
+        "line": 68,
+        "path": "cpp/src/local_client.cpp"
+      },
       "evidence": {
         "negative": {
           "assertions": "unloaded/unsupported/validation and recorded limitations",
@@ -3120,12 +3141,14 @@
           "path": "cpp/src/local_client.cpp"
         }
       },
-      "limitations": [],
+      "limitations": [
+        "capabilities are coarse native strings, not per-operation support proof; preserve order/text despite strings/full CRUD overstatement"
+      ],
       "lowlevel": "get_capabilities",
       "name": "GetCapabilities",
       "native_literal_errors": [],
       "pagination": null,
-      "program_state": "no ensure_loaded guard in override; inspect lifecycle/helper",
+      "program_state": "owner open; no loaded-program guard; usable after logical program close",
       "python_reconciliation": {
         "binding_body_sha256": "aef93e9a1ff262faf3059d30fbb383bd8d7f3d7fe5f0235a150843b7f80fce71",
         "binding_extraction": "complete dict/array",
@@ -3179,6 +3202,8 @@
         "lua": "dense 1-based array of Capability table/enum; resolve in types/enums",
         "native_type": "std::vector<Capability>"
       },
+      "semantic_review": "LocalClient local/data/health branches reviewed; downstream mutation helper and runtime gates remain unqualified",
+      "state_transitions": "read only; does not change native revision or binding generation",
       "surface_contract": {
         "facade": {
           "disposition": "complete response convenience/page",
@@ -4718,6 +4743,11 @@
         }
       },
       "dispatch": "read",
+      "edit_source_review": {
+        "body_sha256": "3ab0379b5c6937ed81768130e41c1c4b2daad174070cf2256c7cdb4a555191e0",
+        "line": 57,
+        "path": "cpp/src/local_client.cpp"
+      },
       "evidence": {
         "negative": {
           "assertions": "unloaded/unsupported/validation and recorded limitations",
@@ -4744,12 +4774,14 @@
           "path": "cpp/src/local_client.cpp"
         }
       },
-      "limitations": [],
+      "limitations": [
+        "health ok means pool exists, not program loaded or operation readiness; service_version literal 1.0.0 is not dependency pin version"
+      ],
       "lowlevel": "get_status",
       "name": "GetStatus",
       "native_literal_errors": [],
       "pagination": null,
-      "program_state": "no ensure_loaded guard in override; inspect lifecycle/helper",
+      "program_state": "owner open; no loaded-program guard; usable after logical program close",
       "python_reconciliation": {
         "binding_body_sha256": "4d19feeca1159a9fbf3b749799f9db694af92a0d10f318404786bc03e631fc4d",
         "binding_extraction": "complete dict/array",
@@ -4833,6 +4865,8 @@
         "lua": "HealthStatus table/enum; resolve in types/enums",
         "native_type": "HealthStatus"
       },
+      "semantic_review": "LocalClient local/data/health branches reviewed; downstream mutation helper and runtime gates remain unqualified",
+      "state_transitions": "read only; does not change native revision or binding generation",
       "surface_contract": {
         "facade": {
           "disposition": "complete response convenience/page",
@@ -13169,6 +13203,11 @@
         }
       },
       "dispatch": "mutation",
+      "edit_source_review": {
+        "body_sha256": "8519c946692440dac35a0364a4915a49cb26134272f89c885606dbbee738291e",
+        "line": 1412,
+        "path": "cpp/src/local_client.cpp"
+      },
       "evidence": {
         "negative": {
           "assertions": "unloaded/unsupported/validation and recorded limitations",
@@ -13247,6 +13286,8 @@
         "lua": "RenameDataItemResponse table/enum; resolve in types/enums",
         "native_type": "RenameDataItemResponse"
       },
+      "semantic_review": "LocalClient local/data/health branches reviewed; downstream mutation helper and runtime gates remain unqualified",
+      "state_transitions": "loaded required; all-slot adapter edit; false -> RENAME_FAILED; native revision only after success; functions are not eligible data items",
       "surface_contract": {
         "facade": {
           "disposition": "native escape hatch",
@@ -13403,6 +13444,11 @@
         }
       },
       "dispatch": "mutation",
+      "edit_source_review": {
+        "body_sha256": "f165a88dd6797b2ae2ef3f3d57263a2c8fd84214083cb21d8787b32db209db5f",
+        "line": 1553,
+        "path": "cpp/src/local_client.cpp"
+      },
       "evidence": {
         "negative": {
           "assertions": "unloaded/unsupported/validation and recorded limitations",
@@ -13429,7 +13475,10 @@
           "path": "cpp/src/local_client.cpp"
         }
       },
-      "limitations": [],
+      "limitations": [
+        "rename maps nominally unreachable kInvalidType together with kDecompileFailed to DECOMPILE_FAILED; do not invent INVALID_TYPE branch",
+        "local_id is opaque native identity string, not ordinal/name; no cross-decompilation stable identity or all-slot atomicity established by this wrapper"
+      ],
       "lowlevel": "rename_function_local",
       "name": "RenameFunctionLocal",
       "native_literal_errors": [
@@ -13500,6 +13549,8 @@
         "lua": "RenameFunctionLocalResponse table/enum; resolve in types/enums",
         "native_type": "RenameFunctionLocalResponse"
       },
+      "semantic_review": "LocalClient local/data/health branches reviewed; downstream mutation helper and runtime gates remain unqualified",
+      "state_transitions": "loaded required; all-slot local status switch returns NOT_FOUND or DECOMPILE_FAILED before native revision; success increments revision and echoes local_id plus changed field with updated=true",
       "surface_contract": {
         "facade": {
           "disposition": "native escape hatch",
@@ -14737,6 +14788,11 @@
         }
       },
       "dispatch": "mutation",
+      "edit_source_review": {
+        "body_sha256": "36f37b64a862f49273c1afb45ce6a6c96dcd3b00cc4f1432bfa6d6985279d3a0",
+        "line": 1586,
+        "path": "cpp/src/local_client.cpp"
+      },
       "evidence": {
         "negative": {
           "assertions": "unloaded/unsupported/validation and recorded limitations",
@@ -14763,7 +14819,9 @@
           "path": "cpp/src/local_client.cpp"
         }
       },
-      "limitations": [],
+      "limitations": [
+        "local_id is opaque native identity string, not ordinal/name; no cross-decompilation stable identity or all-slot atomicity established by this wrapper"
+      ],
       "lowlevel": "set_function_local_type",
       "name": "SetFunctionLocalType",
       "native_literal_errors": [
@@ -14835,6 +14893,8 @@
         "lua": "SetFunctionLocalTypeResponse table/enum; resolve in types/enums",
         "native_type": "SetFunctionLocalTypeResponse"
       },
+      "semantic_review": "LocalClient local/data/health branches reviewed; downstream mutation helper and runtime gates remain unqualified",
+      "state_transitions": "loaded required; all-slot local status switch returns NOT_FOUND or DECOMPILE_FAILED before native revision; success increments revision and echoes local_id plus changed field with updated=true; kInvalidType separately returns INVALID_TYPE",
       "surface_contract": {
         "facade": {
           "disposition": "native escape hatch",

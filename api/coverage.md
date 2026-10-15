@@ -291,3 +291,21 @@ validated successful edit to an existing native member. New independent probes
 invert deletion selection and shift a comment-map ordinal; both must fail source
 contract assertions. Fourteen tests pass; remaining operations and final
 field/grammar/effective-domain audits are still open.
+
+## Local/data/health branch review (eleventh increment)
+
+Seven additional operations distinguish native status-switch errors from generic
+booleans. Local rename maps not-found/decompile failure and nominally unreachable
+invalid-type to the documented codes; local retype separately preserves
+INVALID_TYPE. local_id stays opaque, not an ordinal or user name. ApplyDataType
+reuses a symbol name or generates DAT_ plus minimum-eight-digit lowercase hex,
+then delegates nameGlobal; no layout or persistence readback is implied. Data
+rename/delete reject ineligible/function symbols and increment revision only on
+success. Downstream helper behavior remains explicitly unqualified.
+
+Health ok means a pool exists, not a loaded program or complete operation support.
+Its literal service_version is not the dependency pin version. Capabilities remain
+coarse ordered native text, despite string/full-CRUD overstatements. A new drift
+probe substitutes program_loaded for pool existence and must fail the reviewed
+contract. Fifteen tests pass. Exhaustive field/helper/final-grammar review remains
+open; runtime qualification has not been claimed.
