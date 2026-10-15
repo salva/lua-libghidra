@@ -93,5 +93,7 @@ range sentinels, effective downstream numeric bounds, program-state requirements
 identity/order, cursor domain and post-pagination filtering, supported fixture,
 success assertions and negative evidence. Apply SPEC's compatibility exception
 for defined strings rather than demanding unattainable discovery evidence.
-Reconcile Python's narrower facade independently; it is neither the full native
-inventory nor authority for native architecture detection.
+Python's narrower facade may be consulted during development; it is neither the
+full native inventory nor authority for native architecture detection. Python
+parity/reconciliation is not a completion or release gate. Preserve useful
+existing comparisons as development evidence without depending on Python bindings.

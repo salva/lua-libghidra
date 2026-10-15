@@ -28,6 +28,23 @@ guest-local sudo as needed; preserve project-local credentials. Source/dependenc
 caches and temporary build outputs must be ignored by Git. Commit implemented
 changes promptly and do not push or publish without operator permission.
 
+## Operator update — Lua-based deliverable, no Python-binding dependency
+
+Python is allowed during initial development. The finished project must not
+depend on upstream Python bindings for build, runtime or required acceptance.
+Use Lua for project-owned tooling, generators and acceptance tests by release;
+retain Python only for a documented compelling reason with operator acceptance.
+Assess the pinned upstream spec-embedding generator as a potential exception,
+not as blanket approval to retain Python. Native C++ probes/adapter and ordinary
+CMake/LuaRocks/compiler tooling remain appropriate.
+
+This supersedes earlier mandatory Python-oracle/comparison gates. For card-a-c,
+preserve useful completed Python research, but do not prolong M0 to establish
+exhaustive Python-binding parity or make its Python-only audit tooling a permanent
+release prerequisite. Base support and acceptance on the native API and real
+Lua/native tests. Do not delete active scripts or evidence in place; plan their
+Lua migration as implementation work and retain explicit qualification unknowns.
+
 ## Authorized engine patch profile
 
 The operator authorizes applying libghidra's bundled

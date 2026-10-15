@@ -142,7 +142,8 @@ behavior. Verify save/reopen separately for types, symbols, comments, signatures
 data, bytes and benchmarks; saved=true never means every category persisted.
 DiscardProgram's true flag is a no-op acknowledgment, not rollback. Preserve
 native flags. Ignored members cannot imply read-only/deadline guarantees.
-Explicit architecture hints match in Lua, native and Python qualification runs.
+Explicit architecture hints match in Lua and direct native qualification runs.
+Optional development comparisons with Python do not define native behavior.
 
 ## 5. Reproducible native build
 
@@ -157,8 +158,12 @@ Local source configuration unconditionally runs `cmake/EmbedSpecs.cmake` and
 `embed_specs.py`, even with Python bindings disabled. Require Python >=3.10
 (evaluated union annotations) with importable Python zlib and an early CMake/
 LuaRocks version/module check. Record interpreter version in the build lock.
-Consuming a prebuilt local SDK need not run this generator. This build dependency
-is distinct from Python's qualification-oracle role and the Python-free runtime.
+Consuming a prebuilt local SDK need not run this generator. This current upstream
+build dependency is independent of Python bindings and must be assessed under
+SPEC's retained-Python exception policy before release. There is no required
+Python qualification oracle. Prefer Lua for project-owned generation and tests;
+preserve native probes where needed to isolate binding behavior. Do not replace
+or modify upstream generators without a justified, separately qualified approach.
 
 M0 dependency lock records URLs, revisions, archive SHA-256, options and licenses
 independently for:

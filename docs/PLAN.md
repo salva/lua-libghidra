@@ -17,10 +17,14 @@ Confirm baseline/platform/tier and license applicability before implementation.
 The wrapper license is MIT (operator-selected; see [LICENSE](../LICENSE)).
 Record intended distribution, dependency sources/digests,
 spec compatibility, deterministic BFD profile and notices. Inventory every native
-and Python local operation and every request/response field in `api/coverage.*`.
+local operation and every request/response field in `api/coverage.*`; existing
+Python comparisons are development reference only, not an independent parity gate.
 Mark HTTP-only stubs excluded; they are not local implementations.
 Check source-build Python >=3.10 and importable zlib early; record build-tool and
-qualification-oracle versions separately from the Python-free runtime profile.
+development-tool versions separately from the Python-free runtime profile.
+Plan migration of project-owned Python tooling/tests to Lua before release;
+document and obtain operator acceptance for any compelling retained exception.
+Do not require upstream Python bindings for builds, runtime or release tests.
 
 Create authored redistributable binary source and compiler/flags/source-hash/
 binary-hash manifest with known symbols, bytes and instruction expectations.
@@ -57,8 +61,9 @@ Implement first-slice coverage on lowlevel and Session: factory/open/close,
 status/capabilities, function lookup/pages/iterator, bytes, instructions and
 decompilation. Preserve full responses and missing-record/unsupported distinctions.
 Exercise known bytes/instructions and semantic nonfallback decompilation using
-M0 fixtures. Qualify Python oracle with identical pin/architecture/specs; compare
-normalized fields, not formatting. Test false/zero, optional/nested values,
+M0 fixtures. Use Lua acceptance tests and direct native probes with identical
+pin/architecture/specs and authored expected results. Optional development Python
+comparisons are nonauthoritative and not a gate. Test false/zero, optional/nested values,
 uint64 boundaries, zero-based ordinals, flags and outcome presence.
 Execute SPEC's first-slice grammar and EXAMPLES with real manifest inputs;
 verify open's third-result metadata without reopening, including false/zero
@@ -109,7 +114,8 @@ type/enum/member edits, parameter/local edits, data edits, patch batches,
 performance records and local Shutdown. Each service slice includes positive
 supported cases, errors, complete field maps and low/high-layer dispositions.
 Preserve actual batch semantics without invented atomicity. Reconcile public
-headers against LocalClient overrides and Python; each omission has a tier/reason.
+headers against LocalClient overrides; each omission has a tier/reason. Python
+bindings are optional historical reference, not a required dependency or target.
 Test ignored mutation fields (DeleteSymbol name, CreateType/AddTypeMember size,
 CreateTypeEnum width/is_signed) and unsupported CreateType kinds; preserve the
 documented limits rather than promising enforcement of ignored arguments.
@@ -120,7 +126,11 @@ Exit: every local operation accounted for and supported cases demonstrated.
 
 From clean directories run CMake/LuaRocks offline install, standalone/embedded
 hosts, values, lifecycle/fault injection/sanitizers, pagination, real binary and
-analyzed fixtures and required normalized Python comparisons. Run both DESIGN
+analyzed fixtures through Lua tests and direct native probes as needed. Verify
+required tests/build/runtime do not depend on upstream Python bindings. Finish
+migration of project-owned tooling to Lua; retain Python only with a documented
+compelling reason and operator acceptance, including any upstream generator
+exception. Run both DESIGN
 profiles: explicit external roots (valid/missing/unreadable), and empty-root
 embedded specs (isolated cold/warm/unwritable HOME cache), proving constructor
 selection for each. Test runtime network/Java/Python absence. Record exact

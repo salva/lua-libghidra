@@ -13,9 +13,16 @@ C++20, CMake and LuaRocks source installation. Lua 5.3 requires later independen
 qualification. HTTP, remote lifecycle, async APIs and SWIG are excluded.
 Installed operation requires no Python, Java, Ghidra application or network.
 Development fixture generation may use Java/Ghidra.
-Source builds require Python >=3.10 with its zlib module for upstream spec
-embedding, independently of the required Python qualification oracle; neither
-is an installed-runtime dependency. See DESIGN's two spec-loading profiles.
+The pinned upstream source build currently uses Python >=3.10 with zlib for spec
+embedding; consuming the installed native SDK need not run that generator.
+Python is permitted for initial development, not a required qualification oracle.
+The finished Lua/C++ binding must not depend on upstream Python bindings for
+execution, building or required tests. Project-owned scripts, generators and
+acceptance tests should be Lua-based by release. Any retained Python use needs a
+documented compelling reason, alternatives and operator acceptance; upstream spec
+embedding is a candidate exception to assess, not an automatic permanent exemption.
+The native C++ adapter, CMake/LuaRocks and native compiler/sanitizer tooling remain
+part of the design. See DESIGN's two spec-loading profiles.
 
 Calls are synchronous. Initial `pool_size` is exactly 1; reject other values.
 Only one live binding-owned native client per process is supported, including
@@ -262,8 +269,10 @@ Every supported operation needs a positive real-backend case, not just a
 `NOT_SUPPORTED` test. Authored binary and analyzed-project fixtures must be ready
 at M0. Verify known bytes/instructions and completed, nonfallback decompilation
 with expected semantic content. Preserve/test incomplete and fallback results
-separately. Python comparisons are required release qualification, although
-Python is optional for installed users. Core and full releases both pass M5;
+separately. Required acceptance uses Lua tests against the real native library,
+authored expected results and direct C++ probes where needed. Python-binding
+comparisons may inform initial development but are optional, nonauthoritative
+and never a release gate or dependency. Core and full releases both pass M5;
 absent evidence is an open gate, never a pass.
 Exception to populated discovery acceptance: ListDefinedStrings must return
 faithful empty success on an open real fixture containing known strings, plus

@@ -17,8 +17,11 @@ Baseline: Linux x86-64, Lua 5.4, C++20, native local engine, CMake/LuaRocks.
 sol2 is provisional pending ownership validation. HTTP is deferred; SWIG excluded.
 The SDK proposes faithful `libghidra.lowlevel` responses and a small `libghidra`
 Session facade sharing one owner. Source builds require Python >=3.10 with zlib
-for upstream spec embedding; Python also serves as a qualification oracle.
-Installed runtime requires neither Python nor Java/network access.
+for upstream spec embedding in the current dependency profile. Python is allowed
+during development, but upstream Python bindings are not a build/runtime/test
+dependency. Release tooling/tests should be Lua-based; retained Python requires
+a documented compelling reason and operator acceptance. Installed runtime requires
+neither Python nor Java/network access.
 
 Upstream pin: `d51ca813ae1b6b59519551a9be8c0b1ad74d862d`.
 Its [Human-Origin Source License v1.0](https://github.com/0xeb/libghidra/blob/d51ca813ae1b6b59519551a9be8c0b1ad74d862d/LICENSE)
