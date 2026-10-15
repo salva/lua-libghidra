@@ -166,10 +166,33 @@ class InventoryTests(unittest.TestCase):
             with self.assertRaises(AssertionError):
                 module.inventory(root)
             local.write_text(local_original)
+            adapter.write_text(adapter_original.replace('rec.size = rec.end_address + 1', 'rec.size = rec.end_address'))
+            with self.assertRaises(AssertionError):
+                module.inventory(root)
+            adapter.write_text(adapter_original)
+            adapter.write_text(adapter_original.replace('rec.symbol_id = id_counter++', 'rec.symbol_id = 0'))
+            with self.assertRaises(AssertionError):
+                module.inventory(root)
+            adapter.write_text(adapter_original)
             header = root/'cpp/src/local_arch_adapter.hpp'
             header.write_text(header.read_text().replace('std::map<std::pair<std::uint64_t, int>, std::string> comments_', 'std::multimap<std::pair<std::uint64_t, int>, std::string> comments_'))
             with self.assertRaises(AssertionError):
                 module.inventory(root)
+
+    def test_record_fields_are_producer_specific_and_exhaustive(self):
+        def field(op, name):
+            return next(f for f in self.ops[op]['response']['fields'] if f['name']==name)
+        self.assertIn('gap to next', field('ListFunctions','size')['semantics'])
+        self.assertIn('Funcdata getSize', field('GetFunction','size')['semantics'])
+        self.assertIn('BEFORE pagination', field('ListSymbols','symbol_id')['semantics'])
+        self.assertIn('not assigned', field('GetSymbol','symbol_id')['semantics'])
+        self.assertIn('false', field('ListMemoryBlocks','is_write')['semantics'])
+        self.assertIn('wraps size', field('ListMemoryBlocks','size')['semantics'])
+        for name in ['GetFunction','ListFunctions','ListLeafFunctions','GetSymbol','ListSymbols','GetInstruction','ListInstructions','ListMemoryBlocks']:
+            review=self.ops[name]['record_field_reviews'][0]
+            declared={f['name'] for f in self.data['types'][review['model']]['fields']}
+            self.assertEqual(declared,set(review['assigned_fields'])|set(review['default_only_fields']))
+            self.assertFalse(set(review['assigned_fields'])&set(review['default_only_fields']))
 
     def test_page_wrapper_order_and_field_conversion(self):
         reviewed=[o for o in self.ops.values() if 'page_wrapper_review' in o]

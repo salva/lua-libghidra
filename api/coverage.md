@@ -378,3 +378,22 @@ remain in the audit; this does **not** close nested/default/domain/helper or fin
 facade-grammar requirements. New independent probes alter inclusive data end and
 introduce a preceding xref decompile; both must fail. Eighteen tests pass; runtime
 positive/negative evidence and iterators remain unqualified.
+
+## Producer-specific function/symbol/instruction/memory fields (fifteenth increment)
+
+`inventory_record_fields.py` compares every declared field against the exact
+assigned-field set of six reviewed producers, then annotates eight operation
+paths. Default-only fields are explicit, not assumed populated because another
+operation returns the same model. Function lookup size is Funcdata size or symbol
+footprint; function pages use successor gap (not true body extent). Symbol page
+IDs restart after range filtering, while lookup symbol_id remains model zero.
+Instruction disassembly joins body conditionally, not with an unconditional space.
+Memory blocks are synthetic default-code-space records: write/volatile/comment
+remain model defaults; highest+1 can wrap to zero. These assignments/defaults are
+not runtime metadata qualification.
+
+Independent probes alter memory size arithmetic and symbol page-ID assignment;
+both fail reviewed assertions. Nineteen focused tests pass. The remaining generic
+response paths are still listed in semantic_audit; request/default/domain/helper
+and final non-first-slice grammar audits remain open. No iterator or runtime
+positive/negative qualification is claimed.

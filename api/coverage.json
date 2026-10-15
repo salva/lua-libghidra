@@ -3906,6 +3906,29 @@
           "path": "python/src/libghidra/local.py"
         }
       },
+      "record_field_reviews": [
+        {
+          "assigned_fields": [
+            "end_address",
+            "entry_address",
+            "name",
+            "size",
+            "start_address"
+          ],
+          "body_sha256": "9b8cadaf6909addfb3b6f4553a24f99d63e9c05a21abfaada9c7f189d12da5bb",
+          "default_only_fields": [
+            "is_thunk",
+            "namespace_name",
+            "parameter_count",
+            "prototype"
+          ],
+          "line": 254,
+          "method": "getFunction",
+          "model": "FunctionRecord",
+          "path": "cpp/src/local_arch_adapter.cpp",
+          "qualification": "all declared record fields accounted against producer; runtime fixtures unqualified"
+        }
+      ],
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
@@ -3936,7 +3959,12 @@
             "native_type": "std::uint64_t",
             "optional": false,
             "path": "function.entry_address",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 254,
+              "method": "getFunction",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "Funcdata address when queryFunction succeeds; otherwise requested address for FunctionSymbol fallback"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -3946,7 +3974,12 @@
             "native_type": "std::string",
             "optional": false,
             "path": "function.name",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 254,
+              "method": "getFunction",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "Funcdata or fallback FunctionSymbol name"
           },
           {
             "lua": "exact UInt64",
@@ -3956,7 +3989,12 @@
             "native_type": "std::uint64_t",
             "optional": false,
             "path": "function.start_address",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 254,
+              "method": "getFunction",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "same as returned entry_address (requested address in FunctionSymbol fallback)"
           },
           {
             "lua": "exact UInt64",
@@ -3966,7 +4004,12 @@
             "native_type": "std::uint64_t",
             "optional": false,
             "path": "function.end_address",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 254,
+              "method": "getFunction",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "inclusive start+size-1 for size>0 else start; unsigned wrap possible"
           },
           {
             "lua": "exact UInt64",
@@ -3976,7 +4019,12 @@
             "native_type": "std::uint64_t",
             "optional": false,
             "path": "function.size",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 254,
+              "method": "getFunction",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "Funcdata getSize when available; fallback positive getBytesConsumed cast uint64 or zero; differs from listFunctions next-entry gap"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -3986,7 +4034,12 @@
             "native_type": "std::string",
             "optional": false,
             "path": "function.namespace_name",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 254,
+              "method": "getFunction",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "not assigned by getFunction; retain model initializer empty; not measured metadata or durable identity"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -3996,7 +4049,12 @@
             "native_type": "std::string",
             "optional": false,
             "path": "function.prototype",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 254,
+              "method": "getFunction",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "not assigned by getFunction; retain model initializer empty; not measured metadata or durable identity"
           },
           {
             "lua": "boolean (preserve false)",
@@ -4006,7 +4064,12 @@
             "native_type": "bool",
             "optional": false,
             "path": "function.is_thunk",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 254,
+              "method": "getFunction",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "not assigned by getFunction; retain model initializer false; not measured metadata or durable identity"
           },
           {
             "lua": "checked Lua integer (std::uint32_t)",
@@ -4016,7 +4079,12 @@
             "native_type": "std::uint32_t",
             "optional": false,
             "path": "function.parameter_count",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 254,
+              "method": "getFunction",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "not assigned by getFunction; retain model initializer 0; not measured metadata or durable identity"
           }
         ],
         "lua": "GetFunctionResponse table/enum; resolve in types/enums",
@@ -4377,6 +4445,24 @@
           "path": "python/src/libghidra/local.py"
         }
       },
+      "record_field_reviews": [
+        {
+          "assigned_fields": [
+            "address",
+            "disassembly",
+            "length",
+            "mnemonic",
+            "operand_text"
+          ],
+          "body_sha256": "def7faa4671a51c13bd6bf2bb4f41e6b8e87c0feb8992092ab442906cdcb48c8",
+          "default_only_fields": [],
+          "line": 520,
+          "method": "getInstruction",
+          "model": "InstructionRecord",
+          "path": "cpp/src/local_arch_adapter.cpp",
+          "qualification": "all declared record fields accounted against producer; runtime fixtures unqualified"
+        }
+      ],
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
@@ -4407,7 +4493,12 @@
             "native_type": "std::uint64_t",
             "optional": false,
             "path": "instruction.address",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 520,
+              "method": "getInstruction",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "exact requested decode address; list advances by previous decoded length"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -4417,7 +4508,12 @@
             "native_type": "std::string",
             "optional": false,
             "path": "instruction.mnemonic",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 520,
+              "method": "getInstruction",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "StringAssemblyEmit mnemonic from printAssembly"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -4427,7 +4523,12 @@
             "native_type": "std::string",
             "optional": false,
             "path": "instruction.operand_text",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 520,
+              "method": "getInstruction",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "StringAssemblyEmit body, may be empty"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -4437,7 +4538,12 @@
             "native_type": "std::string",
             "optional": false,
             "path": "instruction.disassembly",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 520,
+              "method": "getInstruction",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "mnemonic plus one space and operand_text only when body nonempty"
           },
           {
             "lua": "checked Lua integer (std::uint32_t)",
@@ -4447,7 +4553,12 @@
             "native_type": "std::uint32_t",
             "optional": false,
             "path": "instruction.length",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 520,
+              "method": "getInstruction",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "positive signed int4 printAssembly result cast uint32; len<=0 yields absent, not zero-length record"
           }
         ],
         "lua": "GetInstructionResponse table/enum; resolve in types/enums",
@@ -5148,6 +5259,31 @@
           "path": "python/src/libghidra/local.py"
         }
       },
+      "record_field_reviews": [
+        {
+          "assigned_fields": [
+            "address",
+            "full_name",
+            "is_primary",
+            "name",
+            "type"
+          ],
+          "body_sha256": "8ace80984323c8fa29e5b25b05c10763851933ddcf1e93e5520573e9140ee5b9",
+          "default_only_fields": [
+            "is_dynamic",
+            "is_external",
+            "is_external_entry_point",
+            "namespace_name",
+            "source",
+            "symbol_id"
+          ],
+          "line": 344,
+          "method": "getSymbol",
+          "model": "SymbolRecord",
+          "path": "cpp/src/local_arch_adapter.cpp",
+          "qualification": "all declared record fields accounted against producer; runtime fixtures unqualified"
+        }
+      ],
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
@@ -5178,7 +5314,12 @@
             "native_type": "std::uint64_t",
             "optional": false,
             "path": "symbol.symbol_id",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 344,
+              "method": "getSymbol",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "not assigned by getSymbol; retain model initializer 0; not measured metadata or durable identity"
           },
           {
             "lua": "exact UInt64",
@@ -5188,7 +5329,12 @@
             "native_type": "std::uint64_t",
             "optional": false,
             "path": "symbol.address",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 344,
+              "method": "getSymbol",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "requested address copied after findAddr lookup; not necessarily symbol map-entry start"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -5198,7 +5344,12 @@
             "native_type": "std::string",
             "optional": false,
             "path": "symbol.name",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 344,
+              "method": "getSymbol",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "found symbol name unchanged"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -5208,7 +5359,12 @@
             "native_type": "std::string",
             "optional": false,
             "path": "symbol.full_name",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 344,
+              "method": "getSymbol",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "same name; no namespace qualification"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -5218,7 +5374,12 @@
             "native_type": "std::string",
             "optional": false,
             "path": "symbol.type",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 344,
+              "method": "getSymbol",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "function if FunctionSymbol cast succeeds else label"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -5228,7 +5389,12 @@
             "native_type": "std::string",
             "optional": false,
             "path": "symbol.namespace_name",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 344,
+              "method": "getSymbol",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "not assigned by getSymbol; retain model initializer empty; not measured metadata or durable identity"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -5238,7 +5404,12 @@
             "native_type": "std::string",
             "optional": false,
             "path": "symbol.source",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 344,
+              "method": "getSymbol",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "not assigned by getSymbol; retain model initializer empty; not measured metadata or durable identity"
           },
           {
             "lua": "boolean (preserve false)",
@@ -5248,7 +5419,12 @@
             "native_type": "bool",
             "optional": false,
             "path": "symbol.is_primary",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 344,
+              "method": "getSymbol",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "literal true"
           },
           {
             "lua": "boolean (preserve false)",
@@ -5258,7 +5434,12 @@
             "native_type": "bool",
             "optional": false,
             "path": "symbol.is_external",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 344,
+              "method": "getSymbol",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "not assigned by getSymbol; retain model initializer false; not measured metadata or durable identity"
           },
           {
             "lua": "boolean (preserve false)",
@@ -5268,7 +5449,12 @@
             "native_type": "bool",
             "optional": false,
             "path": "symbol.is_dynamic",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 344,
+              "method": "getSymbol",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "not assigned by getSymbol; retain model initializer false; not measured metadata or durable identity"
           },
           {
             "lua": "boolean (preserve false)",
@@ -5278,7 +5464,12 @@
             "native_type": "bool",
             "optional": false,
             "path": "symbol.is_external_entry_point",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 344,
+              "method": "getSymbol",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "not assigned by getSymbol; retain model initializer false; not measured metadata or durable identity"
           }
         ],
         "lua": "GetSymbolResponse table/enum; resolve in types/enums",
@@ -8479,6 +8670,29 @@
           "path": "python/src/libghidra/local.py"
         }
       },
+      "record_field_reviews": [
+        {
+          "assigned_fields": [
+            "end_address",
+            "entry_address",
+            "name",
+            "size",
+            "start_address"
+          ],
+          "body_sha256": "da142fd4dfae8bbf5c6d261469109727748a5295cf464f01ab6530801b5ea2de",
+          "default_only_fields": [
+            "is_thunk",
+            "namespace_name",
+            "parameter_count",
+            "prototype"
+          ],
+          "line": 188,
+          "method": "listFunctions",
+          "model": "FunctionRecord",
+          "path": "cpp/src/local_arch_adapter.cpp",
+          "qualification": "all declared record fields accounted against producer; runtime fixtures unqualified"
+        }
+      ],
       "request": [
         {
           "binding_default": "0",
@@ -8533,7 +8747,12 @@
             "native_type": "std::uint64_t",
             "optional": false,
             "path": "functions.entry_address",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 188,
+              "method": "listFunctions",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "mapped FunctionSymbol entry selected before paging; exact native address"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -8543,7 +8762,12 @@
             "native_type": "std::string",
             "optional": false,
             "path": "functions.name",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 188,
+              "method": "listFunctions",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "FunctionSymbol name copied unchanged"
           },
           {
             "lua": "exact UInt64",
@@ -8553,7 +8777,12 @@
             "native_type": "std::uint64_t",
             "optional": false,
             "path": "functions.start_address",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 188,
+              "method": "listFunctions",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "same mapped entry as entry_address, not independently computed body minimum"
           },
           {
             "lua": "exact UInt64",
@@ -8563,7 +8792,12 @@
             "native_type": "std::uint64_t",
             "optional": false,
             "path": "functions.end_address",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 188,
+              "method": "listFunctions",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "inclusive start+size-1 if size>0 else start; native uint64 arithmetic may wrap"
           },
           {
             "lua": "exact UInt64",
@@ -8573,7 +8807,12 @@
             "native_type": "std::uint64_t",
             "optional": false,
             "path": "functions.size",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 188,
+              "method": "listFunctions",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "gap to next strictly greater function entry in unfiltered traversal; last/non-increasing successor uses positive symbol footprint or zero; not measured body extent"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -8583,7 +8822,12 @@
             "native_type": "std::string",
             "optional": false,
             "path": "functions.namespace_name",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 188,
+              "method": "listFunctions",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "not assigned by listFunctions; retain model initializer empty; not measured metadata or durable identity"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -8593,7 +8837,12 @@
             "native_type": "std::string",
             "optional": false,
             "path": "functions.prototype",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 188,
+              "method": "listFunctions",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "not assigned by listFunctions; retain model initializer empty; not measured metadata or durable identity"
           },
           {
             "lua": "boolean (preserve false)",
@@ -8603,7 +8852,12 @@
             "native_type": "bool",
             "optional": false,
             "path": "functions.is_thunk",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 188,
+              "method": "listFunctions",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "not assigned by listFunctions; retain model initializer false; not measured metadata or durable identity"
           },
           {
             "lua": "checked Lua integer (std::uint32_t)",
@@ -8613,7 +8867,12 @@
             "native_type": "std::uint32_t",
             "optional": false,
             "path": "functions.parameter_count",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 188,
+              "method": "listFunctions",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "not assigned by listFunctions; retain model initializer 0; not measured metadata or durable identity"
           }
         ],
         "lua": "ListFunctionsResponse table/enum; resolve in types/enums",
@@ -8894,6 +9153,24 @@
           "path": "python/src/libghidra/local.py"
         }
       },
+      "record_field_reviews": [
+        {
+          "assigned_fields": [
+            "address",
+            "disassembly",
+            "length",
+            "mnemonic",
+            "operand_text"
+          ],
+          "body_sha256": "def7faa4671a51c13bd6bf2bb4f41e6b8e87c0feb8992092ab442906cdcb48c8",
+          "default_only_fields": [],
+          "line": 520,
+          "method": "getInstruction",
+          "model": "InstructionRecord",
+          "path": "cpp/src/local_arch_adapter.cpp",
+          "qualification": "all declared record fields accounted against producer; runtime fixtures unqualified"
+        }
+      ],
       "request": [
         {
           "binding_default": "0",
@@ -8948,7 +9225,12 @@
             "native_type": "std::uint64_t",
             "optional": false,
             "path": "instructions.address",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 520,
+              "method": "getInstruction",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "exact requested decode address; list advances by previous decoded length"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -8958,7 +9240,12 @@
             "native_type": "std::string",
             "optional": false,
             "path": "instructions.mnemonic",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 520,
+              "method": "getInstruction",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "StringAssemblyEmit mnemonic from printAssembly"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -8968,7 +9255,12 @@
             "native_type": "std::string",
             "optional": false,
             "path": "instructions.operand_text",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 520,
+              "method": "getInstruction",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "StringAssemblyEmit body, may be empty"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -8978,7 +9270,12 @@
             "native_type": "std::string",
             "optional": false,
             "path": "instructions.disassembly",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 520,
+              "method": "getInstruction",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "mnemonic plus one space and operand_text only when body nonempty"
           },
           {
             "lua": "checked Lua integer (std::uint32_t)",
@@ -8988,7 +9285,12 @@
             "native_type": "std::uint32_t",
             "optional": false,
             "path": "instructions.length",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 520,
+              "method": "getInstruction",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "positive signed int4 printAssembly result cast uint32; len<=0 yields absent, not zero-length record"
           }
         ],
         "lua": "ListInstructionsResponse table/enum; resolve in types/enums",
@@ -9120,6 +9422,29 @@
           "path": "python/src/libghidra/local.py"
         }
       },
+      "record_field_reviews": [
+        {
+          "assigned_fields": [
+            "end_address",
+            "entry_address",
+            "name",
+            "size",
+            "start_address"
+          ],
+          "body_sha256": "da142fd4dfae8bbf5c6d261469109727748a5295cf464f01ab6530801b5ea2de",
+          "default_only_fields": [
+            "is_thunk",
+            "namespace_name",
+            "parameter_count",
+            "prototype"
+          ],
+          "line": 188,
+          "method": "listFunctions",
+          "model": "FunctionRecord",
+          "path": "cpp/src/local_arch_adapter.cpp",
+          "qualification": "all declared record fields accounted against producer; runtime fixtures unqualified"
+        }
+      ],
       "request": [
         {
           "binding_default": "0",
@@ -9174,7 +9499,12 @@
             "native_type": "std::uint64_t",
             "optional": false,
             "path": "functions.entry_address",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 188,
+              "method": "listFunctions",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "mapped FunctionSymbol entry selected before paging; exact native address"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -9184,7 +9514,12 @@
             "native_type": "std::string",
             "optional": false,
             "path": "functions.name",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 188,
+              "method": "listFunctions",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "FunctionSymbol name copied unchanged"
           },
           {
             "lua": "exact UInt64",
@@ -9194,7 +9529,12 @@
             "native_type": "std::uint64_t",
             "optional": false,
             "path": "functions.start_address",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 188,
+              "method": "listFunctions",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "same mapped entry as entry_address, not independently computed body minimum"
           },
           {
             "lua": "exact UInt64",
@@ -9204,7 +9544,12 @@
             "native_type": "std::uint64_t",
             "optional": false,
             "path": "functions.end_address",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 188,
+              "method": "listFunctions",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "inclusive start+size-1 if size>0 else start; native uint64 arithmetic may wrap"
           },
           {
             "lua": "exact UInt64",
@@ -9214,7 +9559,12 @@
             "native_type": "std::uint64_t",
             "optional": false,
             "path": "functions.size",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 188,
+              "method": "listFunctions",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "gap to next strictly greater function entry in unfiltered traversal; last/non-increasing successor uses positive symbol footprint or zero; not measured body extent"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -9224,7 +9574,12 @@
             "native_type": "std::string",
             "optional": false,
             "path": "functions.namespace_name",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 188,
+              "method": "listFunctions",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "not assigned by listFunctions; retain model initializer empty; not measured metadata or durable identity"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -9234,7 +9589,12 @@
             "native_type": "std::string",
             "optional": false,
             "path": "functions.prototype",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 188,
+              "method": "listFunctions",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "not assigned by listFunctions; retain model initializer empty; not measured metadata or durable identity"
           },
           {
             "lua": "boolean (preserve false)",
@@ -9244,7 +9604,12 @@
             "native_type": "bool",
             "optional": false,
             "path": "functions.is_thunk",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 188,
+              "method": "listFunctions",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "not assigned by listFunctions; retain model initializer false; not measured metadata or durable identity"
           },
           {
             "lua": "checked Lua integer (std::uint32_t)",
@@ -9254,7 +9619,12 @@
             "native_type": "std::uint32_t",
             "optional": false,
             "path": "functions.parameter_count",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 188,
+              "method": "listFunctions",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "not assigned by listFunctions; retain model initializer 0; not measured metadata or durable identity"
           }
         ],
         "lua": "ListFunctionsResponse table/enum; resolve in types/enums",
@@ -9542,6 +9912,31 @@
           "path": "python/src/libghidra/local.py"
         }
       },
+      "record_field_reviews": [
+        {
+          "assigned_fields": [
+            "end_address",
+            "is_execute",
+            "is_initialized",
+            "is_read",
+            "name",
+            "size",
+            "source_name",
+            "start_address"
+          ],
+          "body_sha256": "131a380a91c118cdd8e43aa64c1fd487ff8a4bdece7c4fadf61b2e964ee9c79f",
+          "default_only_fields": [
+            "comment",
+            "is_volatile",
+            "is_write"
+          ],
+          "line": 749,
+          "method": "listMemoryBlocks",
+          "model": "MemoryBlockRecord",
+          "path": "cpp/src/local_arch_adapter.cpp",
+          "qualification": "all declared record fields accounted against producer; runtime fixtures unqualified"
+        }
+      ],
       "request": [
         {
           "binding_default": "100",
@@ -9580,7 +9975,12 @@
             "native_type": "std::string",
             "optional": false,
             "path": "blocks.name",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 749,
+              "method": "listMemoryBlocks",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "default code address-space name; not native segment label"
           },
           {
             "lua": "exact UInt64",
@@ -9590,7 +9990,12 @@
             "native_type": "std::uint64_t",
             "optional": false,
             "path": "blocks.start_address",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 749,
+              "method": "listMemoryBlocks",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "literal zero"
           },
           {
             "lua": "exact UInt64",
@@ -9600,7 +10005,12 @@
             "native_type": "std::uint64_t",
             "optional": false,
             "path": "blocks.end_address",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 749,
+              "method": "listMemoryBlocks",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "default code-space getHighest inclusive address"
           },
           {
             "lua": "exact UInt64",
@@ -9610,7 +10020,12 @@
             "native_type": "std::uint64_t",
             "optional": false,
             "path": "blocks.size",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 749,
+              "method": "listMemoryBlocks",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "end_address+1 in uint64; highest UINT64_MAX wraps size to zero"
           },
           {
             "lua": "boolean (preserve false)",
@@ -9620,7 +10035,12 @@
             "native_type": "bool",
             "optional": false,
             "path": "blocks.is_read",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 749,
+              "method": "listMemoryBlocks",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "literal true"
           },
           {
             "lua": "boolean (preserve false)",
@@ -9630,7 +10050,12 @@
             "native_type": "bool",
             "optional": false,
             "path": "blocks.is_write",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 749,
+              "method": "listMemoryBlocks",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "not assigned by listMemoryBlocks; retain model initializer false; not measured metadata or durable identity"
           },
           {
             "lua": "boolean (preserve false)",
@@ -9640,7 +10065,12 @@
             "native_type": "bool",
             "optional": false,
             "path": "blocks.is_execute",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 749,
+              "method": "listMemoryBlocks",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "literal true"
           },
           {
             "lua": "boolean (preserve false)",
@@ -9650,7 +10080,12 @@
             "native_type": "bool",
             "optional": false,
             "path": "blocks.is_volatile",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 749,
+              "method": "listMemoryBlocks",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "not assigned by listMemoryBlocks; retain model initializer false; not measured metadata or durable identity"
           },
           {
             "lua": "boolean (preserve false)",
@@ -9660,7 +10095,12 @@
             "native_type": "bool",
             "optional": false,
             "path": "blocks.is_initialized",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 749,
+              "method": "listMemoryBlocks",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "literal true"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -9670,7 +10110,12 @@
             "native_type": "std::string",
             "optional": false,
             "path": "blocks.source_name",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 749,
+              "method": "listMemoryBlocks",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "literal raw; not detected source file name"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -9680,7 +10125,12 @@
             "native_type": "std::string",
             "optional": false,
             "path": "blocks.comment",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 749,
+              "method": "listMemoryBlocks",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "not assigned by listMemoryBlocks; retain model initializer empty; not measured metadata or durable identity"
           }
         ],
         "lua": "ListMemoryBlocksResponse table/enum; resolve in types/enums",
@@ -10635,6 +11085,31 @@
           "path": "python/src/libghidra/local.py"
         }
       },
+      "record_field_reviews": [
+        {
+          "assigned_fields": [
+            "address",
+            "full_name",
+            "is_primary",
+            "name",
+            "symbol_id",
+            "type"
+          ],
+          "body_sha256": "cbe605927c68863c9acc494cbd4f052c413713dd962ded881160cbfb3dca963c",
+          "default_only_fields": [
+            "is_dynamic",
+            "is_external",
+            "is_external_entry_point",
+            "namespace_name",
+            "source"
+          ],
+          "line": 297,
+          "method": "listSymbols",
+          "model": "SymbolRecord",
+          "path": "cpp/src/local_arch_adapter.cpp",
+          "qualification": "all declared record fields accounted against producer; runtime fixtures unqualified"
+        }
+      ],
       "request": [
         {
           "binding_default": "0",
@@ -10689,7 +11164,12 @@
             "native_type": "std::uint64_t",
             "optional": false,
             "path": "symbols.symbol_id",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 297,
+              "method": "listSymbols",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "zero-based uint64 counter incremented AFTER address filtering but BEFORE pagination; restarts each request, not durable native ID"
           },
           {
             "lua": "exact UInt64",
@@ -10699,7 +11179,12 @@
             "native_type": "std::uint64_t",
             "optional": false,
             "path": "symbols.address",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 297,
+              "method": "listSymbols",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "mapped symbol address, not dynamic storage hash"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -10709,7 +11194,12 @@
             "native_type": "std::string",
             "optional": false,
             "path": "symbols.name",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 297,
+              "method": "listSymbols",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "symbol name unchanged"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -10719,7 +11209,12 @@
             "native_type": "std::string",
             "optional": false,
             "path": "symbols.full_name",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 297,
+              "method": "listSymbols",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "same sym->getName as name; not qualified namespace expansion"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -10729,7 +11224,12 @@
             "native_type": "std::string",
             "optional": false,
             "path": "symbols.type",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 297,
+              "method": "listSymbols",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "literal function if FunctionSymbol dynamic cast succeeds, otherwise label"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -10739,7 +11239,12 @@
             "native_type": "std::string",
             "optional": false,
             "path": "symbols.namespace_name",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 297,
+              "method": "listSymbols",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "not assigned by listSymbols; retain model initializer empty; not measured metadata or durable identity"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -10749,7 +11254,12 @@
             "native_type": "std::string",
             "optional": false,
             "path": "symbols.source",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 297,
+              "method": "listSymbols",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "not assigned by listSymbols; retain model initializer empty; not measured metadata or durable identity"
           },
           {
             "lua": "boolean (preserve false)",
@@ -10759,7 +11269,12 @@
             "native_type": "bool",
             "optional": false,
             "path": "symbols.is_primary",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 297,
+              "method": "listSymbols",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "literal true for every emitted symbol, not analyzed primary distinction"
           },
           {
             "lua": "boolean (preserve false)",
@@ -10769,7 +11284,12 @@
             "native_type": "bool",
             "optional": false,
             "path": "symbols.is_external",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 297,
+              "method": "listSymbols",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "not assigned by listSymbols; retain model initializer false; not measured metadata or durable identity"
           },
           {
             "lua": "boolean (preserve false)",
@@ -10779,7 +11299,12 @@
             "native_type": "bool",
             "optional": false,
             "path": "symbols.is_dynamic",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 297,
+              "method": "listSymbols",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "not assigned by listSymbols; retain model initializer false; not measured metadata or durable identity"
           },
           {
             "lua": "boolean (preserve false)",
@@ -10789,7 +11314,12 @@
             "native_type": "bool",
             "optional": false,
             "path": "symbols.is_external_entry_point",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 297,
+              "method": "listSymbols",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "not assigned by listSymbols; retain model initializer false; not measured metadata or durable identity"
           }
         ],
         "lua": "ListSymbolsResponse table/enum; resolve in types/enums",
@@ -27194,51 +27724,6 @@
         "path": "function"
       },
       {
-        "native_type": "std::uint64_t",
-        "operation": "GetFunction",
-        "path": "function.entry_address"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "GetFunction",
-        "path": "function.name"
-      },
-      {
-        "native_type": "std::uint64_t",
-        "operation": "GetFunction",
-        "path": "function.start_address"
-      },
-      {
-        "native_type": "std::uint64_t",
-        "operation": "GetFunction",
-        "path": "function.end_address"
-      },
-      {
-        "native_type": "std::uint64_t",
-        "operation": "GetFunction",
-        "path": "function.size"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "GetFunction",
-        "path": "function.namespace_name"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "GetFunction",
-        "path": "function.prototype"
-      },
-      {
-        "native_type": "bool",
-        "operation": "GetFunction",
-        "path": "function.is_thunk"
-      },
-      {
-        "native_type": "std::uint32_t",
-        "operation": "GetFunction",
-        "path": "function.parameter_count"
-      },
-      {
         "native_type": "std::optional<FunctionSignatureRecord>",
         "operation": "GetFunctionSignature",
         "path": "signature"
@@ -27315,31 +27800,6 @@
       },
       {
         "native_type": "std::uint64_t",
-        "operation": "GetInstruction",
-        "path": "instruction.address"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "GetInstruction",
-        "path": "instruction.mnemonic"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "GetInstruction",
-        "path": "instruction.operand_text"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "GetInstruction",
-        "path": "instruction.disassembly"
-      },
-      {
-        "native_type": "std::uint32_t",
-        "operation": "GetInstruction",
-        "path": "instruction.length"
-      },
-      {
-        "native_type": "std::uint64_t",
         "operation": "GetRevision",
         "path": "program_id"
       },
@@ -27402,61 +27862,6 @@
         "native_type": "std::optional<SymbolRecord>",
         "operation": "GetSymbol",
         "path": "symbol"
-      },
-      {
-        "native_type": "std::uint64_t",
-        "operation": "GetSymbol",
-        "path": "symbol.symbol_id"
-      },
-      {
-        "native_type": "std::uint64_t",
-        "operation": "GetSymbol",
-        "path": "symbol.address"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "GetSymbol",
-        "path": "symbol.name"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "GetSymbol",
-        "path": "symbol.full_name"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "GetSymbol",
-        "path": "symbol.type"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "GetSymbol",
-        "path": "symbol.namespace_name"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "GetSymbol",
-        "path": "symbol.source"
-      },
-      {
-        "native_type": "bool",
-        "operation": "GetSymbol",
-        "path": "symbol.is_primary"
-      },
-      {
-        "native_type": "bool",
-        "operation": "GetSymbol",
-        "path": "symbol.is_external"
-      },
-      {
-        "native_type": "bool",
-        "operation": "GetSymbol",
-        "path": "symbol.is_dynamic"
-      },
-      {
-        "native_type": "bool",
-        "operation": "GetSymbol",
-        "path": "symbol.is_external_entry_point"
       },
       {
         "native_type": "std::optional<TypeRecord>",
@@ -27799,79 +28204,9 @@
         "path": "functions"
       },
       {
-        "native_type": "std::uint64_t",
-        "operation": "ListFunctions",
-        "path": "functions.entry_address"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "ListFunctions",
-        "path": "functions.name"
-      },
-      {
-        "native_type": "std::uint64_t",
-        "operation": "ListFunctions",
-        "path": "functions.start_address"
-      },
-      {
-        "native_type": "std::uint64_t",
-        "operation": "ListFunctions",
-        "path": "functions.end_address"
-      },
-      {
-        "native_type": "std::uint64_t",
-        "operation": "ListFunctions",
-        "path": "functions.size"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "ListFunctions",
-        "path": "functions.namespace_name"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "ListFunctions",
-        "path": "functions.prototype"
-      },
-      {
-        "native_type": "bool",
-        "operation": "ListFunctions",
-        "path": "functions.is_thunk"
-      },
-      {
-        "native_type": "std::uint32_t",
-        "operation": "ListFunctions",
-        "path": "functions.parameter_count"
-      },
-      {
         "native_type": "std::vector<InstructionRecord>",
         "operation": "ListInstructions",
         "path": "instructions"
-      },
-      {
-        "native_type": "std::uint64_t",
-        "operation": "ListInstructions",
-        "path": "instructions.address"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "ListInstructions",
-        "path": "instructions.mnemonic"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "ListInstructions",
-        "path": "instructions.operand_text"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "ListInstructions",
-        "path": "instructions.disassembly"
-      },
-      {
-        "native_type": "std::uint32_t",
-        "operation": "ListInstructions",
-        "path": "instructions.length"
       },
       {
         "native_type": "std::vector<FunctionRecord>",
@@ -27879,109 +28214,9 @@
         "path": "functions"
       },
       {
-        "native_type": "std::uint64_t",
-        "operation": "ListLeafFunctions",
-        "path": "functions.entry_address"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "ListLeafFunctions",
-        "path": "functions.name"
-      },
-      {
-        "native_type": "std::uint64_t",
-        "operation": "ListLeafFunctions",
-        "path": "functions.start_address"
-      },
-      {
-        "native_type": "std::uint64_t",
-        "operation": "ListLeafFunctions",
-        "path": "functions.end_address"
-      },
-      {
-        "native_type": "std::uint64_t",
-        "operation": "ListLeafFunctions",
-        "path": "functions.size"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "ListLeafFunctions",
-        "path": "functions.namespace_name"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "ListLeafFunctions",
-        "path": "functions.prototype"
-      },
-      {
-        "native_type": "bool",
-        "operation": "ListLeafFunctions",
-        "path": "functions.is_thunk"
-      },
-      {
-        "native_type": "std::uint32_t",
-        "operation": "ListLeafFunctions",
-        "path": "functions.parameter_count"
-      },
-      {
         "native_type": "std::vector<MemoryBlockRecord>",
         "operation": "ListMemoryBlocks",
         "path": "blocks"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "ListMemoryBlocks",
-        "path": "blocks.name"
-      },
-      {
-        "native_type": "std::uint64_t",
-        "operation": "ListMemoryBlocks",
-        "path": "blocks.start_address"
-      },
-      {
-        "native_type": "std::uint64_t",
-        "operation": "ListMemoryBlocks",
-        "path": "blocks.end_address"
-      },
-      {
-        "native_type": "std::uint64_t",
-        "operation": "ListMemoryBlocks",
-        "path": "blocks.size"
-      },
-      {
-        "native_type": "bool",
-        "operation": "ListMemoryBlocks",
-        "path": "blocks.is_read"
-      },
-      {
-        "native_type": "bool",
-        "operation": "ListMemoryBlocks",
-        "path": "blocks.is_write"
-      },
-      {
-        "native_type": "bool",
-        "operation": "ListMemoryBlocks",
-        "path": "blocks.is_execute"
-      },
-      {
-        "native_type": "bool",
-        "operation": "ListMemoryBlocks",
-        "path": "blocks.is_volatile"
-      },
-      {
-        "native_type": "bool",
-        "operation": "ListMemoryBlocks",
-        "path": "blocks.is_initialized"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "ListMemoryBlocks",
-        "path": "blocks.source_name"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "ListMemoryBlocks",
-        "path": "blocks.comment"
       },
       {
         "native_type": "std::vector<PerfBenchmarkRecord>",
@@ -28042,61 +28277,6 @@
         "native_type": "std::vector<SymbolRecord>",
         "operation": "ListSymbols",
         "path": "symbols"
-      },
-      {
-        "native_type": "std::uint64_t",
-        "operation": "ListSymbols",
-        "path": "symbols.symbol_id"
-      },
-      {
-        "native_type": "std::uint64_t",
-        "operation": "ListSymbols",
-        "path": "symbols.address"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "ListSymbols",
-        "path": "symbols.name"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "ListSymbols",
-        "path": "symbols.full_name"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "ListSymbols",
-        "path": "symbols.type"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "ListSymbols",
-        "path": "symbols.namespace_name"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "ListSymbols",
-        "path": "symbols.source"
-      },
-      {
-        "native_type": "bool",
-        "operation": "ListSymbols",
-        "path": "symbols.is_primary"
-      },
-      {
-        "native_type": "bool",
-        "operation": "ListSymbols",
-        "path": "symbols.is_external"
-      },
-      {
-        "native_type": "bool",
-        "operation": "ListSymbols",
-        "path": "symbols.is_dynamic"
-      },
-      {
-        "native_type": "bool",
-        "operation": "ListSymbols",
-        "path": "symbols.is_external_entry_point"
       },
       {
         "native_type": "std::vector<TypeAliasRecord>",
