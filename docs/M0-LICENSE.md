@@ -4,6 +4,36 @@ Research for [[card:card-a-a]], 2026-10-15. This is a factual license/authority
 assessment, not legal assurance or permission to publish. The operator has
 selected MIT for original wrapper code/documentation (see update below). No binding was implemented and no permission request was sent.
 
+## Current disposition — DONE for project planning
+
+The operator explicitly instructed [[card:card-a-a]] to accept the existing
+upstream license as valid **for project planning** and close this licensing
+research DONE on that basis. This direct card-specific instruction is the
+provenance of this disposition; it is not a newly discovered legal opinion or
+rightsholder grant. The prior planning blocker and requests to repeat the same
+applicability/permission decision are superseded. No further investigation or
+permission answer is required to complete this research card.
+
+MIT remains the settled license for original wrapper code/documentation.
+Operator acceptance is **not legal clearance, compatibility proof, new
+rightsholder permission, or a grant to relicense upstream**. It does not authorize
+publication, sending a permission request, or pushing. Preserve applicable
+third-party licenses, attribution, notices and source obligations. The recorded
+HOS/BFD concerns and incomplete actual transitive/link inventory remain factual
+qualifications for downstream packaging/qualification, not renewed blockers to
+this card's planning closure. Independent technical prerequisites are not marked
+passed by this disposition.
+
+Owner handoff: treat licensing research as DONE by operator disposition; propagate
+this settled planning status to downstream work without resetting this card,
+reopening the same permission question, or changing unrelated [[card:card-a-c]].
+The historical research below, including quotations, source manifest and earlier
+blocked assessments, is retained in full as evidence of what was known and why.
+Its instructions describing an open pre-implementation planning gate are
+historical and superseded **for planning** by this disposition. They must not be
+read as current completion requirements. No factual derivation or compatibility
+uncertainty is rewritten as a proven exemption.
+
 ## Owner MIT decision — current authority update
 
 Inspected owner commit `eeb4315816046819c92902a2db1e2e1a8082c66e`, root

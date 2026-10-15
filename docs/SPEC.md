@@ -288,12 +288,15 @@ Upstream's Human-Origin Source License v1.0 explicitly includes bindings/wrapper
 in its derivative definition **when** copied, materially derived or substantially
 informed by protected expression (§§1.14–1.15); mere compatibility/public behavior
 is not enough. Unmodified dependency use is expressly allowed (§1.10, §2.1).
-Resolve applicability to this proposed integration and any required permission
-**before implementation**, not merely publication. This is an open factual
-determination, not a blanket prohibition or automatic wrapper exemption.
+The operator accepted the existing upstream license as valid **for project
+planning**, closing the licensing research by disposition; see
+[M0-LICENSE.md](M0-LICENSE.md). This supersedes the earlier open planning gate,
+not the factual uncertainty: it is not legal clearance, compatibility proof,
+new rightsholder permission or an automatic wrapper exemption. Do not repeat
+the same applicability/permission question as a research-completion blocker.
 The operator selected MIT for this wrapper's original code and documentation;
 see [LICENSE](../LICENSE). Third-party components retain their own licenses.
-Record intended use and the upstream applicability determination at M0. Distribution must
+Record intended use and retain the operator planning disposition at M0. Distribution must
 preserve notices, provide exact applicable license and corresponding source
 links, visible author/origin attribution and third-party notices (§§3–4, §8).
 Do not include operator credentials or runtime state in source or evidence.

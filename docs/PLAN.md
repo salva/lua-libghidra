@@ -13,7 +13,11 @@ the unmodified-engine requirement; libghidra remains unchanged. Requalify fresh
 build/install/PIC, external/embedded specs and explicit-hint behavior plus
 automatic-detection controls. See [authorization](../workflows/LAUNCH.md#authorized-engine-patch-profile).
 
-Confirm baseline/platform/tier and license applicability before implementation.
+Confirm baseline/platform/tier. Licensing research is DONE by explicit operator
+disposition accepting the existing upstream license for project planning; see
+[M0-LICENSE.md](M0-LICENSE.md). This is not legal clearance, compatibility proof,
+new rightsholder permission or publication authorization. Do not reopen the same
+applicability/permission question as a planning prerequisite.
 The wrapper license is MIT (operator-selected; see [LICENSE](../LICENSE)).
 Record intended distribution, dependency sources/digests,
 spec compatibility, deterministic BFD profile and notices. Inventory every native
@@ -35,8 +39,9 @@ decompilation with expected semantics on known code. Nonempty pseudocode or an
 unsupported response is not readiness.
 
 Exit: repeatable offline inputs and positive native evidence for binary and
-analyzed fixtures; open engine/spec/licensing gates block M1 rather than waiting
-for packaging. This document does not authorize implementation.
+analyzed fixtures; open engine/spec gates block M1 rather than waiting
+for packaging. Licensing research is closed for planning by operator disposition;
+actual dependency notices/source and packaging qualification are not waived. This document does not authorize implementation.
 
 ## M1 — Build, ownership and value boundary
 
@@ -151,7 +156,8 @@ dispositions in [the index](reviews/00-INDEX.md); never invent review results.
 This writer does not spawn reviewers.
 
 Remaining operator decisions: approve two-surface/default restrictions, confirm
-upstream/platform and first release tier, confirm intended distribution and record
-upstream applicability determination. MIT is already selected for the wrapper.
+upstream/platform and first release tier, confirm intended distribution as needed
+for packaging. Upstream licensing is accepted for project planning by operator
+disposition; MIT is already selected for the wrapper.
 Technical experiments are
 objective M0/M1 gates above, not substitute operator choices.

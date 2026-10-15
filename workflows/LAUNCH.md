@@ -17,9 +17,10 @@ Do not repeat the completed document-review campaign in place of implementation.
 Use the bundled general typed development workflow. Delegate environment and
 fixture work normally; run real commands and retain evidence. Resolve ordinary
 engineering choices autonomously within the approved requirements. The existing
-M0 license applicability/distribution and engine/spec gates remain real checks:
-record the actual evidence, and raise a specific operator question only when a
-decision or permission cannot be established. Do not invent a license choice or
+M0 engine/spec gates and actual dependency-distribution obligations remain real
+checks. Licensing research is closed for planning by the operator disposition
+below; do not repeat the same applicability/permission question as a blocker.
+Record actual technical and packaging evidence. Do not invent a license choice or
 authorization to publish. Continue independent prerequisite work where possible.
 
 Work only in `/work/lua-libghidra` and container-local dependency/build paths.
@@ -59,6 +60,17 @@ installed-SDK whole-archive/PIC tests, external and embedded spec loading,
 explicit Sleigh-hint regressions and existing automatic-detection controls.
 Preserve unmodified-profile evidence and failures. Applying the patch does not
 itself pass M0 or resolve the separate license/distribution gates.
+
+## Operator disposition — licensing research DONE for planning
+
+The operator explicitly directed [[card:card-a-a]] to accept the existing upstream
+license as valid for project planning and mark licensing research DONE. This
+supersedes the earlier planning blocker, not third-party terms or factual
+uncertainties. Owner should propagate this settled disposition downstream without
+reset/restart, repeated permission investigation, or unrelated card changes.
+Preserve the full research and third-party notices. This is not legal clearance,
+compatibility proof, new rightsholder permission or upstream relicensing.
+No publication, send or push is authorized. See [report](../docs/M0-LICENSE.md).
 
 ## Wrapper license decision
 

@@ -28,5 +28,8 @@ Its [Human-Origin Source License v1.0](https://github.com/0xeb/libghidra/blob/d5
 permits unchanged dependency use and conditionally restricts derivative wrappers.
 This wrapper's original code and documentation are licensed under the
 [MIT License](LICENSE), as selected by the operator. This does not relicense
-libghidra or other third-party components. Upstream applicability remains an M0
-check; see SPEC for the distinction and distribution obligations.
+libghidra or other third-party components. The operator accepted the existing
+upstream license for project planning and closed licensing research on that
+basis; this is not legal clearance or publication authorization. See
+[the disposition and retained research](docs/M0-LICENSE.md) for qualifications
+and third-party distribution obligations.
