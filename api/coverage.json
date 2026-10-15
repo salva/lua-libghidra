@@ -16889,11 +16889,17 @@
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "helper": "RenameFunctionParameter",
+            "qualification": "source only; runtime unqualified"
+          },
           "ignored": false,
           "lua": "Lua string (no transcoding)",
           "name": "new_name",
           "native_type": "const std::string&",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "required Lua string inserted verbatim into selected parameter name then prototype text; no wrapper identifier/empty/uniqueness validation; no escaping/quoting; punctuation may affect parser, not opaque rename; prototype reconstruction loses calling convention/other metadata; success echo is request, not canonical readback; no native initializer/default grants Lua optionality; dispatched mutation invalidates generation including failed/partial calls, validation-only rejection does not; positive/negative runtime slots unqualified"
         }
       ],
       "response": {
@@ -17348,11 +17354,17 @@
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "helper": "RenameTypeEnumMember",
+            "qualification": "source only; runtime unqualified"
+          },
           "ignored": false,
           "lua": "Lua string (no transcoding)",
           "name": "new_name",
           "native_type": "const std::string&",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "required Lua string copied unchanged into selected EnumValue name; no wrapper identifier/empty/duplicate validation; all values recast uint64 and entire enum rebuilt; traversal order/ordinal and signed roundtrip stability unqualified; no native initializer/default grants Lua optionality; dispatched mutation invalidates generation including failed/partial calls, validation-only rejection does not; positive/negative runtime slots unqualified"
         }
       ],
       "response": {
@@ -17497,11 +17509,17 @@
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "helper": "RenameTypeMember",
+            "qualification": "source only; runtime unqualified"
+          },
           "ignored": false,
           "lua": "Lua string (no transcoding)",
           "name": "new_name",
           "native_type": "const std::string&",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "required Lua string copied verbatim into selected FieldDef name; no wrapper identifier/empty/uniqueness validation; whole struct reconstruction preserves other names/types and signed-int-cast offsets, not isolated rename; downstream parser acceptance and declarator fidelity unqualified; no native initializer/default grants Lua optionality; dispatched mutation invalidates generation including failed/partial calls, validation-only rejection does not; positive/negative runtime slots unqualified"
         }
       ],
       "response": {
@@ -18423,11 +18441,17 @@
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "helper": "SetFunctionParameterType",
+            "qualification": "source only; runtime unqualified"
+          },
           "ignored": false,
           "lua": "Lua string (no transcoding)",
           "name": "data_type",
           "native_type": "const std::string&",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "service key data_type binds positionally to LocalClient new_type; required Lua string inserted verbatim into selected parameter data_type then prototype text, not normalized path/ID; no wrapper type validation or escaping/quoting; parser/declarator fidelity unqualified; reconstruction loses calling convention/other metadata; success type echo is request, not canonical readback; no native initializer/default grants Lua optionality; dispatched mutation invalidates generation including failed/partial calls, validation-only rejection does not; positive/negative runtime slots unqualified"
         }
       ],
       "response": {
@@ -19196,11 +19220,17 @@
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_arch_adapter.cpp",
+            "helper": "setTypeEnumMemberComment",
+            "qualification": "source only; runtime unqualified"
+          },
           "ignored": false,
           "lua": "Lua string (no transcoding)",
           "name": "comment",
           "native_type": "const std::string&",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "required Lua string copied byte-for-byte to adapter-local normalized-name/ordinal side map; empty text is stored replacement, not delete/absence; no existence/kind/ordinal or content validation; does not write native project member metadata; persistence and NUL/non-ASCII roundtrip unqualified; aggregate mutation status ignored, revision advances even same value; binding dispatched mutation generation advances, validation-only rejection does not; positive/negative runtime slots unqualified"
         }
       ],
       "response": {
@@ -19345,11 +19375,17 @@
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "helper": "SetTypeEnumMemberValue",
+            "qualification": "source only; runtime unqualified"
+          },
           "ignored": false,
           "lua": "checked Lua integer (std::int64_t)",
           "name": "value",
           "native_type": "std::int64_t",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "required exact signed int64 Lua integer (INT64_MIN..INT64_MAX), not unsigned UInt64 reinterpretation; selected value converted to uint64 modulo 2^64 before defineEnum, retained values also recast; negative values not rejected by wrapper; response uint64-to-int64 beyond range implementation-defined, runtime roundtrip unqualified; no native initializer/default grants Lua optionality; dispatched mutation invalidates generation including failed/partial calls, validation-only rejection does not; positive/negative runtime slots unqualified"
         }
       ],
       "response": {
@@ -19485,11 +19521,17 @@
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_arch_adapter.cpp",
+            "helper": "setTypeMemberComment",
+            "qualification": "source only; runtime unqualified"
+          },
           "ignored": false,
           "lua": "Lua string (no transcoding)",
           "name": "comment",
           "native_type": "const std::string&",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "required Lua string copied byte-for-byte to adapter-local normalized-name/ordinal side map; empty text is stored replacement, not delete/absence; no existence/kind/ordinal or content validation; does not write native project member metadata; persistence and NUL/non-ASCII roundtrip unqualified; aggregate mutation status ignored, revision advances even same value; binding dispatched mutation generation advances, validation-only rejection does not; positive/negative runtime slots unqualified"
         }
       ],
       "response": {
@@ -19634,11 +19676,17 @@
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "helper": "SetTypeMemberType",
+            "qualification": "source only; runtime unqualified"
+          },
           "ignored": false,
           "lua": "Lua string (no transcoding)",
           "name": "member_type",
           "native_type": "const std::string&",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "required Lua string copied verbatim into selected FieldDef type, not normalized path/ID; no wrapper type validation; whole struct rebuilt using existing offsets narrowed to signed int; requested member size not part of this operation; downstream type parsing/layout acceptance unqualified; no native initializer/default grants Lua optionality; dispatched mutation invalidates generation including failed/partial calls, validation-only rejection does not; positive/negative runtime slots unqualified"
         }
       ],
       "response": {
@@ -30279,11 +30327,6 @@
         "reason": "direct argument consumption/default/domain review not yet independently reconciled"
       },
       {
-        "operation": "RenameFunctionParameter",
-        "path": "new_name",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
         "operation": "RenameSymbol",
         "path": "address",
         "reason": "direct argument consumption/default/domain review not yet independently reconciled"
@@ -30300,16 +30343,6 @@
       },
       {
         "operation": "RenameType",
-        "path": "new_name",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "RenameTypeEnumMember",
-        "path": "new_name",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "RenameTypeMember",
         "path": "new_name",
         "reason": "direct argument consumption/default/domain review not yet independently reconciled"
       },
@@ -30349,11 +30382,6 @@
         "reason": "direct argument consumption/default/domain review not yet independently reconciled"
       },
       {
-        "operation": "SetFunctionParameterType",
-        "path": "data_type",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
         "operation": "SetFunctionSignature",
         "path": "address",
         "reason": "direct argument consumption/default/domain review not yet independently reconciled"
@@ -30371,26 +30399,6 @@
       {
         "operation": "SetTypeAliasTarget",
         "path": "target_type",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "SetTypeEnumMemberComment",
-        "path": "comment",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "SetTypeEnumMemberValue",
-        "path": "value",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "SetTypeMemberComment",
-        "path": "comment",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "SetTypeMemberType",
-        "path": "member_type",
         "reason": "direct argument consumption/default/domain review not yet independently reconciled"
       },
       {
@@ -30733,6 +30741,10 @@
         "path": "ordinal"
       },
       {
+        "operation": "RenameFunctionParameter",
+        "path": "new_name"
+      },
+      {
         "operation": "RenameTypeEnumMember",
         "path": "type_id_or_path"
       },
@@ -30741,24 +30753,40 @@
         "path": "ordinal"
       },
       {
+        "operation": "RenameTypeEnumMember",
+        "path": "new_name"
+      },
+      {
         "operation": "RenameTypeMember",
         "path": "parent_type_id_or_path"
       },
       {
         "operation": "RenameTypeMember",
         "path": "ordinal"
+      },
+      {
+        "operation": "RenameTypeMember",
+        "path": "new_name"
       },
       {
         "operation": "SetFunctionParameterType",
         "path": "ordinal"
       },
       {
+        "operation": "SetFunctionParameterType",
+        "path": "data_type"
+      },
+      {
         "operation": "SetTypeEnumMemberComment",
         "path": "type_id_or_path"
       },
       {
         "operation": "SetTypeEnumMemberComment",
         "path": "ordinal"
+      },
+      {
+        "operation": "SetTypeEnumMemberComment",
+        "path": "comment"
       },
       {
         "operation": "SetTypeEnumMemberValue",
@@ -30769,6 +30797,10 @@
         "path": "ordinal"
       },
       {
+        "operation": "SetTypeEnumMemberValue",
+        "path": "value"
+      },
+      {
         "operation": "SetTypeMemberComment",
         "path": "parent_type_id_or_path"
       },
@@ -30777,12 +30809,20 @@
         "path": "ordinal"
       },
       {
+        "operation": "SetTypeMemberComment",
+        "path": "comment"
+      },
+      {
         "operation": "SetTypeMemberType",
         "path": "parent_type_id_or_path"
       },
       {
         "operation": "SetTypeMemberType",
         "path": "ordinal"
+      },
+      {
+        "operation": "SetTypeMemberType",
+        "path": "member_type"
       },
       {
         "operation": "WriteBytes",

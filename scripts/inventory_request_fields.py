@@ -49,6 +49,41 @@ def review_request_fields(u, operations):
         code=_code_mask(text)
         for arg in op['request']:
             nested=arg['nested_fields']
+            payloads={
+                'RenameTypeMember':('new_name','std::string field_name = (i == ordinal) ? new_name : existing[i].name;','required Lua string copied verbatim into selected FieldDef name; no wrapper identifier/empty/uniqueness validation; whole struct reconstruction preserves other names/types and signed-int-cast offsets, not isolated rename; downstream parser acceptance and declarator fidelity unqualified'),
+                'SetTypeMemberType':('member_type','std::string type_str = (i == ordinal) ? member_type : existing[i].member_type;','required Lua string copied verbatim into selected FieldDef type, not normalized path/ID; no wrapper type validation; whole struct rebuilt using existing offsets narrowed to signed int; requested member size not part of this operation; downstream type parsing/layout acceptance unqualified'),
+                'RenameTypeEnumMember':('new_name','std::string entry_name = (i == ordinal) ? new_name : existing[i].name;','required Lua string copied unchanged into selected EnumValue name; no wrapper identifier/empty/duplicate validation; all values recast uint64 and entire enum rebuilt; traversal order/ordinal and signed roundtrip stability unqualified'),
+                'SetTypeEnumMemberValue':('value','? static_cast<uint64_t>(value)','required exact signed int64 Lua integer (INT64_MIN..INT64_MAX), not unsigned UInt64 reinterpretation; selected value converted to uint64 modulo 2^64 before defineEnum, retained values also recast; negative values not rejected by wrapper; response uint64-to-int64 beyond range implementation-defined, runtime roundtrip unqualified'),
+                'RenameFunctionParameter':('new_name','sig->parameters[ordinal].name = new_name;','required Lua string inserted verbatim into selected parameter name then prototype text; no wrapper identifier/empty/uniqueness validation; no escaping/quoting; punctuation may affect parser, not opaque rename; prototype reconstruction loses calling convention/other metadata; success echo is request, not canonical readback'),
+                'SetFunctionParameterType':('data_type','sig->parameters[ordinal].data_type = new_type;','service key data_type binds positionally to LocalClient new_type; required Lua string inserted verbatim into selected parameter data_type then prototype text, not normalized path/ID; no wrapper type validation or escaping/quoting; parser/declarator fidelity unqualified; reconstruction loses calling convention/other metadata; success type echo is request, not canonical readback'),
+            }
+            if not nested and name in payloads and arg['name']==payloads[name][0]:
+                _,token,sem=payloads[name]
+                assert token in text
+                if name=='SetTypeEnumMemberValue':
+                    assert arg['native_type']=='std::int64_t'
+                    assert 'entries.push_back({existing[i].name, entry_value})' in code
+                else:
+                    assert arg['native_type']=='const std::string&'
+                if name in {'RenameFunctionParameter','SetFunctionParameterType'}:
+                    _,proto=body(source,'std::string buildPrototypeString(')
+                    assert 'proto += sig.parameters[i].data_type + " " + sig.parameters[i].name;' in proto
+                    assert 'buildPrototypeString(*sig)' in code and 'd.setPrototype(address, proto)' in code
+                arg['semantics']=sem+'; no native initializer/default grants Lua optionality; dispatched mutation invalidates generation including failed/partial calls, validation-only rejection does not; positive/negative runtime slots unqualified'
+                arg['direct_argument_review']={'consumer':LOCAL,'helper':name,'qualification':'source only; runtime unqualified'}
+                reviewed.append({'operation':name,'path':arg['name']})
+                continue
+            if not nested and name in {'SetTypeMemberComment','SetTypeEnumMemberComment'} and arg['name']=='comment':
+                consumer='setTypeMemberComment' if name=='SetTypeMemberComment' else 'setTypeEnumMemberComment'
+                assert consumer+'(name, ordinal, comment)' in code
+                _,producer=body(adapter,'ArchAdapter::'+consumer+'(')
+                store='type_member_comments_' if name=='SetTypeMemberComment' else 'type_enum_member_comments_'
+                assert store+'[{type_name, ordinal}] = comment;' in producer
+                assert arg['native_type']=='const std::string&'
+                arg['semantics']='required Lua string copied byte-for-byte to adapter-local normalized-name/ordinal side map; empty text is stored replacement, not delete/absence; no existence/kind/ordinal or content validation; does not write native project member metadata; persistence and NUL/non-ASCII roundtrip unqualified; aggregate mutation status ignored, revision advances even same value; binding dispatched mutation generation advances, validation-only rejection does not; positive/negative runtime slots unqualified'
+                arg['direct_argument_review']={'consumer':ADAPTER,'helper':consumer,'qualification':'source only; runtime unqualified'}
+                reviewed.append({'operation':name,'path':arg['name']})
+                continue
             member_edits={'DeleteTypeMember','RenameTypeMember','SetTypeMemberType','DeleteTypeEnumMember','RenameTypeEnumMember','SetTypeEnumMemberValue','SetTypeMemberComment','SetTypeEnumMemberComment'}
             parameter_edits={'RenameFunctionParameter','SetFunctionParameterType'}
             key=arg['name']

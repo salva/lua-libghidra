@@ -51,7 +51,7 @@ class InventoryTests(unittest.TestCase):
                     self.assertIn('must not be inferred',f['request_field_review']['native_absence'])
 
     def test_page_argument_domains_are_not_native_unbounded_defaults(self):
-        self.assertEqual(len(self.data['request_audit']['direct_arguments_reviewed']),98)
+        self.assertEqual(len(self.data['request_audit']['direct_arguments_reviewed']),106)
         for op in self.ops.values():
             if 'page_wrapper_review' not in op:continue
             args={a['name']:a for a in op['request']}
@@ -114,6 +114,17 @@ class InventoryTests(unittest.TestCase):
         self.assertIn('signed Lua integer',arg('RenameFunctionParameter','ordinal')['semantics'])
         self.assertIn('OUT_OF_RANGE',arg('SetFunctionParameterType','ordinal')['semantics'])
         self.assertIn('count <=INT_MAX',arg('SetFunctionParameterType','ordinal')['semantics'])
+
+    def test_mutation_payloads_distinguish_text_and_signed_values(self):
+        def sem(op,key):
+            return next(a['semantics'] for a in self.ops[op]['request'] if a['name']==key)
+        self.assertIn('INT64_MIN..INT64_MAX',sem('SetTypeEnumMemberValue','value'))
+        self.assertIn('modulo 2^64',sem('SetTypeEnumMemberValue','value'))
+        self.assertIn('not delete/absence',sem('SetTypeMemberComment','comment'))
+        self.assertIn('no escaping/quoting',sem('RenameFunctionParameter','new_name'))
+        self.assertIn('LocalClient new_type',sem('SetFunctionParameterType','data_type'))
+        self.assertIn('not normalized path/ID',sem('SetTypeMemberType','member_type'))
+        self.assertIn('whole struct reconstruction',sem('RenameTypeMember','new_name'))
 
     def test_preserved_red_reproducer(self):
         # Exact acceptance trigger from red; stronger checks below prevent treating
@@ -385,6 +396,10 @@ class InventoryTests(unittest.TestCase):
                 module.inventory(root)
             local.write_text(local_original)
             local.write_text(local_original.replace('a.setTypeMemberComment(name, ordinal, comment)', 'a.setTypeMemberComment(name, ordinal + 1, comment)'))
+            with self.assertRaises(AssertionError):
+                module.inventory(root)
+            local.write_text(local_original)
+            local.write_text(local_original.replace('? static_cast<uint64_t>(value)', '? static_cast<uint64_t>(value + 1)'))
             with self.assertRaises(AssertionError):
                 module.inventory(root)
             local.write_text(local_original)

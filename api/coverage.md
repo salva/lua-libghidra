@@ -725,3 +725,16 @@ durable identity, side-map remapping or runtime roundtrip is inferred. Dispatch
 generation versus validation-only rejection remains explicit. Direct ledger is
 98 reviewed/58 remaining; 38 tests include source-drift checks. Final grammar
 and remaining argument reviews are still open; runtime slots unqualified.
+
+## Mutation payload fields (thirty-fifth increment)
+
+Eight more direct paths reconcile selected member/enum names/types/values,
+parameter names/types, and two member comment payloads. Strings are forwarded
+without wrapper identifier/type validation or escaping: parameter payloads become
+prototype syntax, not opaque edits or canonical readback. Enum value is signed
+int64 before modulo-2^64 uint64 reconstruction; runtime signed roundtrip remains
+unqualified. Comment empty text is stored replacement, not deletion. Whole-type
+reconstruction, side-map provenance, metadata loss and dispatch generation
+limitations remain. Ledger: 106 reviewed/50 remaining. Thirty-nine tests include
+independent selected enum-value drift rejection; runtime qualification and final
+non-first-slice grammar remain open.
