@@ -1,0 +1,1765 @@
+agents:
+  analyst:
+    prompt:
+      reference: analyst
+      compactable: true
+    tools:
+      - create_card
+      - reorder_child
+      - reopen_card
+      - queue_notification
+      - get_status
+      - start_project
+      - pause_runtime
+      - resume_runtime
+      - stop_project
+      - restart_server
+      - navigate_workspace
+      - navigate_back
+      - show_config
+      - reconfigure
+      - read_runtime_events
+      - read_runtime_errors
+      - read_control_actions
+      - list_processes_tool
+      - list_agent_sessions
+      - read_agent_session
+      - cancel_card
+      - delete_card
+      - list_cards
+      - get_card
+      - get_tree
+      - list_card_versions
+      - get_card_version
+      - diff_card_versions
+      - read_record_version
+      - read
+      - view_image
+      - write
+      - edit
+      - glob
+      - grep
+      - apply_patch
+      - run_command
+      - wait_process
+      - kill_process
+      - websearch
+      - webfetch
+      - skill
+      - mcp_tool_call
+      - mcp_server_control
+      - mcp_tools
+    model_route: analyst
+    skills: true
+    session: global
+    can_create_children: true
+    record_writes:
+      - brief.md
+  oversight:
+    prompt:
+      reference: oversight
+      compactable: true
+    tools:
+      - get_status
+      - list_cards
+      - get_card
+      - get_tree
+      - list_card_versions
+      - get_card_version
+      - diff_card_versions
+      - read_record_version
+      - read
+      - glob
+      - grep
+      - read_runtime_events
+      - read_runtime_errors
+      - list_processes_tool
+      - list_agent_sessions
+      - read_agent_session
+      - queue_notification
+    model_route: oversight
+    skills: false
+    session: global
+    can_create_children: false
+    record_writes: []
+  planner:
+    prompt:
+      reference: planner
+      compactable: true
+    tools:
+      - create_card
+      - edit_card
+      - cancel_card
+      - activate_card
+      - reopen_card
+      - reorder_child
+      - list_cards
+      - get_card
+      - get_tree
+      - read
+      - write
+      - edit
+      - glob
+      - grep
+      - list_card_versions
+      - get_card_version
+      - diff_card_versions
+      - read_record_version
+      - websearch
+      - webfetch
+    model_route: planner
+    skills: false
+    session: card
+    can_create_children: true
+    record_writes:
+      - brief.md
+      - status.md
+  reviewer:
+    prompt:
+      reference: reviewer
+      compactable: true
+    tools:
+      - read
+      - view_image
+      - write
+      - edit
+      - glob
+      - grep
+      - list_card_versions
+      - get_card_version
+      - diff_card_versions
+      - read_record_version
+      - websearch
+      - webfetch
+      - skill
+    model_route: reviewer
+    skills: true
+    session: card
+    can_create_children: false
+    record_writes:
+      - review.md
+      - review-*.md
+  executor:
+    prompt:
+      reference: executor
+      compactable: true
+    tools:
+      - read
+      - view_image
+      - write
+      - edit
+      - glob
+      - grep
+      - apply_patch
+      - run_command
+      - wait_process
+      - kill_process
+      - list_card_versions
+      - get_card_version
+      - diff_card_versions
+      - read_record_version
+      - websearch
+      - webfetch
+      - skill
+      - mcp_tool_call
+      - mcp_server_control
+      - mcp_tools
+    model_route: executor
+    skills: true
+    session: card
+    can_create_children: false
+    record_writes:
+      - status.md
+analyst_agent: analyst
+oversight:
+  enabled: true
+  agent: oversight
+  interval_seconds: 7200
+models:
+  routes:
+    analyst:
+      candidates:
+        - gpt-6.1-sol
+      temperature: 0.7
+      max_tokens: 4096
+    oversight:
+      temperature: 0.2
+      max_tokens: 4096
+      candidates:
+        - gpt-6.1-sol
+    planner:
+      temperature: 0.7
+      max_tokens: 4096
+      candidates:
+        - gpt-6-astra
+    reviewer:
+      temperature: 0.2
+      max_tokens: 4096
+      candidates:
+        - gpt-6.1-sol
+    executor:
+      candidates:
+        - gpt-6.1-sol
+      temperature: 0.3
+      max_tokens: 8192
+  profiles: {}
+  equivalents: []
+  failover: {}
+providers:
+  openai-codex:
+    models:
+      - gpt-6-astra
+      - gpt-6.1-sol
+    accounts:
+      primary:
+        authProfile: openai-codex-0feb680f-17ee-4dfc-a44a-545e07389276
+        models:
+          - gpt-6-astra
+          - gpt-6.1-sol
+    capabilities:
+      transportProtocol: openai-codex-backend
+      toolsMode: native
+      exclusiveToolChoiceSupport: parallel_off
+      contextWindowTokens: 272000
+      maxOutputTokens: 32768
+      imageInput: true
+server:
+  host: 0.0.0.0
+  port: 8080
+compaction:
+  context_utilization_fraction: 0.8
+  enabled: true
+  snap: keep_straddler_verbatim
+  summarizer_candidate:
+    provider: openai-codex
+    account: primary
+    model: gpt-6.1-sol
+  tail_fraction: 0.25
+  trigger_fraction: 0.9
+card_types:
+  project:
+    permitted_child_types:
+      - goal
+      - architecture
+      - code
+      - test
+      - doc
+      - data
+      - research
+      - ops
+    records:
+      brief.md:
+        format: markdown
+        schema: card-brief.v1
+        bootstrap: true
+      status.md:
+        format: markdown
+        schema: work-status.v1
+        bootstrap: false
+      review.md:
+        format: markdown
+        schema: work-review.v1
+        bootstrap: false
+    workflow:
+      notification_recipient: planner
+      entries:
+        BACKLOG:
+          node: plan
+        CHANGED:
+          node: plan
+        BLOCKED:
+          node: plan
+        STOPPED:
+          node: recover
+          prompt:
+            reference: stopped-recovery
+            compactable: true
+      nodes:
+        plan:
+          agent: planner
+          prompt:
+            reference: specialized-plan
+            compactable: true
+          correction_prompt:
+            reference: correct-plan-result
+            compactable: true
+          records:
+            status.md:
+              mode: continue
+              gate: updated
+          edges: &a1
+            complete_direct:
+              target:
+                terminal: DONE
+                promote: current
+                export_records:
+                  - status.md
+            admit_review:
+              target:
+                node: review
+              prompt:
+                reference: specialized-plan-to-review
+                compactable: true
+            blocked:
+              target:
+                terminal: BLOCKED
+                promote: current
+                export_records:
+                  - status.md
+            failed:
+              target:
+                terminal: FAILED
+                promote: current
+                export_records:
+                  - status.md
+          record_prompts:
+            - record: brief.md
+              selection: accepted
+              presence: required
+              prompt:
+                reference: changed-record
+                compactable: true
+            - record: status.md
+              selection: effective
+              presence: optional
+              prompt:
+                reference: changed-record-with-body
+                compactable: true
+        review:
+          agent: reviewer
+          prompt:
+            reference: specialized-review
+            compactable: true
+          correction_prompt:
+            reference: correct-review-result
+            compactable: true
+          records:
+            review.md:
+              mode: clean
+              gate: updated
+          descendant_context:
+            records:
+              - status.md
+            require_unchanged_until_accept: true
+          edges:
+            approved:
+              target:
+                terminal: DONE
+                promote: current
+                export_records:
+                  - review.md
+              pending_notifications:
+                node: handle-notifications
+                prompt:
+                  reference: review-to-notifications
+                  compactable: true
+            revision_required:
+              target:
+                node: plan
+              prompt:
+                reference: specialized-review-to-plan
+                compactable: true
+            blocked:
+              target:
+                terminal: BLOCKED
+                promote: current
+                export_records:
+                  - review.md
+            failed:
+              target:
+                terminal: FAILED
+                promote: current
+                export_records:
+                  - review.md
+          record_prompts:
+            - record: brief.md
+              selection: accepted
+              presence: required
+              prompt:
+                reference: changed-record
+                compactable: true
+            - record: review.md
+              selection: effective
+              presence: optional
+              prompt:
+                reference: changed-record-with-body
+                compactable: true
+        recover:
+          agent: planner
+          prompt:
+            reference: specialized-recover
+            compactable: true
+          correction_prompt:
+            reference: correct-plan-result
+            compactable: true
+          records:
+            status.md:
+              mode: continue
+              gate: updated
+          edges: *a1
+          record_prompts:
+            - record: brief.md
+              selection: accepted
+              presence: required
+              prompt:
+                reference: changed-record
+                compactable: true
+            - record: status.md
+              selection: effective
+              presence: optional
+              prompt:
+                reference: changed-record-with-body
+                compactable: true
+        handle-notifications:
+          agent: planner
+          prompt:
+            reference: handle-notifications
+            compactable: true
+          correction_prompt:
+            reference: correct-plan-result
+            compactable: true
+          records:
+            status.md:
+              mode: continue
+              gate: updated
+          edges:
+            admit_review:
+              target:
+                node: review
+              prompt:
+                reference: specialized-plan-to-review
+                compactable: true
+            blocked:
+              target:
+                terminal: BLOCKED
+                promote: current
+                export_records:
+                  - status.md
+            failed:
+              target:
+                terminal: FAILED
+                promote: current
+                export_records:
+                  - status.md
+          record_prompts:
+            - record: brief.md
+              selection: accepted
+              presence: required
+              prompt:
+                reference: changed-record
+                compactable: true
+            - record: status.md
+              selection: effective
+              presence: optional
+              prompt:
+                reference: changed-record-with-body
+                compactable: true
+  goal:
+    permitted_child_types:
+      - goal
+      - architecture
+      - code
+      - test
+      - doc
+      - data
+      - research
+      - ops
+    records:
+      brief.md:
+        format: markdown
+        schema: card-brief.v1
+        bootstrap: true
+      status.md:
+        format: markdown
+        schema: work-status.v1
+        bootstrap: false
+      review.md:
+        format: markdown
+        schema: work-review.v1
+        bootstrap: false
+    workflow:
+      notification_recipient: planner
+      entries:
+        BACKLOG:
+          node: plan
+        CHANGED:
+          node: plan
+        BLOCKED:
+          node: plan
+        STOPPED:
+          node: recover
+          prompt:
+            reference: stopped-recovery
+            compactable: true
+      nodes:
+        plan:
+          agent: planner
+          prompt:
+            reference: specialized-plan
+            compactable: true
+          correction_prompt:
+            reference: correct-plan-result
+            compactable: true
+          records:
+            status.md:
+              mode: continue
+              gate: updated
+          edges: &a2
+            complete_direct:
+              target:
+                terminal: DONE
+                promote: current
+                export_records:
+                  - status.md
+            admit_review:
+              target:
+                node: review
+              prompt:
+                reference: specialized-plan-to-review
+                compactable: true
+            blocked:
+              target:
+                terminal: BLOCKED
+                promote: current
+                export_records:
+                  - status.md
+            failed:
+              target:
+                terminal: FAILED
+                promote: current
+                export_records:
+                  - status.md
+          record_prompts:
+            - record: brief.md
+              selection: accepted
+              presence: required
+              prompt:
+                reference: changed-record
+                compactable: true
+            - record: status.md
+              selection: effective
+              presence: optional
+              prompt:
+                reference: changed-record-with-body
+                compactable: true
+        review:
+          agent: reviewer
+          prompt:
+            reference: specialized-review
+            compactable: true
+          correction_prompt:
+            reference: correct-review-result
+            compactable: true
+          records:
+            review.md:
+              mode: clean
+              gate: updated
+          descendant_context:
+            records:
+              - status.md
+            require_unchanged_until_accept: true
+          edges:
+            approved:
+              target:
+                terminal: DONE
+                promote: current
+                export_records:
+                  - review.md
+              pending_notifications:
+                node: handle-notifications
+                prompt:
+                  reference: review-to-notifications
+                  compactable: true
+            revision_required:
+              target:
+                node: plan
+              prompt:
+                reference: specialized-review-to-plan
+                compactable: true
+            blocked:
+              target:
+                terminal: BLOCKED
+                promote: current
+                export_records:
+                  - review.md
+            failed:
+              target:
+                terminal: FAILED
+                promote: current
+                export_records:
+                  - review.md
+          record_prompts:
+            - record: brief.md
+              selection: accepted
+              presence: required
+              prompt:
+                reference: changed-record
+                compactable: true
+            - record: review.md
+              selection: effective
+              presence: optional
+              prompt:
+                reference: changed-record-with-body
+                compactable: true
+        recover:
+          agent: planner
+          prompt:
+            reference: specialized-recover
+            compactable: true
+          correction_prompt:
+            reference: correct-plan-result
+            compactable: true
+          records:
+            status.md:
+              mode: continue
+              gate: updated
+          edges: *a2
+          record_prompts:
+            - record: brief.md
+              selection: accepted
+              presence: required
+              prompt:
+                reference: changed-record
+                compactable: true
+            - record: status.md
+              selection: effective
+              presence: optional
+              prompt:
+                reference: changed-record-with-body
+                compactable: true
+        handle-notifications:
+          agent: planner
+          prompt:
+            reference: handle-notifications
+            compactable: true
+          correction_prompt:
+            reference: correct-plan-result
+            compactable: true
+          records:
+            status.md:
+              mode: continue
+              gate: updated
+          edges:
+            admit_review:
+              target:
+                node: review
+              prompt:
+                reference: specialized-plan-to-review
+                compactable: true
+            blocked:
+              target:
+                terminal: BLOCKED
+                promote: current
+                export_records:
+                  - status.md
+            failed:
+              target:
+                terminal: FAILED
+                promote: current
+                export_records:
+                  - status.md
+          record_prompts:
+            - record: brief.md
+              selection: accepted
+              presence: required
+              prompt:
+                reference: changed-record
+                compactable: true
+            - record: status.md
+              selection: effective
+              presence: optional
+              prompt:
+                reference: changed-record-with-body
+                compactable: true
+  architecture:
+    permitted_child_types: []
+    records:
+      brief.md:
+        format: markdown
+        schema: card-brief.v1
+        bootstrap: true
+      status.md:
+        format: markdown
+        schema: work-status.v1
+        bootstrap: false
+      review.md:
+        format: markdown
+        schema: work-review.v1
+        bootstrap: false
+    workflow:
+      notification_recipient: executor
+      entries:
+        BACKLOG:
+          node: draft
+        CHANGED:
+          node: draft
+        BLOCKED:
+          node: draft
+        STOPPED:
+          node: draft
+          prompt:
+            reference: stopped-recovery
+            compactable: true
+      nodes:
+        draft:
+          agent: executor
+          prompt:
+            reference: architecture-draft
+            compactable: true
+          correction_prompt:
+            reference: correct-execution-result
+            compactable: true
+          records:
+            status.md:
+              mode: continue
+              gate: updated
+          edges:
+            ready_for_component_review:
+              target:
+                node: component-review
+              prompt:
+                reference: architecture-to-component-review
+                compactable: true
+            blocked:
+              target:
+                terminal: BLOCKED
+                promote: current
+                export_records:
+                  - status.md
+            failed:
+              target:
+                terminal: FAILED
+                promote: current
+                export_records:
+                  - status.md
+          record_prompts:
+            - record: brief.md
+              selection: accepted
+              presence: required
+              prompt:
+                reference: changed-record
+                compactable: true
+            - record: status.md
+              selection: effective
+              presence: optional
+              prompt:
+                reference: changed-record-with-body
+                compactable: true
+        component-review:
+          agent: reviewer
+          prompt:
+            reference: architecture-component-review
+            compactable: true
+          correction_prompt:
+            reference: correct-review-result
+            compactable: true
+          records:
+            review.md:
+              mode: clean
+              gate: updated
+          edges:
+            approved:
+              target:
+                node: system-review
+              prompt:
+                reference: architecture-to-system-review
+                compactable: true
+            revision_required:
+              target:
+                node: draft
+              prompt:
+                reference: architecture-component-revision
+                compactable: true
+            blocked:
+              target:
+                terminal: BLOCKED
+                promote: current
+                export_records:
+                  - review.md
+            failed:
+              target:
+                terminal: FAILED
+                promote: current
+                export_records:
+                  - review.md
+          record_prompts:
+            - record: brief.md
+              selection: accepted
+              presence: required
+              prompt:
+                reference: changed-record
+                compactable: true
+            - record: review.md
+              selection: effective
+              presence: optional
+              prompt:
+                reference: changed-record-with-body
+                compactable: true
+        system-review:
+          agent: reviewer
+          prompt:
+            reference: architecture-system-review
+            compactable: true
+          correction_prompt:
+            reference: correct-review-result
+            compactable: true
+          records:
+            review.md:
+              mode: clean
+              gate: updated
+          edges:
+            approved:
+              target:
+                terminal: DONE
+                promote:
+                  latest_node: draft
+                export_records:
+                  - review.md
+              pending_notifications:
+                node: draft
+                prompt:
+                  reference: architecture-notifications-to-draft
+                  compactable: true
+            revision_required:
+              target:
+                node: draft
+              prompt:
+                reference: architecture-system-revision
+                compactable: true
+            blocked:
+              target:
+                terminal: BLOCKED
+                promote: current
+                export_records:
+                  - review.md
+            failed:
+              target:
+                terminal: FAILED
+                promote: current
+                export_records:
+                  - review.md
+          record_prompts:
+            - record: brief.md
+              selection: accepted
+              presence: required
+              prompt:
+                reference: changed-record
+                compactable: true
+            - record: review.md
+              selection: effective
+              presence: optional
+              prompt:
+                reference: changed-record-with-body
+                compactable: true
+  code:
+    permitted_child_types: []
+    records:
+      brief.md:
+        format: markdown
+        schema: card-brief.v1
+        bootstrap: true
+      status.md:
+        format: markdown
+        schema: work-status.v1
+        bootstrap: false
+    workflow:
+      notification_recipient: executor
+      entries:
+        BACKLOG:
+          node: red
+        CHANGED:
+          node: red
+        BLOCKED:
+          node: red
+        STOPPED:
+          node: red
+          prompt:
+            reference: stopped-recovery
+            compactable: true
+      nodes:
+        red:
+          agent: executor
+          prompt:
+            reference: code-red
+            compactable: true
+          correction_prompt:
+            reference: correct-execution-result
+            compactable: true
+          records:
+            status.md:
+              mode: continue
+              gate: updated
+          edges:
+            red_confirmed:
+              target:
+                node: green
+              prompt:
+                reference: code-red-to-green
+                compactable: true
+            already_green:
+              target:
+                node: refactor
+              prompt:
+                reference: code-to-refactor
+                compactable: true
+            blocked:
+              target:
+                terminal: BLOCKED
+                promote: current
+                export_records:
+                  - status.md
+            failed:
+              target:
+                terminal: FAILED
+                promote: current
+                export_records:
+                  - status.md
+          record_prompts:
+            - record: brief.md
+              selection: accepted
+              presence: required
+              prompt:
+                reference: changed-record
+                compactable: true
+            - record: status.md
+              selection: effective
+              presence: optional
+              prompt:
+                reference: changed-record-with-body
+                compactable: true
+        green:
+          agent: executor
+          prompt:
+            reference: code-green
+            compactable: true
+          correction_prompt:
+            reference: correct-execution-result
+            compactable: true
+          records:
+            status.md:
+              mode: continue
+              gate: updated
+          edges:
+            green:
+              target:
+                node: refactor
+              prompt:
+                reference: code-to-refactor
+                compactable: true
+            still_red:
+              target:
+                node: green
+              prompt:
+                reference: code-green-retry
+                compactable: true
+            blocked:
+              target:
+                terminal: BLOCKED
+                promote: current
+                export_records:
+                  - status.md
+            failed:
+              target:
+                terminal: FAILED
+                promote: current
+                export_records:
+                  - status.md
+          record_prompts:
+            - record: brief.md
+              selection: accepted
+              presence: required
+              prompt:
+                reference: changed-record
+                compactable: true
+            - record: status.md
+              selection: effective
+              presence: optional
+              prompt:
+                reference: changed-record-with-body
+                compactable: true
+        refactor:
+          agent: executor
+          prompt:
+            reference: code-refactor
+            compactable: true
+          correction_prompt:
+            reference: correct-execution-result
+            compactable: true
+          records:
+            status.md:
+              mode: continue
+              gate: updated
+          edges:
+            done:
+              target:
+                terminal: DONE
+                promote: current
+                export_records:
+                  - status.md
+            regressed:
+              target:
+                node: green
+              prompt:
+                reference: code-regression-to-green
+                compactable: true
+            blocked:
+              target:
+                terminal: BLOCKED
+                promote: current
+                export_records:
+                  - status.md
+            failed:
+              target:
+                terminal: FAILED
+                promote: current
+                export_records:
+                  - status.md
+          record_prompts:
+            - record: brief.md
+              selection: accepted
+              presence: required
+              prompt:
+                reference: changed-record
+                compactable: true
+            - record: status.md
+              selection: effective
+              presence: optional
+              prompt:
+                reference: changed-record-with-body
+                compactable: true
+  test:
+    permitted_child_types: []
+    records:
+      brief.md:
+        format: markdown
+        schema: card-brief.v1
+        bootstrap: true
+      status.md:
+        format: markdown
+        schema: work-status.v1
+        bootstrap: false
+    workflow:
+      notification_recipient: executor
+      entries:
+        BACKLOG:
+          node: diagnose
+        CHANGED:
+          node: diagnose
+        BLOCKED:
+          node: diagnose
+        STOPPED:
+          node: diagnose
+          prompt:
+            reference: stopped-recovery
+            compactable: true
+      nodes:
+        diagnose:
+          agent: executor
+          prompt:
+            reference: test-diagnose
+            compactable: true
+          correction_prompt:
+            reference: correct-execution-result
+            compactable: true
+          records:
+            status.md:
+              mode: continue
+              gate: updated
+          edges:
+            coverage_ready:
+              target:
+                node: verify
+              prompt:
+                reference: test-to-verify
+                compactable: true
+            coverage_gap:
+              target:
+                node: add-coverage
+              prompt:
+                reference: test-to-add-coverage
+                compactable: true
+            failing_test:
+              target:
+                node: repair
+              prompt:
+                reference: test-to-repair
+                compactable: true
+            blocked:
+              target:
+                terminal: BLOCKED
+                promote: current
+                export_records:
+                  - status.md
+            failed:
+              target:
+                terminal: FAILED
+                promote: current
+                export_records:
+                  - status.md
+          record_prompts:
+            - record: brief.md
+              selection: accepted
+              presence: required
+              prompt:
+                reference: changed-record
+                compactable: true
+            - record: status.md
+              selection: effective
+              presence: optional
+              prompt:
+                reference: changed-record-with-body
+                compactable: true
+        add-coverage:
+          agent: executor
+          prompt:
+            reference: test-add-coverage
+            compactable: true
+          correction_prompt:
+            reference: correct-execution-result
+            compactable: true
+          records:
+            status.md:
+              mode: continue
+              gate: updated
+          edges:
+            coverage_passing:
+              target:
+                node: verify
+              prompt:
+                reference: test-to-verify
+                compactable: true
+            repair_needed:
+              target:
+                node: repair
+              prompt:
+                reference: test-to-repair
+                compactable: true
+            blocked:
+              target:
+                terminal: BLOCKED
+                promote: current
+                export_records:
+                  - status.md
+            failed:
+              target:
+                terminal: FAILED
+                promote: current
+                export_records:
+                  - status.md
+          record_prompts:
+            - record: brief.md
+              selection: accepted
+              presence: required
+              prompt:
+                reference: changed-record
+                compactable: true
+            - record: status.md
+              selection: effective
+              presence: optional
+              prompt:
+                reference: changed-record-with-body
+                compactable: true
+        repair:
+          agent: executor
+          prompt:
+            reference: test-repair
+            compactable: true
+          correction_prompt:
+            reference: correct-execution-result
+            compactable: true
+          records:
+            status.md:
+              mode: continue
+              gate: updated
+          edges:
+            tests_passing:
+              target:
+                node: verify
+              prompt:
+                reference: test-to-verify
+                compactable: true
+            still_failing:
+              target:
+                node: repair
+              prompt:
+                reference: test-repair-retry
+                compactable: true
+            blocked:
+              target:
+                terminal: BLOCKED
+                promote: current
+                export_records:
+                  - status.md
+            failed:
+              target:
+                terminal: FAILED
+                promote: current
+                export_records:
+                  - status.md
+          record_prompts:
+            - record: brief.md
+              selection: accepted
+              presence: required
+              prompt:
+                reference: changed-record
+                compactable: true
+            - record: status.md
+              selection: effective
+              presence: optional
+              prompt:
+                reference: changed-record-with-body
+                compactable: true
+        verify:
+          agent: executor
+          prompt:
+            reference: test-verify
+            compactable: true
+          correction_prompt:
+            reference: correct-execution-result
+            compactable: true
+          records:
+            status.md:
+              mode: continue
+              gate: updated
+          edges:
+            done:
+              target:
+                terminal: DONE
+                promote: current
+                export_records:
+                  - status.md
+            coverage_gap:
+              target:
+                node: add-coverage
+              prompt:
+                reference: test-to-add-coverage
+                compactable: true
+            repair_needed:
+              target:
+                node: repair
+              prompt:
+                reference: test-to-repair
+                compactable: true
+            blocked:
+              target:
+                terminal: BLOCKED
+                promote: current
+                export_records:
+                  - status.md
+            failed:
+              target:
+                terminal: FAILED
+                promote: current
+                export_records:
+                  - status.md
+          record_prompts:
+            - record: brief.md
+              selection: accepted
+              presence: required
+              prompt:
+                reference: changed-record
+                compactable: true
+            - record: status.md
+              selection: effective
+              presence: optional
+              prompt:
+                reference: changed-record-with-body
+                compactable: true
+  doc:
+    permitted_child_types: []
+    records:
+      brief.md:
+        format: markdown
+        schema: card-brief.v1
+        bootstrap: true
+      status.md:
+        format: markdown
+        schema: work-status.v1
+        bootstrap: false
+    workflow:
+      notification_recipient: executor
+      entries:
+        BACKLOG:
+          node: execute
+        CHANGED:
+          node: execute
+        BLOCKED:
+          node: execute
+        STOPPED:
+          node: execute
+          prompt:
+            reference: stopped-recovery
+            compactable: true
+      nodes:
+        execute:
+          agent: executor
+          prompt:
+            reference: execute
+            compactable: true
+          correction_prompt:
+            reference: correct-execution-result
+            compactable: true
+          records:
+            status.md:
+              mode: continue
+              gate: updated
+          edges:
+            done:
+              target:
+                terminal: DONE
+                promote: current
+                export_records:
+                  - status.md
+            blocked:
+              target:
+                terminal: BLOCKED
+                promote: current
+                export_records:
+                  - status.md
+            failed:
+              target:
+                terminal: FAILED
+                promote: current
+                export_records:
+                  - status.md
+          record_prompts:
+            - record: brief.md
+              selection: accepted
+              presence: required
+              prompt:
+                reference: changed-record
+                compactable: true
+            - record: status.md
+              selection: effective
+              presence: optional
+              prompt:
+                reference: changed-record-with-body
+                compactable: true
+  data:
+    permitted_child_types: []
+    records:
+      brief.md:
+        format: markdown
+        schema: card-brief.v1
+        bootstrap: true
+      status.md:
+        format: markdown
+        schema: work-status.v1
+        bootstrap: false
+    workflow:
+      notification_recipient: executor
+      entries:
+        BACKLOG:
+          node: schema
+        CHANGED:
+          node: schema
+        BLOCKED:
+          node: schema
+        STOPPED:
+          node: schema
+          prompt:
+            reference: stopped-recovery
+            compactable: true
+      nodes:
+        schema:
+          agent: executor
+          prompt:
+            reference: data-schema
+            compactable: true
+          correction_prompt:
+            reference: correct-execution-result
+            compactable: true
+          records:
+            status.md:
+              mode: continue
+              gate: updated
+          edges:
+            schema_ready:
+              target:
+                node: validate
+              prompt:
+                reference: data-to-validate
+                compactable: true
+            blocked:
+              target:
+                terminal: BLOCKED
+                promote: current
+                export_records:
+                  - status.md
+            failed:
+              target:
+                terminal: FAILED
+                promote: current
+                export_records:
+                  - status.md
+          record_prompts:
+            - record: brief.md
+              selection: accepted
+              presence: required
+              prompt:
+                reference: changed-record
+                compactable: true
+            - record: status.md
+              selection: effective
+              presence: optional
+              prompt:
+                reference: changed-record-with-body
+                compactable: true
+        validate:
+          agent: executor
+          prompt:
+            reference: data-validate
+            compactable: true
+          correction_prompt:
+            reference: correct-execution-result
+            compactable: true
+          records:
+            status.md:
+              mode: continue
+              gate: updated
+          edges:
+            valid:
+              target:
+                node: implement
+              prompt:
+                reference: data-to-implement
+                compactable: true
+            schema_invalid:
+              target:
+                node: schema
+              prompt:
+                reference: data-revise-schema
+                compactable: true
+            blocked:
+              target:
+                terminal: BLOCKED
+                promote: current
+                export_records:
+                  - status.md
+            failed:
+              target:
+                terminal: FAILED
+                promote: current
+                export_records:
+                  - status.md
+          record_prompts:
+            - record: brief.md
+              selection: accepted
+              presence: required
+              prompt:
+                reference: changed-record
+                compactable: true
+            - record: status.md
+              selection: effective
+              presence: optional
+              prompt:
+                reference: changed-record-with-body
+                compactable: true
+        implement:
+          agent: executor
+          prompt:
+            reference: data-implement
+            compactable: true
+          correction_prompt:
+            reference: correct-execution-result
+            compactable: true
+          records:
+            status.md:
+              mode: continue
+              gate: updated
+          edges:
+            done:
+              target:
+                terminal: DONE
+                promote: current
+                export_records:
+                  - status.md
+            implementation_retry:
+              target:
+                node: implement
+              prompt:
+                reference: data-implementation-retry
+                compactable: true
+            schema_revision:
+              target:
+                node: schema
+              prompt:
+                reference: data-revise-schema
+                compactable: true
+            blocked:
+              target:
+                terminal: BLOCKED
+                promote: current
+                export_records:
+                  - status.md
+            failed:
+              target:
+                terminal: FAILED
+                promote: current
+                export_records:
+                  - status.md
+          record_prompts:
+            - record: brief.md
+              selection: accepted
+              presence: required
+              prompt:
+                reference: changed-record
+                compactable: true
+            - record: status.md
+              selection: effective
+              presence: optional
+              prompt:
+                reference: changed-record-with-body
+                compactable: true
+  research:
+    permitted_child_types: []
+    records:
+      brief.md:
+        format: markdown
+        schema: card-brief.v1
+        bootstrap: true
+      status.md:
+        format: markdown
+        schema: work-status.v1
+        bootstrap: false
+    workflow:
+      notification_recipient: executor
+      entries:
+        BACKLOG:
+          node: explore
+        CHANGED:
+          node: explore
+        BLOCKED:
+          node: explore
+        STOPPED:
+          node: explore
+          prompt:
+            reference: stopped-recovery
+            compactable: true
+      nodes:
+        explore:
+          agent: executor
+          prompt:
+            reference: research-explore
+            compactable: true
+          correction_prompt:
+            reference: correct-execution-result
+            compactable: true
+          records:
+            status.md:
+              mode: continue
+              gate: updated
+          edges:
+            evidence_ready:
+              target:
+                node: assess
+              prompt:
+                reference: research-to-assess
+                compactable: true
+            more_exploration:
+              target:
+                node: explore
+              prompt:
+                reference: research-continue-exploration
+                compactable: true
+            blocked:
+              target:
+                terminal: BLOCKED
+                promote: current
+                export_records:
+                  - status.md
+            failed:
+              target:
+                terminal: FAILED
+                promote: current
+                export_records:
+                  - status.md
+          record_prompts:
+            - record: brief.md
+              selection: accepted
+              presence: required
+              prompt:
+                reference: changed-record
+                compactable: true
+            - record: status.md
+              selection: effective
+              presence: optional
+              prompt:
+                reference: changed-record-with-body
+                compactable: true
+        assess:
+          agent: executor
+          prompt:
+            reference: research-assess
+            compactable: true
+          correction_prompt:
+            reference: correct-execution-result
+            compactable: true
+          records:
+            status.md:
+              mode: continue
+              gate: updated
+          edges:
+            supported:
+              target:
+                node: report
+              prompt:
+                reference: research-supported-to-report
+                compactable: true
+            refuted:
+              target:
+                node: report
+              prompt:
+                reference: research-refuted-to-report
+                compactable: true
+            bounded_inconclusive:
+              target:
+                node: report
+              prompt:
+                reference: research-inconclusive-to-report
+                compactable: true
+            evidence_gap:
+              target:
+                node: explore
+              prompt:
+                reference: research-continue-exploration
+                compactable: true
+            blocked:
+              target:
+                terminal: BLOCKED
+                promote: current
+                export_records:
+                  - status.md
+            failed:
+              target:
+                terminal: FAILED
+                promote: current
+                export_records:
+                  - status.md
+          record_prompts:
+            - record: brief.md
+              selection: accepted
+              presence: required
+              prompt:
+                reference: changed-record
+                compactable: true
+            - record: status.md
+              selection: effective
+              presence: optional
+              prompt:
+                reference: changed-record-with-body
+                compactable: true
+        report:
+          agent: executor
+          prompt:
+            reference: research-report
+            compactable: true
+          correction_prompt:
+            reference: correct-execution-result
+            compactable: true
+          records:
+            status.md:
+              mode: continue
+              gate: updated
+          edges:
+            done:
+              target:
+                terminal: DONE
+                promote: current
+                export_records:
+                  - status.md
+            blocked:
+              target:
+                terminal: BLOCKED
+                promote: current
+                export_records:
+                  - status.md
+            failed:
+              target:
+                terminal: FAILED
+                promote: current
+                export_records:
+                  - status.md
+          record_prompts:
+            - record: brief.md
+              selection: accepted
+              presence: required
+              prompt:
+                reference: changed-record
+                compactable: true
+            - record: status.md
+              selection: effective
+              presence: optional
+              prompt:
+                reference: changed-record-with-body
+                compactable: true
+  ops:
+    permitted_child_types: []
+    records:
+      brief.md:
+        format: markdown
+        schema: card-brief.v1
+        bootstrap: true
+      status.md:
+        format: markdown
+        schema: work-status.v1
+        bootstrap: false
+    workflow:
+      notification_recipient: executor
+      entries:
+        BACKLOG:
+          node: execute
+        CHANGED:
+          node: execute
+        BLOCKED:
+          node: execute
+        STOPPED:
+          node: execute
+          prompt:
+            reference: stopped-recovery
+            compactable: true
+      nodes:
+        execute:
+          agent: executor
+          prompt:
+            reference: execute
+            compactable: true
+          correction_prompt:
+            reference: correct-execution-result
+            compactable: true
+          records:
+            status.md:
+              mode: continue
+              gate: updated
+          edges:
+            done:
+              target:
+                terminal: DONE
+                promote: current
+                export_records:
+                  - status.md
+            blocked:
+              target:
+                terminal: BLOCKED
+                promote: current
+                export_records:
+                  - status.md
+            failed:
+              target:
+                terminal: FAILED
+                promote: current
+                export_records:
+                  - status.md
+          record_prompts:
+            - record: brief.md
+              selection: accepted
+              presence: required
+              prompt:
+                reference: changed-record
+                compactable: true
+            - record: status.md
+              selection: effective
+              presence: optional
+              prompt:
+                reference: changed-record-with-body
+                compactable: true

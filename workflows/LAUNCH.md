@@ -28,5 +28,7 @@ guest-local sudo as needed; preserve project-local credentials. Source/dependenc
 caches and temporary build outputs must be ignored by Git. Commit implemented
 changes promptly and do not push or publish without operator permission.
 
-Provider routing follows PM: root planning uses `gpt-6-astra`; other roles and
-compaction use `gpt-6.1-sol`. No PM gameplay workflows, cards or history are used.
+Provider/model selection follows PM: planning uses `gpt-6-astra`; other roles and
+compaction use `gpt-6.1-sol`. The fresh typed workflow retains its initialized
+planner identity for both root and child planning. No PM gameplay workflows,
+cards or history are used.
