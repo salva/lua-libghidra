@@ -89,15 +89,25 @@ libraries, module paths and fixture names configured; the test chunk is compiled
 before denial. One chunk requires both modules, publishes a low-level owner,
 converts real status/capabilities and a native open error, releases it, then
 publishes a Session over the real analyzed-project fixture and converts its
-open response and status. Every baseline allocation point must fail under
-persistent denial; the immediately following point must succeed. After restoring
-allocations and full collection, the entire chunk must succeed again in that
-same state, including require retry after partial initialization. Lua allocator
-byte balance must return to zero at state close.
+open response and status. The allocator counts actual denials: a reached denial
+must return LUA_ERRMEM; an unreached threshold must return success with fewer
+allocation calls than its index. Independent states need not have identical
+allocation counts (including hash-dependent table/parser behavior). The sweep
+visits every index through the baseline plus a bounded 16-point tail and requires
+substantial reached-denial coverage and at least one unreached threshold. It is
+not proof of all possible allocation traces. After restoring allocations and
+full collection, the entire chunk must succeed again in that same state,
+including require retry after partial initialization. Lua allocator byte balance
+must return to zero at state close.
 
-Reproduce: `cmake --build build --target ownership_host -j4 && ctest --test-dir
-build -R '^ownership_states_faults -V`. Installed patched SDK / ordinary
-system C-built Lua run: **371 denied points, baseline and beyond-range pass**.
-The preloaded sweeps also remain passing. This covers Lua allocation failure and
-recovery across the combined chain, not native C++ allocation failures, arbitrary
-GC scheduling, native heap leak accounting or full sanitizer qualification.
+Reproduce with `cmake --build build --target ownership_host -j4`, then
+`ctest --test-dir build -R ownership_states_faults -V`.
+The original 371-point success was subsequently found unstable: one independent
+state completed in 370 calls, so index 371 denied nothing and correctly returned
+success. The repaired oracle distinguishes that case from swallowed OOM rather
+than assuming each state's count equals the baseline. Historical verification
+failure is retained in the card status; it was a test oracle failure, not evidence
+of native corruption. The preloaded sweeps are unchanged. This covers Lua
+allocation failure and recovery across the combined chain, not native C++
+allocation failures, arbitrary GC scheduling, native heap leak accounting or
+full sanitizer qualification.

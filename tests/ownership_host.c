@@ -7,11 +7,11 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <string.h>
-struct allocator { size_t calls, fail, bytes; };
+struct allocator { size_t calls, fail, bytes, denied; };
 static void* allocate(void* ud, void* ptr, size_t old, size_t n) {
  struct allocator* a=ud; if(!ptr) old=0;
  if(!n) { a->bytes-=old; free(ptr); return NULL; }
- if(n>old && ++a->calls>=a->fail) return NULL;
+ if(n>old && ++a->calls>=a->fail) { ++a->denied; return NULL; }
  void* p=realloc(ptr,n); if(p) a->bytes=a->bytes-old+n; return p;
 }
 static int run(lua_State* L,const char* text) {
@@ -76,17 +76,24 @@ int main(int argc,char** argv) {
   "local s,e,r=high.open{program={project_path=project,program_path=binary}}; "
   "assert(s,e and e.message); assert(r.program_name); "
   "assert(s:native():get_status().ok); s:close()";
- size_t combined_count=0, denied=0;
- for(size_t point=0; point<=combined_count+1; ++point) {
+ size_t combined_count=0, denied=0, unreached=0;
+ for(size_t point=0; point<=combined_count+16; ++point) {
   struct allocator a={0,SIZE_MAX,0};
   lua_State* L=state(&a,argv[1],argv[2],0);
   assert(luaL_loadstring(L,combined)==LUA_OK);
   size_t before=a.calls;
   if(point) a.fail=before+point;
   int rc=lua_pcall(L,0,0,0);
+  /* Lua's per-state string hash seed can change parser/table allocation
+     counts. The baseline bounds the sweep; actual denial, not an allocation
+     count borrowed from another state, determines the expected outcome. */
   if(!point) { assert(rc==LUA_OK); combined_count=a.calls-before; }
-  else if(point<=combined_count) { assert(rc!=LUA_OK); ++denied; }
-  else assert(rc==LUA_OK); /* first point beyond baseline allocations */
+  else if(a.denied) {
+   if(rc!=LUA_ERRMEM) fprintf(stderr,"combined denial: point=%zu baseline=%zu calls=%zu denied=%zu rc=%d\n",point,combined_count,a.calls-before,a.denied,rc);
+   assert(rc==LUA_ERRMEM); ++denied;
+  } else {
+   assert(a.calls-before<point && rc==LUA_OK); ++unreached;
+  }
   a.fail=SIZE_MAX;
   if(rc) lua_pop(L,1);
   lua_gc(L,LUA_GCCOLLECT);
@@ -95,8 +102,8 @@ int main(int argc,char** argv) {
   assert(!run(L,combined));
   finish(L,&a);
  }
- assert(denied==combined_count && combined_count>0);
- printf("combined require/owner/conversion: %zu denied points + baseline + beyond-range PASS\n",denied);
+ assert(combined_count>16 && denied>=combined_count-16 && unreached>0);
+ printf("combined require/owner/conversion: baseline=%zu reached-denial=%zu unreached=%zu (16-point tail) PASS\n",combined_count,denied,unreached);
  /* Deliberate manual finalization and double-finalization resistance. */
  struct allocator a={0,SIZE_MAX,0}; lua_State* L=state(&a,argv[1],argv[2],1);
  assert(!run(L,"c=assert(low.local_client()); "
