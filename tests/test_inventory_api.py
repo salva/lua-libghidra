@@ -99,10 +99,26 @@ class InventoryTests(unittest.TestCase):
             with self.assertRaises(AssertionError):
                 module.inventory(root)
             local.write_text(local_original)
+            # Missing-signature filtering must not silently disappear on regeneration.
+            local.write_text(local_original.replace('if (sig) sigs.push_back', 'if (true) sigs.push_back'))
+            with self.assertRaises(AssertionError):
+                module.inventory(root)
+            local.write_text(local_original)
             header = root/'cpp/src/local_arch_adapter.hpp'
             header.write_text(header.read_text().replace('std::map<std::pair<std::uint64_t, int>, std::string> comments_', 'std::multimap<std::pair<std::uint64_t, int>, std::string> comments_'))
             with self.assertRaises(AssertionError):
                 module.inventory(root)
+
+    def test_aggregate_cursor_domains_and_failure_retention(self):
+        self.assertEqual(self.ops['ListFunctionSignatures']['pagination']['cursor_domain'], 'candidate functions')
+        self.assertIn('AFTER', self.ops['ListFunctionSignatures']['pagination']['post_page_filter'])
+        self.assertIn('completed=false', self.ops['ListDecompilations']['pagination']['post_page_filter'])
+        self.assertIn('FUNCTION ENTRIES', self.ops['ListXrefs']['pagination']['pre_page_filter'])
+        self.assertIn('NOT numeric', self.ops['ListXrefs']['pagination']['order'])
+        self.assertEqual(self.ops['ListCFGEdges']['pagination']['identity']['fields'],
+                         ['function_entry', 'src_block_start', 'dst_block_start', 'edge_kind'])
+        for name in ['ListBasicBlocks', 'ListCFGEdges', 'ListXrefs']:
+            self.assertTrue(any('pool_size=1' in text for text in self.ops[name]['limitations']))
 
     def test_member_and_comment_semantics_are_not_generic(self):
         members = self.ops['ListTypeMembers']

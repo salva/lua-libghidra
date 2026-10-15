@@ -128,3 +128,28 @@ and the comment container type; both must fail reviewed assertions. The source
 provenance set includes the owning adapter header. Seven tests pass, but remaining
 families, exact facade/extraction and Python/pybind semantics still block exhaustive
 acceptance. No unresolved slot was relabeled runtime-qualified.
+
+## Aggregate page review (fourth repair attempt)
+
+Eighteen page paths now have reviewed cursor/order contracts. Added leaves,
+blocks, edges, xrefs, batch decompilations and signatures. For CFG and xrefs,
+range bounds select **function entries**, not returned block/reference addresses.
+Serial output is concatenated by function, then graph traversal or call/LOAD/STORE
+groups; numeric source-address sorting is not the actual native order. Parallel
+CFG/xref append order is completion-dependent, reinforcing pool_size=1. CFG
+extraction can create/name a function and run analysis even under read dispatch;
+this is recorded as a native side effect, not disguised as binding mutation.
+
+Batch decompilation allocates one result per candidate and writes by index:
+completed=false failures are retained. Signature pages instead remove missing
+signatures after candidate pagination; no iterator or returned-count cursor is
+valid. Leaf filtering occurs before pagination and requires project leaf index;
+there is no bare-binary graph fallback. CFG edge kind is a native heuristic
+(BACK by block index, then FALSE/TRUE for two outputs, else FALL_THROUGH), not a
+new graph-analysis promise. Xrefs are a decompilation-derived subset with possible
+duplicate candidate keys and logged partial failures, not all project references.
+
+A new independent source probe removes the signature presence guard and must
+fail the reviewed contract instead of accepting regeneration. This progress does
+not resolve exact facade signatures, Python/pybind conversions, all nested field
+semantics, remaining native mutation/lifecycle helpers, or runtime evidence gates.

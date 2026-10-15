@@ -79,3 +79,55 @@ def review_pages(u, operations):
             page['comparator'] = 'candidate lexicographic (exact UInt64 address, numeric native CommentKind); runtime order gate unqualified'
             op['limitations'].append('comments are adapter side-map entries, not populated from analyzed native project comment database here')
     return operations
+
+
+def review_aggregate_pages(u, operations):
+    """Pages whose cursor domain is decided by LocalClient, not one adapter call."""
+    contracts = {
+        'ListLeafFunctions': (['entry_address'], 'matched leaf function records', 'function traversal restricted by binary_search of project leaf-entry index BEFORE paginate', 'function traversal order after leaf filtering', 'none'),
+        'ListBasicBlocks': (['function_entry', 'start_address', 'end_address'], 'concatenated extracted blocks', 'inclusive range selects FUNCTION ENTRIES, not returned block addresses; invalid block starts omitted before pagination', 'serial function traversal then structured basic-block collection (raw graph fallback); multi-slot completion order unsupported', 'none'),
+        'ListCFGEdges': (['function_entry', 'src_block_start', 'dst_block_start', 'edge_kind'], 'concatenated extracted edges', 'inclusive range selects FUNCTION ENTRIES, not returned edge endpoints; invalid starts/nonbasic destinations omitted before pagination', 'serial function traversal then collected basic blocks and outgoing edge index; multi-slot completion order unsupported', 'none'),
+        'ListXrefs': (['from_address', 'to_address', 'ref_type'], 'concatenated extracted references', 'inclusive range selects FUNCTION ENTRIES, not reference source/destination; call refs then constant-address LOAD then STORE refs before pagination', 'serial function traversal then extraction groups, NOT numeric source order; multi-slot completion order unsupported', 'none'),
+        'ListDecompilations': (['function_entry_address'], 'candidate function page (one output per candidate)', 'inclusive function-entry range before paginate; decompileMany produces same-size indexed result vector', 'candidate function traversal retained by result index even with multiple slots', 'none: failures retained as completed=false records'),
+        'ListFunctionSignatures': (['function_entry_address'], 'candidate functions', 'inclusive function-entry range then paginate BEFORE signature extraction', 'candidate traversal with missing signatures omitted; parallel branch preserves candidate index before filtering', 'missing signatures omitted AFTER candidate pagination; empty output not exhaustion'),
+    }
+    source = (u/LOCAL).read_text()
+    adapter = (u/ADAPTER).read_text()
+    for op in operations:
+        name = op['name']
+        if name not in contracts: continue
+        identity, domain, filtering, order, post = contracts[name]
+        start, text = body(source, ' '+name+'(')
+        page = op['pagination']
+        page.update(identity={'fields':identity, 'encoding':'exact UInt64 hex and length-delimited text', 'uniqueness':'unqualified; reject duplicates before iterator enablement'}, cursor_domain=domain, pre_page_filter=filtering, post_page_filter=post, order=order, comparator='not approved: source traversal is not a proven total-order comparator', range_zero_end=True, iterator='disabled pending real identity/order/stability qualification', source_review={'path':LOCAL, 'line':source.count('\n',0,start)+1, 'body_sha256':hashlib.sha256(text.encode()).hexdigest()})
+        assert 'listFunctions(range_start, range_end)' in text
+        _, functions = body(adapter, 'ArchAdapter::listFunctions(')
+        assert 'normalize_range_end(range_end)' in functions
+        if name in ['ListDecompilations','ListFunctionSignatures']:
+            assert text.index('paginate(') < text.index('for (')
+        if name=='ListLeafFunctions':
+            assert text.index('binary_search') < text.index('paginate(matched')
+            op['limitations'].append('no bare-binary fallback: missing project leaf index returns NOT_SUPPORTED, not guessed leaves')
+        if name in ['ListBasicBlocks','ListCFGEdges','ListXrefs']:
+            assert 'pool_->size() <= 1' in text
+            op['limitations'].append('binding pool_size=1 required: parallel append completion order cannot be repaired by sorting individual pages')
+        if name in ['ListBasicBlocks','ListCFGEdges']:
+            _, extraction = body(adapter, 'ArchAdapter::decompileAndExtractCFG(')
+            op['limitations'].append('CFG extraction may create/name missing function and run analysis despite read dispatch classification; catches/logs exceptions and may return partial results')
+            assert 'collectBasicBlocks' in extraction
+            if name=='ListCFGEdges':
+                op['limitations'].append('edge_kind heuristic: BACK by destination index<=source index, else two-outgoing FALSE/TRUE by edge index, else FALL_THROUGH; preserve native text')
+        if name=='ListXrefs':
+            _, extraction = body(adapter, 'ArchAdapter::listXrefsForFunction(')
+            assert extraction.index('CPUI_LOAD') < extraction.index('CPUI_STORE')
+            op['limitations'].append('decompilation-derived subset, not project reference database: calls and constant-address LOAD/STORE only; duplicate identities possible; catch/log may yield partial success')
+        if name=='ListFunctionSignatures':
+            page['iterator']='pages only by specification; no returned-count cursor or empty-page exhaustion inference'
+            assert 'if (sig) sigs.push_back' in text
+        if name=='ListDecompilations':
+            pool=(u/'cpp/src/decompiler_pool.cpp').read_text()
+            _, batch=body(pool, 'DecompilerPool::decompileMany(')
+            assert 'results(addresses.size())' in batch and 'results[i].completed = false' in batch
+            op['limitations'].append('native batch retained; failed decompilations are present records, not missing optional values; error_message from decompileWithLocals')
+        op['semantic_review']='aggregate cursor/filter/ordering branches reviewed; remaining conversion/field and runtime gates open'
+    return operations
