@@ -49,6 +49,40 @@ def review_request_fields(u, operations):
         code=_code_mask(text)
         for arg in op['request']:
             nested=arg['nested_fields']
+            member_edits={'DeleteTypeMember','RenameTypeMember','SetTypeMemberType','DeleteTypeEnumMember','RenameTypeEnumMember','SetTypeEnumMemberValue','SetTypeMemberComment','SetTypeEnumMemberComment'}
+            parameter_edits={'RenameFunctionParameter','SetFunctionParameterType'}
+            key=arg['name']
+            if not nested and name in member_edits|parameter_edits and (key=='ordinal' or key in {'parent_type_id_or_path','type_id_or_path'}):
+                if name in parameter_edits:
+                    assert key=='ordinal' and arg['native_type']=='int'
+                    assert 'ordinal < 0 || ordinal >= static_cast<int>(sig->parameters.size())' in code
+                    assert code.index('getFunctionSignature(address)')<code.index('ordinal < 0')
+                    sem='required checked signed Lua integer fitting native int; zero-based formal parameter position, not Lua 1-based array index; negative or >= parameter count returns OUT_OF_RANGE after decompile/signature extraction, absent signature first returns NOT_FOUND; supported count <=INT_MAX due to signed cast; reconstruction loses calling convention/other signature metadata; no durable ordinal identity'
+                else:
+                    is_enum='Enum' in name
+                    comment=name.endswith('Comment')
+                    parent='type_id_or_path' if is_enum else 'parent_type_id_or_path'
+                    var='type_name' if is_enum and not comment else 'name'
+                    assert 'std::string '+var+' = '+parent in code
+                    assert "if (!"+var+".empty() && "+var+"[0] == '/') "+var+' = '+var+'.substr(1);' in text
+                    if key=='ordinal':
+                        assert arg['native_type']=='std::uint64_t'
+                        if comment:
+                            assert 'ordinal >= existing.size()' not in code
+                            consumer='setTypeEnumMemberComment' if is_enum else 'setTypeMemberComment'
+                            assert consumer+'(name, ordinal, comment)' in code
+                            sem='required exact UInt64 zero-based ordinal side-map key; no existence/kind/range validation or signed narrowing in wrapper; arbitrary ordinal accepted even for missing type; not observed native member identity, comment does not follow renamed/reordered members'
+                        else:
+                            assert 'ordinal >= existing.size()' in code and '"NOT_FOUND"' in text
+                            assert 'i == ordinal' in code
+                            sem='required exact UInt64 zero-based current adapter traversal ordinal, not numeric member ID or Lua array index; >= existing.size() returns NOT_FOUND before reconstruction (missing/wrong-kind type gives empty list); whole struct/enum rebuild may change subsequent ordinal identity; no side-map comment remap; retained struct offsets narrow to signed int; enum signed-value casts/ordering roundtrip unqualified'
+                    else:
+                        assert key==parent and arg['native_type']=='const std::string&'
+                        sem='required Lua string; remove exactly one leading slash then use literal normalized name, not hierarchical path or numeric ID; '+('comment writes side map without checking type existence/kind and permits empty name' if comment else 'primary adapter findByName plus '+('TypeEnum' if is_enum else 'TypeStruct')+' selection; missing/wrong-kind becomes empty list then ordinal NOT_FOUND; not union editing')
+                arg['semantics']=sem+'; dispatched mutation invalidates binding generation before native execution even when native error follows; validation-only rejection does not; runtime positive/negative boundary and identity slots unqualified'
+                arg['direct_argument_review']={'consumer':LOCAL,'helper':name,'qualification':'source only; no runtime qualification'}
+                reviewed.append({'operation':name,'path':key})
+                continue
             if not nested and name in ['ReadBytes','WriteBytes']:
                 key=arg['name']
                 if name=='ReadBytes':

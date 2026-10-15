@@ -3222,19 +3222,31 @@
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "helper": "DeleteTypeEnumMember",
+            "qualification": "source only; no runtime qualification"
+          },
           "ignored": false,
           "lua": "Lua string (no transcoding)",
           "name": "type_id_or_path",
           "native_type": "const std::string&",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "required Lua string; remove exactly one leading slash then use literal normalized name, not hierarchical path or numeric ID; primary adapter findByName plus TypeEnum selection; missing/wrong-kind becomes empty list then ordinal NOT_FOUND; not union editing; dispatched mutation invalidates binding generation before native execution even when native error follows; validation-only rejection does not; runtime positive/negative boundary and identity slots unqualified"
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "helper": "DeleteTypeEnumMember",
+            "qualification": "source only; no runtime qualification"
+          },
           "ignored": false,
           "lua": "exact UInt64",
           "name": "ordinal",
           "native_type": "std::uint64_t",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "required exact UInt64 zero-based current adapter traversal ordinal, not numeric member ID or Lua array index; >= existing.size() returns NOT_FOUND before reconstruction (missing/wrong-kind type gives empty list); whole struct/enum rebuild may change subsequent ordinal identity; no side-map comment remap; retained struct offsets narrow to signed int; enum signed-value casts/ordering roundtrip unqualified; dispatched mutation invalidates binding generation before native execution even when native error follows; validation-only rejection does not; runtime positive/negative boundary and identity slots unqualified"
         }
       ],
       "response": {
@@ -3350,19 +3362,31 @@
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "helper": "DeleteTypeMember",
+            "qualification": "source only; no runtime qualification"
+          },
           "ignored": false,
           "lua": "Lua string (no transcoding)",
           "name": "parent_type_id_or_path",
           "native_type": "const std::string&",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "required Lua string; remove exactly one leading slash then use literal normalized name, not hierarchical path or numeric ID; primary adapter findByName plus TypeStruct selection; missing/wrong-kind becomes empty list then ordinal NOT_FOUND; not union editing; dispatched mutation invalidates binding generation before native execution even when native error follows; validation-only rejection does not; runtime positive/negative boundary and identity slots unqualified"
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "helper": "DeleteTypeMember",
+            "qualification": "source only; no runtime qualification"
+          },
           "ignored": false,
           "lua": "exact UInt64",
           "name": "ordinal",
           "native_type": "std::uint64_t",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "required exact UInt64 zero-based current adapter traversal ordinal, not numeric member ID or Lua array index; >= existing.size() returns NOT_FOUND before reconstruction (missing/wrong-kind type gives empty list); whole struct/enum rebuild may change subsequent ordinal identity; no side-map comment remap; retained struct offsets narrow to signed int; enum signed-value casts/ordering roundtrip unqualified; dispatched mutation invalidates binding generation before native execution even when native error follows; validation-only rejection does not; runtime positive/negative boundary and identity slots unqualified"
         }
       ],
       "response": {
@@ -16851,11 +16875,17 @@
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "helper": "RenameFunctionParameter",
+            "qualification": "source only; no runtime qualification"
+          },
           "ignored": false,
           "lua": "checked Lua integer (int)",
           "name": "ordinal",
           "native_type": "int",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "required checked signed Lua integer fitting native int; zero-based formal parameter position, not Lua 1-based array index; negative or >= parameter count returns OUT_OF_RANGE after decompile/signature extraction, absent signature first returns NOT_FOUND; supported count <=INT_MAX due to signed cast; reconstruction loses calling convention/other signature metadata; no durable ordinal identity; dispatched mutation invalidates binding generation before native execution even when native error follows; validation-only rejection does not; runtime positive/negative boundary and identity slots unqualified"
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
@@ -17290,19 +17320,31 @@
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "helper": "RenameTypeEnumMember",
+            "qualification": "source only; no runtime qualification"
+          },
           "ignored": false,
           "lua": "Lua string (no transcoding)",
           "name": "type_id_or_path",
           "native_type": "const std::string&",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "required Lua string; remove exactly one leading slash then use literal normalized name, not hierarchical path or numeric ID; primary adapter findByName plus TypeEnum selection; missing/wrong-kind becomes empty list then ordinal NOT_FOUND; not union editing; dispatched mutation invalidates binding generation before native execution even when native error follows; validation-only rejection does not; runtime positive/negative boundary and identity slots unqualified"
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "helper": "RenameTypeEnumMember",
+            "qualification": "source only; no runtime qualification"
+          },
           "ignored": false,
           "lua": "exact UInt64",
           "name": "ordinal",
           "native_type": "std::uint64_t",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "required exact UInt64 zero-based current adapter traversal ordinal, not numeric member ID or Lua array index; >= existing.size() returns NOT_FOUND before reconstruction (missing/wrong-kind type gives empty list); whole struct/enum rebuild may change subsequent ordinal identity; no side-map comment remap; retained struct offsets narrow to signed int; enum signed-value casts/ordering roundtrip unqualified; dispatched mutation invalidates binding generation before native execution even when native error follows; validation-only rejection does not; runtime positive/negative boundary and identity slots unqualified"
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
@@ -17427,19 +17469,31 @@
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "helper": "RenameTypeMember",
+            "qualification": "source only; no runtime qualification"
+          },
           "ignored": false,
           "lua": "Lua string (no transcoding)",
           "name": "parent_type_id_or_path",
           "native_type": "const std::string&",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "required Lua string; remove exactly one leading slash then use literal normalized name, not hierarchical path or numeric ID; primary adapter findByName plus TypeStruct selection; missing/wrong-kind becomes empty list then ordinal NOT_FOUND; not union editing; dispatched mutation invalidates binding generation before native execution even when native error follows; validation-only rejection does not; runtime positive/negative boundary and identity slots unqualified"
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "helper": "RenameTypeMember",
+            "qualification": "source only; no runtime qualification"
+          },
           "ignored": false,
           "lua": "exact UInt64",
           "name": "ordinal",
           "native_type": "std::uint64_t",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "required exact UInt64 zero-based current adapter traversal ordinal, not numeric member ID or Lua array index; >= existing.size() returns NOT_FOUND before reconstruction (missing/wrong-kind type gives empty list); whole struct/enum rebuild may change subsequent ordinal identity; no side-map comment remap; retained struct offsets narrow to signed int; enum signed-value casts/ordering roundtrip unqualified; dispatched mutation invalidates binding generation before native execution even when native error follows; validation-only rejection does not; runtime positive/negative boundary and identity slots unqualified"
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
@@ -18355,11 +18409,17 @@
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "helper": "SetFunctionParameterType",
+            "qualification": "source only; no runtime qualification"
+          },
           "ignored": false,
           "lua": "checked Lua integer (int)",
           "name": "ordinal",
           "native_type": "int",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "required checked signed Lua integer fitting native int; zero-based formal parameter position, not Lua 1-based array index; negative or >= parameter count returns OUT_OF_RANGE after decompile/signature extraction, absent signature first returns NOT_FOUND; supported count <=INT_MAX due to signed cast; reconstruction loses calling convention/other signature metadata; no durable ordinal identity; dispatched mutation invalidates binding generation before native execution even when native error follows; validation-only rejection does not; runtime positive/negative boundary and identity slots unqualified"
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
@@ -19108,19 +19168,31 @@
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "helper": "SetTypeEnumMemberComment",
+            "qualification": "source only; no runtime qualification"
+          },
           "ignored": false,
           "lua": "Lua string (no transcoding)",
           "name": "type_id_or_path",
           "native_type": "const std::string&",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "required Lua string; remove exactly one leading slash then use literal normalized name, not hierarchical path or numeric ID; comment writes side map without checking type existence/kind and permits empty name; dispatched mutation invalidates binding generation before native execution even when native error follows; validation-only rejection does not; runtime positive/negative boundary and identity slots unqualified"
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "helper": "SetTypeEnumMemberComment",
+            "qualification": "source only; no runtime qualification"
+          },
           "ignored": false,
           "lua": "exact UInt64",
           "name": "ordinal",
           "native_type": "std::uint64_t",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "required exact UInt64 zero-based ordinal side-map key; no existence/kind/range validation or signed narrowing in wrapper; arbitrary ordinal accepted even for missing type; not observed native member identity, comment does not follow renamed/reordered members; dispatched mutation invalidates binding generation before native execution even when native error follows; validation-only rejection does not; runtime positive/negative boundary and identity slots unqualified"
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
@@ -19245,19 +19317,31 @@
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "helper": "SetTypeEnumMemberValue",
+            "qualification": "source only; no runtime qualification"
+          },
           "ignored": false,
           "lua": "Lua string (no transcoding)",
           "name": "type_id_or_path",
           "native_type": "const std::string&",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "required Lua string; remove exactly one leading slash then use literal normalized name, not hierarchical path or numeric ID; primary adapter findByName plus TypeEnum selection; missing/wrong-kind becomes empty list then ordinal NOT_FOUND; not union editing; dispatched mutation invalidates binding generation before native execution even when native error follows; validation-only rejection does not; runtime positive/negative boundary and identity slots unqualified"
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "helper": "SetTypeEnumMemberValue",
+            "qualification": "source only; no runtime qualification"
+          },
           "ignored": false,
           "lua": "exact UInt64",
           "name": "ordinal",
           "native_type": "std::uint64_t",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "required exact UInt64 zero-based current adapter traversal ordinal, not numeric member ID or Lua array index; >= existing.size() returns NOT_FOUND before reconstruction (missing/wrong-kind type gives empty list); whole struct/enum rebuild may change subsequent ordinal identity; no side-map comment remap; retained struct offsets narrow to signed int; enum signed-value casts/ordering roundtrip unqualified; dispatched mutation invalidates binding generation before native execution even when native error follows; validation-only rejection does not; runtime positive/negative boundary and identity slots unqualified"
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
@@ -19373,19 +19457,31 @@
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "helper": "SetTypeMemberComment",
+            "qualification": "source only; no runtime qualification"
+          },
           "ignored": false,
           "lua": "Lua string (no transcoding)",
           "name": "parent_type_id_or_path",
           "native_type": "const std::string&",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "required Lua string; remove exactly one leading slash then use literal normalized name, not hierarchical path or numeric ID; comment writes side map without checking type existence/kind and permits empty name; dispatched mutation invalidates binding generation before native execution even when native error follows; validation-only rejection does not; runtime positive/negative boundary and identity slots unqualified"
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "helper": "SetTypeMemberComment",
+            "qualification": "source only; no runtime qualification"
+          },
           "ignored": false,
           "lua": "exact UInt64",
           "name": "ordinal",
           "native_type": "std::uint64_t",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "required exact UInt64 zero-based ordinal side-map key; no existence/kind/range validation or signed narrowing in wrapper; arbitrary ordinal accepted even for missing type; not observed native member identity, comment does not follow renamed/reordered members; dispatched mutation invalidates binding generation before native execution even when native error follows; validation-only rejection does not; runtime positive/negative boundary and identity slots unqualified"
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
@@ -19510,19 +19606,31 @@
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "helper": "SetTypeMemberType",
+            "qualification": "source only; no runtime qualification"
+          },
           "ignored": false,
           "lua": "Lua string (no transcoding)",
           "name": "parent_type_id_or_path",
           "native_type": "const std::string&",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "required Lua string; remove exactly one leading slash then use literal normalized name, not hierarchical path or numeric ID; primary adapter findByName plus TypeStruct selection; missing/wrong-kind becomes empty list then ordinal NOT_FOUND; not union editing; dispatched mutation invalidates binding generation before native execution even when native error follows; validation-only rejection does not; runtime positive/negative boundary and identity slots unqualified"
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "helper": "SetTypeMemberType",
+            "qualification": "source only; no runtime qualification"
+          },
           "ignored": false,
           "lua": "exact UInt64",
           "name": "ordinal",
           "native_type": "std::uint64_t",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "required exact UInt64 zero-based current adapter traversal ordinal, not numeric member ID or Lua array index; >= existing.size() returns NOT_FOUND before reconstruction (missing/wrong-kind type gives empty list); whole struct/enum rebuild may change subsequent ordinal identity; no side-map comment remap; retained struct offsets narrow to signed int; enum signed-value casts/ordering roundtrip unqualified; dispatched mutation invalidates binding generation before native execution even when native error follows; validation-only rejection does not; runtime positive/negative boundary and identity slots unqualified"
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
@@ -30106,26 +30214,6 @@
         "reason": "direct argument consumption/default/domain review not yet independently reconciled"
       },
       {
-        "operation": "DeleteTypeEnumMember",
-        "path": "type_id_or_path",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "DeleteTypeEnumMember",
-        "path": "ordinal",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "DeleteTypeMember",
-        "path": "parent_type_id_or_path",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "DeleteTypeMember",
-        "path": "ordinal",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
         "operation": "GetDecompilation",
         "path": "address",
         "reason": "direct argument consumption/default/domain review not yet independently reconciled"
@@ -30192,11 +30280,6 @@
       },
       {
         "operation": "RenameFunctionParameter",
-        "path": "ordinal",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "RenameFunctionParameter",
         "path": "new_name",
         "reason": "direct argument consumption/default/domain review not yet independently reconciled"
       },
@@ -30222,27 +30305,7 @@
       },
       {
         "operation": "RenameTypeEnumMember",
-        "path": "type_id_or_path",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "RenameTypeEnumMember",
-        "path": "ordinal",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "RenameTypeEnumMember",
         "path": "new_name",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "RenameTypeMember",
-        "path": "parent_type_id_or_path",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "RenameTypeMember",
-        "path": "ordinal",
         "reason": "direct argument consumption/default/domain review not yet independently reconciled"
       },
       {
@@ -30287,11 +30350,6 @@
       },
       {
         "operation": "SetFunctionParameterType",
-        "path": "ordinal",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "SetFunctionParameterType",
         "path": "data_type",
         "reason": "direct argument consumption/default/domain review not yet independently reconciled"
       },
@@ -30317,27 +30375,7 @@
       },
       {
         "operation": "SetTypeEnumMemberComment",
-        "path": "type_id_or_path",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "SetTypeEnumMemberComment",
-        "path": "ordinal",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "SetTypeEnumMemberComment",
         "path": "comment",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "SetTypeEnumMemberValue",
-        "path": "type_id_or_path",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "SetTypeEnumMemberValue",
-        "path": "ordinal",
         "reason": "direct argument consumption/default/domain review not yet independently reconciled"
       },
       {
@@ -30347,27 +30385,7 @@
       },
       {
         "operation": "SetTypeMemberComment",
-        "path": "parent_type_id_or_path",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "SetTypeMemberComment",
-        "path": "ordinal",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "SetTypeMemberComment",
         "path": "comment",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "SetTypeMemberType",
-        "path": "parent_type_id_or_path",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "SetTypeMemberType",
-        "path": "ordinal",
         "reason": "direct argument consumption/default/domain review not yet independently reconciled"
       },
       {
@@ -30401,6 +30419,22 @@
       {
         "operation": "DeleteSymbol",
         "path": "name_filter"
+      },
+      {
+        "operation": "DeleteTypeEnumMember",
+        "path": "type_id_or_path"
+      },
+      {
+        "operation": "DeleteTypeEnumMember",
+        "path": "ordinal"
+      },
+      {
+        "operation": "DeleteTypeMember",
+        "path": "parent_type_id_or_path"
+      },
+      {
+        "operation": "DeleteTypeMember",
+        "path": "ordinal"
       },
       {
         "operation": "GetComments",
@@ -30693,6 +30727,62 @@
       {
         "operation": "ReadBytes",
         "path": "length"
+      },
+      {
+        "operation": "RenameFunctionParameter",
+        "path": "ordinal"
+      },
+      {
+        "operation": "RenameTypeEnumMember",
+        "path": "type_id_or_path"
+      },
+      {
+        "operation": "RenameTypeEnumMember",
+        "path": "ordinal"
+      },
+      {
+        "operation": "RenameTypeMember",
+        "path": "parent_type_id_or_path"
+      },
+      {
+        "operation": "RenameTypeMember",
+        "path": "ordinal"
+      },
+      {
+        "operation": "SetFunctionParameterType",
+        "path": "ordinal"
+      },
+      {
+        "operation": "SetTypeEnumMemberComment",
+        "path": "type_id_or_path"
+      },
+      {
+        "operation": "SetTypeEnumMemberComment",
+        "path": "ordinal"
+      },
+      {
+        "operation": "SetTypeEnumMemberValue",
+        "path": "type_id_or_path"
+      },
+      {
+        "operation": "SetTypeEnumMemberValue",
+        "path": "ordinal"
+      },
+      {
+        "operation": "SetTypeMemberComment",
+        "path": "parent_type_id_or_path"
+      },
+      {
+        "operation": "SetTypeMemberComment",
+        "path": "ordinal"
+      },
+      {
+        "operation": "SetTypeMemberType",
+        "path": "parent_type_id_or_path"
+      },
+      {
+        "operation": "SetTypeMemberType",
+        "path": "ordinal"
       },
       {
         "operation": "WriteBytes",

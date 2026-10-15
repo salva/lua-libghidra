@@ -51,7 +51,7 @@ class InventoryTests(unittest.TestCase):
                     self.assertIn('must not be inferred',f['request_field_review']['native_absence'])
 
     def test_page_argument_domains_are_not_native_unbounded_defaults(self):
-        self.assertEqual(len(self.data['request_audit']['direct_arguments_reviewed']),80)
+        self.assertEqual(len(self.data['request_audit']['direct_arguments_reviewed']),98)
         for op in self.ops.values():
             if 'page_wrapper_review' not in op:continue
             args={a['name']:a for a in op['request']}
@@ -103,6 +103,17 @@ class InventoryTests(unittest.TestCase):
         for f in fields.values():
             self.assertIn('exceptions may escape',f['factory_review']['lifecycle'])
             self.assertIn('unqualified',f['factory_review']['qualification'])
+
+    def test_member_keys_and_signed_parameter_ordinals(self):
+        def arg(op,key):
+            return next(a for a in self.ops[op]['request'] if a['name']==key)
+        self.assertIn('zero-based current adapter traversal',arg('DeleteTypeMember','ordinal')['semantics'])
+        self.assertIn('exact UInt64',arg('RenameTypeEnumMember','ordinal')['semantics'])
+        self.assertIn('no existence/kind/range validation',arg('SetTypeMemberComment','ordinal')['semantics'])
+        self.assertIn('remove exactly one leading slash',arg('SetTypeEnumMemberComment','type_id_or_path')['semantics'])
+        self.assertIn('signed Lua integer',arg('RenameFunctionParameter','ordinal')['semantics'])
+        self.assertIn('OUT_OF_RANGE',arg('SetFunctionParameterType','ordinal')['semantics'])
+        self.assertIn('count <=INT_MAX',arg('SetFunctionParameterType','ordinal')['semantics'])
 
     def test_preserved_red_reproducer(self):
         # Exact acceptance trigger from red; stronger checks below prevent treating
@@ -370,6 +381,10 @@ class InventoryTests(unittest.TestCase):
                 module.inventory(root)
             adapter.write_text(adapter_original)
             local.write_text(local_original.replace('std::max(opts_.pool_size, 1)', 'std::max(opts_.pool_size, 2)'))
+            with self.assertRaises(AssertionError):
+                module.inventory(root)
+            local.write_text(local_original)
+            local.write_text(local_original.replace('a.setTypeMemberComment(name, ordinal, comment)', 'a.setTypeMemberComment(name, ordinal + 1, comment)'))
             with self.assertRaises(AssertionError):
                 module.inventory(root)
             local.write_text(local_original)

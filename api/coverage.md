@@ -711,3 +711,17 @@ Single-owner reservation/recovery, serialized destruction and resource-path
 positive/negative slots remain unqualified. Exact option set and pool clamp drift
 are checked; thirty-seven focused tests pass. Direct request ledger remains
 80 reviewed/76 remaining; final grammar and remaining argument review open.
+
+## Member keys and ordinal domains (thirty-fourth increment)
+
+Eighteen direct paths now reconcile normalized struct/enum parent keys and
+zero-based UInt64 traversal ordinals across six reconstruction and two comment
+operations, plus two signed-int parameter ordinals. Struct/enum edits reject
+out-of-range with NOT_FOUND; comment setters accept arbitrary ordinal/name
+side-map keys without existence/kind checks. Parameter ordinals are signed int,
+negative or >= count gives OUT_OF_RANGE after signature extraction (missing
+signature first NOT_FOUND), with count <=INT_MAX. No Lua 1-based conversion,
+durable identity, side-map remapping or runtime roundtrip is inferred. Dispatch
+generation versus validation-only rejection remains explicit. Direct ledger is
+98 reviewed/58 remaining; 38 tests include source-drift checks. Final grammar
+and remaining argument reviews are still open; runtime slots unqualified.
