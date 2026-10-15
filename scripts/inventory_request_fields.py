@@ -49,6 +49,46 @@ def review_request_fields(u, operations):
         code=_code_mask(text)
         for arg in op['request']:
             nested=arg['nested_fields']
+            creation_fields={
+                'CreateType':{'name','kind'}, 'CreateTypeEnum':{'name'},
+                'AddTypeMember':{'parent_type_id_or_path','member_name','member_type'},
+                'AddTypeEnumMember':{'type_id_or_path','name','value'},
+            }
+            if not nested and arg['name'] in creation_fields.get(name,set()):
+                key=arg['name']
+                if name=='CreateType':
+                    assert 'if (kind == "struct")' in text and 'd.defineStruct(name, {})' in code
+                    assert '"NOT_SUPPORTED"' in text and 'if (ok) revision_++;' in code
+                    sem=('required string, EXACT case-sensitive kind struct only; other strings including empty yield NOT_SUPPORTED after loaded guard, no native mutation/revision; not a general datatype creation selector' if key=='kind' else 'required string forwarded literally as defineStruct name with EMPTY field vector; wrapper performs no empty/name/duplicate validation or leading-slash removal; size ignored, not structure layout')
+                elif name=='CreateTypeEnum':
+                    assert 'd.defineEnum(name, std::vector<ghidra_standalone::EnumValue>{})' in code
+                    sem='required string forwarded literally as defineEnum name with EMPTY entries; no wrapper empty/name/duplicate validation or slash stripping; width/is_signed ignored, not evidence of requested enum representation'
+                elif name=='AddTypeMember':
+                    assert 'std::string name = parent;' in code and "name = name.substr(1)" in code
+                    assert 'listTypeMembers(name)' in code and 'fields.push_back({member_name, member_type, off})' in code
+                    assert 'int end = static_cast<int>(m.offset) + static_cast<int>(m.size)' in code
+                    assert 'd.defineStruct(name, fields)' in code
+                    if key=='parent_type_id_or_path':
+                        sem='service parent_type_id_or_path binds positionally to LocalClient parent; required string, strip exactly ONE leading slash then listTypeMembers by literal type name, no numeric ID/hierarchy; missing/wrong-kind empty member vector is NOT explicitly rejected before defineStruct, not proof existing parent required'
+                    else:
+                        sem='required string '+key+' copied verbatim into appended FieldDef, no wrapper validation/escaping/slash normalization; whole structure reconstructed, not opaque in-place field insertion'
+                    sem+='; append offset max(0, existing offset+size), no alignment/padding calculation; all existing offsets/sizes and signed sums must fit INT_MAX independently of ignored requested size'
+                else:
+                    assert 'std::string type_name = type_id_or_path;' in code and 'type_name = type_name.substr(1)' in code
+                    assert 'listTypeEnumMembers(type_name)' in code and 'entries.push_back({name, static_cast<uint64_t>(value)})' in code
+                    assert 'd.defineEnum(type_name, entries)' in code
+                    if key=='type_id_or_path':
+                        sem='required string; strip exactly ONE leading slash then literal enum name lookup, not numeric ID/hierarchy; absent/wrong-kind empty list NOT explicitly rejected before defineEnum; do not promise existing enum required'
+                    elif key=='value':
+                        assert arg['native_type']=='std::int64_t'
+                        sem='required checked signed int64 Lua representation, zero/negative preserved; static_cast<uint64_t> converts modulo 2^64 into EnumValue; out-of-range signed response roundtrip unqualified, not rejection or saturation'
+                    else:
+                        sem='required string name copied literally into appended EnumValue without wrapper empty/name/duplicate validation or slash stripping'
+                    sem+='; rebuild entire enum including prior entries, native traversal/reordering and side-map comment ordinal stability unqualified'
+                arg['semantics']=sem+'; loaded guard first; dispatched mutation invalidates binding generation even on native failure, validation-only rejection does not; native revision only on successful define; failed define returns operation-specific error, not successful false; downstream identifier/parser/layout effects and runtime positive/negative qualification remain unqualified'
+                arg['direct_argument_review']={'consumer':LOCAL,'helper':name,'qualification':'source only; no runtime qualification'}
+                reviewed.append({'operation':name,'path':key})
+                continue
             type_alias_ops={'CreateTypeAlias':'createTypeAlias','DeleteTypeAlias':'deleteTypeAlias','SetTypeAliasTarget':'setTypeAliasTarget','DeleteType':'deleteType','RenameType':'renameType'}
             if not nested and name in type_alias_ops:
                 consumer=type_alias_ops[name]

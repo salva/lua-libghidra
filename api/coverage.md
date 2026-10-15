@@ -751,3 +751,16 @@ new target before destroying old typedef, then recreation may fail without
 rollback. Native revision, binding dispatch generation and validation-only failure
 remain distinct. Ledger: 114 reviewed/42 remaining; 40 tests include independent
 new-target-consumption drift rejection. No runtime qualification or M1 changes.
+
+## Creation/addition request accounting (thirty-seventh increment)
+
+Nine more direct fields distinguish exact struct kind, literal empty-collection
+creation names, one-slash parent normalization and verbatim appended payloads.
+Add member wrappers do not explicitly reject absent/wrong-kind parents after
+empty lookup: do not invent an existing-parent guard. Structure append uses
+max(0, existing offset+size), not an alignment algorithm; signed reconstruction
+bounds remain independent of ignored requested size. Enum signed values convert
+modulo 2^64, not saturation; reconstruction can change traversal ordinals without
+comment remapping. All downstream parser/layout/identifier and runtime evidence
+remains unqualified. Ledger: 123 reviewed/33 remaining. Independent append-offset
+substitution probe and 41 tests retain the original absence reproducer.

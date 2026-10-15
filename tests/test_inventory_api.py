@@ -51,7 +51,7 @@ class InventoryTests(unittest.TestCase):
                     self.assertIn('must not be inferred',f['request_field_review']['native_absence'])
 
     def test_page_argument_domains_are_not_native_unbounded_defaults(self):
-        self.assertEqual(len(self.data['request_audit']['direct_arguments_reviewed']),114)
+        self.assertEqual(len(self.data['request_audit']['direct_arguments_reviewed']),123)
         for op in self.ops.values():
             if 'page_wrapper_review' not in op:continue
             args={a['name']:a for a in op['request']}
@@ -136,6 +136,16 @@ class InventoryTests(unittest.TestCase):
         self.assertIn('may be lost',sem('SetTypeAliasTarget','target_type'))
         self.assertIn('not explicit adapter core guard',sem('DeleteType','type_id_or_path'))
         self.assertIn('NO new-name slash stripping',sem('RenameType','new_name'))
+
+    def test_creation_payloads_and_missing_parent_are_not_assumed(self):
+        def sem(op,key):
+            return next(a['semantics'] for a in self.ops[op]['request'] if a['name']==key)
+        self.assertIn('EXACT case-sensitive',sem('CreateType','kind'))
+        self.assertIn('EMPTY entries',sem('CreateTypeEnum','name'))
+        self.assertIn('LocalClient parent',sem('AddTypeMember','parent_type_id_or_path'))
+        self.assertIn('NOT explicitly rejected',sem('AddTypeEnumMember','type_id_or_path'))
+        self.assertIn('modulo 2^64',sem('AddTypeEnumMember','value'))
+        self.assertIn('no alignment/padding',sem('AddTypeMember','member_type'))
 
     def test_preserved_red_reproducer(self):
         # Exact acceptance trigger from red; stronger checks below prevent treating
@@ -418,6 +428,10 @@ class InventoryTests(unittest.TestCase):
             with self.assertRaises(AssertionError):
                 module.inventory(root)
             adapter.write_text(adapter_original)
+            local.write_text(local_original.replace('fields.push_back({member_name, member_type, off})', 'fields.push_back({member_name, member_type, 0})'))
+            with self.assertRaises(AssertionError):
+                module.inventory(root)
+            local.write_text(local_original)
             header = root/'cpp/src/local_arch_adapter.hpp'
             header.write_text(header.read_text().replace('std::map<std::pair<std::uint64_t, int>, std::string> comments_', 'std::multimap<std::pair<std::uint64_t, int>, std::string> comments_'))
             with self.assertRaises(AssertionError):
