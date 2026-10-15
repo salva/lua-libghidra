@@ -834,3 +834,20 @@ Remaining work is final cross-ledger/source-accounting closure, including stale
 unresolved obligations versus actual Python conversion evidence. Runtime and
 iterator slots remain unqualified; signatures pages-only and constant-empty
 strings without discovery remain unchanged.
+
+## Python converter value provenance (forty-second increment)
+
+The previous Python converter reconciliation proved exported-key sets and cited
+bodies, but did not reject copying a key from the wrong native member. Every
+exported field now records its exact checked expression. Same-name scalar/text
+copies, signed enum casts, ordered nested locals/tokens and warnings-vector
+construction are distinguished and fail closed on changed source expressions.
+Omitted native fields (notably four Xref enclosing-function fields) stay explicit.
+This is source accounting, not Python/Lua numeric/text/runtime equivalence.
+
+Two independent source probes preserve dictionary key sets but corrupt scalar
+member provenance or nested-vector item conversion; both must be rejected.
+Remaining final audit must reconcile Python reconstruction/helper expressions,
+operation extraction expressions and all coverage ledgers before replacing stale
+broad unresolved claims. Runtime fixture/iterator slots remain unqualified and
+proposed non-first-slice grammar stays explicitly unapproved.

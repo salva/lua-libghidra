@@ -28,8 +28,34 @@ def reconcile_python(u, operations, types):
         assigned = sorted(set(re.findall(r'd\["(\w+)"\]\s*=', text)))
         assert m[1] in types
         native = {f['name'] for f in types[m[1]]['fields']}
+        # Reconcile value provenance, not only dictionary-key presence. A key
+        # copied from a different member was previously invisible to this audit.
+        expressions=dict(re.findall(r'd\["(\w+)"\]\s*=\s*([^;]+);',text))
+        assert len(expressions)==len(assigned)
+        reviewed={}
+        containers={('DecompilationRecord','locals'):('locals_list','locals','l'),
+                    ('DecompilationRecord','tokens'):('tokens_list','tokens','t'),
+                    ('HealthStatus','warnings'):('warns','warnings','w')}
+        for key,expr in expressions.items():
+            expr=expr.strip()
+            assert key in native, (m[1],key)
+            container=containers.get((m[1],key))
+            if container:
+                target,member,item=container
+                assert expr==target
+                convert='to_dict('+item+')' if member!='warnings' else item
+                assert 'for (const auto& '+item+' : r.'+member+') '+target+'.append('+convert+');' in text
+                kind='ordered vector traversal; nested to_dict' if member!='warnings' else 'ordered text vector traversal'
+            elif key=='kind' and m[1] in {'DecompileLocalRecord','DecompileTokenRecord'}:
+                assert expr=='static_cast<int>(r.kind)'
+                kind='enum to signed int; Python IntEnum construction may reject unknown values'
+            else:
+                assert expr=='r.'+key, (m[1],key,expr)
+                kind='same-name native member copied without truthiness/default substitution'
+            reviewed[key]={'expression':expr,'semantics':kind,
+                           'qualification':'source only; scalar/text conversion fidelity runtime unqualified'}
         converters[m[1]] = {'path':BINDINGS,'line':source.count('\n',0,start)+1,
-                              'exported_fields':assigned,'omitted_native_fields':sorted(native-set(assigned)),
+                              'exported_fields':assigned,'field_expressions':reviewed,'omitted_native_fields':sorted(native-set(assigned)),
                               'unknown_exported_fields':sorted(set(assigned)-native),
                               'body_sha256':hashlib.sha256(text.encode()).hexdigest()}
     audits=[]
@@ -68,4 +94,4 @@ def reconcile_python(u, operations, types):
             'errors':'nanobind unwrap throws ValueError(code + colon-space + message); Python _call catches ValueError and maps ErrorCode; unknown-code preservation not established by Python mapping; Lua must preserve upstream code/message',
             'architecture':'Python open may mutate request language/compiler from format detection; native echo is not authoritative detection; use identical explicit hints for oracle',
             'nested_enums':'Python _to_decompilation converts locals/tokens and their enum kinds via Python IntEnum constructors; unknown values can raise ValueError unlike Lua numeric unknown-value preservation',
-            'remaining':'record converter omitted fields enumerated below, not silently supplied as native evidence; defaults/enum behavior need real positive and negative fixtures'}
+            'remaining':'record converter keys AND exact value expressions reconciled; omitted fields explicit, not silently supplied as native evidence; Python reconstruction/default/enum runtime behavior remains unqualified'}

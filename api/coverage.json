@@ -31245,6 +31245,33 @@
           "out_degree",
           "start_address"
         ],
+        "field_expressions": {
+          "end_address": {
+            "expression": "r.end_address",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          },
+          "function_entry": {
+            "expression": "r.function_entry",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          },
+          "in_degree": {
+            "expression": "r.in_degree",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          },
+          "out_degree": {
+            "expression": "r.out_degree",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          },
+          "start_address": {
+            "expression": "r.start_address",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          }
+        },
         "line": 178,
         "omitted_native_fields": [],
         "path": "cpp/bindings/python_bindings.cpp",
@@ -31258,6 +31285,28 @@
           "function_entry",
           "src_block_start"
         ],
+        "field_expressions": {
+          "dst_block_start": {
+            "expression": "r.dst_block_start",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          },
+          "edge_kind": {
+            "expression": "r.edge_kind",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          },
+          "function_entry": {
+            "expression": "r.function_entry",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          },
+          "src_block_start": {
+            "expression": "r.src_block_start",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          }
+        },
         "line": 188,
         "omitted_native_fields": [],
         "path": "cpp/bindings/python_bindings.cpp",
@@ -31270,6 +31319,23 @@
           "note",
           "status"
         ],
+        "field_expressions": {
+          "id": {
+            "expression": "r.id",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          },
+          "note": {
+            "expression": "r.note",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          },
+          "status": {
+            "expression": "r.status",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          }
+        },
         "line": 222,
         "omitted_native_fields": [],
         "path": "cpp/bindings/python_bindings.cpp",
@@ -31288,6 +31354,53 @@
           "pseudocode",
           "tokens"
         ],
+        "field_expressions": {
+          "completed": {
+            "expression": "r.completed",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          },
+          "error_message": {
+            "expression": "r.error_message",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          },
+          "function_entry_address": {
+            "expression": "r.function_entry_address",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          },
+          "function_name": {
+            "expression": "r.function_name",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          },
+          "is_fallback": {
+            "expression": "r.is_fallback",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          },
+          "locals": {
+            "expression": "locals_list",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "ordered vector traversal; nested to_dict"
+          },
+          "prototype": {
+            "expression": "r.prototype",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          },
+          "pseudocode": {
+            "expression": "r.pseudocode",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          },
+          "tokens": {
+            "expression": "tokens_list",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "ordered vector traversal; nested to_dict"
+          }
+        },
         "line": 90,
         "omitted_native_fields": [],
         "path": "cpp/bindings/python_bindings.cpp",
@@ -31303,6 +31416,38 @@
           "ordinal",
           "storage"
         ],
+        "field_expressions": {
+          "data_type": {
+            "expression": "r.data_type",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          },
+          "kind": {
+            "expression": "static_cast<int>(r.kind)",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "enum to signed int; Python IntEnum construction may reject unknown values"
+          },
+          "local_id": {
+            "expression": "r.local_id",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          },
+          "name": {
+            "expression": "r.name",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          },
+          "ordinal": {
+            "expression": "r.ordinal",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          },
+          "storage": {
+            "expression": "r.storage",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          }
+        },
         "line": 67,
         "omitted_native_fields": [],
         "path": "cpp/bindings/python_bindings.cpp",
@@ -31319,6 +31464,43 @@
           "var_storage",
           "var_type"
         ],
+        "field_expressions": {
+          "column_offset": {
+            "expression": "r.column_offset",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          },
+          "kind": {
+            "expression": "static_cast<int>(r.kind)",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "enum to signed int; Python IntEnum construction may reject unknown values"
+          },
+          "line_number": {
+            "expression": "r.line_number",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          },
+          "text": {
+            "expression": "r.text",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          },
+          "var_name": {
+            "expression": "r.var_name",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          },
+          "var_storage": {
+            "expression": "r.var_storage",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          },
+          "var_type": {
+            "expression": "r.var_type",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          }
+        },
         "line": 78,
         "omitted_native_fields": [],
         "path": "cpp/bindings/python_bindings.cpp",
@@ -31333,6 +31515,33 @@
           "length",
           "value"
         ],
+        "field_expressions": {
+          "address": {
+            "expression": "r.address",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          },
+          "data_type": {
+            "expression": "r.data_type",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          },
+          "encoding": {
+            "expression": "r.encoding",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          },
+          "length": {
+            "expression": "r.length",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          },
+          "value": {
+            "expression": "r.value",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          }
+        },
         "line": 197,
         "omitted_native_fields": [],
         "path": "cpp/bindings/python_bindings.cpp",
@@ -31351,6 +31560,53 @@
           "size",
           "start_address"
         ],
+        "field_expressions": {
+          "end_address": {
+            "expression": "r.end_address",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          },
+          "entry_address": {
+            "expression": "r.entry_address",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          },
+          "is_thunk": {
+            "expression": "r.is_thunk",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          },
+          "name": {
+            "expression": "r.name",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          },
+          "namespace_name": {
+            "expression": "r.namespace_name",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          },
+          "parameter_count": {
+            "expression": "r.parameter_count",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          },
+          "prototype": {
+            "expression": "r.prototype",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          },
+          "size": {
+            "expression": "r.size",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          },
+          "start_address": {
+            "expression": "r.start_address",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          }
+        },
         "line": 37,
         "omitted_native_fields": [],
         "path": "cpp/bindings/python_bindings.cpp",
@@ -31366,6 +31622,38 @@
           "service_version",
           "warnings"
         ],
+        "field_expressions": {
+          "host_mode": {
+            "expression": "r.host_mode",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          },
+          "modification_number": {
+            "expression": "r.modification_number",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          },
+          "ok": {
+            "expression": "r.ok",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          },
+          "service_name": {
+            "expression": "r.service_name",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          },
+          "service_version": {
+            "expression": "r.service_version",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          },
+          "warnings": {
+            "expression": "warns",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "ordered text vector traversal"
+          }
+        },
         "line": 207,
         "omitted_native_fields": [],
         "path": "cpp/bindings/python_bindings.cpp",
@@ -31380,6 +31668,33 @@
           "mnemonic",
           "operand_text"
         ],
+        "field_expressions": {
+          "address": {
+            "expression": "r.address",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          },
+          "disassembly": {
+            "expression": "r.disassembly",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          },
+          "length": {
+            "expression": "r.length",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          },
+          "mnemonic": {
+            "expression": "r.mnemonic",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          },
+          "operand_text": {
+            "expression": "r.operand_text",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          }
+        },
         "line": 108,
         "omitted_native_fields": [],
         "path": "cpp/bindings/python_bindings.cpp",
@@ -31400,6 +31715,63 @@
           "source_name",
           "start_address"
         ],
+        "field_expressions": {
+          "comment": {
+            "expression": "r.comment",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          },
+          "end_address": {
+            "expression": "r.end_address",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          },
+          "is_execute": {
+            "expression": "r.is_execute",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          },
+          "is_initialized": {
+            "expression": "r.is_initialized",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          },
+          "is_read": {
+            "expression": "r.is_read",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          },
+          "is_volatile": {
+            "expression": "r.is_volatile",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          },
+          "is_write": {
+            "expression": "r.is_write",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          },
+          "name": {
+            "expression": "r.name",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          },
+          "size": {
+            "expression": "r.size",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          },
+          "source_name": {
+            "expression": "r.source_name",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          },
+          "start_address": {
+            "expression": "r.start_address",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          }
+        },
         "line": 118,
         "omitted_native_fields": [],
         "path": "cpp/bindings/python_bindings.cpp",
@@ -31420,6 +31792,63 @@
           "symbol_id",
           "type"
         ],
+        "field_expressions": {
+          "address": {
+            "expression": "r.address",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          },
+          "full_name": {
+            "expression": "r.full_name",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          },
+          "is_dynamic": {
+            "expression": "r.is_dynamic",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          },
+          "is_external": {
+            "expression": "r.is_external",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          },
+          "is_external_entry_point": {
+            "expression": "r.is_external_entry_point",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          },
+          "is_primary": {
+            "expression": "r.is_primary",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          },
+          "name": {
+            "expression": "r.name",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          },
+          "namespace_name": {
+            "expression": "r.namespace_name",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          },
+          "source": {
+            "expression": "r.source",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          },
+          "symbol_id": {
+            "expression": "r.symbol_id",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          },
+          "type": {
+            "expression": "r.type",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          }
+        },
         "line": 51,
         "omitted_native_fields": [],
         "path": "cpp/bindings/python_bindings.cpp",
@@ -31438,6 +31867,53 @@
           "parent_type_path_name",
           "size"
         ],
+        "field_expressions": {
+          "comment": {
+            "expression": "r.comment",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          },
+          "member_type": {
+            "expression": "r.member_type",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          },
+          "name": {
+            "expression": "r.name",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          },
+          "offset": {
+            "expression": "r.offset",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          },
+          "ordinal": {
+            "expression": "r.ordinal",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          },
+          "parent_type_id": {
+            "expression": "r.parent_type_id",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          },
+          "parent_type_name": {
+            "expression": "r.parent_type_name",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          },
+          "parent_type_path_name": {
+            "expression": "r.parent_type_path_name",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          },
+          "size": {
+            "expression": "r.size",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          }
+        },
         "line": 164,
         "omitted_native_fields": [],
         "path": "cpp/bindings/python_bindings.cpp",
@@ -31457,6 +31933,58 @@
           "type_id",
           "universal_id"
         ],
+        "field_expressions": {
+          "category_path": {
+            "expression": "r.category_path",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          },
+          "display_name": {
+            "expression": "r.display_name",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          },
+          "is_not_yet_defined": {
+            "expression": "r.is_not_yet_defined",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          },
+          "kind": {
+            "expression": "r.kind",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          },
+          "length": {
+            "expression": "r.length",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          },
+          "name": {
+            "expression": "r.name",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          },
+          "path_name": {
+            "expression": "r.path_name",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          },
+          "source_archive": {
+            "expression": "r.source_archive",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          },
+          "type_id": {
+            "expression": "r.type_id",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          },
+          "universal_id": {
+            "expression": "r.universal_id",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          }
+        },
         "line": 149,
         "omitted_native_fields": [],
         "path": "cpp/bindings/python_bindings.cpp",
@@ -31476,6 +32004,58 @@
           "symbol_id",
           "to_address"
         ],
+        "field_expressions": {
+          "from_address": {
+            "expression": "r.from_address",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          },
+          "is_external": {
+            "expression": "r.is_external",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          },
+          "is_flow": {
+            "expression": "r.is_flow",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          },
+          "is_memory": {
+            "expression": "r.is_memory",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          },
+          "is_primary": {
+            "expression": "r.is_primary",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          },
+          "operand_index": {
+            "expression": "r.operand_index",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          },
+          "ref_type": {
+            "expression": "r.ref_type",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          },
+          "source": {
+            "expression": "r.source",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          },
+          "symbol_id": {
+            "expression": "r.symbol_id",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          },
+          "to_address": {
+            "expression": "r.to_address",
+            "qualification": "source only; scalar/text conversion fidelity runtime unqualified",
+            "semantics": "same-name native member copied without truthiness/default substitution"
+          }
+        },
         "line": 134,
         "omitted_native_fields": [
           "from_function_address",
@@ -31487,7 +32067,7 @@
         "unknown_exported_fields": []
       }
     },
-    "remaining": "record converter omitted fields enumerated below, not silently supplied as native evidence; defaults/enum behavior need real positive and negative fixtures"
+    "remaining": "record converter keys AND exact value expressions reconciled; omitted fields explicit, not silently supplied as native evidence; Python reconstruction/default/enum runtime behavior remains unqualified"
   },
   "qualification": "M0 inventory only; no adapters or runtime qualification",
   "request_audit": {

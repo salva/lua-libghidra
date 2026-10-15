@@ -478,6 +478,17 @@ class InventoryTests(unittest.TestCase):
             with self.assertRaises(AssertionError):
                 module.inventory(root)
             local.write_text(local_original)
+            bindings = root/'cpp/bindings/python_bindings.cpp'
+            original_bindings=bindings.read_text()
+            # Keep key/field sets identical while corrupting value provenance.
+            bindings.write_text(original_bindings.replace('d["size"] = r.size;', 'd["size"] = r.start_address;',1))
+            with self.assertRaises(AssertionError):
+                module.inventory(root)
+            bindings.write_text(original_bindings)
+            bindings.write_text(original_bindings.replace('locals_list.append(to_dict(l))', 'locals_list.append(to_dict(t))'))
+            with self.assertRaises(AssertionError):
+                module.inventory(root)
+            bindings.write_text(original_bindings)
             header = root/'cpp/src/local_arch_adapter.hpp'
             header.write_text(header.read_text().replace('std::map<std::pair<std::uint64_t, int>, std::string> comments_', 'std::multimap<std::pair<std::uint64_t, int>, std::string> comments_'))
             with self.assertRaises(AssertionError):
@@ -736,6 +747,14 @@ class InventoryTests(unittest.TestCase):
         self.assertTrue(next(r for r in req if r['name']=='name_filter')['ignored'])
         self.assertIn('NO_STATE_PATH', self.ops['CloseProgram']['surface_contract']['facade']['save_policy'])
         self.assertIn('size', self.ops['ReadBytes']['surface_contract']['lowlevel']['argument_alias'])
+
+    def test_python_converter_value_provenance_not_just_keys(self):
+        converters=self.data['python_reconciliation']['record_converters']
+        for name,row in converters.items():
+            self.assertEqual(set(row['field_expressions']),set(row['exported_fields']))
+            self.assertFalse(row['unknown_exported_fields'])
+        self.assertEqual(converters['FunctionRecord']['field_expressions']['size']['expression'],'r.size')
+        self.assertIn('ordered vector',converters['DecompilationRecord']['field_expressions']['locals']['semantics'])
 
     def test_python_binding_fidelity_exceptions(self):
         audit = self.data['python_reconciliation']
