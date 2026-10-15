@@ -1,11 +1,15 @@
 # Review correction index
 
-2026-10-15 fresh2 writer corrections. IDs remain stable across rounds. All six
-original dimensions have documentation approval (upstream after UL-01 follow-up).
-All six fresh1 dimensions approved after re-review, recorded in 7cc4caa.
-Fresh2 has API/upstream change requests and four approvals.
-**Corrected, pending re-review** is not reviewer acceptance or a runtime pass.
-The new corrections below await review; no convergence is claimed.
+2026-10-15: **documentation review converged** on product-document baseline
+`31cb7ee`. All six original reviewers approved their corrections, and the first
+two fresh cohorts approved after correction/re-review. A third entirely fresh
+cohort returned six approvals without requiring product-document changes.
+
+All R01–R23 corrections are accepted at documentation level. The entries below
+retain historical correction-stage wording; the round log and final dispositions
+supersede “pending re-review” in those entries. No native implementation, build,
+runtime qualification, license determination or Saivage Run is claimed by these
+approvals. Operator decisions and M0/M1 experiments remain explicit in PLAN.
 
 | ID | Severity | Proposed disposition / evidence | Objective gate |
 | --- | --- | --- | --- |
@@ -33,10 +37,9 @@ The new corrections below await review; no convergence is claimed.
 | R22 | Medium | Fresh2 upstream U2 (scan): SPEC/EXAMPLES document linear ListInstructions from exact start until first decode gap; DESIGN/COVERAGE/PLAN require mapped/unmapped/gap cases, no replacement region scanner. Corrected, pending re-review. Source: local_arch_adapter.cpp:547–577 | M2 known-start positive and unmapped/gap negatives, no global absence inference |
 | R23 | Medium | Fresh2 upstream U3: SPEC lifecycle matrix/shared public state, DESIGN ownership, COVERAGE and EXAMPLES distinguish logical close from native-owner release; PLAN M2 cross-view close/reopen/NO_PROGRAM/CLOSED and process-slot gates. Corrected, pending re-review. Source: local_client.cpp:1670–1689; decompiler_pool.cpp:102–105 | Program close retains engines/slot; owner close releases owner; historical metadata and invalid iterators persist |
 
-R13–R19's “pending re-review” phrases above preserve the original correction
-entries; their current disposition is **reviewer-approved in fresh1 follow-ups**
-linked below. R20–R23 are new corrections awaiting re-review. No runtime gate is
-passed by either documentation disposition.
+R13–R19 were approved in fresh1 follow-ups; R20–R23 were approved in fresh2
+follow-ups. Fresh3 independently approved the complete corrected baseline.
+No runtime gate is passed by these documentation dispositions.
 
 ## Subsystems and metaplan
 
@@ -72,5 +75,22 @@ passed by either documentation disposition.
 | Fresh2 native safety | Approved | [Report](fresh2-native.md) |
 | Fresh2 upstream | Changes requested: U1 → R20, U2 → R21/R22, U3 → R23 | [Report](fresh2-upstream.md) |
 | Fresh2 validation | Approved | [Report](fresh2-validation.md) |
-| Fresh2 writer corrections | R20–R23 corrected; pending reviewer acceptance | Source evidence checked; no native experiments performed; reports preserved |
-| Subsequent review rounds | Pending owning-session dispatch | Append actual results; convergence not yet established |
+| Fresh2 writer corrections | 6b9dc5e; all six re-reviews approved, recorded in 31cb7ee | Follow-up dispositions in each fresh2 report; initial findings retained |
+| Fresh3 API | Approved independently, no required changes | [Report](fresh3-api.md) |
+| Fresh3 build | Approved independently, no required changes | [Report](fresh3-build.md) |
+| Fresh3 layering | Approved independently, optional preferences only | [Report](fresh3-layering.md) |
+| Fresh3 native safety | Approved independently, no required changes | [Report](fresh3-native.md) |
+| Fresh3 upstream | Approved independently, no required changes | [Report](fresh3-upstream.md) |
+| Fresh3 validation | Approved independently, no required changes | [Report](fresh3-validation.md) |
+
+## Completion boundary
+
+The loop stops after a completely fresh six-dimension round finds no substantive
+documentation corrections. There are no unresolved required review findings.
+Optional presentation preferences are not blockers and do not change the approved
+contracts. Review approval is readiness to proceed through the documented
+prerequisites, not permission to start implementation or proof that its tests pass.
+
+Validation performed on the documents: whitespace checks, local Markdown link
+resolution, and Lua 5.4 syntax checks of proposed example blocks. Runtime examples
+remain unexecuted until the binding exists. No project service was started.
