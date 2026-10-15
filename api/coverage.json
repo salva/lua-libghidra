@@ -812,6 +812,15 @@
         "creation via native nameGlobal, not a replacement data scanner; no readback/layout/persistence inferred from updated flag"
       ],
       "lowlevel": "apply_data_type",
+      "mutation_result_review": {
+        "assignments": {
+          "data_type": "data_type",
+          "updated": "ok"
+        },
+        "body_sha256": "2e0c3ff34e2f92dfe06ef6b9ff4ef53cc37e7ff91f2960f69658f43dba06dedd",
+        "path": "cpp/src/local_client.cpp",
+        "qualification": "source response/extraction branches only; runtime positive/negative and atomicity unqualified"
+      },
       "name": "ApplyDataType",
       "native_literal_errors": [
         "APPLY_FAILED"
@@ -846,7 +855,12 @@
             "native_type": "bool",
             "optional": false,
             "path": "updated",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 1520,
+              "method": "ApplyDataType",
+              "path": "cpp/src/local_client.cpp"
+            },
+            "semantics": "successful response only: true after mutation status accepted; failed native status returns StatusOr error, NOT successful false response; flag is native acknowledgement, not independent readback/rollback/atomicity proof"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -856,7 +870,12 @@
             "native_type": "std::string",
             "optional": false,
             "path": "data_type",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 1520,
+              "method": "ApplyDataType",
+              "path": "cpp/src/local_client.cpp"
+            },
+            "semantics": "echo of request data_type unchanged on native success; not canonicalized type/name/prototype or post-edit readback; empty input preserved if native operation accepts it"
           }
         ],
         "lua": "ApplyDataTypeResponse table/enum; resolve in types/enums",
@@ -2523,6 +2542,15 @@
         "native argument name_filter (semantic name) ignored: deletion by address only, never a name guard"
       ],
       "lowlevel": "delete_symbol",
+      "mutation_result_review": {
+        "assignments": {
+          "deleted": "ok",
+          "deleted_count": "ok ? 1 : 0"
+        },
+        "body_sha256": "3f044d398213c7fd89627e78bd1fad235427e60f8ac697e14045cfb000010c4a",
+        "path": "cpp/src/local_client.cpp",
+        "qualification": "source response/extraction branches only; runtime positive/negative and atomicity unqualified"
+      },
       "name": "DeleteSymbol",
       "native_literal_errors": [
         "NOT_FOUND"
@@ -2557,7 +2585,12 @@
             "native_type": "bool",
             "optional": false,
             "path": "deleted",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 560,
+              "method": "DeleteSymbol",
+              "path": "cpp/src/local_client.cpp"
+            },
+            "semantics": "successful response only: true after mutation status accepted; failed native status returns StatusOr error, NOT successful false response; flag is native acknowledgement, not independent readback/rollback/atomicity proof"
           },
           {
             "lua": "checked Lua integer (std::uint32_t)",
@@ -2567,7 +2600,12 @@
             "native_type": "std::uint32_t",
             "optional": false,
             "path": "deleted_count",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 560,
+              "method": "DeleteSymbol",
+              "path": "cpp/src/local_client.cpp"
+            },
+            "semantics": "successful DeleteSymbol returns exactly 1; constructed zero belongs only to discarded error response on failure; address-only deletion, ignored name_filter is not a matching guard"
           }
         ],
         "lua": "DeleteSymbolResponse table/enum; resolve in types/enums",
@@ -14801,6 +14839,15 @@
         "patch order is input array order; overlapping patches applied sequentially; native uint32 counter wraps on oversized cumulative input"
       ],
       "lowlevel": "patch_bytes_batch",
+      "mutation_result_review": {
+        "assignments": {
+          "bytes_written": "total_bytes",
+          "patch_count": "static_cast<std::uint32_t>(patches.size())"
+        },
+        "body_sha256": "07d575c3305faff74732cec7033397eb1abd700b6879e606035073d8c5185c67",
+        "path": "cpp/src/local_client.cpp",
+        "qualification": "source response/extraction branches only; runtime positive/negative and atomicity unqualified"
+      },
       "mutation_source_review": {
         "body_sha256": "07d575c3305faff74732cec7033397eb1abd700b6879e606035073d8c5185c67",
         "line": 1639,
@@ -14853,7 +14900,12 @@
             "native_type": "std::uint32_t",
             "optional": false,
             "path": "patch_count",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 1639,
+              "method": "PatchBytesBatch",
+              "path": "cpp/src/local_client.cpp"
+            },
+            "semantics": "input patches.size cast uint32 after input-order dispatch; not independently confirmed successful patch count; empty vector yields zero; exact count requires vector length<=UINT32_MAX"
           },
           {
             "lua": "checked Lua integer (std::uint32_t)",
@@ -14863,7 +14915,12 @@
             "native_type": "std::uint32_t",
             "optional": false,
             "path": "bytes_written",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 1639,
+              "method": "PatchBytesBatch",
+              "path": "cpp/src/local_client.cpp"
+            },
+            "semantics": "uint32 sum of each input patch.data.size cast uint32; modulo on overflow, not observed persisted bytes; exact fidelity requires each and cumulative length<=UINT32_MAX; failures may leave partial writes"
           }
         ],
         "lua": "PatchBytesBatchResponse table/enum; resolve in types/enums",
@@ -15131,6 +15188,15 @@
       },
       "limitations": [],
       "lowlevel": "rename_data_item",
+      "mutation_result_review": {
+        "assignments": {
+          "name": "new_name",
+          "updated": "ok"
+        },
+        "body_sha256": "8519c946692440dac35a0364a4915a49cb26134272f89c885606dbbee738291e",
+        "path": "cpp/src/local_client.cpp",
+        "qualification": "source response/extraction branches only; runtime positive/negative and atomicity unqualified"
+      },
       "name": "RenameDataItem",
       "native_literal_errors": [
         "RENAME_FAILED"
@@ -15165,7 +15231,12 @@
             "native_type": "bool",
             "optional": false,
             "path": "updated",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 1412,
+              "method": "RenameDataItem",
+              "path": "cpp/src/local_client.cpp"
+            },
+            "semantics": "successful response only: true after mutation status accepted; failed native status returns StatusOr error, NOT successful false response; flag is native acknowledgement, not independent readback/rollback/atomicity proof"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -15175,7 +15246,12 @@
             "native_type": "std::string",
             "optional": false,
             "path": "name",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 1412,
+              "method": "RenameDataItem",
+              "path": "cpp/src/local_client.cpp"
+            },
+            "semantics": "echo of request new_name unchanged on native success; not canonicalized type/name/prototype or post-edit readback; empty input preserved if native operation accepts it"
           }
         ],
         "lua": "RenameDataItemResponse table/enum; resolve in types/enums",
@@ -15247,6 +15323,15 @@
         "path": "cpp/src/local_client.cpp"
       },
       "lowlevel": "rename_function",
+      "mutation_result_review": {
+        "assignments": {
+          "name": "new_name",
+          "renamed": "ok"
+        },
+        "body_sha256": "a60633333e50194d806e33b8fcc52c9778ea46e0f8903b557dfa6d86cc151d3b",
+        "path": "cpp/src/local_client.cpp",
+        "qualification": "source response/extraction branches only; runtime positive/negative and atomicity unqualified"
+      },
       "name": "RenameFunction",
       "native_literal_errors": [
         "RENAME_FAILED"
@@ -15297,7 +15382,12 @@
             "native_type": "bool",
             "optional": false,
             "path": "renamed",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 406,
+              "method": "RenameFunction",
+              "path": "cpp/src/local_client.cpp"
+            },
+            "semantics": "successful response only: true after mutation status accepted; failed native status returns StatusOr error, NOT successful false response; flag is native acknowledgement, not independent readback/rollback/atomicity proof"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -15307,7 +15397,12 @@
             "native_type": "std::string",
             "optional": false,
             "path": "name",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 406,
+              "method": "RenameFunction",
+              "path": "cpp/src/local_client.cpp"
+            },
+            "semantics": "echo of request new_name unchanged on native success; not canonicalized type/name/prototype or post-edit readback; empty input preserved if native operation accepts it"
           }
         ],
         "lua": "RenameFunctionResponse table/enum; resolve in types/enums",
@@ -15382,6 +15477,16 @@
         "local_id is opaque native identity string, not ordinal/name; no cross-decompilation stable identity or all-slot atomicity established by this wrapper"
       ],
       "lowlevel": "rename_function_local",
+      "mutation_result_review": {
+        "assignments": {
+          "local_id": "local_id",
+          "name": "new_name",
+          "updated": "true"
+        },
+        "body_sha256": "f165a88dd6797b2ae2ef3f3d57263a2c8fd84214083cb21d8787b32db209db5f",
+        "path": "cpp/src/local_client.cpp",
+        "qualification": "source response/extraction branches only; runtime positive/negative and atomicity unqualified"
+      },
       "name": "RenameFunctionLocal",
       "native_literal_errors": [
         "DECOMPILE_FAILED",
@@ -15425,7 +15530,12 @@
             "native_type": "bool",
             "optional": false,
             "path": "updated",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 1553,
+              "method": "RenameFunctionLocal",
+              "path": "cpp/src/local_client.cpp"
+            },
+            "semantics": "successful response only: true after mutation status accepted; failed native status returns StatusOr error, NOT successful false response; flag is native acknowledgement, not independent readback/rollback/atomicity proof"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -15435,7 +15545,12 @@
             "native_type": "std::string",
             "optional": false,
             "path": "local_id",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 1553,
+              "method": "RenameFunctionLocal",
+              "path": "cpp/src/local_client.cpp"
+            },
+            "semantics": "echo of supplied local_id unchanged; not canonical resolved ID and not independently looked up after edit (native resolver may accept tolerant aliases/name)"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -15445,7 +15560,12 @@
             "native_type": "std::string",
             "optional": false,
             "path": "name",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 1553,
+              "method": "RenameFunctionLocal",
+              "path": "cpp/src/local_client.cpp"
+            },
+            "semantics": "echo of request new_name unchanged on native success; not canonicalized type/name/prototype or post-edit readback; empty input preserved if native operation accepts it"
           }
         ],
         "lua": "RenameFunctionLocalResponse table/enum; resolve in types/enums",
@@ -15519,6 +15639,15 @@
         "prototype reconstruction includes return type/function name/parameter data_type and name/varargs only; does not encode calling convention or all signature metadata; no full-signature fidelity promise"
       ],
       "lowlevel": "rename_function_parameter",
+      "mutation_result_review": {
+        "assignments": {
+          "name": "new_name",
+          "updated": "ok"
+        },
+        "body_sha256": "3c3650e2100ccc684520ae6bc88681e2fe01ca8cd60f7c2c96715c9077d3aa4d",
+        "path": "cpp/src/local_client.cpp",
+        "qualification": "source response/extraction branches only; runtime positive/negative and atomicity unqualified"
+      },
       "mutation_source_review": {
         "body_sha256": "3c3650e2100ccc684520ae6bc88681e2fe01ca8cd60f7c2c96715c9077d3aa4d",
         "line": 1448,
@@ -15568,7 +15697,12 @@
             "native_type": "bool",
             "optional": false,
             "path": "updated",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 1448,
+              "method": "RenameFunctionParameter",
+              "path": "cpp/src/local_client.cpp"
+            },
+            "semantics": "successful response only: true after mutation status accepted; failed native status returns StatusOr error, NOT successful false response; flag is native acknowledgement, not independent readback/rollback/atomicity proof"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -15578,7 +15712,12 @@
             "native_type": "std::string",
             "optional": false,
             "path": "name",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 1448,
+              "method": "RenameFunctionParameter",
+              "path": "cpp/src/local_client.cpp"
+            },
+            "semantics": "echo of request new_name unchanged on native success; not canonicalized type/name/prototype or post-edit readback; empty input preserved if native operation accepts it"
           }
         ],
         "lua": "RenameFunctionParameterResponse table/enum; resolve in types/enums",
@@ -15651,6 +15790,15 @@
       },
       "limitations": [],
       "lowlevel": "rename_symbol",
+      "mutation_result_review": {
+        "assignments": {
+          "name": "new_name",
+          "renamed": "ok"
+        },
+        "body_sha256": "b4375244b6824e4ca2f9ff01a870c340b5a0954353e51fc9a7f7f5e22f5f3238",
+        "path": "cpp/src/local_client.cpp",
+        "qualification": "source response/extraction branches only; runtime positive/negative and atomicity unqualified"
+      },
       "name": "RenameSymbol",
       "native_literal_errors": [
         "NOT_FOUND",
@@ -15703,7 +15851,12 @@
             "native_type": "bool",
             "optional": false,
             "path": "renamed",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 530,
+              "method": "RenameSymbol",
+              "path": "cpp/src/local_client.cpp"
+            },
+            "semantics": "successful response only: true after mutation status accepted; failed native status returns StatusOr error, NOT successful false response; flag is native acknowledgement, not independent readback/rollback/atomicity proof"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -15713,7 +15866,12 @@
             "native_type": "std::string",
             "optional": false,
             "path": "name",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 530,
+              "method": "RenameSymbol",
+              "path": "cpp/src/local_client.cpp"
+            },
+            "semantics": "echo of request new_name unchanged on native success; not canonicalized type/name/prototype or post-edit readback; empty input preserved if native operation accepts it"
           }
         ],
         "lua": "RenameSymbolResponse table/enum; resolve in types/enums",
@@ -15792,6 +15950,15 @@
         "findByName lookup, not numeric ID resolution; adapter false conflates absent/ineligible type and caught exceptions; all-slot operation is not atomic"
       ],
       "lowlevel": "rename_type",
+      "mutation_result_review": {
+        "assignments": {
+          "name": "new_name",
+          "updated": "ok"
+        },
+        "body_sha256": "b7e7aa57fe79adb93a6046b20cc1f6dd300ab836a371781d814f40dd3977da99",
+        "path": "cpp/src/local_client.cpp",
+        "qualification": "source response/extraction branches only; runtime positive/negative and atomicity unqualified"
+      },
       "name": "RenameType",
       "native_literal_errors": [
         "RENAME_TYPE_FAILED"
@@ -15826,7 +15993,12 @@
             "native_type": "bool",
             "optional": false,
             "path": "updated",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 809,
+              "method": "RenameType",
+              "path": "cpp/src/local_client.cpp"
+            },
+            "semantics": "successful response only: true after mutation status accepted; failed native status returns StatusOr error, NOT successful false response; flag is native acknowledgement, not independent readback/rollback/atomicity proof"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -15836,7 +16008,12 @@
             "native_type": "std::string",
             "optional": false,
             "path": "name",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 809,
+              "method": "RenameType",
+              "path": "cpp/src/local_client.cpp"
+            },
+            "semantics": "echo of request new_name unchanged on native success; not canonicalized type/name/prototype or post-edit readback; empty input preserved if native operation accepts it"
           }
         ],
         "lua": "RenameTypeResponse table/enum; resolve in types/enums",
@@ -16753,6 +16930,16 @@
         "local_id is opaque native identity string, not ordinal/name; no cross-decompilation stable identity or all-slot atomicity established by this wrapper"
       ],
       "lowlevel": "set_function_local_type",
+      "mutation_result_review": {
+        "assignments": {
+          "data_type": "new_type",
+          "local_id": "local_id",
+          "updated": "true"
+        },
+        "body_sha256": "36f37b64a862f49273c1afb45ce6a6c96dcd3b00cc4f1432bfa6d6985279d3a0",
+        "path": "cpp/src/local_client.cpp",
+        "qualification": "source response/extraction branches only; runtime positive/negative and atomicity unqualified"
+      },
       "name": "SetFunctionLocalType",
       "native_literal_errors": [
         "DECOMPILE_FAILED",
@@ -16797,7 +16984,12 @@
             "native_type": "bool",
             "optional": false,
             "path": "updated",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 1586,
+              "method": "SetFunctionLocalType",
+              "path": "cpp/src/local_client.cpp"
+            },
+            "semantics": "successful response only: true after mutation status accepted; failed native status returns StatusOr error, NOT successful false response; flag is native acknowledgement, not independent readback/rollback/atomicity proof"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -16807,7 +16999,12 @@
             "native_type": "std::string",
             "optional": false,
             "path": "local_id",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 1586,
+              "method": "SetFunctionLocalType",
+              "path": "cpp/src/local_client.cpp"
+            },
+            "semantics": "echo of supplied local_id unchanged; not canonical resolved ID and not independently looked up after edit (native resolver may accept tolerant aliases/name)"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -16817,7 +17014,12 @@
             "native_type": "std::string",
             "optional": false,
             "path": "data_type",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 1586,
+              "method": "SetFunctionLocalType",
+              "path": "cpp/src/local_client.cpp"
+            },
+            "semantics": "echo of request new_type unchanged on native success; not canonicalized type/name/prototype or post-edit readback; empty input preserved if native operation accepts it"
           }
         ],
         "lua": "SetFunctionLocalTypeResponse table/enum; resolve in types/enums",
@@ -16891,6 +17093,15 @@
         "prototype reconstruction includes return type/function name/parameter data_type and name/varargs only; does not encode calling convention or all signature metadata; no full-signature fidelity promise"
       ],
       "lowlevel": "set_function_parameter_type",
+      "mutation_result_review": {
+        "assignments": {
+          "data_type": "new_type",
+          "updated": "ok"
+        },
+        "body_sha256": "e2a2c176cefdaa2ae2ae942628feb855b975ae026be905b13f4d7bbebd5eb32b",
+        "path": "cpp/src/local_client.cpp",
+        "qualification": "source response/extraction branches only; runtime positive/negative and atomicity unqualified"
+      },
       "mutation_source_review": {
         "body_sha256": "e2a2c176cefdaa2ae2ae942628feb855b975ae026be905b13f4d7bbebd5eb32b",
         "line": 1484,
@@ -16940,7 +17151,12 @@
             "native_type": "bool",
             "optional": false,
             "path": "updated",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 1484,
+              "method": "SetFunctionParameterType",
+              "path": "cpp/src/local_client.cpp"
+            },
+            "semantics": "successful response only: true after mutation status accepted; failed native status returns StatusOr error, NOT successful false response; flag is native acknowledgement, not independent readback/rollback/atomicity proof"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -16950,7 +17166,12 @@
             "native_type": "std::string",
             "optional": false,
             "path": "data_type",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 1484,
+              "method": "SetFunctionParameterType",
+              "path": "cpp/src/local_client.cpp"
+            },
+            "semantics": "echo of request new_type unchanged on native success; not canonicalized type/name/prototype or post-edit readback; empty input preserved if native operation accepts it"
           }
         ],
         "lua": "SetFunctionParameterTypeResponse table/enum; resolve in types/enums",
@@ -17023,6 +17244,15 @@
         "path": "cpp/src/local_client.cpp"
       },
       "lowlevel": "set_function_signature",
+      "mutation_result_review": {
+        "assignments": {
+          "prototype": "prototype",
+          "updated": "ok"
+        },
+        "body_sha256": "94fc2b2d84ba8333f0c1f069ce178e7966ca9f4aeff77b9d817ef11d5f4cabff",
+        "path": "cpp/src/local_client.cpp",
+        "qualification": "source response/extraction branches only; runtime positive/negative and atomicity unqualified"
+      },
       "name": "SetFunctionSignature",
       "native_literal_errors": [
         "SET_PROTOTYPE_FAILED"
@@ -17057,7 +17287,12 @@
             "native_type": "bool",
             "optional": false,
             "path": "updated",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 667,
+              "method": "SetFunctionSignature",
+              "path": "cpp/src/local_client.cpp"
+            },
+            "semantics": "successful response only: true after mutation status accepted; failed native status returns StatusOr error, NOT successful false response; flag is native acknowledgement, not independent readback/rollback/atomicity proof"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -17067,7 +17302,12 @@
             "native_type": "std::string",
             "optional": false,
             "path": "function_name",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 667,
+              "method": "SetFunctionSignature",
+              "path": "cpp/src/local_client.cpp"
+            },
+            "semantics": "never assigned by SetFunctionSignature; retain model initializer empty; not looked up from program or parsed from supplied prototype"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -17077,7 +17317,12 @@
             "native_type": "std::string",
             "optional": false,
             "path": "prototype",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 667,
+              "method": "SetFunctionSignature",
+              "path": "cpp/src/local_client.cpp"
+            },
+            "semantics": "echo of request prototype unchanged on native success; not canonicalized type/name/prototype or post-edit readback; empty input preserved if native operation accepts it"
           }
         ],
         "lua": "SetFunctionSignatureResponse table/enum; resolve in types/enums",
@@ -18469,6 +18714,14 @@
         "all-slot write lambda returns true regardless of d.writeBytes outcome; wrapper does not test aggregated result; thrown exception can leave partial writes; no batch atomicity or verified-byte-count promise"
       ],
       "lowlevel": "write_bytes",
+      "mutation_result_review": {
+        "assignments": {
+          "bytes_written": "static_cast<std::uint32_t>(data.size())"
+        },
+        "body_sha256": "07b6c9ac67cc7ab534c55185186ed4c29a9dec1d2a963fc0a889d4bb8569193c",
+        "path": "cpp/src/local_client.cpp",
+        "qualification": "source response/extraction branches only; runtime positive/negative and atomicity unqualified"
+      },
       "mutation_source_review": {
         "body_sha256": "07b6c9ac67cc7ab534c55185186ed4c29a9dec1d2a963fc0a889d4bb8569193c",
         "line": 1625,
@@ -18506,7 +18759,12 @@
             "native_type": "std::uint32_t",
             "optional": false,
             "path": "bytes_written",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 1625,
+              "method": "WriteBytes",
+              "path": "cpp/src/local_client.cpp"
+            },
+            "semantics": "input data.size cast uint32; not observed bytes persisted or verified readback; empty input yields zero with revision increment; exact count requires input<=UINT32_MAX"
           }
         ],
         "lua": "WriteBytesResponse table/enum; resolve in types/enums",
@@ -28443,16 +28701,6 @@
       },
       {
         "native_type": "bool",
-        "operation": "ApplyDataType",
-        "path": "updated"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "ApplyDataType",
-        "path": "data_type"
-      },
-      {
-        "native_type": "bool",
         "operation": "CloseProgram",
         "path": "closed"
       },
@@ -28480,16 +28728,6 @@
         "native_type": "bool",
         "operation": "DeleteDataItem",
         "path": "deleted"
-      },
-      {
-        "native_type": "bool",
-        "operation": "DeleteSymbol",
-        "path": "deleted"
-      },
-      {
-        "native_type": "std::uint32_t",
-        "operation": "DeleteSymbol",
-        "path": "deleted_count"
       },
       {
         "native_type": "bool",
@@ -28782,84 +29020,9 @@
         "path": "xrefs"
       },
       {
-        "native_type": "std::uint32_t",
-        "operation": "PatchBytesBatch",
-        "path": "patch_count"
-      },
-      {
-        "native_type": "std::uint32_t",
-        "operation": "PatchBytesBatch",
-        "path": "bytes_written"
-      },
-      {
         "native_type": "std::vector<std::uint8_t>",
         "operation": "ReadBytes",
         "path": "data"
-      },
-      {
-        "native_type": "bool",
-        "operation": "RenameDataItem",
-        "path": "updated"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "RenameDataItem",
-        "path": "name"
-      },
-      {
-        "native_type": "bool",
-        "operation": "RenameFunction",
-        "path": "renamed"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "RenameFunction",
-        "path": "name"
-      },
-      {
-        "native_type": "bool",
-        "operation": "RenameFunctionLocal",
-        "path": "updated"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "RenameFunctionLocal",
-        "path": "local_id"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "RenameFunctionLocal",
-        "path": "name"
-      },
-      {
-        "native_type": "bool",
-        "operation": "RenameFunctionParameter",
-        "path": "updated"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "RenameFunctionParameter",
-        "path": "name"
-      },
-      {
-        "native_type": "bool",
-        "operation": "RenameSymbol",
-        "path": "renamed"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "RenameSymbol",
-        "path": "name"
-      },
-      {
-        "native_type": "bool",
-        "operation": "RenameType",
-        "path": "updated"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "RenameType",
-        "path": "name"
       },
       {
         "native_type": "bool",
@@ -28880,46 +29043,6 @@
         "native_type": "bool",
         "operation": "SetComment",
         "path": "updated"
-      },
-      {
-        "native_type": "bool",
-        "operation": "SetFunctionLocalType",
-        "path": "updated"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "SetFunctionLocalType",
-        "path": "local_id"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "SetFunctionLocalType",
-        "path": "data_type"
-      },
-      {
-        "native_type": "bool",
-        "operation": "SetFunctionParameterType",
-        "path": "updated"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "SetFunctionParameterType",
-        "path": "data_type"
-      },
-      {
-        "native_type": "bool",
-        "operation": "SetFunctionSignature",
-        "path": "updated"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "SetFunctionSignature",
-        "path": "function_name"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "SetFunctionSignature",
-        "path": "prototype"
       },
       {
         "native_type": "bool",
@@ -28950,11 +29073,6 @@
         "native_type": "bool",
         "operation": "Shutdown",
         "path": "accepted"
-      },
-      {
-        "native_type": "std::uint32_t",
-        "operation": "WriteBytes",
-        "path": "bytes_written"
       }
     ],
     "scope": "Explicit accounting audit only; empty wrapper list would not establish full nested/default/domain review or runtime qualification",

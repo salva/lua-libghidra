@@ -216,10 +216,30 @@ class InventoryTests(unittest.TestCase):
             with self.assertRaises(AssertionError):
                 module.inventory(root)
             local.write_text(local_original)
+            local.write_text(local_original.replace('resp.local_id = local_id', 'resp.local_id = "canonical"'))
+            with self.assertRaises(AssertionError):
+                module.inventory(root)
+            local.write_text(local_original)
+            local.write_text(local_original.replace('resp.deleted_count = ok ? 1 : 0', 'resp.deleted_count = 0'))
+            with self.assertRaises(AssertionError):
+                module.inventory(root)
+            local.write_text(local_original)
             header = root/'cpp/src/local_arch_adapter.hpp'
             header.write_text(header.read_text().replace('std::map<std::pair<std::uint64_t, int>, std::string> comments_', 'std::multimap<std::pair<std::uint64_t, int>, std::string> comments_'))
             with self.assertRaises(AssertionError):
                 module.inventory(root)
+
+    def test_mutation_results_are_acknowledgements_and_echoes(self):
+        def sem(op,name):
+            return next(f['semantics'] for f in self.ops[op]['response']['fields'] if f['name']==name)
+        self.assertIn('NOT successful false',sem('RenameFunction','renamed'))
+        self.assertIn('not canonical resolved ID',sem('RenameFunctionLocal','local_id'))
+        self.assertIn('request new_type',sem('SetFunctionLocalType','data_type'))
+        self.assertIn('never assigned',sem('SetFunctionSignature','function_name'))
+        self.assertIn('exactly 1',sem('DeleteSymbol','deleted_count'))
+        self.assertIn('input data.size',sem('WriteBytes','bytes_written'))
+        self.assertIn('modulo on overflow',sem('PatchBytesBatch','bytes_written'))
+        self.assertEqual(len([o for o in self.ops.values() if 'mutation_result_review' in o]),13)
 
     def test_performance_is_caller_data_and_double_is_number(self):
         op=self.ops['AddPerfBenchmark']

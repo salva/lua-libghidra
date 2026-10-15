@@ -501,3 +501,22 @@ AssertionError. Fresh generation/check and all twenty-four tests pass after this
 repair. Generic response paths decrease from 120 to 105; remaining direct/member
 fields and request/helper/domain/final grammar review remain open. Runtime slots
 remain unqualified; no M1 or native behavior changes.
+
+## Mutation result acknowledgement versus readback (twenty-first increment)
+
+`inventory_mutation_results.py` reconciles direct field assignments for thirteen
+mutation operations with success/error return ordering. Native false status is an
+error, not a successful false acknowledgement for these paths. Names/types/prototype
+and local_id are unchanged request echoes, not canonical post-edit readback; local
+resolution can accept aliases even though the response echoes the supplied ID.
+SetFunctionSignature.function_name remains empty initializer, not parsed metadata.
+DeleteSymbol successful count is exactly one, not a filtered-name match count.
+Byte counters are input counts/casts/sums, not observed persisted bytes, and retain
+overflow/partial-write limitations. No atomicity or rollback is inferred.
+
+An initial all-response-fields-assigned assertion failed on the unassigned signature
+function_name; the producer review now explicitly accounts that default-only field
+rather than deleting it from schema or inventing a value. Independent probes alter
+local ID echo and delete count; both must fail reviewed assertions. Twenty-five
+focused tests pass. Remaining direct/member fields and request/helper/domain/final
+grammar audits remain open; runtime evidence unqualified, no M1 implementation.

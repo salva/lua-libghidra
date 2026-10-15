@@ -18,6 +18,7 @@ from inventory_record_fields import review_record_fields
 from inventory_decompilation_fields import review_decompilation_fields
 from inventory_graph_fields import review_graph_fields
 from inventory_performance_fields import review_performance_fields
+from inventory_mutation_results import review_mutation_results
 
 PIN = 'd51ca813ae1b6b59519551a9be8c0b1ad74d862d'
 ROOT = Path(__file__).resolve().parents[1]
@@ -162,6 +163,7 @@ def inventory(u):
     review_decompilation_fields(u, ops, types)
     review_graph_fields(u, ops, types)
     review_performance_fields(u, ops, types)
+    review_mutation_results(u, ops, types)
     surfaces(ops)
     python=[]
     # Independent public operations and model fields, including HTTP/async/headless exclusions.
