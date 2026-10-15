@@ -90,9 +90,32 @@ class InventoryTests(unittest.TestCase):
             self.assertNotEqual(changed, self.data)
             models.write_text(original)
             local = root/'cpp/src/local_client.cpp'
-            local.write_text(local.read_text().replace('limit + offset', 'limit'))
+            local_original = local.read_text()
+            local.write_text(local_original.replace('limit + offset', 'limit'))
             with self.assertRaises(AssertionError):
                 module.inventory(root)
+            local.write_text(local_original)
+            local.write_text(local_original.replace('name = name.substr(1)', 'name = name.substr(2)'))
+            with self.assertRaises(AssertionError):
+                module.inventory(root)
+            local.write_text(local_original)
+            header = root/'cpp/src/local_arch_adapter.hpp'
+            header.write_text(header.read_text().replace('std::map<std::pair<std::uint64_t, int>, std::string> comments_', 'std::multimap<std::pair<std::uint64_t, int>, std::string> comments_'))
+            with self.assertRaises(AssertionError):
+                module.inventory(root)
+
+    def test_member_and_comment_semantics_are_not_generic(self):
+        members = self.ops['ListTypeMembers']
+        self.assertEqual(members['pagination']['identity']['fields'], ['parent_type_path_name', 'ordinal'])
+        fields = {f['name']: f for f in members['response']['fields']}
+        self.assertIn('not assigned', fields['parent_type_id']['semantics'])
+        self.assertIn('signed int64', fields['offset']['semantics'])
+        self.assertIn('TypeStruct', members['pagination']['pre_page_filter'])
+        comments = self.ops['GetComments']
+        self.assertIn('lexicographic', comments['pagination']['comparator'])
+        self.assertFalse(any('catches all exceptions' in x for x in comments['limitations']))
+        self.assertIn('dependentOrder', self.ops['ListTypeEnums']['pagination']['order'])
+        self.assertIn('duplicate', self.ops['ListDataItems']['pagination']['pre_page_filter'])
 
 
 if __name__ == '__main__':

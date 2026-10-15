@@ -101,3 +101,30 @@ instruction scan bound in disposable copies under the card work root: the former
 changes extracted accounting; the latter fails the reviewed contract assertion.
 The deterministic baseline comparison still requires review before regeneration
 can be accepted. Seven page reviews are progress, not exhaustive completion.
+
+## Enum/member/comment/data review (third repair attempt)
+
+The reviewed-contract layer now covers twelve page paths. Added ListTypeEnums,
+ListTypeEnumMembers, ListTypeMembers, GetComments and ListDataItems. Member pages
+resolve normalized names, **not** numeric IDs: LocalClient removes one leading
+slash, then the adapter uses findByName and a TypeEnum/TypeStruct cast. Missing or
+wrong-kind types produce empty success. ListTypeMembers does not enumerate union
+members. Ordinals are traversal counters and remain exact UInt64; side-map member
+comments are keyed by normalized type name and ordinal. Parent/type ID fields are
+not assigned by these adapters; preserve model defaults, not invented identities.
+The manifest now annotates these nested field semantics, signed offsets, enum
+value casts, member size and optional side-map comments individually.
+
+GetComments traverses an adapter-local std::map keyed by address/kind and filters
+before pagination. It does not load analyzed-project comments here. Unlike the
+other reviewed adapters, it has no local catch-all; the contract layer now checks
+actual catch presence rather than imposing partial-success behavior on every
+page. ListDataItems traverses nonfunction mapped symbols; address uniqueness is
+not established (no duplicate elimination). Unknown datatype produces undefined
+and size zero. These source facts are not positive runtime fixture evidence.
+
+Independent negative drift probes now also change one-leading-slash normalization
+and the comment container type; both must fail reviewed assertions. The source
+provenance set includes the owning adapter header. Seven tests pass, but remaining
+families, exact facade/extraction and Python/pybind semantics still block exhaustive
+acceptance. No unresolved slot was relabeled runtime-qualified.

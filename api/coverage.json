@@ -2643,20 +2643,39 @@
           "path": "cpp/src/local_client.cpp"
         }
       },
-      "limitations": [],
+      "limitations": [
+        "adapter has no local catch-all; do not infer partial-success exception behavior from other page families",
+        "comments are adapter side-map entries, not populated from analyzed native project comment database here"
+      ],
       "lowlevel": "get_comments",
       "name": "GetComments",
       "native_literal_errors": [],
       "pagination": {
         "bounds": "limit>0; offset>=0; each <=INT_MAX; offset+limit<=INT_MAX; supported native collection size <INT_MAX",
-        "cursor_domain": "native sequence before response extraction; inspect source order",
+        "comparator": "candidate lexicographic (exact UInt64 address, numeric native CommentKind); runtime order gate unqualified",
+        "cursor_domain": "returned record sequence after adapter filtering, before paginate",
         "extraction": [
           "comments"
         ],
-        "identity": "UNRESOLVED: exact model key/comparator requires downstream review",
-        "order": "UNQUALIFIED; iterator disabled until serial repeated scans establish stable global order",
-        "post_page_filter": "none observed in LocalClient; downstream adapter filtering must be resolved",
-        "range_zero_end": true
+        "identity": {
+          "encoding": "exact UInt64 hex and length-delimited text compound keys",
+          "fields": [
+            "address",
+            "kind"
+          ],
+          "uniqueness": "not runtime qualified; reject duplicates before enabling iterator"
+        },
+        "iterator": "disabled pending real serial stability/identity/order qualification",
+        "order": "std::map<pair<uint64,int>,string> lexicographic address then native kind order",
+        "post_page_filter": "none",
+        "pre_page_filter": "binding-local comment map only; inclusive address range before paginate; conversion after paginate preserves count",
+        "range_zero_end": true,
+        "source_review": {
+          "body_sha256": "d5bb39bcc7d88a7beb08071be6e8a61698a559d08f472b903f5f95c8959c88d3",
+          "line": 1315,
+          "method": "getComments",
+          "path": "cpp/src/local_arch_adapter.cpp"
+        }
       },
       "program_state": "requires loaded program",
       "request": [
@@ -2735,6 +2754,7 @@
         "lua": "GetCommentsResponse table/enum; resolve in types/enums",
         "native_type": "GetCommentsResponse"
       },
+      "semantic_review": "page adapter and LocalClient dispatch reviewed; runtime unqualified; remaining field/facade obligations still open",
       "tier": "core"
     },
     {
@@ -5370,20 +5390,37 @@
           "path": "cpp/src/local_client.cpp"
         }
       },
-      "limitations": [],
+      "limitations": [
+        "adapter catches all exceptions and logs; may return partial/empty success instead of propagating exception"
+      ],
       "lowlevel": "list_data_items",
       "name": "ListDataItems",
       "native_literal_errors": [],
       "pagination": {
         "bounds": "limit>0; offset>=0; each <=INT_MAX; offset+limit<=INT_MAX; supported native collection size <INT_MAX",
-        "cursor_domain": "native sequence before response extraction; inspect source order",
+        "comparator": "not approved: source traversal order is not a proven public total-order comparator",
+        "cursor_domain": "returned record sequence after adapter filtering, before paginate",
         "extraction": [
           "data_items"
         ],
-        "identity": "UNRESOLVED: exact model key/comparator requires downstream review",
-        "order": "UNQUALIFIED; iterator disabled until serial repeated scans establish stable global order",
-        "post_page_filter": "none observed in LocalClient; downstream adapter filtering must be resolved",
-        "range_zero_end": true
+        "identity": {
+          "encoding": "exact UInt64 hex and length-delimited text compound keys",
+          "fields": [
+            "address"
+          ],
+          "uniqueness": "not runtime qualified; reject duplicates before enabling iterator"
+        },
+        "iterator": "disabled pending real serial stability/identity/order qualification",
+        "order": "global symbol MapIterator traversal, no explicit sort or duplicate-address elimination",
+        "post_page_filter": "none",
+        "pre_page_filter": "skip FunctionSymbol and dynamic/unmapped entries; inclusive range before pagination; address identity needs duplicate qualification; missing datatype uses undefined and size zero",
+        "range_zero_end": true,
+        "source_review": {
+          "body_sha256": "3b7cd472488b4072079c4bcab0c6c8db7ba1afcf513b94835c042d25b09fc65c",
+          "line": 1338,
+          "method": "listDataItems",
+          "path": "cpp/src/local_arch_adapter.cpp"
+        }
       },
       "program_state": "requires loaded program",
       "request": [
@@ -5492,6 +5529,7 @@
         "lua": "ListDataItemsResponse table/enum; resolve in types/enums",
         "native_type": "ListDataItemsResponse"
       },
+      "semantic_review": "page adapter and LocalClient dispatch reviewed; runtime unqualified; remaining field/facade obligations still open",
       "tier": "full"
     },
     {
@@ -9152,20 +9190,39 @@
           "path": "cpp/src/local_client.cpp"
         }
       },
-      "limitations": [],
+      "limitations": [
+        "adapter catches all exceptions and logs; may return partial/empty success instead of propagating exception",
+        "type_id_or_path is treated as name/path after removing one leading slash; no numeric-ID resolution here"
+      ],
       "lowlevel": "list_type_enum_members",
       "name": "ListTypeEnumMembers",
       "native_literal_errors": [],
       "pagination": {
         "bounds": "limit>0; offset>=0; each <=INT_MAX; offset+limit<=INT_MAX; supported native collection size <INT_MAX",
-        "cursor_domain": "native sequence before response extraction; inspect source order",
+        "comparator": "not approved: source traversal order is not a proven public total-order comparator",
+        "cursor_domain": "returned record sequence after adapter filtering, before paginate",
         "extraction": [
           "members"
         ],
-        "identity": "UNRESOLVED: exact model key/comparator requires downstream review",
-        "order": "UNQUALIFIED; iterator disabled until serial repeated scans establish stable global order",
-        "post_page_filter": "none observed in LocalClient; downstream adapter filtering must be resolved",
-        "range_zero_end": "not applicable"
+        "identity": {
+          "encoding": "exact UInt64 hex and length-delimited text compound keys",
+          "fields": [
+            "type_path_name",
+            "ordinal"
+          ],
+          "uniqueness": "not runtime qualified; reject duplicates before enabling iterator"
+        },
+        "iterator": "disabled pending real serial stability/identity/order qualification",
+        "order": "TypeEnum beginEnum/endEnum traversal; ordinal assigned in traversal order, not Lua array index",
+        "post_page_filter": "none",
+        "pre_page_filter": "findByName then TypeEnum cast; absent/wrong kind yields empty; LocalClient strips one leading slash before lookup; no post-page filtering",
+        "range_zero_end": false,
+        "source_review": {
+          "body_sha256": "16185ac0d3cf963a5b9033c3981e7f44b08589e07e16235c86949237adab4406",
+          "line": 435,
+          "method": "listTypeEnumMembers",
+          "path": "cpp/src/local_arch_adapter.cpp"
+        }
       },
       "program_state": "requires loaded program",
       "request": [
@@ -9211,7 +9268,7 @@
             "native_type": "std::uint64_t",
             "optional": false,
             "path": "members.type_id",
-            "semantics": "native field preserved; no truthiness substitution"
+            "semantics": "not assigned by adapter; model initializer retained (not a lookup identity)"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -9241,7 +9298,7 @@
             "native_type": "std::uint64_t",
             "optional": false,
             "path": "members.ordinal",
-            "semantics": "native field preserved; no truthiness substitution"
+            "semantics": "zero-based uint64 traversal counter; preserve exact UInt64; comments keyed by normalized type name and ordinal"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -9261,7 +9318,7 @@
             "native_type": "std::int64_t",
             "optional": false,
             "path": "members.value",
-            "semantics": "native field preserved; no truthiness substitution"
+            "semantics": "native enum key cast to signed int64; preserve signed Lua integer"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -9271,12 +9328,13 @@
             "native_type": "std::string",
             "optional": false,
             "path": "members.comment",
-            "semantics": "native field preserved; no truthiness substitution"
+            "semantics": "empty model default unless side-map has normalized type-name/ordinal key"
           }
         ],
         "lua": "ListTypeEnumMembersResponse table/enum; resolve in types/enums",
         "native_type": "ListTypeEnumMembersResponse"
       },
+      "semantic_review": "page adapter and LocalClient dispatch reviewed; runtime unqualified; remaining field/facade obligations still open",
       "tier": "core"
     },
     {
@@ -9315,20 +9373,37 @@
           "path": "cpp/src/local_client.cpp"
         }
       },
-      "limitations": [],
+      "limitations": [
+        "adapter catches all exceptions and logs; may return partial/empty success instead of propagating exception"
+      ],
       "lowlevel": "list_type_enums",
       "name": "ListTypeEnums",
       "native_literal_errors": [],
       "pagination": {
         "bounds": "limit>0; offset>=0; each <=INT_MAX; offset+limit<=INT_MAX; supported native collection size <INT_MAX",
-        "cursor_domain": "native sequence before response extraction; inspect source order",
+        "comparator": "not approved: source traversal order is not a proven public total-order comparator",
+        "cursor_domain": "returned record sequence after adapter filtering, before paginate",
         "extraction": [
           "enums"
         ],
-        "identity": "UNRESOLVED: exact model key/comparator requires downstream review",
-        "order": "UNQUALIFIED; iterator disabled until serial repeated scans establish stable global order",
-        "post_page_filter": "none observed in LocalClient; downstream adapter filtering must be resolved",
-        "range_zero_end": "not applicable"
+        "identity": {
+          "encoding": "exact UInt64 hex and length-delimited text compound keys",
+          "fields": [
+            "path_name"
+          ],
+          "uniqueness": "not runtime qualified; reject duplicates before enabling iterator"
+        },
+        "iterator": "disabled pending real serial stability/identity/order qualification",
+        "order": "TypeFactory dependentOrder after TypeEnum selection, not lexical path order",
+        "post_page_filter": "none",
+        "pre_page_filter": "TypeEnum dynamic cast and substring name query before paginate; type_id is filtered counter",
+        "range_zero_end": false,
+        "source_review": {
+          "body_sha256": "e69bebccd40ea5fb81b5663583de585c4c7fcbeaea0123ea3ec2117e6dc286e9",
+          "line": 403,
+          "method": "listTypeEnums",
+          "path": "cpp/src/local_arch_adapter.cpp"
+        }
       },
       "program_state": "requires loaded program",
       "request": [
@@ -9430,6 +9505,7 @@
         "lua": "ListTypeEnumsResponse table/enum; resolve in types/enums",
         "native_type": "ListTypeEnumsResponse"
       },
+      "semantic_review": "page adapter and LocalClient dispatch reviewed; runtime unqualified; remaining field/facade obligations still open",
       "tier": "core"
     },
     {
@@ -9468,20 +9544,39 @@
           "path": "cpp/src/local_client.cpp"
         }
       },
-      "limitations": [],
+      "limitations": [
+        "adapter catches all exceptions and logs; may return partial/empty success instead of propagating exception",
+        "type_id_or_path is treated as name/path after removing one leading slash; no numeric-ID resolution here"
+      ],
       "lowlevel": "list_type_members",
       "name": "ListTypeMembers",
       "native_literal_errors": [],
       "pagination": {
         "bounds": "limit>0; offset>=0; each <=INT_MAX; offset+limit<=INT_MAX; supported native collection size <INT_MAX",
-        "cursor_domain": "native sequence before response extraction; inspect source order",
+        "comparator": "not approved: source traversal order is not a proven public total-order comparator",
+        "cursor_domain": "returned record sequence after adapter filtering, before paginate",
         "extraction": [
           "members"
         ],
-        "identity": "UNRESOLVED: exact model key/comparator requires downstream review",
-        "order": "UNQUALIFIED; iterator disabled until serial repeated scans establish stable global order",
-        "post_page_filter": "none observed in LocalClient; downstream adapter filtering must be resolved",
-        "range_zero_end": "not applicable"
+        "identity": {
+          "encoding": "exact UInt64 hex and length-delimited text compound keys",
+          "fields": [
+            "parent_type_path_name",
+            "ordinal"
+          ],
+          "uniqueness": "not runtime qualified; reject duplicates before enabling iterator"
+        },
+        "iterator": "disabled pending real serial stability/identity/order qualification",
+        "order": "TypeStruct beginField/endField traversal; ordinal assigned in traversal order",
+        "post_page_filter": "none",
+        "pre_page_filter": "findByName then TypeStruct cast; absent/wrong kind yields empty; unions not handled; LocalClient strips one leading slash; no post-page filtering",
+        "range_zero_end": false,
+        "source_review": {
+          "body_sha256": "047e139e4738ed80bfa20a2bcffafdecb5da1a81d1f1f0c46cdcb467df722b8e",
+          "line": 468,
+          "method": "listTypeMembers",
+          "path": "cpp/src/local_arch_adapter.cpp"
+        }
       },
       "program_state": "requires loaded program",
       "request": [
@@ -9527,7 +9622,7 @@
             "native_type": "std::uint64_t",
             "optional": false,
             "path": "members.parent_type_id",
-            "semantics": "native field preserved; no truthiness substitution"
+            "semantics": "not assigned by adapter; model initializer retained (not a lookup identity)"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -9557,7 +9652,7 @@
             "native_type": "std::uint64_t",
             "optional": false,
             "path": "members.ordinal",
-            "semantics": "native field preserved; no truthiness substitution"
+            "semantics": "zero-based uint64 field traversal counter; preserve exact UInt64"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -9587,7 +9682,7 @@
             "native_type": "std::int64_t",
             "optional": false,
             "path": "members.offset",
-            "semantics": "native field preserved; no truthiness substitution"
+            "semantics": "native TypeField offset, signed int64 model; not UInt64"
           },
           {
             "lua": "exact UInt64",
@@ -9597,7 +9692,7 @@
             "native_type": "std::uint64_t",
             "optional": false,
             "path": "members.size",
-            "semantics": "native field preserved; no truthiness substitution"
+            "semantics": "referenced field datatype getSize; not requested AddTypeMember size"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -9607,12 +9702,13 @@
             "native_type": "std::string",
             "optional": false,
             "path": "members.comment",
-            "semantics": "native field preserved; no truthiness substitution"
+            "semantics": "empty model default unless normalized type-name/ordinal side-map key exists"
           }
         ],
         "lua": "ListTypeMembersResponse table/enum; resolve in types/enums",
         "native_type": "ListTypeMembersResponse"
       },
+      "semantic_review": "page adapter and LocalClient dispatch reviewed; runtime unqualified; remaining field/facade obligations still open",
       "tier": "core"
     },
     {
@@ -22791,6 +22887,7 @@
     "cpp/include/libghidra/xrefs.hpp": "a66af96d1d21af6dbde1dc93b2e2cf7b2b757c0fa680e441b886216695093622",
     "cpp/src/decompiler_pool.cpp": "c3260aaf11f2570252c3bb84995b21923d1e7fe6db96d48903023065843a3149",
     "cpp/src/local_arch_adapter.cpp": "6badd8fdb98d01fa1f38768267f12482c7b6e0738ba707e338b0e28e39efa0ff",
+    "cpp/src/local_arch_adapter.hpp": "20ffc67b803b583d2647a62be69f4fc47b563275e09ca3058cdcbfd05d1a41d2",
     "cpp/src/local_client.cpp": "2c4a0c9e498df7685a92d1db3c7b60c69e34d26c0dca7079579cf7f74854aea4",
     "python/src/libghidra/__init__.py": "7e3f456ea8f38db2798373719b93805a6887cf55ce19f8134f1661a6ec4cb6b6",
     "python/src/libghidra/_version.py": "7c83df254ef3cc7fc464d084caed20a933c5d47a65381a8c4bbc7aaccb5513c9",
