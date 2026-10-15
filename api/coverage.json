@@ -12503,6 +12503,27 @@
         }
       },
       "program_state": "loaded program and valid primary adapter required; otherwise NO_PROGRAM",
+      "record_field_reviews": [
+        {
+          "assigned_fields": [
+            "comment",
+            "name",
+            "ordinal",
+            "type_name",
+            "type_path_name",
+            "value"
+          ],
+          "body_sha256": "16185ac0d3cf963a5b9033c3981e7f44b08589e07e16235c86949237adab4406",
+          "default_only_fields": [
+            "type_id"
+          ],
+          "line": 435,
+          "method": "listTypeEnumMembers",
+          "model": "TypeEnumMemberRecord",
+          "path": "cpp/src/local_arch_adapter.cpp",
+          "qualification": "all declared record fields accounted against producer; runtime fixtures unqualified"
+        }
+      ],
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
@@ -12549,7 +12570,12 @@
             "native_type": "std::uint64_t",
             "optional": false,
             "path": "members.type_id",
-            "semantics": "not assigned by adapter; model initializer retained (not a lookup identity)"
+            "producer_review": {
+              "line": 435,
+              "method": "listTypeEnumMembers",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "not assigned by listTypeEnumMembers; retain model initializer 0; not measured metadata or durable identity"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -12559,7 +12585,12 @@
             "native_type": "std::string",
             "optional": false,
             "path": "members.type_path_name",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 435,
+              "method": "listTypeEnumMembers",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "synthetic slash plus resolved enum name, not independent hierarchy"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -12569,7 +12600,12 @@
             "native_type": "std::string",
             "optional": false,
             "path": "members.type_name",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 435,
+              "method": "listTypeEnumMembers",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "resolved TypeEnum getName unchanged"
           },
           {
             "lua": "exact UInt64",
@@ -12579,7 +12615,12 @@
             "native_type": "std::uint64_t",
             "optional": false,
             "path": "members.ordinal",
-            "semantics": "zero-based uint64 traversal counter; preserve exact UInt64; comments keyed by normalized type name and ordinal"
+            "producer_review": {
+              "line": 435,
+              "method": "listTypeEnumMembers",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "uint64 traversal counter before pagination; zero-based and restarts per enumeration; name-map order may change after reconstruction"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -12589,7 +12630,12 @@
             "native_type": "std::string",
             "optional": false,
             "path": "members.name",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 435,
+              "method": "listTypeEnumMembers",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "enum traversal entry second copied unchanged; not derived from ordinal"
           },
           {
             "lua": "checked Lua integer (std::int64_t)",
@@ -12599,7 +12645,12 @@
             "native_type": "std::int64_t",
             "optional": false,
             "path": "members.value",
-            "semantics": "native enum key cast to signed int64; preserve signed Lua integer"
+            "producer_review": {
+              "line": 435,
+              "method": "listTypeEnumMembers",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "enum entry first explicitly cast to int64; native uint64 values above INT64_MAX have implementation-defined signed conversion in this C++ profile; boundary roundtrip unqualified"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -12609,7 +12660,12 @@
             "native_type": "std::string",
             "optional": false,
             "path": "members.comment",
-            "semantics": "empty model default unless side-map has normalized type-name/ordinal key"
+            "producer_review": {
+              "line": 435,
+              "method": "listTypeEnumMembers",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "side-map value iff normalized requested type_name/current ordinal key exists; otherwise empty initializer, no automatic remapping after enum rebuild"
           }
         ],
         "lua": "ListTypeEnumMembersResponse table/enum; resolve in types/enums",
@@ -12991,6 +13047,29 @@
           "path": "python/src/libghidra/local.py"
         }
       },
+      "record_field_reviews": [
+        {
+          "assigned_fields": [
+            "comment",
+            "member_type",
+            "name",
+            "offset",
+            "ordinal",
+            "parent_type_name",
+            "parent_type_path_name",
+            "size"
+          ],
+          "body_sha256": "047e139e4738ed80bfa20a2bcffafdecb5da1a81d1f1f0c46cdcb467df722b8e",
+          "default_only_fields": [
+            "parent_type_id"
+          ],
+          "line": 468,
+          "method": "listTypeMembers",
+          "model": "TypeMemberRecord",
+          "path": "cpp/src/local_arch_adapter.cpp",
+          "qualification": "all declared record fields accounted against producer; runtime fixtures unqualified"
+        }
+      ],
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
@@ -13037,7 +13116,12 @@
             "native_type": "std::uint64_t",
             "optional": false,
             "path": "members.parent_type_id",
-            "semantics": "not assigned by adapter; model initializer retained (not a lookup identity)"
+            "producer_review": {
+              "line": 468,
+              "method": "listTypeMembers",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "not assigned by listTypeMembers; retain model initializer 0; not measured metadata or durable identity"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -13047,7 +13131,12 @@
             "native_type": "std::string",
             "optional": false,
             "path": "members.parent_type_path_name",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 468,
+              "method": "listTypeMembers",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "synthetic slash plus resolved struct name, not independent category hierarchy"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -13057,7 +13146,12 @@
             "native_type": "std::string",
             "optional": false,
             "path": "members.parent_type_name",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 468,
+              "method": "listTypeMembers",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "resolved TypeStruct getName unchanged; only structs, not unions"
           },
           {
             "lua": "exact UInt64",
@@ -13067,7 +13161,12 @@
             "native_type": "std::uint64_t",
             "optional": false,
             "path": "members.ordinal",
-            "semantics": "zero-based uint64 field traversal counter; preserve exact UInt64"
+            "producer_review": {
+              "line": 468,
+              "method": "listTypeMembers",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "uint64 traversal counter before pagination; zero-based and restarts per enumeration, not durable member identity"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -13077,7 +13176,12 @@
             "native_type": "std::string",
             "optional": false,
             "path": "members.name",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 468,
+              "method": "listTypeMembers",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "TypeField name copied unchanged"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -13087,7 +13191,12 @@
             "native_type": "std::string",
             "optional": false,
             "path": "members.member_type",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 468,
+              "method": "listTypeMembers",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "field datatype getName, not full declaration or canonical type ID"
           },
           {
             "lua": "checked Lua integer (std::int64_t)",
@@ -13097,7 +13206,12 @@
             "native_type": "std::int64_t",
             "optional": false,
             "path": "members.offset",
-            "semantics": "native TypeField offset, signed int64 model; not UInt64"
+            "producer_review": {
+              "line": 468,
+              "method": "listTypeMembers",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "native TypeField offset copied into signed int64 model, no packing/compaction or pointer-size conversion"
           },
           {
             "lua": "exact UInt64",
@@ -13107,7 +13221,12 @@
             "native_type": "std::uint64_t",
             "optional": false,
             "path": "members.size",
-            "semantics": "referenced field datatype getSize; not requested AddTypeMember size"
+            "producer_review": {
+              "line": 468,
+              "method": "listTypeMembers",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "referenced field datatype getSize in bytes; signed native value converted to uint64 modulo 2^64 if negative, not declared requested AddTypeMember size"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -13117,7 +13236,12 @@
             "native_type": "std::string",
             "optional": false,
             "path": "members.comment",
-            "semantics": "empty model default unless normalized type-name/ordinal side-map key exists"
+            "producer_review": {
+              "line": 468,
+              "method": "listTypeMembers",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "side-map value iff normalized requested type_name/current ordinal key exists; otherwise empty initializer; not native field metadata"
           }
         ],
         "lua": "ListTypeMembersResponse table/enum; resolve in types/enums",
@@ -28968,21 +29092,6 @@
         "path": "members"
       },
       {
-        "native_type": "std::string",
-        "operation": "ListTypeEnumMembers",
-        "path": "members.type_path_name"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "ListTypeEnumMembers",
-        "path": "members.type_name"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "ListTypeEnumMembers",
-        "path": "members.name"
-      },
-      {
         "native_type": "std::vector<TypeEnumRecord>",
         "operation": "ListTypeEnums",
         "path": "enums"
@@ -28991,26 +29100,6 @@
         "native_type": "std::vector<TypeMemberRecord>",
         "operation": "ListTypeMembers",
         "path": "members"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "ListTypeMembers",
-        "path": "members.parent_type_path_name"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "ListTypeMembers",
-        "path": "members.parent_type_name"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "ListTypeMembers",
-        "path": "members.name"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "ListTypeMembers",
-        "path": "members.member_type"
       },
       {
         "native_type": "std::vector<TypeUnionRecord>",

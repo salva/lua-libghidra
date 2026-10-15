@@ -232,10 +232,28 @@ class InventoryTests(unittest.TestCase):
             with self.assertRaises(AssertionError):
                 module.inventory(root)
             local.write_text(local_original)
+            adapter.write_text(adapter_original.replace('rec.size = fit->type->getSize()', 'rec.size = 0'))
+            with self.assertRaises(AssertionError):
+                module.inventory(root)
+            adapter.write_text(adapter_original)
+            adapter.write_text(adapter_original.replace('rec.value = static_cast<std::int64_t>(eit->first)', 'rec.value = 0'))
+            with self.assertRaises(AssertionError):
+                module.inventory(root)
+            adapter.write_text(adapter_original)
             header = root/'cpp/src/local_arch_adapter.hpp'
             header.write_text(header.read_text().replace('std::map<std::pair<std::uint64_t, int>, std::string> comments_', 'std::multimap<std::pair<std::uint64_t, int>, std::string> comments_'))
             with self.assertRaises(AssertionError):
                 module.inventory(root)
+
+    def test_member_producer_assignments_and_default_identity(self):
+        def sem(op,name):
+            return next(f['semantics'] for f in self.ops[op]['response']['fields'] if f['name']==name)
+        self.assertIn('not durable member identity',sem('ListTypeMembers','ordinal'))
+        self.assertIn('not assigned',sem('ListTypeMembers','parent_type_id'))
+        self.assertIn('not assigned',sem('ListTypeEnumMembers','type_id'))
+        self.assertIn('implementation-defined',sem('ListTypeEnumMembers','value'))
+        self.assertIn('side-map',sem('ListTypeEnumMembers','comment'))
+        self.assertIn('signed native',sem('ListTypeMembers','size'))
 
     def test_status_metadata_defaults_and_logical_acknowledgements(self):
         def sem(op,name):

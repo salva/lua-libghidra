@@ -71,6 +71,26 @@ def review_record_fields(u, operations, types):
         'listTypeUnions': ('TypeUnionRecord',['ListTypeUnions'],dict(type_common, type_id=counter,
             size='native signed union getSize converted to uint64 modulo 2^64 if negative; no member-layout measurement')),
     })
+    contracts.update({
+        'listTypeMembers': ('TypeMemberRecord',['ListTypeMembers'],{
+            'parent_type_name':'resolved TypeStruct getName unchanged; only structs, not unions',
+            'parent_type_path_name':'synthetic slash plus resolved struct name, not independent category hierarchy',
+            'ordinal':'uint64 traversal counter before pagination; zero-based and restarts per enumeration, not durable member identity',
+            'name':'TypeField name copied unchanged',
+            'member_type':'field datatype getName, not full declaration or canonical type ID',
+            'offset':'native TypeField offset copied into signed int64 model, no packing/compaction or pointer-size conversion',
+            'size':'referenced field datatype getSize in bytes; signed native value converted to uint64 modulo 2^64 if negative, not declared requested AddTypeMember size',
+            'comment':'side-map value iff normalized requested type_name/current ordinal key exists; otherwise empty initializer; not native field metadata',
+        }),
+        'listTypeEnumMembers': ('TypeEnumMemberRecord',['ListTypeEnumMembers'],{
+            'type_name':'resolved TypeEnum getName unchanged',
+            'type_path_name':'synthetic slash plus resolved enum name, not independent hierarchy',
+            'ordinal':'uint64 traversal counter before pagination; zero-based and restarts per enumeration; name-map order may change after reconstruction',
+            'name':'enum traversal entry second copied unchanged; not derived from ordinal',
+            'value':'enum entry first explicitly cast to int64; native uint64 values above INT64_MAX have implementation-defined signed conversion in this C++ profile; boundary roundtrip unqualified',
+            'comment':'side-map value iff normalized requested type_name/current ordinal key exists; otherwise empty initializer, no automatic remapping after enum rebuild',
+        }),
+    })
     for method,(model,names,semantics) in contracts.items():
         start,text=body(source,'ArchAdapter::'+method+'(')
         assigned=set(re.findall(r'rec\.(\w+)\s*=',text))
@@ -81,6 +101,14 @@ def review_record_fields(u, operations, types):
         if method=='listMemoryBlocks': assert 'rec.size = rec.end_address + 1' in text
         if method=='listTypeAliases': assert 'rec.declaration = "typedef " + target->getName() + " " + dt->getName()' in text
         if method in ['listTypes','listTypeEnums','listTypeAliases','listTypeUnions']: assert 'rec.type_id = id_counter++' in text
+        if method in ['listTypeMembers','listTypeEnumMembers']:
+            assert 'rec.ordinal = ordinal;' in text and 'ordinal++;' in text
+            assert 'find({type_name, ordinal})' in text
+            assert 'rec.comment = cit->second' in text
+        if method=='listTypeMembers':
+            assert 'rec.offset = fit->offset' in text and 'rec.size = fit->type->getSize()' in text
+        if method=='listTypeEnumMembers':
+            assert 'rec.value = static_cast<std::int64_t>(eit->first)' in text
         if method=='getType': assert 'rec.type_id = 0' in text
         if method=='getInstruction': assert 'if (!emit.body.empty())' in text
         declared={f['name']:f for f in types[model]['fields']}

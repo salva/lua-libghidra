@@ -539,3 +539,21 @@ than definition; the review now names the full helper definition signature. No
 upstream behavior was changed. Independent counter-source and shutdown-flag drift
 probes are rejected; twenty-six tests pass. Remaining direct/member field and
 request/helper/domain/final grammar work remains open; runtime slots unqualified.
+
+## Member producer accounting (twenty-third increment)
+
+Both member producers now reconcile exact assigned/default-only field sets rather
+than relying on selected path annotations. Parent/type IDs remain zero defaults;
+paths are synthetic slash names; ordinals restart before pagination. Struct offset
+is copied into signed int64; signed getSize converts into uint64 size (modulo if
+negative). Enum values cast uint64 into int64: out-of-range conversion is
+implementation-defined in the native C++ profile, boundary roundtrip unqualified.
+Comments come from normalized request-name/current-ordinal side maps, not native
+metadata or durable ordinal identity. Reconstruction does not remap comments.
+
+The existing offset regression initially failed because new prose omitted the
+signed-int64 model detail; declaration inspection restored that precision and
+also prevented misdescribing unsigned member size as signed storage. Two new
+independent producer-expression probes reject altered size/value extraction.
+Twenty-seven focused tests pass; exhaustive request/helper/domain and remaining
+response/grammar work remains open. Runtime evidence remains unqualified.
