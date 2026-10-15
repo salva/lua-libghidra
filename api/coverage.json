@@ -1167,7 +1167,7 @@
             "native_type": "bool",
             "optional": false,
             "path": "closed",
-            "semantics": "native field preserved; no truthiness substitution"
+            "semantics": "literal true only after helper resetAdapters, loaded=false and benchmark clear; save failure returns error beforehand; logical closure not engine/owner release and not CLOSED; native revision unchanged"
           }
         ],
         "lua": "CloseProgramResponse table/enum; resolve in types/enums",
@@ -1180,6 +1180,17 @@
         "path": "cpp/src/local_client.cpp"
       },
       "state_transitions": "kSave with nonempty state_path attempts save; failure preserves access/benchmarks; empty state_path skips saving; all nonsave policies close; reset adapters, loaded=false and clear benchmarks; engines retained",
+      "status_field_review": {
+        "assigned": [
+          "closed"
+        ],
+        "body_sha256": "58a6be9d70480c820fac681044a2652a2f9e7bcd07bd04d71fec8565dc41c663",
+        "default_only": [],
+        "line": 1670,
+        "method": "closeProgramLocked",
+        "path": "cpp/src/local_client.cpp",
+        "qualification": "source-only; runtime evidence remains unqualified"
+      },
       "surface_contract": {
         "facade": {
           "disposition": "complete response convenience/page",
@@ -3213,7 +3224,7 @@
             "native_type": "bool",
             "optional": false,
             "path": "discarded",
-            "semantics": "native field preserved; no truthiness substitution"
+            "semantics": "literal true including unloaded; override performs no rollback, reload, state deletion or revision increment; acknowledgement is not undo proof"
           }
         ],
         "lua": "DiscardProgramResponse table/enum; resolve in types/enums",
@@ -3226,6 +3237,17 @@
         "path": "cpp/src/local_client.cpp"
       },
       "state_transitions": "discarded=true even unloaded; no rollback, state change or native revision increment",
+      "status_field_review": {
+        "assigned": [
+          "discarded"
+        ],
+        "body_sha256": "d5e5578cf0fa8ee9613f8bad6130621acbab681bf181ebf69ae33189de3ce9b4",
+        "default_only": [],
+        "line": 185,
+        "method": "DiscardProgram",
+        "path": "cpp/src/local_client.cpp",
+        "qualification": "source-only; runtime evidence remains unqualified"
+      },
       "surface_contract": {
         "facade": {
           "disposition": "native escape hatch",
@@ -5234,7 +5256,7 @@
             "native_type": "std::uint64_t",
             "optional": false,
             "path": "program_id",
-            "semantics": "native field preserved; no truthiness substitution"
+            "semantics": "never assigned by GetRevision; retain model initializer 0; not detected project/file identity, version, path or filesystem timestamp; cannot be a pagination identity"
           },
           {
             "lua": "exact UInt64",
@@ -5244,7 +5266,7 @@
             "native_type": "std::uint64_t",
             "optional": false,
             "path": "modification_number",
-            "semantics": "native field preserved; no truthiness substitution"
+            "semantics": "native revision_ snapshot under request lock, usable unloaded; not binding dispatch generation or durable project modification version"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -5254,7 +5276,7 @@
             "native_type": "std::string",
             "optional": false,
             "path": "program_path",
-            "semantics": "native field preserved; no truthiness substitution"
+            "semantics": "never assigned by GetRevision; retain model initializer empty; not detected project/file identity, version, path or filesystem timestamp; cannot be a pagination identity"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -5264,7 +5286,7 @@
             "native_type": "std::string",
             "optional": false,
             "path": "file_id",
-            "semantics": "native field preserved; no truthiness substitution"
+            "semantics": "never assigned by GetRevision; retain model initializer empty; not detected project/file identity, version, path or filesystem timestamp; cannot be a pagination identity"
           },
           {
             "lua": "std::int32_t table/enum; resolve in types/enums",
@@ -5274,7 +5296,7 @@
             "native_type": "std::int32_t",
             "optional": false,
             "path": "file_version",
-            "semantics": "native field preserved; no truthiness substitution"
+            "semantics": "never assigned by GetRevision; retain model initializer 0; not detected project/file identity, version, path or filesystem timestamp; cannot be a pagination identity"
           },
           {
             "lua": "checked Lua integer (std::int64_t)",
@@ -5284,7 +5306,7 @@
             "native_type": "std::int64_t",
             "optional": false,
             "path": "file_last_modified_time",
-            "semantics": "native field preserved; no truthiness substitution"
+            "semantics": "never assigned by GetRevision; retain model initializer 0; not detected project/file identity, version, path or filesystem timestamp; cannot be a pagination identity"
           }
         ],
         "lua": "RevisionResponse table/enum; resolve in types/enums",
@@ -5297,6 +5319,23 @@
         "path": "cpp/src/local_client.cpp"
       },
       "state_transitions": "modification_number exact UInt64 revision_; no reset/refresh implied",
+      "status_field_review": {
+        "assigned": [
+          "modification_number"
+        ],
+        "body_sha256": "85aacc9ae925c891545c9ee83197b82c334d1b11d3137bce0c17038c6790282e",
+        "default_only": [
+          "file_id",
+          "file_last_modified_time",
+          "file_version",
+          "program_id",
+          "program_path"
+        ],
+        "line": 192,
+        "method": "GetRevision",
+        "path": "cpp/src/local_client.cpp",
+        "qualification": "source-only; runtime evidence remains unqualified"
+      },
       "surface_contract": {
         "facade": {
           "disposition": "complete response convenience/page",
@@ -5391,7 +5430,7 @@
             "native_type": "bool",
             "optional": false,
             "path": "ok",
-            "semantics": "native field preserved; no truthiness substitution"
+            "semantics": "pool pointer existence only; not program loaded, loader readiness, healthy analysis or per-operation runtime qualification"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -5401,7 +5440,7 @@
             "native_type": "std::string",
             "optional": false,
             "path": "service_name",
-            "semantics": "native field preserved; no truthiness substitution"
+            "semantics": "literal local-decompiler; not detected executable/program name"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -5411,7 +5450,7 @@
             "native_type": "std::string",
             "optional": false,
             "path": "service_version",
-            "semantics": "native field preserved; no truthiness substitution"
+            "semantics": "literal 1.0.0; not upstream package 0.0.9 or source pin/version detection"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -5421,7 +5460,7 @@
             "native_type": "std::string",
             "optional": false,
             "path": "host_mode",
-            "semantics": "native field preserved; no truthiness substitution"
+            "semantics": "literal local; no remote host discovery"
           },
           {
             "lua": "exact UInt64",
@@ -5431,7 +5470,7 @@
             "native_type": "std::uint64_t",
             "optional": false,
             "path": "modification_number",
-            "semantics": "native field preserved; no truthiness substitution"
+            "semantics": "native revision_ snapshot under request lock; not binding dispatch generation; no loaded-program guard"
           },
           {
             "lua": "dense 1-based array of Lua string (no transcoding)",
@@ -5441,7 +5480,7 @@
             "native_type": "std::vector<std::string>",
             "optional": false,
             "path": "warnings",
-            "semantics": "native field preserved; no truthiness substitution"
+            "semantics": "never assigned by GetStatus; retain model initializer empty; empty warnings is not a diagnostic health scan"
           }
         ],
         "lua": "HealthStatus table/enum; resolve in types/enums",
@@ -5449,6 +5488,23 @@
       },
       "semantic_review": "LocalClient local/data/health branches reviewed; downstream mutation helper and runtime gates remain unqualified",
       "state_transitions": "read only; does not change native revision or binding generation",
+      "status_field_review": {
+        "assigned": [
+          "host_mode",
+          "modification_number",
+          "ok",
+          "service_name",
+          "service_version"
+        ],
+        "body_sha256": "3ab0379b5c6937ed81768130e41c1c4b2daad174070cf2256c7cdb4a555191e0",
+        "default_only": [
+          "warnings"
+        ],
+        "line": 57,
+        "method": "GetStatus",
+        "path": "cpp/src/local_client.cpp",
+        "qualification": "source-only; runtime evidence remains unqualified"
+      },
       "surface_contract": {
         "facade": {
           "disposition": "complete response convenience/page",
@@ -16366,7 +16422,7 @@
             "native_type": "bool",
             "optional": false,
             "path": "saved",
-            "semantics": "native field preserved; no truthiness substitution"
+            "semantics": "true in successful response after saveState returns true; false constructed then discarded in SAVE_FAILED error, not successful false; requires loaded program and nonempty state_path; no native revision increment"
           }
         ],
         "lua": "SaveProgramResponse table/enum; resolve in types/enums",
@@ -16379,6 +16435,17 @@
         "path": "cpp/src/local_client.cpp"
       },
       "state_transitions": "saveState failure -> SAVE_FAILED; success saved=true; does not close or increment native revision",
+      "status_field_review": {
+        "assigned": [
+          "saved"
+        ],
+        "body_sha256": "fea6aa65039311a7d1d12b5e3c4cb173dd63e82d5168afbd8172ef20c8259952",
+        "default_only": [],
+        "line": 164,
+        "method": "SaveProgram",
+        "path": "cpp/src/local_client.cpp",
+        "qualification": "source-only; runtime evidence remains unqualified"
+      },
       "surface_contract": {
         "facade": {
           "disposition": "complete response convenience/page",
@@ -18349,7 +18416,7 @@
             "native_type": "bool",
             "optional": false,
             "path": "accepted",
-            "semantics": "native field preserved; no truthiness substitution"
+            "semantics": "literal true after successful logical close or when already unloaded; helper save failure propagated before acknowledgement; engines/owner retained, not binding CLOSED"
           }
         ],
         "lua": "ShutdownResponse table/enum; resolve in types/enums",
@@ -18362,6 +18429,17 @@
         "path": "cpp/src/local_client.cpp"
       },
       "state_transitions": "loaded delegates closeProgramLocked; propagates failure code/message unchanged; success accepted=true; does not terminate host or release owner",
+      "status_field_review": {
+        "assigned": [
+          "accepted"
+        ],
+        "body_sha256": "e86f082c7193fe6c1c9515fe28e8ace179db07d154ec57d8d33f52822241b0d3",
+        "default_only": [],
+        "line": 199,
+        "method": "Shutdown",
+        "path": "cpp/src/local_client.cpp",
+        "qualification": "source-only; runtime evidence remains unqualified"
+      },
       "surface_contract": {
         "facade": {
           "disposition": "native escape hatch",
@@ -28701,11 +28779,6 @@
       },
       {
         "native_type": "bool",
-        "operation": "CloseProgram",
-        "path": "closed"
-      },
-      {
-        "native_type": "bool",
         "operation": "CreateType",
         "path": "updated"
       },
@@ -28750,11 +28823,6 @@
         "path": "deleted"
       },
       {
-        "native_type": "bool",
-        "operation": "DiscardProgram",
-        "path": "discarded"
-      },
-      {
         "native_type": "std::string",
         "operation": "GetCapabilities",
         "path": "id"
@@ -28793,66 +28861,6 @@
         "native_type": "std::optional<InstructionRecord>",
         "operation": "GetInstruction",
         "path": "instruction"
-      },
-      {
-        "native_type": "std::uint64_t",
-        "operation": "GetRevision",
-        "path": "program_id"
-      },
-      {
-        "native_type": "std::uint64_t",
-        "operation": "GetRevision",
-        "path": "modification_number"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "GetRevision",
-        "path": "program_path"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "GetRevision",
-        "path": "file_id"
-      },
-      {
-        "native_type": "std::int32_t",
-        "operation": "GetRevision",
-        "path": "file_version"
-      },
-      {
-        "native_type": "std::int64_t",
-        "operation": "GetRevision",
-        "path": "file_last_modified_time"
-      },
-      {
-        "native_type": "bool",
-        "operation": "GetStatus",
-        "path": "ok"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "GetStatus",
-        "path": "service_name"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "GetStatus",
-        "path": "service_version"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "GetStatus",
-        "path": "host_mode"
-      },
-      {
-        "native_type": "std::uint64_t",
-        "operation": "GetStatus",
-        "path": "modification_number"
-      },
-      {
-        "native_type": "std::vector<std::string>",
-        "operation": "GetStatus",
-        "path": "warnings"
       },
       {
         "native_type": "std::optional<SymbolRecord>",
@@ -29036,11 +29044,6 @@
       },
       {
         "native_type": "bool",
-        "operation": "SaveProgram",
-        "path": "saved"
-      },
-      {
-        "native_type": "bool",
         "operation": "SetComment",
         "path": "updated"
       },
@@ -29068,11 +29071,6 @@
         "native_type": "bool",
         "operation": "SetTypeMemberType",
         "path": "updated"
-      },
-      {
-        "native_type": "bool",
-        "operation": "Shutdown",
-        "path": "accepted"
       }
     ],
     "scope": "Explicit accounting audit only; empty wrapper list would not establish full nested/default/domain review or runtime qualification",

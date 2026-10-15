@@ -224,10 +224,31 @@ class InventoryTests(unittest.TestCase):
             with self.assertRaises(AssertionError):
                 module.inventory(root)
             local.write_text(local_original)
+            local.write_text(local_original.replace('resp.modification_number = revision_', 'resp.modification_number = 0'))
+            with self.assertRaises(AssertionError):
+                module.inventory(root)
+            local.write_text(local_original)
+            local.write_text(local_original.replace('resp.accepted = true', 'resp.accepted = false'))
+            with self.assertRaises(AssertionError):
+                module.inventory(root)
+            local.write_text(local_original)
             header = root/'cpp/src/local_arch_adapter.hpp'
             header.write_text(header.read_text().replace('std::map<std::pair<std::uint64_t, int>, std::string> comments_', 'std::multimap<std::pair<std::uint64_t, int>, std::string> comments_'))
             with self.assertRaises(AssertionError):
                 module.inventory(root)
+
+    def test_status_metadata_defaults_and_logical_acknowledgements(self):
+        def sem(op,name):
+            return next(f['semantics'] for f in self.ops[op]['response']['fields'] if f['name']==name)
+        self.assertEqual(self.ops['GetRevision']['status_field_review']['default_only'],
+                         ['file_id','file_last_modified_time','file_version','program_id','program_path'])
+        self.assertIn('not binding dispatch generation',sem('GetRevision','modification_number'))
+        self.assertIn('not a diagnostic health scan',sem('GetStatus','warnings'))
+        self.assertIn('not upstream package',sem('GetStatus','service_version'))
+        self.assertIn('false constructed then discarded',sem('SaveProgram','saved'))
+        self.assertIn('no rollback',sem('DiscardProgram','discarded'))
+        self.assertIn('logical closure',sem('CloseProgram','closed'))
+        self.assertIn('already unloaded',sem('Shutdown','accepted'))
 
     def test_mutation_results_are_acknowledgements_and_echoes(self):
         def sem(op,name):

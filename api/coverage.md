@@ -520,3 +520,22 @@ rather than deleting it from schema or inventing a value. Independent probes alt
 local ID echo and delete count; both must fail reviewed assertions. Twenty-five
 focused tests pass. Remaining direct/member fields and request/helper/domain/final
 grammar audits remain open; runtime evidence unqualified, no M1 implementation.
+
+## Status/session fields are not detected project metadata (twenty-second increment)
+
+`inventory_status_fields.py` explicitly reconciles every response field of revision,
+health and save/discard/close/shutdown producers. Revision assigns only the native
+counter: program/file identity, path, version and timestamp remain initializers.
+Health assigns pool-existence, literal service identity/version/mode and revision;
+empty warnings is default-only, not a diagnostic health scan. Native counters are
+not binding dispatch generation. Save false is discarded with SAVE_FAILED, not a
+successful false response. Discard true is no-op acknowledgement, not undo. Close
+true follows adapter reset and logical unload, not engine/owner release. Shutdown
+true includes already-unloaded state; helper save errors precede acknowledgement.
+
+Exact producer assignments/default sets and helper save/reset/acknowledgement order
+are checked. Initial short helper-name extraction matched an earlier call rather
+than definition; the review now names the full helper definition signature. No
+upstream behavior was changed. Independent counter-source and shutdown-flag drift
+probes are rejected; twenty-six tests pass. Remaining direct/member field and
+request/helper/domain/final grammar work remains open; runtime slots unqualified.
