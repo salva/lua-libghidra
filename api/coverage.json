@@ -6435,6 +6435,7 @@
       "exclusion": null,
       "facade": "facade convenience/page; complete envelope except specified lookup extraction",
       "generation": "unchanged",
+      "graph_population_limits": "structured graph preferred, raw only if structure empty; invalid starts/destinations skipped; no dedup; caught exception can preserve partial output; clearAnalysis is explicit, not RAII here, so exceptional cleanup is not guaranteed by this body",
       "ignored_fields": [],
       "implementation": {
         "body_sha256": "f2a6b6177d41cc64e96035d3a1fb912b5691b21d7d50d2761ff004db05efe941",
@@ -6508,6 +6509,22 @@
           "path": "python/src/libghidra/local.py"
         }
       },
+      "record_field_reviews": [
+        {
+          "assigned_fields": [
+            "end_address",
+            "function_entry",
+            "in_degree",
+            "out_degree",
+            "start_address"
+          ],
+          "body_sha256": "ec987cee8f4f7c92521302a173d8928a0220751848c1416c61474d7414574403",
+          "default_only_fields": [],
+          "model": "BasicBlockRecord",
+          "path": "cpp/src/local_arch_adapter.cpp",
+          "qualification": "source assignments only; runtime graph completeness unqualified"
+        }
+      ],
       "request": [
         {
           "binding_default": "0",
@@ -6562,7 +6579,11 @@
             "native_type": "std::uint64_t",
             "optional": false,
             "path": "blocks.function_entry",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "method": "decompileAndExtractCFG",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "input candidate function entry; may not equal any returned block start"
           },
           {
             "lua": "exact UInt64",
@@ -6572,7 +6593,11 @@
             "native_type": "std::uint64_t",
             "optional": false,
             "path": "blocks.start_address",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "method": "decompileAndExtractCFG",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "BlockBasic getStart offset; invalid start blocks skipped"
           },
           {
             "lua": "exact UInt64",
@@ -6582,7 +6607,11 @@
             "native_type": "std::uint64_t",
             "optional": false,
             "path": "blocks.end_address",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "method": "decompileAndExtractCFG",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "inclusive getStop offset, NOT stop+1 or measured last-byte extent; invalid stop falls back to start"
           },
           {
             "lua": "checked Lua integer (std::uint32_t)",
@@ -6592,7 +6621,11 @@
             "native_type": "std::uint32_t",
             "optional": false,
             "path": "blocks.in_degree",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "method": "decompileAndExtractCFG",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "native sizeIn cast uint32, counts raw block inputs, not number of emitted edge records"
           },
           {
             "lua": "checked Lua integer (std::uint32_t)",
@@ -6602,7 +6635,11 @@
             "native_type": "std::uint32_t",
             "optional": false,
             "path": "blocks.out_degree",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "method": "decompileAndExtractCFG",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "native sizeOut cast uint32, counts raw block outputs including destinations later skipped; not emitted-edge count"
           }
         ],
         "lua": "ListBasicBlocksResponse table/enum; resolve in types/enums",
@@ -6987,6 +7024,7 @@
       "exclusion": null,
       "facade": "facade convenience/page; complete envelope except specified lookup extraction",
       "generation": "unchanged",
+      "graph_population_limits": "structured graph preferred, raw only if structure empty; invalid starts/destinations skipped; no dedup; caught exception can preserve partial output; clearAnalysis is explicit, not RAII here, so exceptional cleanup is not guaranteed by this body",
       "ignored_fields": [],
       "implementation": {
         "body_sha256": "c67ddef01ff2994dd3887f94a4522ed253e75d4f90710ff50d4e051fe3ae7bd4",
@@ -7062,6 +7100,21 @@
           "path": "python/src/libghidra/local.py"
         }
       },
+      "record_field_reviews": [
+        {
+          "assigned_fields": [
+            "dst_block_start",
+            "edge_kind",
+            "function_entry",
+            "src_block_start"
+          ],
+          "body_sha256": "ec987cee8f4f7c92521302a173d8928a0220751848c1416c61474d7414574403",
+          "default_only_fields": [],
+          "model": "CFGEdgeRecord",
+          "path": "cpp/src/local_arch_adapter.cpp",
+          "qualification": "source assignments only; runtime graph completeness unqualified"
+        }
+      ],
       "request": [
         {
           "binding_default": "0",
@@ -7116,7 +7169,11 @@
             "native_type": "std::uint64_t",
             "optional": false,
             "path": "edges.function_entry",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "method": "decompileAndExtractCFG",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "input candidate function entry"
           },
           {
             "lua": "exact UInt64",
@@ -7126,7 +7183,11 @@
             "native_type": "std::uint64_t",
             "optional": false,
             "path": "edges.src_block_start",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "method": "decompileAndExtractCFG",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "source BlockBasic getStart offset; invalid source skipped"
           },
           {
             "lua": "exact UInt64",
@@ -7136,7 +7197,11 @@
             "native_type": "std::uint64_t",
             "optional": false,
             "path": "edges.dst_block_start",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "method": "decompileAndExtractCFG",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "destination start after descending structured wrappers via first child; nonbasic/invalid destinations skipped"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -7146,7 +7211,11 @@
             "native_type": "std::string",
             "optional": false,
             "path": "edges.edge_kind",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "method": "decompileAndExtractCFG",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "BACK if destination index<=source index; else FALSE/TRUE for two outputs by j==0; otherwise FALL_THROUGH; heuristic priority, not semantic branch proof"
           }
         ],
         "lua": "ListCFGEdgesResponse table/enum; resolve in types/enums",
@@ -13601,6 +13670,47 @@
           "path": "python/src/libghidra/local.py"
         }
       },
+      "record_field_reviews": [
+        {
+          "body_sha256": "56af8d98ba9719dbd52c5e8eb22f859771b0fd862ff36abfb219b2419787172e",
+          "branches": {
+            "call": [
+              "from_address",
+              "is_flow",
+              "is_primary",
+              "ref_type",
+              "source",
+              "to_address"
+            ],
+            "constant_LOAD": [
+              "from_address",
+              "is_memory",
+              "ref_type",
+              "source",
+              "to_address"
+            ],
+            "constant_STORE": [
+              "from_address",
+              "is_memory",
+              "ref_type",
+              "source",
+              "to_address"
+            ]
+          },
+          "default_only_fields": [
+            "from_function_address",
+            "from_function_name",
+            "is_external",
+            "operand_index",
+            "symbol_id",
+            "to_function_address",
+            "to_function_name"
+          ],
+          "model": "XrefRecord",
+          "path": "cpp/src/local_arch_adapter.cpp",
+          "qualification": "source branch assignments only; runtime references/completeness unqualified"
+        }
+      ],
       "request": [
         {
           "binding_default": "0",
@@ -13655,7 +13765,11 @@
             "native_type": "std::uint64_t",
             "optional": false,
             "path": "xrefs.from_address",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "method": "listXrefsForFunction",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "pcode operation instruction address offset for call, LOAD and STORE branches"
           },
           {
             "lua": "exact UInt64",
@@ -13665,7 +13779,11 @@
             "native_type": "std::uint64_t",
             "optional": false,
             "path": "xrefs.to_address",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "method": "listXrefsForFunction",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "call: FuncCallSpecs entry address offset; LOAD/STORE: constant address varnode offset (only constant input 1 emitted), no space-ID resolution or validity check here"
           },
           {
             "lua": "checked Lua integer (int)",
@@ -13675,7 +13793,11 @@
             "native_type": "int",
             "optional": false,
             "path": "xrefs.operand_index",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "method": "listXrefsForFunction",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "never assigned in any local xref branch; retain initializer 0; not detected reference/function metadata"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -13685,7 +13807,11 @@
             "native_type": "std::string",
             "optional": false,
             "path": "xrefs.ref_type",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "method": "listXrefsForFunction",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "call CALLIND -> COMPUTED_CALL else UNCONDITIONAL_CALL; constant LOAD -> DATA; constant STORE -> WRITE"
           },
           {
             "lua": "boolean (preserve false)",
@@ -13695,7 +13821,11 @@
             "native_type": "bool",
             "optional": false,
             "path": "xrefs.is_primary",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "method": "listXrefsForFunction",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "call literal true; LOAD/STORE model false, not detected primary-reference metadata"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -13705,7 +13835,11 @@
             "native_type": "std::string",
             "optional": false,
             "path": "xrefs.source",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "method": "listXrefsForFunction",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "literal ANALYSIS on every emitted branch"
           },
           {
             "lua": "checked Lua integer (std::int64_t)",
@@ -13715,7 +13849,11 @@
             "native_type": "std::int64_t",
             "optional": false,
             "path": "xrefs.symbol_id",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "method": "listXrefsForFunction",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "never assigned in any local xref branch; retain initializer -1; not detected reference/function metadata"
           },
           {
             "lua": "boolean (preserve false)",
@@ -13725,7 +13863,11 @@
             "native_type": "bool",
             "optional": false,
             "path": "xrefs.is_external",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "method": "listXrefsForFunction",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "never assigned in any local xref branch; retain initializer false; not detected reference/function metadata"
           },
           {
             "lua": "boolean (preserve false)",
@@ -13735,7 +13877,11 @@
             "native_type": "bool",
             "optional": false,
             "path": "xrefs.is_memory",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "method": "listXrefsForFunction",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "call model false; constant LOAD/STORE literal true"
           },
           {
             "lua": "boolean (preserve false)",
@@ -13745,7 +13891,11 @@
             "native_type": "bool",
             "optional": false,
             "path": "xrefs.is_flow",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "method": "listXrefsForFunction",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "call literal true; LOAD/STORE model false"
           },
           {
             "lua": "exact UInt64",
@@ -13755,7 +13905,11 @@
             "native_type": "std::uint64_t",
             "optional": false,
             "path": "xrefs.from_function_address",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "method": "listXrefsForFunction",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "never assigned in any local xref branch; retain initializer 0; not detected reference/function metadata"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -13765,7 +13919,11 @@
             "native_type": "std::string",
             "optional": false,
             "path": "xrefs.from_function_name",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "method": "listXrefsForFunction",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "never assigned in any local xref branch; retain initializer empty; not detected reference/function metadata"
           },
           {
             "lua": "exact UInt64",
@@ -13775,7 +13933,11 @@
             "native_type": "std::uint64_t",
             "optional": false,
             "path": "xrefs.to_function_address",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "method": "listXrefsForFunction",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "never assigned in any local xref branch; retain initializer 0; not detected reference/function metadata"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -13785,7 +13947,11 @@
             "native_type": "std::string",
             "optional": false,
             "path": "xrefs.to_function_name",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "method": "listXrefsForFunction",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "never assigned in any local xref branch; retain initializer empty; not detected reference/function metadata"
           }
         ],
         "lua": "ListXrefsResponse table/enum; resolve in types/enums",
@@ -13814,7 +13980,8 @@
           "return": "complete detached native response or nil,error"
         }
       },
-      "tier": "core"
+      "tier": "core",
+      "xref_population_limits": "calls then constant LOAD then constant STORE, not all native references; missing call specs/op or nonconstant address skipped; no dedup; caught errors may yield partial successful vector; helper performs and clears same-instance analysis, no preceding decompileAt; function/address-space metadata remain defaults"
     },
     {
       "declaration": {
@@ -28426,54 +28593,9 @@
         "path": "blocks"
       },
       {
-        "native_type": "std::uint64_t",
-        "operation": "ListBasicBlocks",
-        "path": "blocks.function_entry"
-      },
-      {
-        "native_type": "std::uint64_t",
-        "operation": "ListBasicBlocks",
-        "path": "blocks.start_address"
-      },
-      {
-        "native_type": "std::uint64_t",
-        "operation": "ListBasicBlocks",
-        "path": "blocks.end_address"
-      },
-      {
-        "native_type": "std::uint32_t",
-        "operation": "ListBasicBlocks",
-        "path": "blocks.in_degree"
-      },
-      {
-        "native_type": "std::uint32_t",
-        "operation": "ListBasicBlocks",
-        "path": "blocks.out_degree"
-      },
-      {
         "native_type": "std::vector<CFGEdgeRecord>",
         "operation": "ListCFGEdges",
         "path": "edges"
-      },
-      {
-        "native_type": "std::uint64_t",
-        "operation": "ListCFGEdges",
-        "path": "edges.function_entry"
-      },
-      {
-        "native_type": "std::uint64_t",
-        "operation": "ListCFGEdges",
-        "path": "edges.src_block_start"
-      },
-      {
-        "native_type": "std::uint64_t",
-        "operation": "ListCFGEdges",
-        "path": "edges.dst_block_start"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "ListCFGEdges",
-        "path": "edges.edge_kind"
       },
       {
         "native_type": "std::vector<DataItemRecord>",
@@ -28674,76 +28796,6 @@
         "native_type": "std::vector<XrefRecord>",
         "operation": "ListXrefs",
         "path": "xrefs"
-      },
-      {
-        "native_type": "std::uint64_t",
-        "operation": "ListXrefs",
-        "path": "xrefs.from_address"
-      },
-      {
-        "native_type": "std::uint64_t",
-        "operation": "ListXrefs",
-        "path": "xrefs.to_address"
-      },
-      {
-        "native_type": "int",
-        "operation": "ListXrefs",
-        "path": "xrefs.operand_index"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "ListXrefs",
-        "path": "xrefs.ref_type"
-      },
-      {
-        "native_type": "bool",
-        "operation": "ListXrefs",
-        "path": "xrefs.is_primary"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "ListXrefs",
-        "path": "xrefs.source"
-      },
-      {
-        "native_type": "std::int64_t",
-        "operation": "ListXrefs",
-        "path": "xrefs.symbol_id"
-      },
-      {
-        "native_type": "bool",
-        "operation": "ListXrefs",
-        "path": "xrefs.is_external"
-      },
-      {
-        "native_type": "bool",
-        "operation": "ListXrefs",
-        "path": "xrefs.is_memory"
-      },
-      {
-        "native_type": "bool",
-        "operation": "ListXrefs",
-        "path": "xrefs.is_flow"
-      },
-      {
-        "native_type": "std::uint64_t",
-        "operation": "ListXrefs",
-        "path": "xrefs.from_function_address"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "ListXrefs",
-        "path": "xrefs.from_function_name"
-      },
-      {
-        "native_type": "std::uint64_t",
-        "operation": "ListXrefs",
-        "path": "xrefs.to_function_address"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "ListXrefs",
-        "path": "xrefs.to_function_name"
       },
       {
         "native_type": "std::uint32_t",

@@ -458,3 +458,25 @@ both fail reviewed assertions. Twenty-two focused tests pass. Generic response
 paths decrease from 187 to 143; graph/xref/performance/direct fields and request/
 default/helper/domain/final grammar acceptance remain open. Runtime evidence is
 unqualified; no adapters, discovery iterator or M1 implementation added.
+
+## Graph/reference branch field fidelity (nineteenth increment)
+
+`inventory_graph_fields.py` accounts all BasicBlockRecord/CFGEdgeRecord fields and
+three XrefRecord construction branches. Block end is getStop (inclusive, no +1),
+invalid stop falls back to start; degrees count native inputs/outputs, not emitted
+edges after destination filtering. Structured graph traversal is preferred; raw
+fallback only runs if structure is empty. Edge labels are priority heuristics
+(index back-edge, then output-position boolean, then fall-through).
+
+Call xrefs set primary/flow true and memory stays false; constant LOAD/STORE set
+memory true while primary/flow stay false. Source is literal ANALYSIS. Operand
+index stays zero, symbol ID -1, external false and all enclosing-function metadata
+remain initializers. Constant destination offsets do not resolve address spaces.
+This is a decompilation-derived subset, no dedup or completeness promise. Caught
+exceptions can return partial vectors. CFG cleanup is explicit, unlike RAII
+local extraction; exceptional cleanup is not guaranteed by that body.
+
+Independent probes alter inclusive block end and primary-reference flag; both
+must fail reviewed assertions. Twenty-three focused tests pass. Generic response
+paths remain audited; performance/direct fields and request/default/helper/domain/
+final grammar review remain open. Runtime qualification remains unqualified.

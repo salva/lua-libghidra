@@ -200,10 +200,32 @@ class InventoryTests(unittest.TestCase):
             with self.assertRaises(AssertionError):
                 module.inventory(root)
             pool.write_text(pool_original)
+            adapter.write_text(adapter_original.replace('rec.end_address = stop.isInvalid() ? rec.start_address : stop.getOffset()', 'rec.end_address = stop.getOffset() + 1'))
+            with self.assertRaises(AssertionError):
+                module.inventory(root)
+            adapter.write_text(adapter_original)
+            adapter.write_text(adapter_original.replace('rec.is_primary = true', 'rec.is_primary = false'))
+            with self.assertRaises(AssertionError):
+                module.inventory(root)
+            adapter.write_text(adapter_original)
             header = root/'cpp/src/local_arch_adapter.hpp'
             header.write_text(header.read_text().replace('std::map<std::pair<std::uint64_t, int>, std::string> comments_', 'std::multimap<std::pair<std::uint64_t, int>, std::string> comments_'))
             with self.assertRaises(AssertionError):
                 module.inventory(root)
+
+    def test_graph_reference_branch_fields_and_defaults(self):
+        def sem(op,name):
+            return next(f['semantics'] for f in self.ops[op]['response']['fields'] if f['name']==name)
+        self.assertIn('NOT stop+1',sem('ListBasicBlocks','end_address'))
+        self.assertIn('not emitted-edge count',sem('ListBasicBlocks','out_degree'))
+        self.assertIn('heuristic priority',sem('ListCFGEdges','edge_kind'))
+        self.assertIn('LOAD/STORE model false',sem('ListXrefs','is_primary'))
+        self.assertIn('constant LOAD/STORE literal true',sem('ListXrefs','is_memory'))
+        self.assertIn('initializer -1',sem('ListXrefs','symbol_id'))
+        self.assertIn('initializer 0',sem('ListXrefs','operand_index'))
+        self.assertIn('never assigned',sem('ListXrefs','from_function_address'))
+        self.assertEqual(set(self.ops['ListXrefs']['record_field_reviews'][-1]['branches']),
+                         {'call','constant_LOAD','constant_STORE'})
 
     def test_decompilation_branch_population_and_unreachable_tokens(self):
         for op in ['GetDecompilation','ListDecompilations']:

@@ -16,6 +16,7 @@ from inventory_lookups import review_lookups, semantic_audit
 from inventory_page_wrappers import review_page_wrappers
 from inventory_record_fields import review_record_fields
 from inventory_decompilation_fields import review_decompilation_fields
+from inventory_graph_fields import review_graph_fields
 
 PIN = 'd51ca813ae1b6b59519551a9be8c0b1ad74d862d'
 ROOT = Path(__file__).resolve().parents[1]
@@ -157,6 +158,7 @@ def inventory(u):
     review_page_wrappers(u, ops)
     review_record_fields(u, ops, types)
     review_decompilation_fields(u, ops, types)
+    review_graph_fields(u, ops, types)
     surfaces(ops)
     python=[]
     # Independent public operations and model fields, including HTTP/async/headless exclusions.
