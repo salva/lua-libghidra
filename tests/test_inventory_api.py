@@ -125,6 +125,13 @@ class InventoryTests(unittest.TestCase):
             with self.assertRaises(AssertionError):
                 module.inventory(root)
 
+    def test_open_metadata_defaults_and_member_effective_domain(self):
+        fields={f['name']:f for f in self.ops['OpenProgram']['response']['fields']}
+        self.assertIn('not assigned', fields['image_base']['semantics'])
+        self.assertIn('not authoritative', fields['language_id']['semantics'])
+        self.assertIn('INT_MAX', self.ops['AddTypeMember']['effective_domain']['existing_fields'])
+        self.assertIn('width/is_signed ignored', self.ops['CreateTypeEnum']['state_transitions'])
+
     def test_surface_extraction_and_native_escape_disposition(self):
         for name, key in [('GetFunction', 'function'), ('GetType', 'type'), ('ReadBytes', 'data')]:
             self.assertEqual(self.ops[name]['surface_contract']['facade']['extraction'], key)

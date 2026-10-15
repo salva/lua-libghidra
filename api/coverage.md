@@ -234,3 +234,23 @@ calls the ignored argument name_filter, not name: field-level ignored accounting
 now uses that exact declaration key while preserving the documented semantic
 name caveat. Nested OpenProgram ignored fields are individually marked. Eleven
 focused tests pass; this is not completed exhaustive semantic acceptance.
+
+## Open metadata and creation-width review (eighth repair increment)
+
+OpenProgram assigns only program_name, language_id and compiler_spec. Other
+response fields, including image_base, entry/format/hash metadata, retain model
+defaults: full-envelope preservation must not turn them into detection claims.
+Project path takes precedence and does not forward binary architecture/base/format
+hints; binary loading combines explicit language/compiler or uses default_arch.
+State load is best-effort; success sets loaded and increments revision. Failed
+reopen's downstream resource effects remain unqualified rather than invented.
+
+CreateType supports exactly struct and ignores size; CreateTypeEnum ignores
+width/is_signed. AddTypeMember reconstructs existing fields and appends at maximum
+native offset+size using signed int casts/addition. This adds an effective existing
+layout domain: offsets/sizes and checked sums must fit INT_MAX; a public uint64
+request does not establish safety of downstream layout arithmetic. Requested size
+remains ignored and is not a replacement implementation opportunity. Source
+assertions and twelve focused tests cover these recorded contracts, not runtime
+binding enforcement. Remaining mutation/helper/conditional-field review still
+prevents exhaustive acceptance.

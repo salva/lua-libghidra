@@ -177,3 +177,35 @@ def review_session_records(u, operations):
                 op['limitations'].append('binding must constrain supported vector count <=UINT32_MAX before relying on removed_count; native cast can truncate larger counts')
         if name=='DiscardProgram': assert 'program_loaded_' not in text and 'revision_++' not in text
     return operations
+
+
+def review_open_and_creation(u, operations):
+    """Separate initialized metadata from detected metadata and ignored widths."""
+    source=(u/LOCAL).read_text()
+    contracts={
+        'OpenProgram': 'project_path nonempty takes precedence; otherwise program_path required; load failure -> LOAD_FAILED; best-effort loadState ignored; success loaded=true and revision increments',
+        'CreateType': 'loaded required; only kind exactly struct invokes defineStruct(name,{}); size ignored; native revision increments only on success; failure CREATE_TYPE_FAILED; other kinds NOT_SUPPORTED',
+        'AddTypeMember': 'loaded required; normalize one slash, read existing members, rebuild entire struct and append referenced type at maximum existing offset+size; size ignored; failure ADD_MEMBER_FAILED; revision only on success',
+        'CreateTypeEnum': 'loaded required; defineEnum(name,empty entries); width/is_signed ignored; CREATE_ENUM_FAILED on failure; revision only on success',
+    }
+    for op in operations:
+        name=op['name']
+        if name not in contracts: continue
+        start,text=body(source,' '+name+'(')
+        op['state_transitions']=contracts[name]
+        op['creation_source_review']={'path':LOCAL,'line':source.count('\n',0,start)+1,'body_sha256':hashlib.sha256(text.encode()).hexdigest()}
+        if name=='OpenProgram':
+            assert text.index('!request.project_path.empty()') < text.index('!request.program_path.empty()')
+            assert 'pool_->loadState(opts_.state_path);' in text
+            assigned=set(re.findall(r'resp\.(\w+)\s*=',text))
+            assert assigned=={'program_name','language_id','compiler_spec'}
+            for f in op['response']['fields']:
+                f['semantics']=('request/default echo, not authoritative detected architecture' if f['name'] in ['language_id','compiler_spec'] else 'request program_path if nonempty, else project_path' if f['name']=='program_name' else 'not assigned by LocalClient OpenProgram; preserve native model default, not detected metadata')
+            op['limitations'].append('image_base/entry_point/has_entry_point/executable_format/hashes are model defaults in this override; complete Lua envelope must not relabel them as detected facts')
+            op['limitations'].append('request language+compiler concatenated when both nonempty; otherwise language or client default_arch; project route does not forward architecture/base/format hints')
+        if name=='CreateType': assert 'kind == "struct"' in text and 'defineStruct(name, {})' in text
+        if name=='AddTypeMember':
+            assert 'static_cast<int>(m.offset) + static_cast<int>(m.size)' in text
+            op['effective_domain']={'existing_fields':'all offsets and sizes must fit int and each offset+size <=INT_MAX before native struct rebuild; native casts/addition otherwise risk truncation/overflow','request_size':'uint64 validated but ignored; must not promise requested member size is enforced','qualification':'constraint identified; binding implementation and runtime validation unqualified'}
+        if name=='CreateTypeEnum': assert 'defineEnum(name, std::vector<ghidra_standalone::EnumValue>{})' in text
+    return operations

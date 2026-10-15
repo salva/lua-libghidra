@@ -607,6 +607,11 @@
       "tier": "full"
     },
     {
+      "creation_source_review": {
+        "body_sha256": "3a28f122cee5b28d8280803087a5cc01e3f1356f1c8476de701e1620f20cea47",
+        "line": 707,
+        "path": "cpp/src/local_client.cpp"
+      },
       "declaration": {
         "arguments": "const std::string& parent_type_id_or_path, const std::string& member_name, const std::string& member_type, std::uint64_t size",
         "response_type": "AddTypeMemberResponse",
@@ -616,6 +621,11 @@
         }
       },
       "dispatch": "mutation",
+      "effective_domain": {
+        "existing_fields": "all offsets and sizes must fit int and each offset+size <=INT_MAX before native struct rebuild; native casts/addition otherwise risk truncation/overflow",
+        "qualification": "constraint identified; binding implementation and runtime validation unqualified",
+        "request_size": "uint64 validated but ignored; must not promise requested member size is enforced"
+      },
       "evidence": {
         "negative": {
           "assertions": "unloaded/unsupported/validation and recorded limitations",
@@ -704,6 +714,7 @@
         "lua": "AddTypeMemberResponse table/enum; resolve in types/enums",
         "native_type": "AddTypeMemberResponse"
       },
+      "state_transitions": "loaded required; normalize one slash, read existing members, rebuild entire struct and append referenced type at maximum existing offset+size; size ignored; failure ADD_MEMBER_FAILED; revision only on success",
       "surface_contract": {
         "facade": {
           "disposition": "native escape hatch",
@@ -1536,6 +1547,11 @@
       "tier": "excluded"
     },
     {
+      "creation_source_review": {
+        "body_sha256": "cb82c3bddc2d17325ba280c642808952a0d105f7817c6a6df9ece725cbafa461",
+        "line": 685,
+        "path": "cpp/src/local_client.cpp"
+      },
       "declaration": {
         "arguments": "const std::string& name, const std::string& kind, std::uint64_t size",
         "response_type": "CreateTypeResponse",
@@ -1627,6 +1643,7 @@
         "lua": "CreateTypeResponse table/enum; resolve in types/enums",
         "native_type": "CreateTypeResponse"
       },
+      "state_transitions": "loaded required; only kind exactly struct invokes defineStruct(name,{}); size ignored; native revision increments only on success; failure CREATE_TYPE_FAILED; other kinds NOT_SUPPORTED",
       "surface_contract": {
         "facade": {
           "disposition": "native escape hatch",
@@ -1749,6 +1766,11 @@
       "tier": "full"
     },
     {
+      "creation_source_review": {
+        "body_sha256": "f24c6c35c6f1285ecd470825a2a44990fd5584991e5df19903b25d670d4c0293",
+        "line": 742,
+        "path": "cpp/src/local_client.cpp"
+      },
       "declaration": {
         "arguments": "const std::string& name, std::uint64_t width, bool is_signed",
         "response_type": "CreateTypeEnumResponse",
@@ -1839,6 +1861,7 @@
         "lua": "CreateTypeEnumResponse table/enum; resolve in types/enums",
         "native_type": "CreateTypeEnumResponse"
       },
+      "state_transitions": "loaded required; defineEnum(name,empty entries); width/is_signed ignored; CREATE_ENUM_FAILED on failure; revision only on success",
       "surface_contract": {
         "facade": {
           "disposition": "native escape hatch",
@@ -12269,6 +12292,11 @@
       "tier": "excluded"
     },
     {
+      "creation_source_review": {
+        "body_sha256": "b98143cda4036c80a17b362654f019f245e0fa8d9ee17b120fec2fc20e20a7ed",
+        "line": 93,
+        "path": "cpp/src/local_client.cpp"
+      },
       "declaration": {
         "arguments": "const OpenProgramRequest& request",
         "response_type": "OpenProgramResponse",
@@ -12309,7 +12337,9 @@
       },
       "limitations": [
         "ignored native fields: project_name, read_only",
-        "state persistence/reload limited; no byte overlay persistence guarantee"
+        "state persistence/reload limited; no byte overlay persistence guarantee",
+        "image_base/entry_point/has_entry_point/executable_format/hashes are model defaults in this override; complete Lua envelope must not relabel them as detected facts",
+        "request language+compiler concatenated when both nonempty; otherwise language or client default_arch; project route does not forward architecture/base/format hints"
       ],
       "lowlevel": "open_program",
       "name": "OpenProgram",
@@ -12451,7 +12481,7 @@
             "native_type": "std::string",
             "optional": false,
             "path": "program_name",
-            "semantics": "native field preserved; no truthiness substitution"
+            "semantics": "request program_path if nonempty, else project_path"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -12461,7 +12491,7 @@
             "native_type": "std::string",
             "optional": false,
             "path": "language_id",
-            "semantics": "native field preserved; no truthiness substitution"
+            "semantics": "request/default echo, not authoritative detected architecture"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -12471,7 +12501,7 @@
             "native_type": "std::string",
             "optional": false,
             "path": "compiler_spec",
-            "semantics": "native field preserved; no truthiness substitution"
+            "semantics": "request/default echo, not authoritative detected architecture"
           },
           {
             "lua": "exact UInt64",
@@ -12481,7 +12511,7 @@
             "native_type": "std::uint64_t",
             "optional": false,
             "path": "image_base",
-            "semantics": "native field preserved; no truthiness substitution"
+            "semantics": "not assigned by LocalClient OpenProgram; preserve native model default, not detected metadata"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -12491,7 +12521,7 @@
             "native_type": "std::string",
             "optional": false,
             "path": "md5",
-            "semantics": "native field preserved; no truthiness substitution"
+            "semantics": "not assigned by LocalClient OpenProgram; preserve native model default, not detected metadata"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -12501,7 +12531,7 @@
             "native_type": "std::string",
             "optional": false,
             "path": "sha256",
-            "semantics": "native field preserved; no truthiness substitution"
+            "semantics": "not assigned by LocalClient OpenProgram; preserve native model default, not detected metadata"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -12511,7 +12541,7 @@
             "native_type": "std::string",
             "optional": false,
             "path": "executable_format",
-            "semantics": "native field preserved; no truthiness substitution"
+            "semantics": "not assigned by LocalClient OpenProgram; preserve native model default, not detected metadata"
           },
           {
             "lua": "exact UInt64",
@@ -12521,7 +12551,7 @@
             "native_type": "std::uint64_t",
             "optional": false,
             "path": "entry_point",
-            "semantics": "native field preserved; no truthiness substitution"
+            "semantics": "not assigned by LocalClient OpenProgram; preserve native model default, not detected metadata"
           },
           {
             "lua": "boolean (preserve false)",
@@ -12531,12 +12561,13 @@
             "native_type": "bool",
             "optional": false,
             "path": "has_entry_point",
-            "semantics": "native field preserved; no truthiness substitution"
+            "semantics": "not assigned by LocalClient OpenProgram; preserve native model default, not detected metadata"
           }
         ],
         "lua": "OpenProgramResponse table/enum; resolve in types/enums",
         "native_type": "OpenProgramResponse"
       },
+      "state_transitions": "project_path nonempty takes precedence; otherwise program_path required; load failure -> LOAD_FAILED; best-effort loadState ignored; success loaded=true and revision increments",
       "surface_contract": {
         "facade": {
           "disposition": "module open{client={}, program=...}; returns session,nil,historical_open_response",
