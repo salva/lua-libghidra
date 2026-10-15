@@ -92,3 +92,22 @@ calls; the primitive has no native allocation or SDK reference. Lua regression
 also covers 0/INT32_MAX/INT32_MAX+1/UINT32_MAX. Once operations exist, their caller
 must demonstrate this same check precedes dispatch/request-buffer allocation;
 these foundation tests do not assert an unimplemented read operation is safe.
+
+## Expanded UInt64 comparison/helper regression matrix
+
+`tests/boundary.lua` now checks all pairwise ==, <, <=, > and >= outcomes over
+the eight exact decimal boundary values (0, 2^53-1/2^53/2^53+1,
+2^63-1/2^63/2^63+1, UINT64_MAX). Both operand orders against wrong-type
+boolean/integer/float/string/table/function values must raise structured
+INVALID_ARGUMENT/binding errors with the specific __lt or __le operation;
+unrelated equality must remain false. Nil ordered operands, immutability's
+structured __newindex error and the protected metatable are checked separately.
+
+All five named helpers reject invalid receivers via nil/error (not raise),
+including nil; add/sub also reject negative/noninteger/absent deltas. Exact
+nonzero carry/borrow across signed max, maximum legal Lua-integer delta,
+unsigned upper edge, and checked to_integer above signed max are asserted.
+These strengthen the original pcall-only comparison coverage and zero-only
+arithmetic success cases. They do not substitute for native ownership fault,
+reentry, operation dispatch observer or full sanitizer/build qualification.
+The same script runs in standalone Lua and static/shared existing-VM hosts.

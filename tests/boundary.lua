@@ -20,9 +20,60 @@ local z, max = a.check(a.u64(0)), a.check(a.u64(values[#values]))
 bad(z:sub(1)); bad(max:add(1)); bad(max:to_integer()); bad(z:add('1')); bad(z:add(1.0))
 assert(a.check(a.u64(math.maxinteger)):to_integer() == math.maxinteger)
 assert(z < max and z <= z and max ~= 0 and z ~= '0')
-for _, f in ipairs{function() return z < 1 end, function() return 1 <= z end,
-  function() z.n = 1 end, function() return z + z end} do
-  local ok, e = pcall(f); assert(not ok)
+-- Check complete structured ordered-error envelopes, not just pcall failure.
+local function raised(op, f)
+  local ok, err=pcall(f)
+  assert(not ok and type(err)=='table' and err.code=='INVALID_ARGUMENT')
+  assert(err.backend=='binding' and err.operation==op and #err.message>0)
+end
+local exact={}
+for i,s in ipairs(values) do exact[i]=assert(a.u64(s)) end
+for i,x in ipairs(exact) do
+  for j,y in ipairs(exact) do
+    assert((x==y)==(i==j) and (x<y)==(i<j) and (x<=y)==(i<=j))
+    assert((x>y)==(i>j) and (x>=y)==(i>=j))
+  end
+end
+local wrong={false,0,0.0,'0',{},function() end}
+for _,other in ipairs(wrong) do
+  assert(z~=other and other~=z)
+  raised('__lt',function() return z<other end)
+  raised('__lt',function() return other<z end)
+  raised('__le',function() return z<=other end)
+  raised('__le',function() return other<=z end)
+end
+raised('__lt',function() return z<nil end)
+raised('__le',function() return nil<=z end)
+raised('__newindex',function() z.n=1 end)
+assert(getmetatable(z)=='UInt64')
+local ok=pcall(function() return z+z end); assert(not ok) -- no arithmetic metamethod
+-- Named helpers are callable as functions: invalid receiver must return nil,
+-- error rather than raising; both bad receiver and bad delta branches matter.
+for _,name in ipairs{'hex','decimal','to_integer','add','sub'} do
+  for _,other in ipairs(wrong) do
+    local v,err=z[name](other,0)
+    bad(v,err); assert(err.operation==name)
+  end
+  local v,err=z[name](nil,0)
+  bad(v,err); assert(err.operation==name)
+end
+for _,name in ipairs{'add','sub'} do
+  for _,delta in ipairs{-1,1.0,'1',false,{}} do
+    local v,err=z[name](z,delta)
+    bad(v,err); assert(err.operation==name)
+  end
+  local v,err=z[name](z,nil); bad(v,err); assert(err.operation==name)
+end
+-- Exact carry/borrow across the signed boundary and overflow at unsigned max.
+local signed=assert(a.u64(math.maxinteger))
+local high=assert(signed:add(1))
+assert(high:decimal()=='9223372036854775808' and high:sub(1)==signed)
+assert(signed:add(math.maxinteger):decimal()=='18446744073709551614')
+assert(max:sub(math.maxinteger)==high)
+assert(max:sub(1):add(1)==max and z:add(1):sub(1)==z)
+local v,err=high:to_integer(); bad(v,err); assert(err.operation=='to_integer')
+for _,text in ipairs{'0x0000000000000000','0xFFFFFFFFFFFFFFFF','0000'} do
+  assert(a.u64(text))
 end
 assert(a.check(false) == false and a.check(0) == 0)
 local ok, e = pcall(a.check, nil, {code='TEST'}); assert(not ok and e.code == 'TEST')
