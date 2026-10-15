@@ -325,3 +325,27 @@ process slot is not retained and subsequent native initialization works; it does
 not prove zero retained engine registry/cache allocations or semantic destructor
 counts. Allocation traces vary after native caches initialize. Full partial-engine
 cleanup/accounting and deeper factory fault coverage remain open requirements.
+
+### Installed module in shared/static existing VMs
+
+`tests/installed_owner.lua` restricts package.path/cpath to an explicit installed
+prefix (no source/build/ambient fallback). It loads lowlevel/facade/native,
+checks exact UINT64_MAX decimal conversion, and repeats real owner
+status/capabilities, competing-owner rejection, native NO_PROGRAM, idempotent
+close/CLOSED and fresh-owner reuse eight times. Run from repository root:
+
+```sh
+cmake --build build -j4
+prefix="$SAIVAGE_CARD_WORK_ROOT/installed-owner-qualification"
+cmake --install build --prefix "$prefix"
+build/boundary_static_host tests/installed_owner.lua "$prefix" unused
+build/boundary_shared_host tests/installed_owner.lua "$prefix" unused
+```
+
+The final `unused` argument satisfies the existing embedded-host argc contract;
+it is not a second module search path. Both ordinary C-built hosts use their
+already-created Lua state. Three runs per host passed. Installed module readelf
+shows guard SONAME dependency, `$ORIGIN` RUNPATH and no liblua dependency. This
+adds integrated installed lifecycle coverage beyond the former native-load
+one-liner; it does not qualify analyzed-program Session behavior, all build
+modes/source rebuilds, full installed closure or sanitizer/frame safety.
