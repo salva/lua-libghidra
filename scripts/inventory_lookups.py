@@ -36,6 +36,7 @@ def review_lookups(u, operations, types):
                 assert 'pool_->primary().decompileAt(address);' in text
                 op['limitations'].append('decompileAt invoked before extraction but return not tested; no function or caught extraction error -> absent; read dispatch can populate native analysis without revision increment')
             else:
+                assert 'result.resize(length)' in atext and 'static_cast<int4>(length)' in atext
                 assert atext.index('result.resize(length)') < atext.index('static_cast<int4>(length)')
                 assert 'result.clear()' in atext
                 op['state_transitions']='loaded required; zero length -> empty success; loader/allocation exception caught/logged in adapter -> empty data success, not native read error; no partial returned bytes on caught failure'

@@ -49,6 +49,51 @@ def review_request_fields(u, operations):
         code=_code_mask(text)
         for arg in op['request']:
             nested=arg['nested_fields']
+            if not nested and name in ['ReadBytes','WriteBytes']:
+                key=arg['name']
+                if name=='ReadBytes':
+                    assert 'readBytes(address, length)' in code
+                    _,producer=body(adapter,'ArchAdapter::readBytes(')
+                    assert 'result.resize(length)' in producer and 'static_cast<int4>(length)' in producer
+                    assert producer.index('result.resize(length)')<producer.index('static_cast<int4>(length)')
+                    assert 'length == 0' in producer and 'result.clear()' in producer
+                else:
+                    assert 'd.writeBytes(address, data)' in code
+                    assert 'static_cast<std::uint32_t>(data.size())' in code
+                if key=='address':
+                    assert arg['native_type']=='std::uint64_t'
+                    sem='required exact UInt64 literal starting address; zero is valid numeric input, not all-range sentinel; forwarded unchanged, ReadBytes uses default code address space; mapping/end-of-space/wrap and downstream write limits remain unqualified, no invented success at unmapped addresses'
+                elif key=='length':
+                    assert arg['native_type']=='std::uint32_t'
+                    sem='required checked Lua integer; native uint32 range 0..UINT32_MAX narrowed by signed int4 loadFill to effective 0..INT32_MAX; reject above INT32_MAX BEFORE dispatch AND native request-buffer allocation; zero returns empty success; allocation precedes native cast, so uint32-only validation unsafe; empty also conflates caught loader/allocation errors; facade size alias does not change native length key'
+                else:
+                    assert key=='data' and arg['native_type']=='const std::vector<std::uint8_t>&'
+                    sem='required binary Lua string maps byte-for-byte vector<uint8_t>, preserve NUL and empty; length <=UINT32_MAX for response-count fidelity; native count is input size not verified write; empty input still dispatched and increments revision; aggregate mutation result ignored, partial effects/rollback and downstream storage bounds unqualified'
+                arg['semantics']=sem+'; validation-only rejection does not advance dispatch generation; positive/negative runtime boundary slots unqualified'
+                arg['direct_argument_review']={'consumer':LOCAL+' / '+ADAPTER,'helper':name,'qualification':'source only; no runtime qualification'}
+                reviewed.append({'operation':name,'path':key})
+                continue
+            if not nested and ((name=='GetType' and arg['name']=='path') or (name in ['ListTypeMembers','ListTypeEnumMembers'] and arg['name']=='type_id_or_path')):
+                if name=='GetType':
+                    assert 'getType(name)' in code
+                    _,producer=body(adapter,'ArchAdapter::getType(')
+                    assert 'arch_->types->findByName(name)' in producer and 'name.empty()' in producer
+                    assert 'substr(' not in code
+                    sem='service declaration key path binds positionally to LocalClient parameter name; required Lua string forwarded literally to findByName, NO leading-slash removal; empty/missing or caught adapter error becomes absent success, facade synthetic NOT_FOUND; slash path is not hierarchy or numeric ID resolution'
+                else:
+                    assert 'std::string name = type_id_or_path' in code
+                    assert "if (!name.empty() && name[0] == '/') name = name.substr(1);" in text
+                    consumer='listTypeMembers' if name=='ListTypeMembers' else 'listTypeEnumMembers'
+                    assert consumer+'(name)' in code
+                    _,producer=body(adapter,'ArchAdapter::'+consumer+'(')
+                    assert 'findByName(type_name)' in producer
+                    kind='TypeStruct' if name=='ListTypeMembers' else 'TypeEnum'
+                    assert 'dynamic_cast<'+kind+'*>' in producer
+                    sem='required Lua string; strip exactly ONE leading slash then literal findByName; despite name, not numeric ID resolution; empty/missing/wrong-kind yields empty success, only '+kind+' supported (struct member pages do not cover unions); traversal ordinals not durable identity; caught errors may retain partial output'
+                arg['semantics']=sem+'; no transcoding/case-folding or arbitrary size cap inferred; embedded-NUL/non-ASCII and runtime lookup slots unqualified'
+                arg['direct_argument_review']={'consumer':LOCAL+' / '+ADAPTER,'helper':name,'qualification':'source only; runtime lookup slots unqualified'}
+                reviewed.append({'operation':name,'path':arg['name']})
+                continue
             query_consumers={'ListTypes':('listTypes','dt'),'ListTypeAliases':('listTypeAliases','dt'),'ListTypeEnums':('listTypeEnums','te'),'ListTypeUnions':('listTypeUnions','dt')}
             ignored={'DeleteSymbol':{'name_filter'},'GetDecompilation':{'timeout_ms'},'ListDecompilations':{'timeout_ms'},'CreateType':{'size'},'AddTypeMember':{'size'},'CreateTypeEnum':{'width','is_signed'}}
             if not nested and name in query_consumers and arg['name']=='query':

@@ -51,7 +51,7 @@ class InventoryTests(unittest.TestCase):
                     self.assertIn('must not be inferred',f['request_field_review']['native_absence'])
 
     def test_page_argument_domains_are_not_native_unbounded_defaults(self):
-        self.assertEqual(len(self.data['request_audit']['direct_arguments_reviewed']),73)
+        self.assertEqual(len(self.data['request_audit']['direct_arguments_reviewed']),80)
         for op in self.ops.values():
             if 'page_wrapper_review' not in op:continue
             args={a['name']:a for a in op['request']}
@@ -80,6 +80,18 @@ class InventoryTests(unittest.TestCase):
             a=next(a for a in self.ops[name]['request'] if a['name']==key)
             self.assertTrue(a['ignored'])
             self.assertIn('never read',a['semantics'])
+
+    def test_byte_domains_and_distinct_type_lookup_inputs(self):
+        args={a['name']:a for a in self.ops['ReadBytes']['request']}
+        self.assertIn('0..INT32_MAX',args['length']['semantics'])
+        self.assertIn('request-buffer allocation',args['length']['semantics'])
+        self.assertIn('not all-range sentinel',args['address']['semantics'])
+        arg=self.ops['GetType']['request'][0]
+        self.assertEqual(arg['name'],'path')
+        self.assertIn('parameter name',arg['semantics'])
+        self.assertIn('NO leading-slash removal',arg['semantics'])
+        self.assertIn('ONE leading slash',self.ops['ListTypeMembers']['request'][0]['semantics'])
+        self.assertIn('empty input still dispatched',self.ops['WriteBytes']['request'][1]['semantics'])
 
     def test_preserved_red_reproducer(self):
         # Exact acceptance trigger from red; stronger checks below prevent treating
@@ -342,6 +354,10 @@ class InventoryTests(unittest.TestCase):
             with self.assertRaises(AssertionError):
                 module.inventory(root)
             local.write_text(local_original)
+            adapter.write_text(adapter_original.replace('static_cast<int4>(length)', 'static_cast<uint4>(length)'))
+            with self.assertRaises(AssertionError):
+                module.inventory(root)
+            adapter.write_text(adapter_original)
             header = root/'cpp/src/local_arch_adapter.hpp'
             header.write_text(header.read_text().replace('std::map<std::pair<std::uint64_t, int>, std::string> comments_', 'std::multimap<std::pair<std::uint64_t, int>, std::string> comments_'))
             with self.assertRaises(AssertionError):

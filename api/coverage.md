@@ -682,3 +682,17 @@ and enum limitations remain intact. Consumption matching distinguishes m.size
 from bare size argument, with a bounded lexical check (not general C++ name
 resolution). Independent query and ignored-name consumption probes reject drift.
 Direct ledger: 73 reviewed, 83 remaining; runtime slots remain unqualified.
+
+## Byte and type-lookup direct requests (thirty-second increment)
+
+Seven more direct paths reconcile actual dispatch/consumer behavior. ReadBytes
+length must be 0..INT32_MAX before dispatch and buffer allocation despite uint32
+signature; address zero is literal, default code space is used, loader errors
+conflate with empty success. WriteBytes binary/NUL/empty input and UINT32_MAX
+count-fidelity cap are explicit, not verified-write or rollback claims. GetType's
+service key path is positional LocalClient name, literal findByName without slash
+normalization; member lists strip exactly one slash and require struct/enum,
+not numeric IDs or unions. Runtime lookup/storage/boundary slots remain
+unqualified. Direct ledger: 80 reviewed, 76 remaining. Drift probe removes signed
+read cast and fails closed; earlier ordering assertion now checks token presence
+before index rather than leaking ValueError. Thirty-six tests pass.

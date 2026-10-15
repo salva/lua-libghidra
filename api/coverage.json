@@ -6336,11 +6336,17 @@
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp / cpp/src/local_arch_adapter.cpp",
+            "helper": "GetType",
+            "qualification": "source only; runtime lookup slots unqualified"
+          },
           "ignored": false,
           "lua": "Lua string (no transcoding)",
           "name": "path",
           "native_type": "const std::string&",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "service declaration key path binds positionally to LocalClient parameter name; required Lua string forwarded literally to findByName, NO leading-slash removal; empty/missing or caught adapter error becomes absent success, facade synthetic NOT_FOUND; slash path is not hierarchy or numeric ID resolution; no transcoding/case-folding or arbitrary size cap inferred; embedded-NUL/non-ASCII and runtime lookup slots unqualified"
         }
       ],
       "response": {
@@ -13269,11 +13275,17 @@
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp / cpp/src/local_arch_adapter.cpp",
+            "helper": "ListTypeEnumMembers",
+            "qualification": "source only; runtime lookup slots unqualified"
+          },
           "ignored": false,
           "lua": "Lua string (no transcoding)",
           "name": "type_id_or_path",
           "native_type": "const std::string&",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "required Lua string; strip exactly ONE leading slash then literal findByName; despite name, not numeric ID resolution; empty/missing/wrong-kind yields empty success, only TypeEnum supported (struct member pages do not cover unions); traversal ordinals not durable identity; caught errors may retain partial output; no transcoding/case-folding or arbitrary size cap inferred; embedded-NUL/non-ASCII and runtime lookup slots unqualified"
         },
         {
           "binding_default": "100",
@@ -13859,11 +13871,17 @@
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp / cpp/src/local_arch_adapter.cpp",
+            "helper": "ListTypeMembers",
+            "qualification": "source only; runtime lookup slots unqualified"
+          },
           "ignored": false,
           "lua": "Lua string (no transcoding)",
           "name": "type_id_or_path",
           "native_type": "const std::string&",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "required Lua string; strip exactly ONE leading slash then literal findByName; despite name, not numeric ID resolution; empty/missing/wrong-kind yields empty success, only TypeStruct supported (struct member pages do not cover unions); traversal ordinals not durable identity; caught errors may retain partial output; no transcoding/case-folding or arbitrary size cap inferred; embedded-NUL/non-ASCII and runtime lookup slots unqualified"
         },
         {
           "binding_default": "100",
@@ -16141,19 +16159,31 @@
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp / cpp/src/local_arch_adapter.cpp",
+            "helper": "ReadBytes",
+            "qualification": "source only; no runtime qualification"
+          },
           "ignored": false,
           "lua": "exact UInt64",
           "name": "address",
           "native_type": "std::uint64_t",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "required exact UInt64 literal starting address; zero is valid numeric input, not all-range sentinel; forwarded unchanged, ReadBytes uses default code address space; mapping/end-of-space/wrap and downstream write limits remain unqualified, no invented success at unmapped addresses; validation-only rejection does not advance dispatch generation; positive/negative runtime boundary slots unqualified"
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp / cpp/src/local_arch_adapter.cpp",
+            "helper": "ReadBytes",
+            "qualification": "source only; no runtime qualification"
+          },
           "ignored": false,
           "lua": "checked Lua integer (std::uint32_t)",
           "name": "length",
           "native_type": "std::uint32_t",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "required checked Lua integer; native uint32 range 0..UINT32_MAX narrowed by signed int4 loadFill to effective 0..INT32_MAX; reject above INT32_MAX BEFORE dispatch AND native request-buffer allocation; zero returns empty success; allocation precedes native cast, so uint32-only validation unsafe; empty also conflates caught loader/allocation errors; facade size alias does not change native length key; validation-only rejection does not advance dispatch generation; positive/negative runtime boundary slots unqualified"
         }
       ],
       "response": {
@@ -19985,19 +20015,31 @@
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp / cpp/src/local_arch_adapter.cpp",
+            "helper": "WriteBytes",
+            "qualification": "source only; no runtime qualification"
+          },
           "ignored": false,
           "lua": "exact UInt64",
           "name": "address",
           "native_type": "std::uint64_t",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "required exact UInt64 literal starting address; zero is valid numeric input, not all-range sentinel; forwarded unchanged, ReadBytes uses default code address space; mapping/end-of-space/wrap and downstream write limits remain unqualified, no invented success at unmapped addresses; validation-only rejection does not advance dispatch generation; positive/negative runtime boundary slots unqualified"
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp / cpp/src/local_arch_adapter.cpp",
+            "helper": "WriteBytes",
+            "qualification": "source only; no runtime qualification"
+          },
           "ignored": false,
           "lua": "binary Lua string (length preserving)",
           "name": "data",
           "native_type": "const std::vector<std::uint8_t>&",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "required binary Lua string maps byte-for-byte vector<uint8_t>, preserve NUL and empty; length <=UINT32_MAX for response-count fidelity; native count is input size not verified write; empty input still dispatched and increments revision; aggregate mutation result ignored, partial effects/rollback and downstream storage bounds unqualified; validation-only rejection does not advance dispatch generation; positive/negative runtime boundary slots unqualified"
         }
       ],
       "response": {
@@ -30085,31 +30127,6 @@
         "reason": "direct argument consumption/default/domain review not yet independently reconciled"
       },
       {
-        "operation": "GetType",
-        "path": "path",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "ListTypeEnumMembers",
-        "path": "type_id_or_path",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "ListTypeMembers",
-        "path": "type_id_or_path",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "ReadBytes",
-        "path": "address",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "ReadBytes",
-        "path": "length",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
         "operation": "RenameDataItem",
         "path": "address",
         "reason": "direct argument consumption/default/domain review not yet independently reconciled"
@@ -30338,16 +30355,6 @@
         "operation": "Shutdown",
         "path": "policy",
         "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "WriteBytes",
-        "path": "address",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "WriteBytes",
-        "path": "data",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
       }
     ],
     "direct_arguments_reviewed": [
@@ -30392,6 +30399,10 @@
         "path": "timeout_ms"
       },
       {
+        "operation": "GetType",
+        "path": "path"
+      },
+      {
         "operation": "ListBasicBlocks",
         "path": "range_start"
       },
@@ -30577,6 +30588,10 @@
       },
       {
         "operation": "ListTypeEnumMembers",
+        "path": "type_id_or_path"
+      },
+      {
+        "operation": "ListTypeEnumMembers",
         "path": "limit"
       },
       {
@@ -30594,6 +30609,10 @@
       {
         "operation": "ListTypeEnums",
         "path": "offset"
+      },
+      {
+        "operation": "ListTypeMembers",
+        "path": "type_id_or_path"
       },
       {
         "operation": "ListTypeMembers",
@@ -30642,6 +30661,22 @@
       {
         "operation": "ListXrefs",
         "path": "offset"
+      },
+      {
+        "operation": "ReadBytes",
+        "path": "address"
+      },
+      {
+        "operation": "ReadBytes",
+        "path": "length"
+      },
+      {
+        "operation": "WriteBytes",
+        "path": "address"
+      },
+      {
+        "operation": "WriteBytes",
+        "path": "data"
       }
     ],
     "nested_field_review_count": 20
