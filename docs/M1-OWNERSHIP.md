@@ -306,3 +306,22 @@ in a callback. Automatic GC is stopped, so no finalizer scheduling is claimed.
 It is not partial-engine construction cleanup, semantic destructor counting,
 all-frame/sanitizer qualification, or exhaustive native allocation traces.
 Reproduce with target read_order_host and CTest read_bytes_dispatch_order.
+
+### Bounded native factory allocation-failure recovery
+
+Before creating the persistent response-test owner, read_order_host persistently
+refuses ordinary C++ new/new[] at thresholds 1 through 16 during local_client.
+Each threshold must actually refuse allocation and return structured
+NATIVE_EXCEPTION/local_client; after restoring allocation, a fresh real native
+owner must construct, report status and close, followed by collection. This
+covers wrapper Handle and native factory/partial-construction failures without
+holding a prior owner, rather than only response faults on an initialized client.
+The real SDK factory uses make_unique<LocalClient>, whose constructor initializes
+a DecompilerPool. No synthetic throw or dependency edit is used.
+
+This is deliberately the first sixteen observed thresholds, not a sweep to
+successful construction or an exact allocation-site map. Recovery proves the
+process slot is not retained and subsequent native initialization works; it does
+not prove zero retained engine registry/cache allocations or semantic destructor
+counts. Allocation traces vary after native caches initialize. Full partial-engine
+cleanup/accounting and deeper factory fault coverage remain open requirements.

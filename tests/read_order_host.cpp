@@ -54,6 +54,9 @@ static int capabilities(lua_State* L) {
  lua_getfield(L,1,"get_capabilities"); lua_pushvalue(L,1);
  lua_call(L,1,2); return 2;
 }
+static int factory(lua_State* L) {
+ lua_getfield(L,1,"local_client"); lua_call(L,0,2); return 2;
+}
 struct LuaAllocator { size_t bytes=0, calls=0, fail=SIZE_MAX, refused=0; };
 static void* lua_allocate(void* ud,void* p,size_t old,size_t n) {
  auto* a=static_cast<LuaAllocator*>(ud); if(!p) old=0;
@@ -68,6 +71,27 @@ int main() {
  lua_State* L=lua_newstate(lua_allocate,&allocator); assert(L); luaL_openlibs(L);
  luaL_requiref(L,"libghidra._native",luaopen_libghidra__native,0);
  lua_getfield(L,-1,"local_client");
+ // Exercise real native factory partial construction, before any live owner.
+ for(unsigned point=1;point<=16;++point) {
+  lua_pushcfunction(L,factory); lua_pushvalue(L,1);
+  attempts=denied=0; deny_after=point; watching=deny=true;
+  int result=lua_pcall(L,1,2,0); watching=deny=false;
+  assert(denied>0 && result==LUA_OK && lua_isnil(L,-2) && lua_istable(L,-1));
+  lua_getfield(L,-1,"code");
+  assert(std::string_view(lua_tostring(L,-1))=="NATIVE_EXCEPTION"); lua_pop(L,1);
+  lua_getfield(L,-1,"operation");
+  assert(std::string_view(lua_tostring(L,-1))=="local_client"); lua_pop(L,1);
+  lua_pop(L,2);
+  // Failed factory must not retain the process slot or poison native init.
+  lua_pushcfunction(L,factory); lua_pushvalue(L,1);
+  assert(lua_pcall(L,1,2,0)==LUA_OK && lua_isuserdata(L,-2));
+  lua_getfield(L,-2,"get_status"); lua_pushvalue(L,-3);
+  assert(lua_pcall(L,1,2,0)==LUA_OK && lua_istable(L,-2)); lua_pop(L,2);
+  lua_getfield(L,-2,"close"); lua_pushvalue(L,-3);
+  assert(lua_pcall(L,1,1,0)==LUA_OK && lua_toboolean(L,-1)); lua_pop(L,3);
+  lua_gc(L,LUA_GCCOLLECT);
+ }
+ std::puts("Native factory first 16 allocation faults: structured exception and fresh-owner recovery PASS");
  assert(lua_pcall(L,0,1,0)==LUA_OK && lua_isuserdata(L,-1));
  int owner=lua_gettop(L);
  const lua_Integer sizes[]={0,INT32_MAX,lua_Integer(INT32_MAX)+1,UINT32_MAX};
