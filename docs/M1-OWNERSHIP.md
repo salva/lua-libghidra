@@ -218,6 +218,13 @@ stops at the first measured success tail (with a 256-point ceiling that must
 reach success); no assumption equates another state's baseline with a failure.
 On the current SDK it reaches 15 failures then the success tail. This exercises
 unwinding of partially populated vector/string response storage, lock recovery,
-and protected conversion after native failure. It does not measure heap balance
-or destructor counts, cover partial engine construction, intercept malloc or
-aligned allocations, or constitute exhaustive whole-engine fault qualification.
+and protected conversion after native failure. The host's ordinary C++ allocation
+operators now maintain aligned size headers and outstanding block/byte totals
+across all observation windows. After each failed or successful response is
+converted/destroyed, and again after its restored-allocation retry, both totals
+must equal their pre-call baselines. This attributes zero retained ordinary C++
+allocation delta to each tested call (including partial-response failures),
+without requiring global engine caches to vanish. Counts include executable
+ordinary new/new[] only; they do not measure Lua/malloc/aligned allocation,
+prove semantic destructor execution, cover partial engine construction, or
+constitute exhaustive whole-engine fault qualification.

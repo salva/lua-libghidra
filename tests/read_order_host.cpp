@@ -6,6 +6,7 @@
 #include <new>
 #include <cstdint>
 #include <string_view>
+#include <cstddef>
 extern "C" int luaopen_libghidra__native(lua_State*);
 static unsigned phases[2];
 static uint32_t observed[2];
@@ -14,18 +15,30 @@ static bool deny=false;
 static unsigned denied=0;
 static unsigned attempts=0, deny_after=1;
 static size_t largest=0;
+// All ordinary C++ allocations in this executable carry an aligned header.
+// Count outstanding blocks/bytes independently of fault-observation windows.
+struct alignas(std::max_align_t) Allocation { size_t size; };
+static size_t live_blocks=0, live_bytes=0;
+static void free_allocation(void* p) noexcept {
+ if(!p) return;
+ auto* h=static_cast<Allocation*>(p)-1;
+ assert(live_blocks && live_bytes>=h->size);
+ --live_blocks; live_bytes-=h->size; std::free(h);
+}
 // Observe C++ request/response allocations. Refuse huge allocations as a safety
 // backstop: an accidental accepted-bound read must never allocate gigabytes.
 void* operator new(size_t n) {
  if(watching) { if(n>largest) largest=n; if(deny && ++attempts>=deny_after) { ++denied; throw std::bad_alloc(); } if(n>1024*1024) throw std::bad_alloc(); }
- if(void* p=std::malloc(n?n:1)) return p;
- throw std::bad_alloc();
+ if(n>SIZE_MAX-sizeof(Allocation)) throw std::bad_alloc();
+ auto* h=static_cast<Allocation*>(std::malloc(sizeof(Allocation)+(n?n:1)));
+ if(!h) throw std::bad_alloc();
+ h->size=n; ++live_blocks; live_bytes+=n; return h+1;
 }
 void* operator new[](size_t n) { return ::operator new(n); }
-void operator delete(void* p) noexcept { std::free(p); }
-void operator delete[](void* p) noexcept { std::free(p); }
-void operator delete(void* p,size_t) noexcept { std::free(p); }
-void operator delete[](void* p,size_t) noexcept { std::free(p); }
+void operator delete(void* p) noexcept { free_allocation(p); }
+void operator delete[](void* p) noexcept { free_allocation(p); }
+void operator delete(void* p,size_t) noexcept { free_allocation(p); }
+void operator delete[](void* p,size_t) noexcept { free_allocation(p); }
 namespace llg {
 void observe_read_phase(int phase,uint32_t size) noexcept {
  assert(phase==0 || phase==1);
@@ -95,6 +108,7 @@ int main() {
  unsigned reached=0, unreached=0;
  for(unsigned point=1;point<=256;++point) {
   attempts=denied=0; deny_after=point;
+  const size_t before_blocks=live_blocks, before_bytes=live_bytes;
   lua_pushcfunction(L,capabilities); lua_pushvalue(L,owner);
   watching=deny=true; int result=lua_pcall(L,1,2,0); watching=deny=false;
   assert(result==LUA_OK);
@@ -110,13 +124,15 @@ int main() {
    ++unreached; assert(attempts<point && lua_istable(L,-2) && lua_rawlen(L,-2)>0);
   }
   lua_pop(L,2);
+  assert(live_blocks==before_blocks && live_bytes==before_bytes);
   // Retry the complete success path on the same owner after every failure.
   lua_pushcfunction(L,capabilities); lua_pushvalue(L,owner);
   assert(lua_pcall(L,1,2,0)==LUA_OK && lua_istable(L,-2) && lua_rawlen(L,-2)>0);
   lua_pop(L,2);
+  assert(live_blocks==before_blocks && live_bytes==before_bytes);
   if(unreached) break;
  }
  assert(reached>1 && unreached==1);
- std::printf("GetCapabilities allocation sweep: %u reached failures, success tail, same-owner retries PASS\n",reached);
+ std::printf("GetCapabilities allocation sweep: %u reached failures, success tail, same-owner retries and block/byte balance PASS\n",reached);
  lua_close(L);
 }
