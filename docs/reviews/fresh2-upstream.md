@@ -69,3 +69,33 @@ no-autosave caveats.
   no HTTP, SWIG or executed compatibility result is implied.
 
 VERDICT: CHANGES_REQUESTED
+
+## Re-review — 6b9dc5e
+
+Re-reviewed `6b9dc5e23b3120cf190065c895d36fc263320b38`, examining all product-document
+changes since the reviewed baseline for upstream-semantic regressions. Rechecked
+the pinned local source; this remains documentation/source review, not runtime
+qualification. The original findings and verdict above are preserved as history.
+
+- **U1 resolved:** SPEC now restricts both ReadBytes surfaces to 0..INT32_MAX
+  before dispatch/requested-buffer allocation. DESIGN, COVERAGE and PLAN record
+  the downstream restriction and boundary checks without requiring enormous
+  successful reads. This matches `local_arch_adapter.cpp:502–515`.
+- **U2 resolved:** SPEC documents zero-end normalization, positive-start/zero-end
+  behavior and the inability to express a zero-only upper bound. Linear decoding
+  and first-gap termination are explicit; the example supplies a known code
+  start. DESIGN/COVERAGE/PLAN carry the corresponding semantics and checks.
+  This matches `local_arch_adapter.cpp:41–50,547–577`.
+- **U3 resolved:** SPEC and EXAMPLES now distinguish logical program closure from
+  native-owner release. Shared-view NO_PROGRAM behavior, retained engines,
+  owner-level status, reopen and historical metadata are consistent with
+  `local_client.cpp:57–89,93–156,199–214,1657–1689` and
+  `decompiler_pool.cpp:67–84,102–112`. The process-slot and generation rules are
+  appropriately binding policy, not assertions of upstream behavior.
+
+No new upstream-semantic regression found in the changed specification, design,
+coverage, plan or examples. All three requested document corrections are present
+now; their implementation tests remain future qualification gates, not deferred
+documentation fixes.
+
+VERDICT: APPROVED

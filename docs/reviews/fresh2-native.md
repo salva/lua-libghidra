@@ -61,3 +61,35 @@ Those are appropriately blocking future qualification requirements, not missing
 evidence being treated as success by this review.
 
 VERDICT: APPROVED
+
+## Re-review — 6b9dc5e
+
+Reviewed the product-document delta from `7cc4caa` to `6b9dc5e` against the
+same pinned upstream. No native-safety regression or substantive correction
+required in this dimension.
+
+- Shared logical program closure is now more precise: upstream
+  `cpp/src/local_client.cpp:1667–1689` resets adapters, loaded state and
+  benchmarks, while `cpp/src/decompiler_pool.cpp:102–106` leaves engines owned.
+  SPEC §4 / DESIGN §1 correctly keep the process client slot reserved until
+  owner release. Both views share generation and owner closure; native reopen
+  changes the context visible to the existing Session without reviving old
+  iterators or rewriting detached metadata.
+- Native close failures are preserved rather than manufacturing closed state.
+  Shutdown propagates close errors (`local_client.cpp:199–209`); program reads
+  check loaded state before adapter access (e.g. lines 1165–1170,1191–1196).
+  The new alternate-view example and M2 checks match these semantics.
+- ReadBytes' new pre-dispatch INT32_MAX restriction addresses the downstream
+  signed cast in `cpp/src/local_arch_adapter.cpp:502–511`. Validator-only
+  upper-bound acceptance and oversized dispatch/allocation rejection checks
+  avoid requiring a multi-gigabyte test allocation. This strengthens the
+  boundary without relaxing allocation-failure handling.
+- Range-sentinel and instruction-scan clarifications introduce no borrowed
+  storage, second owner or concurrency promise. The all-frame longjmp audit,
+  post-Lua-phase validity checks, provisional sol2 decision and host-VM ABI
+  qualification requirements remain intact.
+
+Only this report was appended. No runtime qualification was performed; all
+previously recorded implementation/qualification gates remain open.
+
+VERDICT: APPROVED

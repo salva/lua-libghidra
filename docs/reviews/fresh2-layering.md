@@ -57,3 +57,37 @@ real-backend acceptance gates remain open.
   contract already exposes the required information.
 
 VERDICT APPROVED
+
+## Re-review — `6b9dc5e23b3120cf190065c895d36fc263320b38`
+
+Reviewed product-document changes since `7cc4caa`, especially logical program
+state and cross-layer lifecycle behavior. Original assessment above is preserved.
+
+- **No layering regression:** SPEC §4 and DESIGN §1 now explicitly distinguish
+  native logical program closure from binding owner release. Session has no
+  independent cached program state: native-view close produces local `NO_PROGRAM`
+  through Session, while binding close produces `CLOSED` through both views.
+  Program closure retains the process client slot; owner release frees it.
+- **Source evidence supports the distinction:** upstream
+  `local_client.cpp:1670–1689` preserves save failures and otherwise resets
+  adapters, loaded state and benchmarks; `decompiler_pool.cpp:102–106` resets
+  only adapters. Status/capabilities do not require a loaded program
+  (`local_client.cpp:57–89`), and Shutdown propagates close errors (199–213).
+  The revised wording corrects the previous unloading implication without adding
+  a second lifecycle abstraction.
+- **Escape hatch remains coherent:** reopening the same owner updates the
+  existing Session's context, while old iterators remain invalidated and detached
+  open metadata remains historical. EXAMPLES now demonstrates close through the
+  native alias, Session's `NO_PROGRAM`, live owner status and native reopen;
+  PLAN M2 explicitly requires cross-view and process-slot qualification. Failed
+  lifecycle dispatch still invalidates iterators without fabricating closure.
+- **Other changes preserve the hybrid:** the same ReadBytes effective bound and
+  zero-end range sentinel apply to both surfaces. Instruction decoding limitations
+  are documented rather than hidden behind a replacement scanner. Full envelopes,
+  structured errors and the small facade remain intact.
+
+Necessary fixes: none identified. Optional preferences from the original review
+remain nonblocking. This is document/API-layering approval, not a claim that the
+new lifecycle and boundary acceptance tests have run.
+
+VERDICT APPROVED

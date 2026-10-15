@@ -54,3 +54,35 @@ remain future milestone work, not corrections required for this document review.
 Only this review report was added; no product files or runtime state were changed.
 
 VERDICT: APPROVED
+
+## Re-review — 6b9dc5e
+
+Reviewed product-document changes from the original baseline to
+`6b9dc5e23b3120cf190065c895d36fc263320b38` for validation-gate regressions.
+The original assessment above is retained. No other review reports were consulted.
+
+- ReadBytes now has an explicit effective signed-length bound, matching upstream
+  `cpp/src/local_arch_adapter.cpp:502–511` (allocation precedes the int4 cast).
+  M1's validator/dispatch-observer checks establish rejection without huge buffer
+  allocations; M2 retains real small-read integration and checks both surfaces.
+  This is feasible boundary testing, not a substitution for real-backend evidence.
+- Range-sentinel and linear instruction-decoding tests are now explicit in M2,
+  with integer/UInt64 zero, omitted maximum, positive starts and decode gaps.
+  Upstream `local_arch_adapter.cpp:547–577` confirms normalization and stopping at
+  the first failed decode. The example uses a fixture-known code address without
+  introducing a scanner or extending iterator scope.
+- Shared-view logical close/reopen tests now distinguish NO_PROGRAM from CLOSED,
+  retain the process slot until owner release, and require stale iterator and
+  historical metadata behavior. Upstream `local_client.cpp:1670–1689` preserves
+  save errors before resetting adapters and logical loaded state. These added M2
+  checks depend only on first-slice operations, not full-tier Shutdown support.
+- The M0/M1 prerequisites, both release paths through M5, positive real-fixture
+  requirements and uncompleted-gate status remain intact. README, AGENTS and
+  OPERATIONS are unchanged. No scope expansion or infeasible new acceptance
+  requirement was found.
+
+No necessary product-document fixes or validation regressions found. This remains
+document/source approval, not a claim that runtime gates passed. Only this report
+was appended; no product edits or commits were made.
+
+VERDICT: APPROVED

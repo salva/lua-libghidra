@@ -57,3 +57,28 @@ explicitly proposed, unimplemented baseline. No build or runtime pass is inferre
 from this source review; no product files were changed.
 
 VERDICT: APPROVED
+
+## Re-review — `6b9dc5e`
+
+On 2026-10-15 reviewed the complete product-document diff from `7cc4caa` to
+`6b9dc5e23b3120cf190065c895d36fc263320b38` for regressions in this dimension.
+The earlier assessment and evidence above remain historical.
+
+Changes add ReadBytes downstream bounds, zero-end range semantics, instruction
+decode limitations, shared logical program closure/reopening, and corresponding
+examples and qualification cases. These introduce no additional build dependency,
+Lua ABI change, packaging assumption or license claim. The INT32_MAX validation
+case explicitly avoids requiring a multi-gigabyte allocation; small real reads
+remain the positive integration gate.
+
+DESIGN's reproducible-native-build section and PLAN's M0/M5 build and packaging
+gates are preserved, including whole-archive linkage, PIC, locked offline inputs,
+Python/zlib build requirements, both spec profiles, existing-host-VM resolution
+and clean CMake/LuaRocks installation. README and AGENTS are unchanged. No build
+implementation or passed runtime qualification is newly claimed.
+
+Required documentation fixes: **none**. Previously recorded pending qualification
+remains pending. This re-review is a documentation regression assessment, not an
+executed build qualification.
+
+VERDICT: APPROVED
