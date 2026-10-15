@@ -73,7 +73,7 @@ Remaining M1 qualification work, explicitly not waived by a passing entrypoint
 reproducer: deterministic finalizer scheduling at each parsing/conversion edge;
 native C++ allocation/exception injection (including partially constructed
 upstream engine cleanup); logical-close native failure injection; concurrent
-multi-thread independent-state stress; whole dependency closure/Lua
+multi-thread independent-state engine overlap observation; whole dependency closure/Lua
 sanitizer instrumentation. The combined initialization/ownership/conversion
 sweep described below closes that specific earlier gap, not these other gates. Current ASan/UBSan instruments wrapper and C hosts,
 not the prebuilt native SDK or system Lua. Foundation initialization sweeps are
@@ -111,3 +111,25 @@ of native corruption. The preloaded sweeps are unchanged. This covers Lua
 allocation failure and recovery across the combined chain, not native C++
 allocation failures, arbitrary GC scheduling, native heap leak accounting or
 full sanitizer qualification.
+
+## Concurrent independent states (bounded real-native coverage)
+
+`ownership_concurrent_states` uses two worker threads, each exclusively owning
+its own ordinary C-built Lua state. A C++20 barrier holds each winning owner
+until both contested construction attempts finish: exactly one factory must
+succeed, and the other must return binding CLIENT_IN_USE. Across 40 rounds,
+status/capability dispatch and detached conversion run against rejected factory
+loops in the other state. Release alternates explicit close (followed by CLOSED)
+and GC-only destruction. Further barrier phases force alternating states to
+construct a client and verify rejection in the peer, so scheduler bias cannot
+hide cross-state reuse. After both workers close their states, a fresh state must
+construct and release another real client. No mock, second concurrent owner,
+engine patch or broad adapter is involved.
+
+Run `cmake --build build --target ownership_threads -j4` then
+`ctest --test-dir build -R ownership_concurrent_states --repeat until-fail:5 -V`.
+The test has a 120-second timeout for deadlock detection; assertions remain on
+in release builds. This asserts public slot exclusivity and cross-thread/state
+reuse for one loaded module. It is not a TSAN/native-phase overlap observer,
+proof across independently loaded module copies, or exhaustive engine-global
+race proof; those restrictions and remaining qualification gates are not waived.
