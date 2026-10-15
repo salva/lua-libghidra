@@ -702,6 +702,31 @@ class InventoryTests(unittest.TestCase):
         self.assertIn('INT_MAX', self.ops['AddTypeMember']['effective_domain']['existing_fields'])
         self.assertIn('width/is_signed ignored', self.ops['CreateTypeEnum']['state_transitions'])
 
+    def test_grammar_authority_is_not_inferred_from_tier_or_native_signature(self):
+        audit=self.data['surface_audit']
+        self.assertEqual((audit['grammar_accounted'],audit['excluded_operations'],audit['approved_first_slice_count']),(70,40,10))
+        approved={'GetStatus','GetCapabilities','OpenProgram','CloseProgram','GetFunction','GetInstruction','ReadBytes','GetDecompilation','ListFunctions','ListInstructions'}
+        proposed={r['operation'] for r in audit['proposed_grammar']}
+        self.assertEqual(proposed,set(self.ops)-approved-{n for n,o in self.ops.items() if not o['implementation']})
+        for name,op in self.ops.items():
+            if not op['implementation']:continue
+            grammar=op['surface_contract']['lowlevel']['grammar']
+            self.assertEqual(grammar['native_argument_order'],[a['name'] for a in op['request']])
+            self.assertEqual(bool(grammar['approved_call']),name in approved)
+        # Core lookup disposition is approved, its spelling/positional grammar is not.
+        self.assertEqual(self.ops['GetType']['surface_contract']['facade']['extraction'],'type')
+        self.assertIsNone(self.ops['GetType']['surface_contract']['lowlevel']['grammar']['approved_call'])
+        from inventory_surfaces import surface_audit
+        import copy
+        changed=copy.deepcopy(self.data['operations'])
+        row=next(o for o in changed if o['name']=='GetType')
+        row['surface_contract']['lowlevel']['grammar']['native_argument_order']=[]
+        with self.assertRaises(AssertionError):surface_audit(changed)
+        changed=copy.deepcopy(self.data['operations'])
+        row=next(o for o in changed if not o['implementation'])
+        row['surface_contract']['facade']={'name':'invented'}
+        with self.assertRaises(AssertionError):surface_audit(changed)
+
     def test_surface_extraction_and_native_escape_disposition(self):
         for name, key in [('GetFunction', 'function'), ('GetType', 'type'), ('ReadBytes', 'data')]:
             self.assertEqual(self.ops[name]['surface_contract']['facade']['extraction'], key)

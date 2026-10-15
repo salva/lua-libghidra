@@ -809,3 +809,28 @@ Direct ledger is now 156 reviewed, zero missing; nested twenty and factory four
 remain separately reconciled. This closes request source accounting, NOT final
 exhaustive acceptance, proposed grammar decisions or runtime/iterator fixture
 slots. Forty-four tests include independent shifted-delete-address rejection.
+
+## Public grammar authority audit (forty-first increment)
+
+`surface_audit` reconciles all 70 included and 40 excluded service operations.
+Ten first-slice native operation grammars are explicitly approved by SPEC §2:
+status, capabilities, open, logical close, function/instruction lookup, bytes,
+single decompilation and function/instruction pages. Binding factory/owner close
+and facade native/check/u64 remain separately specified, not service methods.
+
+The other sixty rows now explicitly separate `approved_call=null` from
+`proposed_call`, with source argument order and approval provenance. Existing
+`lowlevel.call` is display-only when `call_status` says proposed; it is NOT an
+approved adapter contract. Core facade disposition/lookup extraction is approved
+by COVERAGE, but that does not approve every additional positional signature or
+options-table default. Full/discard native escape disposition remains intact.
+No syntax approval is requested implicitly and no adapter is implemented.
+
+This replaces the ambiguous presentation of proposed positional calls as if all
+were normative. It does not invent optionality from C++ model defaults, and
+preserves false/zero/empty and pre-dispatch unknown-key rejection. Regression
+checks reconcile exact source argument order and reject exposed excluded rows.
+Remaining work is final cross-ledger/source-accounting closure, including stale
+unresolved obligations versus actual Python conversion evidence. Runtime and
+iterator slots remain unqualified; signatures pages-only and constant-empty
+strings without discovery remain unchanged.

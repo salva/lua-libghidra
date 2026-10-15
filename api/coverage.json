@@ -586,6 +586,7 @@
         "facade": {
           "disposition": "native escape hatch",
           "extraction": null,
+          "grammar_status": "native() uses lowlevel grammar; no convenience promised",
           "name": null,
           "return": "complete response/error via convenience or native() as disposed"
         },
@@ -593,6 +594,18 @@
         "iterator": "not enabled; source identity/order alone is not runtime qualification",
         "lowlevel": {
           "call": "add_perf_benchmark(record)",
+          "call_status": "proposed; not approved for adapter implementation",
+          "grammar": {
+            "approved_call": null,
+            "authority": "inventory presentation only; docs/COVERAGE.md approves tier/disposition, not this syntax",
+            "default_rule": "only explicit binding defaults; model initializer is not proof of request optionality; preserve false, zero and empty",
+            "native_argument_order": [
+              "record"
+            ],
+            "proposed_call": "add_perf_benchmark(record)",
+            "status": "proposed; not approved for adapter implementation",
+            "unknown_keys": "reject before dispatch; validation-only rejection does not invalidate generation"
+          },
           "name": "add_perf_benchmark",
           "native_request_keys": [
             "record"
@@ -732,6 +745,7 @@
         "facade": {
           "disposition": "native escape hatch",
           "extraction": null,
+          "grammar_status": "native() uses lowlevel grammar; no convenience promised",
           "name": null,
           "return": "complete response/error via convenience or native() as disposed"
         },
@@ -739,6 +753,20 @@
         "iterator": "not enabled; source identity/order alone is not runtime qualification",
         "lowlevel": {
           "call": "add_type_enum_member(type_id_or_path, name, value)",
+          "call_status": "proposed; not approved for adapter implementation",
+          "grammar": {
+            "approved_call": null,
+            "authority": "inventory presentation only; docs/COVERAGE.md approves tier/disposition, not this syntax",
+            "default_rule": "only explicit binding defaults; model initializer is not proof of request optionality; preserve false, zero and empty",
+            "native_argument_order": [
+              "type_id_or_path",
+              "name",
+              "value"
+            ],
+            "proposed_call": "add_type_enum_member(type_id_or_path, name, value)",
+            "status": "proposed; not approved for adapter implementation",
+            "unknown_keys": "reject before dispatch; validation-only rejection does not invalidate generation"
+          },
           "name": "add_type_enum_member",
           "native_request_keys": [
             "type_id_or_path",
@@ -900,6 +928,7 @@
         "facade": {
           "disposition": "native escape hatch",
           "extraction": null,
+          "grammar_status": "native() uses lowlevel grammar; no convenience promised",
           "name": null,
           "return": "complete response/error via convenience or native() as disposed"
         },
@@ -907,6 +936,21 @@
         "iterator": "not enabled; source identity/order alone is not runtime qualification",
         "lowlevel": {
           "call": "add_type_member(parent_type_id_or_path, member_name, member_type, size)",
+          "call_status": "proposed; not approved for adapter implementation",
+          "grammar": {
+            "approved_call": null,
+            "authority": "inventory presentation only; docs/COVERAGE.md approves tier/disposition, not this syntax",
+            "default_rule": "only explicit binding defaults; model initializer is not proof of request optionality; preserve false, zero and empty",
+            "native_argument_order": [
+              "parent_type_id_or_path",
+              "member_name",
+              "member_type",
+              "size"
+            ],
+            "proposed_call": "add_type_member(parent_type_id_or_path, member_name, member_type, size)",
+            "status": "proposed; not approved for adapter implementation",
+            "unknown_keys": "reject before dispatch; validation-only rejection does not invalidate generation"
+          },
           "name": "add_type_member",
           "native_request_keys": [
             "parent_type_id_or_path",
@@ -1054,6 +1098,7 @@
         "facade": {
           "disposition": "native escape hatch",
           "extraction": null,
+          "grammar_status": "native() uses lowlevel grammar; no convenience promised",
           "name": null,
           "return": "complete response/error via convenience or native() as disposed"
         },
@@ -1061,6 +1106,19 @@
         "iterator": "not enabled; source identity/order alone is not runtime qualification",
         "lowlevel": {
           "call": "apply_data_type(address, data_type)",
+          "call_status": "proposed; not approved for adapter implementation",
+          "grammar": {
+            "approved_call": null,
+            "authority": "inventory presentation only; docs/COVERAGE.md approves tier/disposition, not this syntax",
+            "default_rule": "only explicit binding defaults; model initializer is not proof of request optionality; preserve false, zero and empty",
+            "native_argument_order": [
+              "address",
+              "data_type"
+            ],
+            "proposed_call": "apply_data_type(address, data_type)",
+            "status": "proposed; not approved for adapter implementation",
+            "unknown_keys": "reject before dispatch; validation-only rejection does not invalidate generation"
+          },
           "name": "apply_data_type",
           "native_request_keys": [
             "address",
@@ -1233,6 +1291,7 @@
         "facade": {
           "disposition": "native escape hatch",
           "extraction": null,
+          "grammar_status": "native() uses lowlevel grammar; no convenience promised",
           "name": null,
           "return": "complete response/error via convenience or native() as disposed"
         },
@@ -1240,6 +1299,16 @@
         "iterator": "not enabled; source identity/order alone is not runtime qualification",
         "lowlevel": {
           "call": "clear_perf_benchmarks()",
+          "call_status": "proposed; not approved for adapter implementation",
+          "grammar": {
+            "approved_call": null,
+            "authority": "inventory presentation only; docs/COVERAGE.md approves tier/disposition, not this syntax",
+            "default_rule": "only explicit binding defaults; model initializer is not proof of request optionality; preserve false, zero and empty",
+            "native_argument_order": [],
+            "proposed_call": "clear_perf_benchmarks()",
+            "status": "proposed; not approved for adapter implementation",
+            "unknown_keys": "reject before dispatch; validation-only rejection does not invalidate generation"
+          },
           "name": "clear_perf_benchmarks",
           "native_request_keys": [],
           "return": "complete detached native response or nil,error"
@@ -1368,6 +1437,7 @@
         "facade": {
           "disposition": "complete response convenience/page",
           "extraction": null,
+          "grammar_status": "approved first-slice",
           "name": "close_program",
           "return": "complete response/error via convenience or native() as disposed",
           "save_policy": "reject empty configured state_path with binding NO_STATE_PATH before dispatch; no implicit save"
@@ -1376,6 +1446,18 @@
         "iterator": "not enabled; source identity/order alone is not runtime qualification",
         "lowlevel": {
           "call": "close_program{policy=\"save\"|\"discard\"}",
+          "call_status": "approved first-slice",
+          "grammar": {
+            "approved_call": "close_program{policy=\"save\"|\"discard\"}",
+            "authority": "docs/SPEC.md \u00a72 First-slice call grammar",
+            "default_rule": "only explicit binding defaults; model initializer is not proof of request optionality; preserve false, zero and empty",
+            "native_argument_order": [
+              "policy"
+            ],
+            "proposed_call": null,
+            "status": "approved first-slice",
+            "unknown_keys": "reject before dispatch; validation-only rejection does not invalidate generation"
+          },
           "name": "close_program",
           "native_request_keys": [
             "policy"
@@ -1930,6 +2012,7 @@
         "facade": {
           "disposition": "native escape hatch",
           "extraction": null,
+          "grammar_status": "native() uses lowlevel grammar; no convenience promised",
           "name": null,
           "return": "complete response/error via convenience or native() as disposed"
         },
@@ -1937,6 +2020,20 @@
         "iterator": "not enabled; source identity/order alone is not runtime qualification",
         "lowlevel": {
           "call": "create_type(name, kind, size)",
+          "call_status": "proposed; not approved for adapter implementation",
+          "grammar": {
+            "approved_call": null,
+            "authority": "inventory presentation only; docs/COVERAGE.md approves tier/disposition, not this syntax",
+            "default_rule": "only explicit binding defaults; model initializer is not proof of request optionality; preserve false, zero and empty",
+            "native_argument_order": [
+              "name",
+              "kind",
+              "size"
+            ],
+            "proposed_call": "create_type(name, kind, size)",
+            "status": "proposed; not approved for adapter implementation",
+            "unknown_keys": "reject before dispatch; validation-only rejection does not invalidate generation"
+          },
           "name": "create_type",
           "native_request_keys": [
             "name",
@@ -2070,6 +2167,7 @@
         "facade": {
           "disposition": "native escape hatch",
           "extraction": null,
+          "grammar_status": "native() uses lowlevel grammar; no convenience promised",
           "name": null,
           "return": "complete response/error via convenience or native() as disposed"
         },
@@ -2077,6 +2175,19 @@
         "iterator": "not enabled; source identity/order alone is not runtime qualification",
         "lowlevel": {
           "call": "create_type_alias(name, target_type)",
+          "call_status": "proposed; not approved for adapter implementation",
+          "grammar": {
+            "approved_call": null,
+            "authority": "inventory presentation only; docs/COVERAGE.md approves tier/disposition, not this syntax",
+            "default_rule": "only explicit binding defaults; model initializer is not proof of request optionality; preserve false, zero and empty",
+            "native_argument_order": [
+              "name",
+              "target_type"
+            ],
+            "proposed_call": "create_type_alias(name, target_type)",
+            "status": "proposed; not approved for adapter implementation",
+            "unknown_keys": "reject before dispatch; validation-only rejection does not invalidate generation"
+          },
           "name": "create_type_alias",
           "native_request_keys": [
             "name",
@@ -2219,6 +2330,7 @@
         "facade": {
           "disposition": "native escape hatch",
           "extraction": null,
+          "grammar_status": "native() uses lowlevel grammar; no convenience promised",
           "name": null,
           "return": "complete response/error via convenience or native() as disposed"
         },
@@ -2226,6 +2338,20 @@
         "iterator": "not enabled; source identity/order alone is not runtime qualification",
         "lowlevel": {
           "call": "create_type_enum(name, width, is_signed)",
+          "call_status": "proposed; not approved for adapter implementation",
+          "grammar": {
+            "approved_call": null,
+            "authority": "inventory presentation only; docs/COVERAGE.md approves tier/disposition, not this syntax",
+            "default_rule": "only explicit binding defaults; model initializer is not proof of request optionality; preserve false, zero and empty",
+            "native_argument_order": [
+              "name",
+              "width",
+              "is_signed"
+            ],
+            "proposed_call": "create_type_enum(name, width, is_signed)",
+            "status": "proposed; not approved for adapter implementation",
+            "unknown_keys": "reject before dispatch; validation-only rejection does not invalidate generation"
+          },
           "name": "create_type_enum",
           "native_request_keys": [
             "name",
@@ -2503,6 +2629,7 @@
         "facade": {
           "disposition": "native escape hatch",
           "extraction": null,
+          "grammar_status": "native() uses lowlevel grammar; no convenience promised",
           "name": null,
           "return": "complete response/error via convenience or native() as disposed"
         },
@@ -2510,6 +2637,19 @@
         "iterator": "not enabled; source identity/order alone is not runtime qualification",
         "lowlevel": {
           "call": "delete_comment(address, kind)",
+          "call_status": "proposed; not approved for adapter implementation",
+          "grammar": {
+            "approved_call": null,
+            "authority": "inventory presentation only; docs/COVERAGE.md approves tier/disposition, not this syntax",
+            "default_rule": "only explicit binding defaults; model initializer is not proof of request optionality; preserve false, zero and empty",
+            "native_argument_order": [
+              "address",
+              "kind"
+            ],
+            "proposed_call": "delete_comment(address, kind)",
+            "status": "proposed; not approved for adapter implementation",
+            "unknown_keys": "reject before dispatch; validation-only rejection does not invalidate generation"
+          },
           "name": "delete_comment",
           "native_request_keys": [
             "address",
@@ -2622,6 +2762,7 @@
         "facade": {
           "disposition": "native escape hatch",
           "extraction": null,
+          "grammar_status": "native() uses lowlevel grammar; no convenience promised",
           "name": null,
           "return": "complete response/error via convenience or native() as disposed"
         },
@@ -2629,6 +2770,18 @@
         "iterator": "not enabled; source identity/order alone is not runtime qualification",
         "lowlevel": {
           "call": "delete_data_item(address)",
+          "call_status": "proposed; not approved for adapter implementation",
+          "grammar": {
+            "approved_call": null,
+            "authority": "inventory presentation only; docs/COVERAGE.md approves tier/disposition, not this syntax",
+            "default_rule": "only explicit binding defaults; model initializer is not proof of request optionality; preserve false, zero and empty",
+            "native_argument_order": [
+              "address"
+            ],
+            "proposed_call": "delete_data_item(address)",
+            "status": "proposed; not approved for adapter implementation",
+            "unknown_keys": "reject before dispatch; validation-only rejection does not invalidate generation"
+          },
           "name": "delete_data_item",
           "native_request_keys": [
             "address"
@@ -2803,6 +2956,7 @@
         "facade": {
           "disposition": "native escape hatch",
           "extraction": null,
+          "grammar_status": "native() uses lowlevel grammar; no convenience promised",
           "name": null,
           "return": "complete response/error via convenience or native() as disposed"
         },
@@ -2810,6 +2964,18 @@
         "iterator": "not enabled; source identity/order alone is not runtime qualification",
         "lowlevel": {
           "call": "delete_perf_benchmark(bench_id)",
+          "call_status": "proposed; not approved for adapter implementation",
+          "grammar": {
+            "approved_call": null,
+            "authority": "inventory presentation only; docs/COVERAGE.md approves tier/disposition, not this syntax",
+            "default_rule": "only explicit binding defaults; model initializer is not proof of request optionality; preserve false, zero and empty",
+            "native_argument_order": [
+              "bench_id"
+            ],
+            "proposed_call": "delete_perf_benchmark(bench_id)",
+            "status": "proposed; not approved for adapter implementation",
+            "unknown_keys": "reject before dispatch; validation-only rejection does not invalidate generation"
+          },
           "name": "delete_perf_benchmark",
           "native_request_keys": [
             "bench_id"
@@ -2956,6 +3122,7 @@
         "facade": {
           "disposition": "native escape hatch",
           "extraction": null,
+          "grammar_status": "native() uses lowlevel grammar; no convenience promised",
           "name": null,
           "return": "complete response/error via convenience or native() as disposed"
         },
@@ -2963,6 +3130,19 @@
         "iterator": "not enabled; source identity/order alone is not runtime qualification",
         "lowlevel": {
           "call": "delete_symbol(address, name_filter)",
+          "call_status": "proposed; not approved for adapter implementation",
+          "grammar": {
+            "approved_call": null,
+            "authority": "inventory presentation only; docs/COVERAGE.md approves tier/disposition, not this syntax",
+            "default_rule": "only explicit binding defaults; model initializer is not proof of request optionality; preserve false, zero and empty",
+            "native_argument_order": [
+              "address",
+              "name_filter"
+            ],
+            "proposed_call": "delete_symbol(address, name_filter)",
+            "status": "proposed; not approved for adapter implementation",
+            "unknown_keys": "reject before dispatch; validation-only rejection does not invalidate generation"
+          },
           "name": "delete_symbol",
           "native_request_keys": [
             "address",
@@ -3081,6 +3261,7 @@
         "facade": {
           "disposition": "native escape hatch",
           "extraction": null,
+          "grammar_status": "native() uses lowlevel grammar; no convenience promised",
           "name": null,
           "return": "complete response/error via convenience or native() as disposed"
         },
@@ -3088,6 +3269,18 @@
         "iterator": "not enabled; source identity/order alone is not runtime qualification",
         "lowlevel": {
           "call": "delete_type(type_id_or_path)",
+          "call_status": "proposed; not approved for adapter implementation",
+          "grammar": {
+            "approved_call": null,
+            "authority": "inventory presentation only; docs/COVERAGE.md approves tier/disposition, not this syntax",
+            "default_rule": "only explicit binding defaults; model initializer is not proof of request optionality; preserve false, zero and empty",
+            "native_argument_order": [
+              "type_id_or_path"
+            ],
+            "proposed_call": "delete_type(type_id_or_path)",
+            "status": "proposed; not approved for adapter implementation",
+            "unknown_keys": "reject before dispatch; validation-only rejection does not invalidate generation"
+          },
           "name": "delete_type",
           "native_request_keys": [
             "type_id_or_path"
@@ -3204,6 +3397,7 @@
         "facade": {
           "disposition": "native escape hatch",
           "extraction": null,
+          "grammar_status": "native() uses lowlevel grammar; no convenience promised",
           "name": null,
           "return": "complete response/error via convenience or native() as disposed"
         },
@@ -3211,6 +3405,18 @@
         "iterator": "not enabled; source identity/order alone is not runtime qualification",
         "lowlevel": {
           "call": "delete_type_alias(type_id_or_path)",
+          "call_status": "proposed; not approved for adapter implementation",
+          "grammar": {
+            "approved_call": null,
+            "authority": "inventory presentation only; docs/COVERAGE.md approves tier/disposition, not this syntax",
+            "default_rule": "only explicit binding defaults; model initializer is not proof of request optionality; preserve false, zero and empty",
+            "native_argument_order": [
+              "type_id_or_path"
+            ],
+            "proposed_call": "delete_type_alias(type_id_or_path)",
+            "status": "proposed; not approved for adapter implementation",
+            "unknown_keys": "reject before dispatch; validation-only rejection does not invalidate generation"
+          },
           "name": "delete_type_alias",
           "native_request_keys": [
             "type_id_or_path"
@@ -3411,6 +3617,7 @@
         "facade": {
           "disposition": "native escape hatch",
           "extraction": null,
+          "grammar_status": "native() uses lowlevel grammar; no convenience promised",
           "name": null,
           "return": "complete response/error via convenience or native() as disposed"
         },
@@ -3418,6 +3625,19 @@
         "iterator": "not enabled; source identity/order alone is not runtime qualification",
         "lowlevel": {
           "call": "delete_type_enum_member(type_id_or_path, ordinal)",
+          "call_status": "proposed; not approved for adapter implementation",
+          "grammar": {
+            "approved_call": null,
+            "authority": "inventory presentation only; docs/COVERAGE.md approves tier/disposition, not this syntax",
+            "default_rule": "only explicit binding defaults; model initializer is not proof of request optionality; preserve false, zero and empty",
+            "native_argument_order": [
+              "type_id_or_path",
+              "ordinal"
+            ],
+            "proposed_call": "delete_type_enum_member(type_id_or_path, ordinal)",
+            "status": "proposed; not approved for adapter implementation",
+            "unknown_keys": "reject before dispatch; validation-only rejection does not invalidate generation"
+          },
           "name": "delete_type_enum_member",
           "native_request_keys": [
             "type_id_or_path",
@@ -3551,6 +3771,7 @@
         "facade": {
           "disposition": "native escape hatch",
           "extraction": null,
+          "grammar_status": "native() uses lowlevel grammar; no convenience promised",
           "name": null,
           "return": "complete response/error via convenience or native() as disposed"
         },
@@ -3558,6 +3779,19 @@
         "iterator": "not enabled; source identity/order alone is not runtime qualification",
         "lowlevel": {
           "call": "delete_type_member(parent_type_id_or_path, ordinal)",
+          "call_status": "proposed; not approved for adapter implementation",
+          "grammar": {
+            "approved_call": null,
+            "authority": "inventory presentation only; docs/COVERAGE.md approves tier/disposition, not this syntax",
+            "default_rule": "only explicit binding defaults; model initializer is not proof of request optionality; preserve false, zero and empty",
+            "native_argument_order": [
+              "parent_type_id_or_path",
+              "ordinal"
+            ],
+            "proposed_call": "delete_type_member(parent_type_id_or_path, ordinal)",
+            "status": "proposed; not approved for adapter implementation",
+            "unknown_keys": "reject before dispatch; validation-only rejection does not invalidate generation"
+          },
           "name": "delete_type_member",
           "native_request_keys": [
             "parent_type_id_or_path",
@@ -3668,6 +3902,7 @@
         "facade": {
           "disposition": "native escape hatch",
           "extraction": null,
+          "grammar_status": "native() uses lowlevel grammar; no convenience promised",
           "name": null,
           "return": "complete response/error via convenience or native() as disposed"
         },
@@ -3675,6 +3910,16 @@
         "iterator": "not enabled; source identity/order alone is not runtime qualification",
         "lowlevel": {
           "call": "discard_program()",
+          "call_status": "proposed; not approved for adapter implementation",
+          "grammar": {
+            "approved_call": null,
+            "authority": "inventory presentation only; docs/COVERAGE.md approves tier/disposition, not this syntax",
+            "default_rule": "only explicit binding defaults; model initializer is not proof of request optionality; preserve false, zero and empty",
+            "native_argument_order": [],
+            "proposed_call": "discard_program()",
+            "status": "proposed; not approved for adapter implementation",
+            "unknown_keys": "reject before dispatch; validation-only rejection does not invalidate generation"
+          },
           "name": "discard_program",
           "native_request_keys": [],
           "return": "complete detached native response or nil,error"
@@ -3848,6 +4093,7 @@
         "facade": {
           "disposition": "complete response convenience/page",
           "extraction": null,
+          "grammar_status": "approved first-slice",
           "name": "get_capabilities",
           "return": "complete response/error via convenience or native() as disposed"
         },
@@ -3855,6 +4101,16 @@
         "iterator": "not enabled; source identity/order alone is not runtime qualification",
         "lowlevel": {
           "call": "get_capabilities()",
+          "call_status": "approved first-slice",
+          "grammar": {
+            "approved_call": "get_capabilities()",
+            "authority": "docs/SPEC.md \u00a72 First-slice call grammar",
+            "default_rule": "only explicit binding defaults; model initializer is not proof of request optionality; preserve false, zero and empty",
+            "native_argument_order": [],
+            "proposed_call": null,
+            "status": "approved first-slice",
+            "unknown_keys": "reject before dispatch; validation-only rejection does not invalidate generation"
+          },
           "name": "get_capabilities",
           "native_request_keys": [],
           "return": "complete detached native response or nil,error"
@@ -4058,6 +4314,7 @@
         "facade": {
           "disposition": "complete response convenience/page",
           "extraction": null,
+          "grammar_status": "proposed; not approved for adapter implementation",
           "name": "get_comments",
           "return": "complete response/error via convenience or native() as disposed"
         },
@@ -4065,6 +4322,21 @@
         "iterator": "not enabled; source identity/order alone is not runtime qualification",
         "lowlevel": {
           "call": "get_comments(options={})",
+          "call_status": "proposed; not approved for adapter implementation",
+          "grammar": {
+            "approved_call": null,
+            "authority": "inventory presentation only; docs/COVERAGE.md approves tier/disposition, not this syntax",
+            "default_rule": "only explicit binding defaults; model initializer is not proof of request optionality; preserve false, zero and empty",
+            "native_argument_order": [
+              "range_start",
+              "range_end",
+              "limit",
+              "offset"
+            ],
+            "proposed_call": "get_comments(options={})",
+            "status": "proposed; not approved for adapter implementation",
+            "unknown_keys": "reject before dispatch; validation-only rejection does not invalidate generation"
+          },
           "name": "get_comments",
           "native_request_keys": [
             "range_start",
@@ -4543,6 +4815,7 @@
         "facade": {
           "disposition": "direct extraction",
           "extraction": "decompilation",
+          "grammar_status": "approved first-slice",
           "name": "get_decompilation",
           "return": "value,nil,response; optional absent -> nil,NOT_FOUND,response; native error -> nil,error",
           "timeout_policy": "reject explicit timeout key; native default ignored; no deadline promise"
@@ -4551,6 +4824,19 @@
         "iterator": "not enabled; source identity/order alone is not runtime qualification",
         "lowlevel": {
           "call": "get_decompilation(address, options={})",
+          "call_status": "approved first-slice",
+          "grammar": {
+            "approved_call": "get_decompilation(address, options={})",
+            "authority": "docs/SPEC.md \u00a72 First-slice call grammar",
+            "default_rule": "only explicit binding defaults; model initializer is not proof of request optionality; preserve false, zero and empty",
+            "native_argument_order": [
+              "address",
+              "timeout_ms"
+            ],
+            "proposed_call": null,
+            "status": "approved first-slice",
+            "unknown_keys": "reject before dispatch; validation-only rejection does not invalidate generation"
+          },
           "name": "get_decompilation",
           "native_request_keys": [
             "address",
@@ -4853,6 +5139,7 @@
         "facade": {
           "disposition": "direct extraction",
           "extraction": "function",
+          "grammar_status": "approved first-slice",
           "name": "get_function",
           "return": "value,nil,response; optional absent -> nil,NOT_FOUND,response; native error -> nil,error"
         },
@@ -4860,6 +5147,18 @@
         "iterator": "not enabled; source identity/order alone is not runtime qualification",
         "lowlevel": {
           "call": "get_function(address)",
+          "call_status": "approved first-slice",
+          "grammar": {
+            "approved_call": "get_function(address)",
+            "authority": "docs/SPEC.md \u00a72 First-slice call grammar",
+            "default_rule": "only explicit binding defaults; model initializer is not proof of request optionality; preserve false, zero and empty",
+            "native_argument_order": [
+              "address"
+            ],
+            "proposed_call": null,
+            "status": "approved first-slice",
+            "unknown_keys": "reject before dispatch; validation-only rejection does not invalidate generation"
+          },
           "name": "get_function",
           "native_request_keys": [
             "address"
@@ -5223,6 +5522,7 @@
         "facade": {
           "disposition": "direct extraction",
           "extraction": "signature",
+          "grammar_status": "proposed; not approved for adapter implementation",
           "name": "get_function_signature",
           "return": "value,nil,response; optional absent -> nil,NOT_FOUND,response; native error -> nil,error"
         },
@@ -5230,6 +5530,18 @@
         "iterator": "not enabled; source identity/order alone is not runtime qualification",
         "lowlevel": {
           "call": "get_function_signature(address)",
+          "call_status": "proposed; not approved for adapter implementation",
+          "grammar": {
+            "approved_call": null,
+            "authority": "inventory presentation only; docs/COVERAGE.md approves tier/disposition, not this syntax",
+            "default_rule": "only explicit binding defaults; model initializer is not proof of request optionality; preserve false, zero and empty",
+            "native_argument_order": [
+              "address"
+            ],
+            "proposed_call": "get_function_signature(address)",
+            "status": "proposed; not approved for adapter implementation",
+            "unknown_keys": "reject before dispatch; validation-only rejection does not invalidate generation"
+          },
           "name": "get_function_signature",
           "native_request_keys": [
             "address"
@@ -5461,6 +5773,7 @@
         "facade": {
           "disposition": "direct extraction",
           "extraction": "instruction",
+          "grammar_status": "approved first-slice",
           "name": "get_instruction",
           "return": "value,nil,response; optional absent -> nil,NOT_FOUND,response; native error -> nil,error"
         },
@@ -5468,6 +5781,18 @@
         "iterator": "not enabled; source identity/order alone is not runtime qualification",
         "lowlevel": {
           "call": "get_instruction(address)",
+          "call_status": "approved first-slice",
+          "grammar": {
+            "approved_call": "get_instruction(address)",
+            "authority": "docs/SPEC.md \u00a72 First-slice call grammar",
+            "default_rule": "only explicit binding defaults; model initializer is not proof of request optionality; preserve false, zero and empty",
+            "native_argument_order": [
+              "address"
+            ],
+            "proposed_call": null,
+            "status": "approved first-slice",
+            "unknown_keys": "reject before dispatch; validation-only rejection does not invalidate generation"
+          },
           "name": "get_instruction",
           "native_request_keys": [
             "address"
@@ -5912,6 +6237,7 @@
         "facade": {
           "disposition": "complete response convenience/page",
           "extraction": null,
+          "grammar_status": "proposed; not approved for adapter implementation",
           "name": "get_revision",
           "return": "complete response/error via convenience or native() as disposed"
         },
@@ -5919,6 +6245,16 @@
         "iterator": "not enabled; source identity/order alone is not runtime qualification",
         "lowlevel": {
           "call": "get_revision()",
+          "call_status": "proposed; not approved for adapter implementation",
+          "grammar": {
+            "approved_call": null,
+            "authority": "inventory presentation only; docs/COVERAGE.md approves tier/disposition, not this syntax",
+            "default_rule": "only explicit binding defaults; model initializer is not proof of request optionality; preserve false, zero and empty",
+            "native_argument_order": [],
+            "proposed_call": "get_revision()",
+            "status": "proposed; not approved for adapter implementation",
+            "unknown_keys": "reject before dispatch; validation-only rejection does not invalidate generation"
+          },
           "name": "get_revision",
           "native_request_keys": [],
           "return": "complete detached native response or nil,error"
@@ -6081,6 +6417,7 @@
         "facade": {
           "disposition": "complete response convenience/page",
           "extraction": null,
+          "grammar_status": "approved first-slice",
           "name": "get_status",
           "return": "complete response/error via convenience or native() as disposed"
         },
@@ -6088,6 +6425,16 @@
         "iterator": "not enabled; source identity/order alone is not runtime qualification",
         "lowlevel": {
           "call": "get_status()",
+          "call_status": "approved first-slice",
+          "grammar": {
+            "approved_call": "get_status()",
+            "authority": "docs/SPEC.md \u00a72 First-slice call grammar",
+            "default_rule": "only explicit binding defaults; model initializer is not proof of request optionality; preserve false, zero and empty",
+            "native_argument_order": [],
+            "proposed_call": null,
+            "status": "approved first-slice",
+            "unknown_keys": "reject before dispatch; validation-only rejection does not invalidate generation"
+          },
           "name": "get_status",
           "native_request_keys": [],
           "return": "complete detached native response or nil,error"
@@ -6421,6 +6768,7 @@
         "facade": {
           "disposition": "direct extraction",
           "extraction": "symbol",
+          "grammar_status": "proposed; not approved for adapter implementation",
           "name": "get_symbol",
           "return": "value,nil,response; optional absent -> nil,NOT_FOUND,response; native error -> nil,error"
         },
@@ -6428,6 +6776,18 @@
         "iterator": "not enabled; source identity/order alone is not runtime qualification",
         "lowlevel": {
           "call": "get_symbol(address)",
+          "call_status": "proposed; not approved for adapter implementation",
+          "grammar": {
+            "approved_call": null,
+            "authority": "inventory presentation only; docs/COVERAGE.md approves tier/disposition, not this syntax",
+            "default_rule": "only explicit binding defaults; model initializer is not proof of request optionality; preserve false, zero and empty",
+            "native_argument_order": [
+              "address"
+            ],
+            "proposed_call": "get_symbol(address)",
+            "status": "proposed; not approved for adapter implementation",
+            "unknown_keys": "reject before dispatch; validation-only rejection does not invalidate generation"
+          },
           "name": "get_symbol",
           "native_request_keys": [
             "address"
@@ -6745,6 +7105,7 @@
         "facade": {
           "disposition": "direct extraction",
           "extraction": "type",
+          "grammar_status": "proposed; not approved for adapter implementation",
           "name": "get_type",
           "return": "value,nil,response; optional absent -> nil,NOT_FOUND,response; native error -> nil,error"
         },
@@ -6752,6 +7113,18 @@
         "iterator": "not enabled; source identity/order alone is not runtime qualification",
         "lowlevel": {
           "call": "get_type(path)",
+          "call_status": "proposed; not approved for adapter implementation",
+          "grammar": {
+            "approved_call": null,
+            "authority": "inventory presentation only; docs/COVERAGE.md approves tier/disposition, not this syntax",
+            "default_rule": "only explicit binding defaults; model initializer is not proof of request optionality; preserve false, zero and empty",
+            "native_argument_order": [
+              "path"
+            ],
+            "proposed_call": "get_type(path)",
+            "status": "proposed; not approved for adapter implementation",
+            "unknown_keys": "reject before dispatch; validation-only rejection does not invalidate generation"
+          },
           "name": "get_type",
           "native_request_keys": [
             "path"
@@ -7415,6 +7788,7 @@
         "facade": {
           "disposition": "complete response convenience/page",
           "extraction": null,
+          "grammar_status": "proposed; not approved for adapter implementation",
           "name": "list_basic_blocks",
           "return": "complete response/error via convenience or native() as disposed"
         },
@@ -7422,6 +7796,21 @@
         "iterator": "not enabled; source identity/order alone is not runtime qualification",
         "lowlevel": {
           "call": "list_basic_blocks(options={})",
+          "call_status": "proposed; not approved for adapter implementation",
+          "grammar": {
+            "approved_call": null,
+            "authority": "inventory presentation only; docs/COVERAGE.md approves tier/disposition, not this syntax",
+            "default_rule": "only explicit binding defaults; model initializer is not proof of request optionality; preserve false, zero and empty",
+            "native_argument_order": [
+              "range_start",
+              "range_end",
+              "limit",
+              "offset"
+            ],
+            "proposed_call": "list_basic_blocks(options={})",
+            "status": "proposed; not approved for adapter implementation",
+            "unknown_keys": "reject before dispatch; validation-only rejection does not invalidate generation"
+          },
           "name": "list_basic_blocks",
           "native_request_keys": [
             "range_start",
@@ -8022,6 +8411,7 @@
         "facade": {
           "disposition": "complete response convenience/page",
           "extraction": null,
+          "grammar_status": "proposed; not approved for adapter implementation",
           "name": "list_cfg_edges",
           "return": "complete response/error via convenience or native() as disposed"
         },
@@ -8029,6 +8419,21 @@
         "iterator": "not enabled; source identity/order alone is not runtime qualification",
         "lowlevel": {
           "call": "list_cfg_edges(options={})",
+          "call_status": "proposed; not approved for adapter implementation",
+          "grammar": {
+            "approved_call": null,
+            "authority": "inventory presentation only; docs/COVERAGE.md approves tier/disposition, not this syntax",
+            "default_rule": "only explicit binding defaults; model initializer is not proof of request optionality; preserve false, zero and empty",
+            "native_argument_order": [
+              "range_start",
+              "range_end",
+              "limit",
+              "offset"
+            ],
+            "proposed_call": "list_cfg_edges(options={})",
+            "status": "proposed; not approved for adapter implementation",
+            "unknown_keys": "reject before dispatch; validation-only rejection does not invalidate generation"
+          },
           "name": "list_cfg_edges",
           "native_request_keys": [
             "range_start",
@@ -8271,6 +8676,7 @@
         "facade": {
           "disposition": "native escape hatch",
           "extraction": null,
+          "grammar_status": "native() uses lowlevel grammar; no convenience promised",
           "name": null,
           "return": "complete response/error via convenience or native() as disposed"
         },
@@ -8278,6 +8684,21 @@
         "iterator": "not enabled; source identity/order alone is not runtime qualification",
         "lowlevel": {
           "call": "list_data_items(options={})",
+          "call_status": "proposed; not approved for adapter implementation",
+          "grammar": {
+            "approved_call": null,
+            "authority": "inventory presentation only; docs/COVERAGE.md approves tier/disposition, not this syntax",
+            "default_rule": "only explicit binding defaults; model initializer is not proof of request optionality; preserve false, zero and empty",
+            "native_argument_order": [
+              "range_start",
+              "range_end",
+              "limit",
+              "offset"
+            ],
+            "proposed_call": "list_data_items(options={})",
+            "status": "proposed; not approved for adapter implementation",
+            "unknown_keys": "reject before dispatch; validation-only rejection does not invalidate generation"
+          },
           "name": "list_data_items",
           "native_request_keys": [
             "range_start",
@@ -8830,6 +9251,7 @@
         "facade": {
           "disposition": "native escape hatch",
           "extraction": null,
+          "grammar_status": "native() uses lowlevel grammar; no convenience promised",
           "name": null,
           "return": "complete response/error via convenience or native() as disposed",
           "timeout_policy": "reject explicit timeout key; native default ignored; no deadline promise"
@@ -8838,6 +9260,22 @@
         "iterator": "not enabled; source identity/order alone is not runtime qualification",
         "lowlevel": {
           "call": "list_decompilations(options={})",
+          "call_status": "proposed; not approved for adapter implementation",
+          "grammar": {
+            "approved_call": null,
+            "authority": "inventory presentation only; docs/COVERAGE.md approves tier/disposition, not this syntax",
+            "default_rule": "only explicit binding defaults; model initializer is not proof of request optionality; preserve false, zero and empty",
+            "native_argument_order": [
+              "range_start",
+              "range_end",
+              "limit",
+              "offset",
+              "timeout_ms"
+            ],
+            "proposed_call": "list_decompilations(options={})",
+            "status": "proposed; not approved for adapter implementation",
+            "unknown_keys": "reject before dispatch; validation-only rejection does not invalidate generation"
+          },
           "name": "list_decompilations",
           "native_request_keys": [
             "range_start",
@@ -9068,6 +9506,7 @@
         "facade": {
           "disposition": "native escape hatch compatibility page; no discovery iterator",
           "extraction": null,
+          "grammar_status": "native() uses lowlevel grammar; no convenience promised",
           "name": null,
           "return": "complete response/error via convenience or native() as disposed"
         },
@@ -9075,6 +9514,21 @@
         "iterator": "not enabled; source identity/order alone is not runtime qualification",
         "lowlevel": {
           "call": "list_defined_strings(options={})",
+          "call_status": "proposed; not approved for adapter implementation",
+          "grammar": {
+            "approved_call": null,
+            "authority": "inventory presentation only; docs/COVERAGE.md approves tier/disposition, not this syntax",
+            "default_rule": "only explicit binding defaults; model initializer is not proof of request optionality; preserve false, zero and empty",
+            "native_argument_order": [
+              "range_start",
+              "range_end",
+              "limit",
+              "offset"
+            ],
+            "proposed_call": "list_defined_strings(options={})",
+            "status": "proposed; not approved for adapter implementation",
+            "unknown_keys": "reject before dispatch; validation-only rejection does not invalidate generation"
+          },
           "name": "list_defined_strings",
           "native_request_keys": [
             "range_start",
@@ -9899,6 +10353,7 @@
         "facade": {
           "disposition": "complete response page; no iterator",
           "extraction": null,
+          "grammar_status": "proposed; not approved for adapter implementation",
           "name": "list_function_signatures",
           "return": "complete response/error via convenience or native() as disposed"
         },
@@ -9906,6 +10361,21 @@
         "iterator": "not enabled; source identity/order alone is not runtime qualification",
         "lowlevel": {
           "call": "list_function_signatures(options={})",
+          "call_status": "proposed; not approved for adapter implementation",
+          "grammar": {
+            "approved_call": null,
+            "authority": "inventory presentation only; docs/COVERAGE.md approves tier/disposition, not this syntax",
+            "default_rule": "only explicit binding defaults; model initializer is not proof of request optionality; preserve false, zero and empty",
+            "native_argument_order": [
+              "range_start",
+              "range_end",
+              "limit",
+              "offset"
+            ],
+            "proposed_call": "list_function_signatures(options={})",
+            "status": "proposed; not approved for adapter implementation",
+            "unknown_keys": "reject before dispatch; validation-only rejection does not invalidate generation"
+          },
           "name": "list_function_signatures",
           "native_request_keys": [
             "range_start",
@@ -10430,6 +10900,7 @@
         "facade": {
           "disposition": "complete response convenience/page",
           "extraction": null,
+          "grammar_status": "approved first-slice",
           "name": "list_functions",
           "return": "complete response/error via convenience or native() as disposed"
         },
@@ -10437,6 +10908,21 @@
         "iterator": "not enabled; source identity/order alone is not runtime qualification",
         "lowlevel": {
           "call": "list_functions(options={})",
+          "call_status": "approved first-slice",
+          "grammar": {
+            "approved_call": "list_functions(options={})",
+            "authority": "docs/SPEC.md \u00a72 First-slice call grammar",
+            "default_rule": "only explicit binding defaults; model initializer is not proof of request optionality; preserve false, zero and empty",
+            "native_argument_order": [
+              "range_start",
+              "range_end",
+              "limit",
+              "offset"
+            ],
+            "proposed_call": null,
+            "status": "approved first-slice",
+            "unknown_keys": "reject before dispatch; validation-only rejection does not invalidate generation"
+          },
           "name": "list_functions",
           "native_request_keys": [
             "range_start",
@@ -10879,6 +11365,7 @@
         "facade": {
           "disposition": "complete response convenience/page",
           "extraction": null,
+          "grammar_status": "approved first-slice",
           "name": "list_instructions",
           "return": "complete response/error via convenience or native() as disposed"
         },
@@ -10886,6 +11373,21 @@
         "iterator": "not enabled; source identity/order alone is not runtime qualification",
         "lowlevel": {
           "call": "list_instructions(options={})",
+          "call_status": "approved first-slice",
+          "grammar": {
+            "approved_call": "list_instructions(options={})",
+            "authority": "docs/SPEC.md \u00a72 First-slice call grammar",
+            "default_rule": "only explicit binding defaults; model initializer is not proof of request optionality; preserve false, zero and empty",
+            "native_argument_order": [
+              "range_start",
+              "range_end",
+              "limit",
+              "offset"
+            ],
+            "proposed_call": null,
+            "status": "approved first-slice",
+            "unknown_keys": "reject before dispatch; validation-only rejection does not invalidate generation"
+          },
           "name": "list_instructions",
           "native_request_keys": [
             "range_start",
@@ -11244,6 +11746,7 @@
         "facade": {
           "disposition": "native escape hatch",
           "extraction": null,
+          "grammar_status": "native() uses lowlevel grammar; no convenience promised",
           "name": null,
           "return": "complete response/error via convenience or native() as disposed"
         },
@@ -11251,6 +11754,21 @@
         "iterator": "not enabled; source identity/order alone is not runtime qualification",
         "lowlevel": {
           "call": "list_leaf_functions(options={})",
+          "call_status": "proposed; not approved for adapter implementation",
+          "grammar": {
+            "approved_call": null,
+            "authority": "inventory presentation only; docs/COVERAGE.md approves tier/disposition, not this syntax",
+            "default_rule": "only explicit binding defaults; model initializer is not proof of request optionality; preserve false, zero and empty",
+            "native_argument_order": [
+              "range_start",
+              "range_end",
+              "limit",
+              "offset"
+            ],
+            "proposed_call": "list_leaf_functions(options={})",
+            "status": "proposed; not approved for adapter implementation",
+            "unknown_keys": "reject before dispatch; validation-only rejection does not invalidate generation"
+          },
           "name": "list_leaf_functions",
           "native_request_keys": [
             "range_start",
@@ -11769,6 +12287,7 @@
         "facade": {
           "disposition": "complete response convenience/page",
           "extraction": null,
+          "grammar_status": "proposed; not approved for adapter implementation",
           "name": "list_memory_blocks",
           "return": "complete response/error via convenience or native() as disposed"
         },
@@ -11776,6 +12295,19 @@
         "iterator": "not enabled; source identity/order alone is not runtime qualification",
         "lowlevel": {
           "call": "list_memory_blocks(options={})",
+          "call_status": "proposed; not approved for adapter implementation",
+          "grammar": {
+            "approved_call": null,
+            "authority": "inventory presentation only; docs/COVERAGE.md approves tier/disposition, not this syntax",
+            "default_rule": "only explicit binding defaults; model initializer is not proof of request optionality; preserve false, zero and empty",
+            "native_argument_order": [
+              "limit",
+              "offset"
+            ],
+            "proposed_call": "list_memory_blocks(options={})",
+            "status": "proposed; not approved for adapter implementation",
+            "unknown_keys": "reject before dispatch; validation-only rejection does not invalidate generation"
+          },
           "name": "list_memory_blocks",
           "native_request_keys": [
             "limit",
@@ -11986,6 +12518,7 @@
         "facade": {
           "disposition": "native escape hatch",
           "extraction": null,
+          "grammar_status": "native() uses lowlevel grammar; no convenience promised",
           "name": null,
           "return": "complete response/error via convenience or native() as disposed"
         },
@@ -11993,6 +12526,16 @@
         "iterator": "not enabled; source identity/order alone is not runtime qualification",
         "lowlevel": {
           "call": "list_perf_benchmarks()",
+          "call_status": "proposed; not approved for adapter implementation",
+          "grammar": {
+            "approved_call": null,
+            "authority": "inventory presentation only; docs/COVERAGE.md approves tier/disposition, not this syntax",
+            "default_rule": "only explicit binding defaults; model initializer is not proof of request optionality; preserve false, zero and empty",
+            "native_argument_order": [],
+            "proposed_call": "list_perf_benchmarks()",
+            "status": "proposed; not approved for adapter implementation",
+            "unknown_keys": "reject before dispatch; validation-only rejection does not invalidate generation"
+          },
           "name": "list_perf_benchmarks",
           "native_request_keys": [],
           "return": "complete detached native response or nil,error"
@@ -13009,6 +13552,7 @@
         "facade": {
           "disposition": "complete response convenience/page",
           "extraction": null,
+          "grammar_status": "proposed; not approved for adapter implementation",
           "name": "list_symbols",
           "return": "complete response/error via convenience or native() as disposed"
         },
@@ -13016,6 +13560,21 @@
         "iterator": "not enabled; source identity/order alone is not runtime qualification",
         "lowlevel": {
           "call": "list_symbols(options={})",
+          "call_status": "proposed; not approved for adapter implementation",
+          "grammar": {
+            "approved_call": null,
+            "authority": "inventory presentation only; docs/COVERAGE.md approves tier/disposition, not this syntax",
+            "default_rule": "only explicit binding defaults; model initializer is not proof of request optionality; preserve false, zero and empty",
+            "native_argument_order": [
+              "range_start",
+              "range_end",
+              "limit",
+              "offset"
+            ],
+            "proposed_call": "list_symbols(options={})",
+            "status": "proposed; not approved for adapter implementation",
+            "unknown_keys": "reject before dispatch; validation-only rejection does not invalidate generation"
+          },
           "name": "list_symbols",
           "native_request_keys": [
             "range_start",
@@ -13371,6 +13930,7 @@
         "facade": {
           "disposition": "complete response convenience/page",
           "extraction": null,
+          "grammar_status": "proposed; not approved for adapter implementation",
           "name": "list_type_aliases",
           "return": "complete response/error via convenience or native() as disposed"
         },
@@ -13378,6 +13938,20 @@
         "iterator": "not enabled; source identity/order alone is not runtime qualification",
         "lowlevel": {
           "call": "list_type_aliases(options={})",
+          "call_status": "proposed; not approved for adapter implementation",
+          "grammar": {
+            "approved_call": null,
+            "authority": "inventory presentation only; docs/COVERAGE.md approves tier/disposition, not this syntax",
+            "default_rule": "only explicit binding defaults; model initializer is not proof of request optionality; preserve false, zero and empty",
+            "native_argument_order": [
+              "query",
+              "limit",
+              "offset"
+            ],
+            "proposed_call": "list_type_aliases(options={})",
+            "status": "proposed; not approved for adapter implementation",
+            "unknown_keys": "reject before dispatch; validation-only rejection does not invalidate generation"
+          },
           "name": "list_type_aliases",
           "native_request_keys": [
             "query",
@@ -13667,6 +14241,7 @@
         "facade": {
           "disposition": "complete response convenience/page",
           "extraction": null,
+          "grammar_status": "proposed; not approved for adapter implementation",
           "name": "list_type_enum_members",
           "return": "complete response/error via convenience or native() as disposed"
         },
@@ -13674,6 +14249,20 @@
         "iterator": "not enabled; source identity/order alone is not runtime qualification",
         "lowlevel": {
           "call": "list_type_enum_members(options={})",
+          "call_status": "proposed; not approved for adapter implementation",
+          "grammar": {
+            "approved_call": null,
+            "authority": "inventory presentation only; docs/COVERAGE.md approves tier/disposition, not this syntax",
+            "default_rule": "only explicit binding defaults; model initializer is not proof of request optionality; preserve false, zero and empty",
+            "native_argument_order": [
+              "type_id_or_path",
+              "limit",
+              "offset"
+            ],
+            "proposed_call": "list_type_enum_members(options={})",
+            "status": "proposed; not approved for adapter implementation",
+            "unknown_keys": "reject before dispatch; validation-only rejection does not invalidate generation"
+          },
           "name": "list_type_enum_members",
           "native_request_keys": [
             "type_id_or_path",
@@ -13945,6 +14534,7 @@
         "facade": {
           "disposition": "complete response convenience/page",
           "extraction": null,
+          "grammar_status": "proposed; not approved for adapter implementation",
           "name": "list_type_enums",
           "return": "complete response/error via convenience or native() as disposed"
         },
@@ -13952,6 +14542,20 @@
         "iterator": "not enabled; source identity/order alone is not runtime qualification",
         "lowlevel": {
           "call": "list_type_enums(options={})",
+          "call_status": "proposed; not approved for adapter implementation",
+          "grammar": {
+            "approved_call": null,
+            "authority": "inventory presentation only; docs/COVERAGE.md approves tier/disposition, not this syntax",
+            "default_rule": "only explicit binding defaults; model initializer is not proof of request optionality; preserve false, zero and empty",
+            "native_argument_order": [
+              "query",
+              "limit",
+              "offset"
+            ],
+            "proposed_call": "list_type_enums(options={})",
+            "status": "proposed; not approved for adapter implementation",
+            "unknown_keys": "reject before dispatch; validation-only rejection does not invalidate generation"
+          },
           "name": "list_type_enums",
           "native_request_keys": [
             "query",
@@ -14293,6 +14897,7 @@
         "facade": {
           "disposition": "complete response convenience/page",
           "extraction": null,
+          "grammar_status": "proposed; not approved for adapter implementation",
           "name": "list_type_members",
           "return": "complete response/error via convenience or native() as disposed"
         },
@@ -14300,6 +14905,20 @@
         "iterator": "not enabled; source identity/order alone is not runtime qualification",
         "lowlevel": {
           "call": "list_type_members(options={})",
+          "call_status": "proposed; not approved for adapter implementation",
+          "grammar": {
+            "approved_call": null,
+            "authority": "inventory presentation only; docs/COVERAGE.md approves tier/disposition, not this syntax",
+            "default_rule": "only explicit binding defaults; model initializer is not proof of request optionality; preserve false, zero and empty",
+            "native_argument_order": [
+              "type_id_or_path",
+              "limit",
+              "offset"
+            ],
+            "proposed_call": "list_type_members(options={})",
+            "status": "proposed; not approved for adapter implementation",
+            "unknown_keys": "reject before dispatch; validation-only rejection does not invalidate generation"
+          },
           "name": "list_type_members",
           "native_request_keys": [
             "type_id_or_path",
@@ -14555,6 +15174,7 @@
         "facade": {
           "disposition": "complete response convenience/page",
           "extraction": null,
+          "grammar_status": "proposed; not approved for adapter implementation",
           "name": "list_type_unions",
           "return": "complete response/error via convenience or native() as disposed"
         },
@@ -14562,6 +15182,20 @@
         "iterator": "not enabled; source identity/order alone is not runtime qualification",
         "lowlevel": {
           "call": "list_type_unions(options={})",
+          "call_status": "proposed; not approved for adapter implementation",
+          "grammar": {
+            "approved_call": null,
+            "authority": "inventory presentation only; docs/COVERAGE.md approves tier/disposition, not this syntax",
+            "default_rule": "only explicit binding defaults; model initializer is not proof of request optionality; preserve false, zero and empty",
+            "native_argument_order": [
+              "query",
+              "limit",
+              "offset"
+            ],
+            "proposed_call": "list_type_unions(options={})",
+            "status": "proposed; not approved for adapter implementation",
+            "unknown_keys": "reject before dispatch; validation-only rejection does not invalidate generation"
+          },
           "name": "list_type_unions",
           "native_request_keys": [
             "query",
@@ -14918,6 +15552,7 @@
         "facade": {
           "disposition": "complete response convenience/page",
           "extraction": null,
+          "grammar_status": "proposed; not approved for adapter implementation",
           "name": "list_types",
           "return": "complete response/error via convenience or native() as disposed"
         },
@@ -14925,6 +15560,20 @@
         "iterator": "not enabled; source identity/order alone is not runtime qualification",
         "lowlevel": {
           "call": "list_types(options={})",
+          "call_status": "proposed; not approved for adapter implementation",
+          "grammar": {
+            "approved_call": null,
+            "authority": "inventory presentation only; docs/COVERAGE.md approves tier/disposition, not this syntax",
+            "default_rule": "only explicit binding defaults; model initializer is not proof of request optionality; preserve false, zero and empty",
+            "native_argument_order": [
+              "query",
+              "limit",
+              "offset"
+            ],
+            "proposed_call": "list_types(options={})",
+            "status": "proposed; not approved for adapter implementation",
+            "unknown_keys": "reject before dispatch; validation-only rejection does not invalidate generation"
+          },
           "name": "list_types",
           "native_request_keys": [
             "query",
@@ -15361,6 +16010,7 @@
         "facade": {
           "disposition": "complete response convenience/page",
           "extraction": null,
+          "grammar_status": "proposed; not approved for adapter implementation",
           "name": "list_xrefs",
           "return": "complete response/error via convenience or native() as disposed"
         },
@@ -15368,6 +16018,21 @@
         "iterator": "not enabled; source identity/order alone is not runtime qualification",
         "lowlevel": {
           "call": "list_xrefs(options={})",
+          "call_status": "proposed; not approved for adapter implementation",
+          "grammar": {
+            "approved_call": null,
+            "authority": "inventory presentation only; docs/COVERAGE.md approves tier/disposition, not this syntax",
+            "default_rule": "only explicit binding defaults; model initializer is not proof of request optionality; preserve false, zero and empty",
+            "native_argument_order": [
+              "range_start",
+              "range_end",
+              "limit",
+              "offset"
+            ],
+            "proposed_call": "list_xrefs(options={})",
+            "status": "proposed; not approved for adapter implementation",
+            "unknown_keys": "reject before dispatch; validation-only rejection does not invalidate generation"
+          },
           "name": "list_xrefs",
           "native_request_keys": [
             "range_start",
@@ -15903,8 +16568,10 @@
       "state_transitions": "project_path nonempty takes precedence; otherwise program_path required; load failure -> LOAD_FAILED; best-effort loadState ignored; success loaded=true and revision increments",
       "surface_contract": {
         "facade": {
+          "approved_call": "open{client={}, program=program_options}",
           "disposition": "module open{client={}, program=...}; returns session,nil,historical_open_response",
           "extraction": null,
+          "grammar_status": "approved first-slice",
           "name": "open_program",
           "rejected_keys": [
             "project_name",
@@ -15916,6 +16583,18 @@
         "iterator": "not enabled; source identity/order alone is not runtime qualification",
         "lowlevel": {
           "call": "open_program(program_options)",
+          "call_status": "approved first-slice",
+          "grammar": {
+            "approved_call": "open_program(program_options)",
+            "authority": "docs/SPEC.md \u00a72 First-slice call grammar",
+            "default_rule": "only explicit binding defaults; model initializer is not proof of request optionality; preserve false, zero and empty",
+            "native_argument_order": [
+              "request"
+            ],
+            "proposed_call": null,
+            "status": "approved first-slice",
+            "unknown_keys": "reject before dispatch; validation-only rejection does not invalidate generation"
+          },
           "name": "open_program",
           "native_request_keys": [
             "request"
@@ -16293,6 +16972,7 @@
         "facade": {
           "disposition": "native escape hatch",
           "extraction": null,
+          "grammar_status": "native() uses lowlevel grammar; no convenience promised",
           "name": null,
           "return": "complete response/error via convenience or native() as disposed"
         },
@@ -16300,6 +16980,18 @@
         "iterator": "not enabled; source identity/order alone is not runtime qualification",
         "lowlevel": {
           "call": "patch_bytes_batch(patches)",
+          "call_status": "proposed; not approved for adapter implementation",
+          "grammar": {
+            "approved_call": null,
+            "authority": "inventory presentation only; docs/COVERAGE.md approves tier/disposition, not this syntax",
+            "default_rule": "only explicit binding defaults; model initializer is not proof of request optionality; preserve false, zero and empty",
+            "native_argument_order": [
+              "patches"
+            ],
+            "proposed_call": "patch_bytes_batch(patches)",
+            "status": "proposed; not approved for adapter implementation",
+            "unknown_keys": "reject before dispatch; validation-only rejection does not invalidate generation"
+          },
           "name": "patch_bytes_batch",
           "native_request_keys": [
             "patches"
@@ -16438,6 +17130,7 @@
         "facade": {
           "disposition": "direct extraction",
           "extraction": "data",
+          "grammar_status": "approved first-slice",
           "name": "read_bytes",
           "return": "value,nil,response; optional absent -> nil,NOT_FOUND,response; native error -> nil,error"
         },
@@ -16446,6 +17139,19 @@
         "lowlevel": {
           "argument_alias": "Lua size corresponds to native length; 0..INT32_MAX before dispatch/allocation",
           "call": "read_bytes(address, size)",
+          "call_status": "approved first-slice",
+          "grammar": {
+            "approved_call": "read_bytes(address, size)",
+            "authority": "docs/SPEC.md \u00a72 First-slice call grammar",
+            "default_rule": "only explicit binding defaults; model initializer is not proof of request optionality; preserve false, zero and empty",
+            "native_argument_order": [
+              "address",
+              "length"
+            ],
+            "proposed_call": null,
+            "status": "approved first-slice",
+            "unknown_keys": "reject before dispatch; validation-only rejection does not invalidate generation"
+          },
           "name": "read_bytes",
           "native_request_keys": [
             "address",
@@ -16656,6 +17362,7 @@
         "facade": {
           "disposition": "native escape hatch",
           "extraction": null,
+          "grammar_status": "native() uses lowlevel grammar; no convenience promised",
           "name": null,
           "return": "complete response/error via convenience or native() as disposed"
         },
@@ -16663,6 +17370,19 @@
         "iterator": "not enabled; source identity/order alone is not runtime qualification",
         "lowlevel": {
           "call": "rename_data_item(address, new_name)",
+          "call_status": "proposed; not approved for adapter implementation",
+          "grammar": {
+            "approved_call": null,
+            "authority": "inventory presentation only; docs/COVERAGE.md approves tier/disposition, not this syntax",
+            "default_rule": "only explicit binding defaults; model initializer is not proof of request optionality; preserve false, zero and empty",
+            "native_argument_order": [
+              "address",
+              "new_name"
+            ],
+            "proposed_call": "rename_data_item(address, new_name)",
+            "status": "proposed; not approved for adapter implementation",
+            "unknown_keys": "reject before dispatch; validation-only rejection does not invalidate generation"
+          },
           "name": "rename_data_item",
           "native_request_keys": [
             "address",
@@ -16821,6 +17541,7 @@
         "facade": {
           "disposition": "complete response convenience/page",
           "extraction": null,
+          "grammar_status": "proposed; not approved for adapter implementation",
           "name": "rename_function",
           "return": "complete response/error via convenience or native() as disposed"
         },
@@ -16828,6 +17549,19 @@
         "iterator": "not enabled; source identity/order alone is not runtime qualification",
         "lowlevel": {
           "call": "rename_function(address, new_name)",
+          "call_status": "proposed; not approved for adapter implementation",
+          "grammar": {
+            "approved_call": null,
+            "authority": "inventory presentation only; docs/COVERAGE.md approves tier/disposition, not this syntax",
+            "default_rule": "only explicit binding defaults; model initializer is not proof of request optionality; preserve false, zero and empty",
+            "native_argument_order": [
+              "address",
+              "new_name"
+            ],
+            "proposed_call": "rename_function(address, new_name)",
+            "status": "proposed; not approved for adapter implementation",
+            "unknown_keys": "reject before dispatch; validation-only rejection does not invalidate generation"
+          },
           "name": "rename_function",
           "native_request_keys": [
             "address",
@@ -17004,6 +17738,7 @@
         "facade": {
           "disposition": "native escape hatch",
           "extraction": null,
+          "grammar_status": "native() uses lowlevel grammar; no convenience promised",
           "name": null,
           "return": "complete response/error via convenience or native() as disposed"
         },
@@ -17011,6 +17746,20 @@
         "iterator": "not enabled; source identity/order alone is not runtime qualification",
         "lowlevel": {
           "call": "rename_function_local(address, local_id, new_name)",
+          "call_status": "proposed; not approved for adapter implementation",
+          "grammar": {
+            "approved_call": null,
+            "authority": "inventory presentation only; docs/COVERAGE.md approves tier/disposition, not this syntax",
+            "default_rule": "only explicit binding defaults; model initializer is not proof of request optionality; preserve false, zero and empty",
+            "native_argument_order": [
+              "address",
+              "local_id",
+              "new_name"
+            ],
+            "proposed_call": "rename_function_local(address, local_id, new_name)",
+            "status": "proposed; not approved for adapter implementation",
+            "unknown_keys": "reject before dispatch; validation-only rejection does not invalidate generation"
+          },
           "name": "rename_function_local",
           "native_request_keys": [
             "address",
@@ -17178,6 +17927,7 @@
         "facade": {
           "disposition": "native escape hatch",
           "extraction": null,
+          "grammar_status": "native() uses lowlevel grammar; no convenience promised",
           "name": null,
           "return": "complete response/error via convenience or native() as disposed"
         },
@@ -17185,6 +17935,20 @@
         "iterator": "not enabled; source identity/order alone is not runtime qualification",
         "lowlevel": {
           "call": "rename_function_parameter(address, ordinal, new_name)",
+          "call_status": "proposed; not approved for adapter implementation",
+          "grammar": {
+            "approved_call": null,
+            "authority": "inventory presentation only; docs/COVERAGE.md approves tier/disposition, not this syntax",
+            "default_rule": "only explicit binding defaults; model initializer is not proof of request optionality; preserve false, zero and empty",
+            "native_argument_order": [
+              "address",
+              "ordinal",
+              "new_name"
+            ],
+            "proposed_call": "rename_function_parameter(address, ordinal, new_name)",
+            "status": "proposed; not approved for adapter implementation",
+            "unknown_keys": "reject before dispatch; validation-only rejection does not invalidate generation"
+          },
           "name": "rename_function_parameter",
           "native_request_keys": [
             "address",
@@ -17347,6 +18111,7 @@
         "facade": {
           "disposition": "complete response convenience/page",
           "extraction": null,
+          "grammar_status": "proposed; not approved for adapter implementation",
           "name": "rename_symbol",
           "return": "complete response/error via convenience or native() as disposed"
         },
@@ -17354,6 +18119,19 @@
         "iterator": "not enabled; source identity/order alone is not runtime qualification",
         "lowlevel": {
           "call": "rename_symbol(address, new_name)",
+          "call_status": "proposed; not approved for adapter implementation",
+          "grammar": {
+            "approved_call": null,
+            "authority": "inventory presentation only; docs/COVERAGE.md approves tier/disposition, not this syntax",
+            "default_rule": "only explicit binding defaults; model initializer is not proof of request optionality; preserve false, zero and empty",
+            "native_argument_order": [
+              "address",
+              "new_name"
+            ],
+            "proposed_call": "rename_symbol(address, new_name)",
+            "status": "proposed; not approved for adapter implementation",
+            "unknown_keys": "reject before dispatch; validation-only rejection does not invalidate generation"
+          },
           "name": "rename_symbol",
           "native_request_keys": [
             "address",
@@ -17501,6 +18279,7 @@
         "facade": {
           "disposition": "native escape hatch",
           "extraction": null,
+          "grammar_status": "native() uses lowlevel grammar; no convenience promised",
           "name": null,
           "return": "complete response/error via convenience or native() as disposed"
         },
@@ -17508,6 +18287,19 @@
         "iterator": "not enabled; source identity/order alone is not runtime qualification",
         "lowlevel": {
           "call": "rename_type(type_id_or_path, new_name)",
+          "call_status": "proposed; not approved for adapter implementation",
+          "grammar": {
+            "approved_call": null,
+            "authority": "inventory presentation only; docs/COVERAGE.md approves tier/disposition, not this syntax",
+            "default_rule": "only explicit binding defaults; model initializer is not proof of request optionality; preserve false, zero and empty",
+            "native_argument_order": [
+              "type_id_or_path",
+              "new_name"
+            ],
+            "proposed_call": "rename_type(type_id_or_path, new_name)",
+            "status": "proposed; not approved for adapter implementation",
+            "unknown_keys": "reject before dispatch; validation-only rejection does not invalidate generation"
+          },
           "name": "rename_type",
           "native_request_keys": [
             "type_id_or_path",
@@ -17655,6 +18447,7 @@
         "facade": {
           "disposition": "native escape hatch",
           "extraction": null,
+          "grammar_status": "native() uses lowlevel grammar; no convenience promised",
           "name": null,
           "return": "complete response/error via convenience or native() as disposed"
         },
@@ -17662,6 +18455,20 @@
         "iterator": "not enabled; source identity/order alone is not runtime qualification",
         "lowlevel": {
           "call": "rename_type_enum_member(type_id_or_path, ordinal, new_name)",
+          "call_status": "proposed; not approved for adapter implementation",
+          "grammar": {
+            "approved_call": null,
+            "authority": "inventory presentation only; docs/COVERAGE.md approves tier/disposition, not this syntax",
+            "default_rule": "only explicit binding defaults; model initializer is not proof of request optionality; preserve false, zero and empty",
+            "native_argument_order": [
+              "type_id_or_path",
+              "ordinal",
+              "new_name"
+            ],
+            "proposed_call": "rename_type_enum_member(type_id_or_path, ordinal, new_name)",
+            "status": "proposed; not approved for adapter implementation",
+            "unknown_keys": "reject before dispatch; validation-only rejection does not invalidate generation"
+          },
           "name": "rename_type_enum_member",
           "native_request_keys": [
             "type_id_or_path",
@@ -17810,6 +18617,7 @@
         "facade": {
           "disposition": "native escape hatch",
           "extraction": null,
+          "grammar_status": "native() uses lowlevel grammar; no convenience promised",
           "name": null,
           "return": "complete response/error via convenience or native() as disposed"
         },
@@ -17817,6 +18625,20 @@
         "iterator": "not enabled; source identity/order alone is not runtime qualification",
         "lowlevel": {
           "call": "rename_type_member(parent_type_id_or_path, ordinal, new_name)",
+          "call_status": "proposed; not approved for adapter implementation",
+          "grammar": {
+            "approved_call": null,
+            "authority": "inventory presentation only; docs/COVERAGE.md approves tier/disposition, not this syntax",
+            "default_rule": "only explicit binding defaults; model initializer is not proof of request optionality; preserve false, zero and empty",
+            "native_argument_order": [
+              "parent_type_id_or_path",
+              "ordinal",
+              "new_name"
+            ],
+            "proposed_call": "rename_type_member(parent_type_id_or_path, ordinal, new_name)",
+            "status": "proposed; not approved for adapter implementation",
+            "unknown_keys": "reject before dispatch; validation-only rejection does not invalidate generation"
+          },
           "name": "rename_type_member",
           "native_request_keys": [
             "parent_type_id_or_path",
@@ -17932,6 +18754,7 @@
         "facade": {
           "disposition": "complete response convenience/page",
           "extraction": null,
+          "grammar_status": "proposed; not approved for adapter implementation",
           "name": "save_program",
           "return": "complete response/error via convenience or native() as disposed"
         },
@@ -17939,6 +18762,16 @@
         "iterator": "not enabled; source identity/order alone is not runtime qualification",
         "lowlevel": {
           "call": "save_program()",
+          "call_status": "proposed; not approved for adapter implementation",
+          "grammar": {
+            "approved_call": null,
+            "authority": "inventory presentation only; docs/COVERAGE.md approves tier/disposition, not this syntax",
+            "default_rule": "only explicit binding defaults; model initializer is not proof of request optionality; preserve false, zero and empty",
+            "native_argument_order": [],
+            "proposed_call": "save_program()",
+            "status": "proposed; not approved for adapter implementation",
+            "unknown_keys": "reject before dispatch; validation-only rejection does not invalidate generation"
+          },
           "name": "save_program",
           "native_request_keys": [],
           "return": "complete detached native response or nil,error"
@@ -18449,6 +19282,7 @@
         "facade": {
           "disposition": "native escape hatch",
           "extraction": null,
+          "grammar_status": "native() uses lowlevel grammar; no convenience promised",
           "name": null,
           "return": "complete response/error via convenience or native() as disposed"
         },
@@ -18456,6 +19290,20 @@
         "iterator": "not enabled; source identity/order alone is not runtime qualification",
         "lowlevel": {
           "call": "set_comment(address, kind, text)",
+          "call_status": "proposed; not approved for adapter implementation",
+          "grammar": {
+            "approved_call": null,
+            "authority": "inventory presentation only; docs/COVERAGE.md approves tier/disposition, not this syntax",
+            "default_rule": "only explicit binding defaults; model initializer is not proof of request optionality; preserve false, zero and empty",
+            "native_argument_order": [
+              "address",
+              "kind",
+              "text"
+            ],
+            "proposed_call": "set_comment(address, kind, text)",
+            "status": "proposed; not approved for adapter implementation",
+            "unknown_keys": "reject before dispatch; validation-only rejection does not invalidate generation"
+          },
           "name": "set_comment",
           "native_request_keys": [
             "address",
@@ -18633,6 +19481,7 @@
         "facade": {
           "disposition": "native escape hatch",
           "extraction": null,
+          "grammar_status": "native() uses lowlevel grammar; no convenience promised",
           "name": null,
           "return": "complete response/error via convenience or native() as disposed"
         },
@@ -18640,6 +19489,20 @@
         "iterator": "not enabled; source identity/order alone is not runtime qualification",
         "lowlevel": {
           "call": "set_function_local_type(address, local_id, data_type)",
+          "call_status": "proposed; not approved for adapter implementation",
+          "grammar": {
+            "approved_call": null,
+            "authority": "inventory presentation only; docs/COVERAGE.md approves tier/disposition, not this syntax",
+            "default_rule": "only explicit binding defaults; model initializer is not proof of request optionality; preserve false, zero and empty",
+            "native_argument_order": [
+              "address",
+              "local_id",
+              "data_type"
+            ],
+            "proposed_call": "set_function_local_type(address, local_id, data_type)",
+            "status": "proposed; not approved for adapter implementation",
+            "unknown_keys": "reject before dispatch; validation-only rejection does not invalidate generation"
+          },
           "name": "set_function_local_type",
           "native_request_keys": [
             "address",
@@ -18807,6 +19670,7 @@
         "facade": {
           "disposition": "native escape hatch",
           "extraction": null,
+          "grammar_status": "native() uses lowlevel grammar; no convenience promised",
           "name": null,
           "return": "complete response/error via convenience or native() as disposed"
         },
@@ -18814,6 +19678,20 @@
         "iterator": "not enabled; source identity/order alone is not runtime qualification",
         "lowlevel": {
           "call": "set_function_parameter_type(address, ordinal, data_type)",
+          "call_status": "proposed; not approved for adapter implementation",
+          "grammar": {
+            "approved_call": null,
+            "authority": "inventory presentation only; docs/COVERAGE.md approves tier/disposition, not this syntax",
+            "default_rule": "only explicit binding defaults; model initializer is not proof of request optionality; preserve false, zero and empty",
+            "native_argument_order": [
+              "address",
+              "ordinal",
+              "data_type"
+            ],
+            "proposed_call": "set_function_parameter_type(address, ordinal, data_type)",
+            "status": "proposed; not approved for adapter implementation",
+            "unknown_keys": "reject before dispatch; validation-only rejection does not invalidate generation"
+          },
           "name": "set_function_parameter_type",
           "native_request_keys": [
             "address",
@@ -18972,6 +19850,7 @@
         "facade": {
           "disposition": "native escape hatch",
           "extraction": null,
+          "grammar_status": "native() uses lowlevel grammar; no convenience promised",
           "name": null,
           "return": "complete response/error via convenience or native() as disposed"
         },
@@ -18979,6 +19858,19 @@
         "iterator": "not enabled; source identity/order alone is not runtime qualification",
         "lowlevel": {
           "call": "set_function_signature(address, prototype)",
+          "call_status": "proposed; not approved for adapter implementation",
+          "grammar": {
+            "approved_call": null,
+            "authority": "inventory presentation only; docs/COVERAGE.md approves tier/disposition, not this syntax",
+            "default_rule": "only explicit binding defaults; model initializer is not proof of request optionality; preserve false, zero and empty",
+            "native_argument_order": [
+              "address",
+              "prototype"
+            ],
+            "proposed_call": "set_function_signature(address, prototype)",
+            "status": "proposed; not approved for adapter implementation",
+            "unknown_keys": "reject before dispatch; validation-only rejection does not invalidate generation"
+          },
           "name": "set_function_signature",
           "native_request_keys": [
             "address",
@@ -19452,6 +20344,7 @@
         "facade": {
           "disposition": "native escape hatch",
           "extraction": null,
+          "grammar_status": "native() uses lowlevel grammar; no convenience promised",
           "name": null,
           "return": "complete response/error via convenience or native() as disposed"
         },
@@ -19459,6 +20352,19 @@
         "iterator": "not enabled; source identity/order alone is not runtime qualification",
         "lowlevel": {
           "call": "set_type_alias_target(type_id_or_path, target_type)",
+          "call_status": "proposed; not approved for adapter implementation",
+          "grammar": {
+            "approved_call": null,
+            "authority": "inventory presentation only; docs/COVERAGE.md approves tier/disposition, not this syntax",
+            "default_rule": "only explicit binding defaults; model initializer is not proof of request optionality; preserve false, zero and empty",
+            "native_argument_order": [
+              "type_id_or_path",
+              "target_type"
+            ],
+            "proposed_call": "set_type_alias_target(type_id_or_path, target_type)",
+            "status": "proposed; not approved for adapter implementation",
+            "unknown_keys": "reject before dispatch; validation-only rejection does not invalidate generation"
+          },
           "name": "set_type_alias_target",
           "native_request_keys": [
             "type_id_or_path",
@@ -19597,6 +20503,7 @@
         "facade": {
           "disposition": "native escape hatch",
           "extraction": null,
+          "grammar_status": "native() uses lowlevel grammar; no convenience promised",
           "name": null,
           "return": "complete response/error via convenience or native() as disposed"
         },
@@ -19604,6 +20511,20 @@
         "iterator": "not enabled; source identity/order alone is not runtime qualification",
         "lowlevel": {
           "call": "set_type_enum_member_comment(type_id_or_path, ordinal, comment)",
+          "call_status": "proposed; not approved for adapter implementation",
+          "grammar": {
+            "approved_call": null,
+            "authority": "inventory presentation only; docs/COVERAGE.md approves tier/disposition, not this syntax",
+            "default_rule": "only explicit binding defaults; model initializer is not proof of request optionality; preserve false, zero and empty",
+            "native_argument_order": [
+              "type_id_or_path",
+              "ordinal",
+              "comment"
+            ],
+            "proposed_call": "set_type_enum_member_comment(type_id_or_path, ordinal, comment)",
+            "status": "proposed; not approved for adapter implementation",
+            "unknown_keys": "reject before dispatch; validation-only rejection does not invalidate generation"
+          },
           "name": "set_type_enum_member_comment",
           "native_request_keys": [
             "type_id_or_path",
@@ -19752,6 +20673,7 @@
         "facade": {
           "disposition": "native escape hatch",
           "extraction": null,
+          "grammar_status": "native() uses lowlevel grammar; no convenience promised",
           "name": null,
           "return": "complete response/error via convenience or native() as disposed"
         },
@@ -19759,6 +20681,20 @@
         "iterator": "not enabled; source identity/order alone is not runtime qualification",
         "lowlevel": {
           "call": "set_type_enum_member_value(type_id_or_path, ordinal, value)",
+          "call_status": "proposed; not approved for adapter implementation",
+          "grammar": {
+            "approved_call": null,
+            "authority": "inventory presentation only; docs/COVERAGE.md approves tier/disposition, not this syntax",
+            "default_rule": "only explicit binding defaults; model initializer is not proof of request optionality; preserve false, zero and empty",
+            "native_argument_order": [
+              "type_id_or_path",
+              "ordinal",
+              "value"
+            ],
+            "proposed_call": "set_type_enum_member_value(type_id_or_path, ordinal, value)",
+            "status": "proposed; not approved for adapter implementation",
+            "unknown_keys": "reject before dispatch; validation-only rejection does not invalidate generation"
+          },
           "name": "set_type_enum_member_value",
           "native_request_keys": [
             "type_id_or_path",
@@ -19898,6 +20834,7 @@
         "facade": {
           "disposition": "native escape hatch",
           "extraction": null,
+          "grammar_status": "native() uses lowlevel grammar; no convenience promised",
           "name": null,
           "return": "complete response/error via convenience or native() as disposed"
         },
@@ -19905,6 +20842,20 @@
         "iterator": "not enabled; source identity/order alone is not runtime qualification",
         "lowlevel": {
           "call": "set_type_member_comment(parent_type_id_or_path, ordinal, comment)",
+          "call_status": "proposed; not approved for adapter implementation",
+          "grammar": {
+            "approved_call": null,
+            "authority": "inventory presentation only; docs/COVERAGE.md approves tier/disposition, not this syntax",
+            "default_rule": "only explicit binding defaults; model initializer is not proof of request optionality; preserve false, zero and empty",
+            "native_argument_order": [
+              "parent_type_id_or_path",
+              "ordinal",
+              "comment"
+            ],
+            "proposed_call": "set_type_member_comment(parent_type_id_or_path, ordinal, comment)",
+            "status": "proposed; not approved for adapter implementation",
+            "unknown_keys": "reject before dispatch; validation-only rejection does not invalidate generation"
+          },
           "name": "set_type_member_comment",
           "native_request_keys": [
             "parent_type_id_or_path",
@@ -20053,6 +21004,7 @@
         "facade": {
           "disposition": "native escape hatch",
           "extraction": null,
+          "grammar_status": "native() uses lowlevel grammar; no convenience promised",
           "name": null,
           "return": "complete response/error via convenience or native() as disposed"
         },
@@ -20060,6 +21012,20 @@
         "iterator": "not enabled; source identity/order alone is not runtime qualification",
         "lowlevel": {
           "call": "set_type_member_type(parent_type_id_or_path, ordinal, member_type)",
+          "call_status": "proposed; not approved for adapter implementation",
+          "grammar": {
+            "approved_call": null,
+            "authority": "inventory presentation only; docs/COVERAGE.md approves tier/disposition, not this syntax",
+            "default_rule": "only explicit binding defaults; model initializer is not proof of request optionality; preserve false, zero and empty",
+            "native_argument_order": [
+              "parent_type_id_or_path",
+              "ordinal",
+              "member_type"
+            ],
+            "proposed_call": "set_type_member_type(parent_type_id_or_path, ordinal, member_type)",
+            "status": "proposed; not approved for adapter implementation",
+            "unknown_keys": "reject before dispatch; validation-only rejection does not invalidate generation"
+          },
           "name": "set_type_member_type",
           "native_request_keys": [
             "parent_type_id_or_path",
@@ -20170,6 +21136,7 @@
         "facade": {
           "disposition": "native escape hatch",
           "extraction": null,
+          "grammar_status": "native() uses lowlevel grammar; no convenience promised",
           "name": null,
           "return": "complete response/error via convenience or native() as disposed"
         },
@@ -20177,6 +21144,18 @@
         "iterator": "not enabled; source identity/order alone is not runtime qualification",
         "lowlevel": {
           "call": "shutdown(policy)",
+          "call_status": "proposed; not approved for adapter implementation",
+          "grammar": {
+            "approved_call": null,
+            "authority": "inventory presentation only; docs/COVERAGE.md approves tier/disposition, not this syntax",
+            "default_rule": "only explicit binding defaults; model initializer is not proof of request optionality; preserve false, zero and empty",
+            "native_argument_order": [
+              "policy"
+            ],
+            "proposed_call": "shutdown(policy)",
+            "status": "proposed; not approved for adapter implementation",
+            "unknown_keys": "reject before dispatch; validation-only rejection does not invalidate generation"
+          },
           "name": "shutdown",
           "native_request_keys": [
             "policy"
@@ -20592,6 +21571,7 @@
         "facade": {
           "disposition": "complete response convenience/page",
           "extraction": null,
+          "grammar_status": "proposed; not approved for adapter implementation",
           "name": "write_bytes",
           "return": "complete response/error via convenience or native() as disposed"
         },
@@ -20599,6 +21579,19 @@
         "iterator": "not enabled; source identity/order alone is not runtime qualification",
         "lowlevel": {
           "call": "write_bytes(address, data)",
+          "call_status": "proposed; not approved for adapter implementation",
+          "grammar": {
+            "approved_call": null,
+            "authority": "inventory presentation only; docs/COVERAGE.md approves tier/disposition, not this syntax",
+            "default_rule": "only explicit binding defaults; model initializer is not proof of request optionality; preserve false, zero and empty",
+            "native_argument_order": [
+              "address",
+              "data"
+            ],
+            "proposed_call": "write_bytes(address, data)",
+            "status": "proposed; not approved for adapter implementation",
+            "unknown_keys": "reject before dispatch; validation-only rejection does not invalidate generation"
+          },
           "name": "write_bytes",
           "native_request_keys": [
             "address",
@@ -31171,6 +32164,375 @@
     "python/src/libghidra/known_languages.py": "b2e6685ad0f12db9d36feea3a24135c9787b47a72ed935e74d0b1273937e5032",
     "python/src/libghidra/local.py": "3de5b8591f1b0a6c202f4f5cc4e4ac0fa62f3cbda266c92953045842eb45363b",
     "python/src/libghidra/models.py": "e33dae17342d9c98b1acdc350ccf3b20620021f3390d13b32067c12e97be2f2a"
+  },
+  "surface_audit": {
+    "approved_first_slice_count": 10,
+    "excluded_operations": 40,
+    "grammar_accounted": 70,
+    "included_operations": 70,
+    "proposed_grammar": [
+      {
+        "facade_disposition": "native escape hatch",
+        "operation": "AddPerfBenchmark",
+        "proposal": "add_perf_benchmark(record)",
+        "reason": "syntax requires later approval; not a missing native operation or runtime qualification claim"
+      },
+      {
+        "facade_disposition": "native escape hatch",
+        "operation": "AddTypeEnumMember",
+        "proposal": "add_type_enum_member(type_id_or_path, name, value)",
+        "reason": "syntax requires later approval; not a missing native operation or runtime qualification claim"
+      },
+      {
+        "facade_disposition": "native escape hatch",
+        "operation": "AddTypeMember",
+        "proposal": "add_type_member(parent_type_id_or_path, member_name, member_type, size)",
+        "reason": "syntax requires later approval; not a missing native operation or runtime qualification claim"
+      },
+      {
+        "facade_disposition": "native escape hatch",
+        "operation": "ApplyDataType",
+        "proposal": "apply_data_type(address, data_type)",
+        "reason": "syntax requires later approval; not a missing native operation or runtime qualification claim"
+      },
+      {
+        "facade_disposition": "native escape hatch",
+        "operation": "ClearPerfBenchmarks",
+        "proposal": "clear_perf_benchmarks()",
+        "reason": "syntax requires later approval; not a missing native operation or runtime qualification claim"
+      },
+      {
+        "facade_disposition": "native escape hatch",
+        "operation": "CreateType",
+        "proposal": "create_type(name, kind, size)",
+        "reason": "syntax requires later approval; not a missing native operation or runtime qualification claim"
+      },
+      {
+        "facade_disposition": "native escape hatch",
+        "operation": "CreateTypeAlias",
+        "proposal": "create_type_alias(name, target_type)",
+        "reason": "syntax requires later approval; not a missing native operation or runtime qualification claim"
+      },
+      {
+        "facade_disposition": "native escape hatch",
+        "operation": "CreateTypeEnum",
+        "proposal": "create_type_enum(name, width, is_signed)",
+        "reason": "syntax requires later approval; not a missing native operation or runtime qualification claim"
+      },
+      {
+        "facade_disposition": "native escape hatch",
+        "operation": "DeleteComment",
+        "proposal": "delete_comment(address, kind)",
+        "reason": "syntax requires later approval; not a missing native operation or runtime qualification claim"
+      },
+      {
+        "facade_disposition": "native escape hatch",
+        "operation": "DeleteDataItem",
+        "proposal": "delete_data_item(address)",
+        "reason": "syntax requires later approval; not a missing native operation or runtime qualification claim"
+      },
+      {
+        "facade_disposition": "native escape hatch",
+        "operation": "DeletePerfBenchmark",
+        "proposal": "delete_perf_benchmark(bench_id)",
+        "reason": "syntax requires later approval; not a missing native operation or runtime qualification claim"
+      },
+      {
+        "facade_disposition": "native escape hatch",
+        "operation": "DeleteSymbol",
+        "proposal": "delete_symbol(address, name_filter)",
+        "reason": "syntax requires later approval; not a missing native operation or runtime qualification claim"
+      },
+      {
+        "facade_disposition": "native escape hatch",
+        "operation": "DeleteType",
+        "proposal": "delete_type(type_id_or_path)",
+        "reason": "syntax requires later approval; not a missing native operation or runtime qualification claim"
+      },
+      {
+        "facade_disposition": "native escape hatch",
+        "operation": "DeleteTypeAlias",
+        "proposal": "delete_type_alias(type_id_or_path)",
+        "reason": "syntax requires later approval; not a missing native operation or runtime qualification claim"
+      },
+      {
+        "facade_disposition": "native escape hatch",
+        "operation": "DeleteTypeEnumMember",
+        "proposal": "delete_type_enum_member(type_id_or_path, ordinal)",
+        "reason": "syntax requires later approval; not a missing native operation or runtime qualification claim"
+      },
+      {
+        "facade_disposition": "native escape hatch",
+        "operation": "DeleteTypeMember",
+        "proposal": "delete_type_member(parent_type_id_or_path, ordinal)",
+        "reason": "syntax requires later approval; not a missing native operation or runtime qualification claim"
+      },
+      {
+        "facade_disposition": "native escape hatch",
+        "operation": "DiscardProgram",
+        "proposal": "discard_program()",
+        "reason": "syntax requires later approval; not a missing native operation or runtime qualification claim"
+      },
+      {
+        "facade_disposition": "complete response convenience/page",
+        "operation": "GetComments",
+        "proposal": "get_comments(options={})",
+        "reason": "syntax requires later approval; not a missing native operation or runtime qualification claim"
+      },
+      {
+        "facade_disposition": "direct extraction",
+        "operation": "GetFunctionSignature",
+        "proposal": "get_function_signature(address)",
+        "reason": "syntax requires later approval; not a missing native operation or runtime qualification claim"
+      },
+      {
+        "facade_disposition": "complete response convenience/page",
+        "operation": "GetRevision",
+        "proposal": "get_revision()",
+        "reason": "syntax requires later approval; not a missing native operation or runtime qualification claim"
+      },
+      {
+        "facade_disposition": "direct extraction",
+        "operation": "GetSymbol",
+        "proposal": "get_symbol(address)",
+        "reason": "syntax requires later approval; not a missing native operation or runtime qualification claim"
+      },
+      {
+        "facade_disposition": "direct extraction",
+        "operation": "GetType",
+        "proposal": "get_type(path)",
+        "reason": "syntax requires later approval; not a missing native operation or runtime qualification claim"
+      },
+      {
+        "facade_disposition": "complete response convenience/page",
+        "operation": "ListBasicBlocks",
+        "proposal": "list_basic_blocks(options={})",
+        "reason": "syntax requires later approval; not a missing native operation or runtime qualification claim"
+      },
+      {
+        "facade_disposition": "complete response convenience/page",
+        "operation": "ListCFGEdges",
+        "proposal": "list_cfg_edges(options={})",
+        "reason": "syntax requires later approval; not a missing native operation or runtime qualification claim"
+      },
+      {
+        "facade_disposition": "native escape hatch",
+        "operation": "ListDataItems",
+        "proposal": "list_data_items(options={})",
+        "reason": "syntax requires later approval; not a missing native operation or runtime qualification claim"
+      },
+      {
+        "facade_disposition": "native escape hatch",
+        "operation": "ListDecompilations",
+        "proposal": "list_decompilations(options={})",
+        "reason": "syntax requires later approval; not a missing native operation or runtime qualification claim"
+      },
+      {
+        "facade_disposition": "native escape hatch compatibility page; no discovery iterator",
+        "operation": "ListDefinedStrings",
+        "proposal": "list_defined_strings(options={})",
+        "reason": "syntax requires later approval; not a missing native operation or runtime qualification claim"
+      },
+      {
+        "facade_disposition": "complete response page; no iterator",
+        "operation": "ListFunctionSignatures",
+        "proposal": "list_function_signatures(options={})",
+        "reason": "syntax requires later approval; not a missing native operation or runtime qualification claim"
+      },
+      {
+        "facade_disposition": "native escape hatch",
+        "operation": "ListLeafFunctions",
+        "proposal": "list_leaf_functions(options={})",
+        "reason": "syntax requires later approval; not a missing native operation or runtime qualification claim"
+      },
+      {
+        "facade_disposition": "complete response convenience/page",
+        "operation": "ListMemoryBlocks",
+        "proposal": "list_memory_blocks(options={})",
+        "reason": "syntax requires later approval; not a missing native operation or runtime qualification claim"
+      },
+      {
+        "facade_disposition": "native escape hatch",
+        "operation": "ListPerfBenchmarks",
+        "proposal": "list_perf_benchmarks()",
+        "reason": "syntax requires later approval; not a missing native operation or runtime qualification claim"
+      },
+      {
+        "facade_disposition": "complete response convenience/page",
+        "operation": "ListSymbols",
+        "proposal": "list_symbols(options={})",
+        "reason": "syntax requires later approval; not a missing native operation or runtime qualification claim"
+      },
+      {
+        "facade_disposition": "complete response convenience/page",
+        "operation": "ListTypeAliases",
+        "proposal": "list_type_aliases(options={})",
+        "reason": "syntax requires later approval; not a missing native operation or runtime qualification claim"
+      },
+      {
+        "facade_disposition": "complete response convenience/page",
+        "operation": "ListTypeEnumMembers",
+        "proposal": "list_type_enum_members(options={})",
+        "reason": "syntax requires later approval; not a missing native operation or runtime qualification claim"
+      },
+      {
+        "facade_disposition": "complete response convenience/page",
+        "operation": "ListTypeEnums",
+        "proposal": "list_type_enums(options={})",
+        "reason": "syntax requires later approval; not a missing native operation or runtime qualification claim"
+      },
+      {
+        "facade_disposition": "complete response convenience/page",
+        "operation": "ListTypeMembers",
+        "proposal": "list_type_members(options={})",
+        "reason": "syntax requires later approval; not a missing native operation or runtime qualification claim"
+      },
+      {
+        "facade_disposition": "complete response convenience/page",
+        "operation": "ListTypeUnions",
+        "proposal": "list_type_unions(options={})",
+        "reason": "syntax requires later approval; not a missing native operation or runtime qualification claim"
+      },
+      {
+        "facade_disposition": "complete response convenience/page",
+        "operation": "ListTypes",
+        "proposal": "list_types(options={})",
+        "reason": "syntax requires later approval; not a missing native operation or runtime qualification claim"
+      },
+      {
+        "facade_disposition": "complete response convenience/page",
+        "operation": "ListXrefs",
+        "proposal": "list_xrefs(options={})",
+        "reason": "syntax requires later approval; not a missing native operation or runtime qualification claim"
+      },
+      {
+        "facade_disposition": "native escape hatch",
+        "operation": "PatchBytesBatch",
+        "proposal": "patch_bytes_batch(patches)",
+        "reason": "syntax requires later approval; not a missing native operation or runtime qualification claim"
+      },
+      {
+        "facade_disposition": "native escape hatch",
+        "operation": "RenameDataItem",
+        "proposal": "rename_data_item(address, new_name)",
+        "reason": "syntax requires later approval; not a missing native operation or runtime qualification claim"
+      },
+      {
+        "facade_disposition": "complete response convenience/page",
+        "operation": "RenameFunction",
+        "proposal": "rename_function(address, new_name)",
+        "reason": "syntax requires later approval; not a missing native operation or runtime qualification claim"
+      },
+      {
+        "facade_disposition": "native escape hatch",
+        "operation": "RenameFunctionLocal",
+        "proposal": "rename_function_local(address, local_id, new_name)",
+        "reason": "syntax requires later approval; not a missing native operation or runtime qualification claim"
+      },
+      {
+        "facade_disposition": "native escape hatch",
+        "operation": "RenameFunctionParameter",
+        "proposal": "rename_function_parameter(address, ordinal, new_name)",
+        "reason": "syntax requires later approval; not a missing native operation or runtime qualification claim"
+      },
+      {
+        "facade_disposition": "complete response convenience/page",
+        "operation": "RenameSymbol",
+        "proposal": "rename_symbol(address, new_name)",
+        "reason": "syntax requires later approval; not a missing native operation or runtime qualification claim"
+      },
+      {
+        "facade_disposition": "native escape hatch",
+        "operation": "RenameType",
+        "proposal": "rename_type(type_id_or_path, new_name)",
+        "reason": "syntax requires later approval; not a missing native operation or runtime qualification claim"
+      },
+      {
+        "facade_disposition": "native escape hatch",
+        "operation": "RenameTypeEnumMember",
+        "proposal": "rename_type_enum_member(type_id_or_path, ordinal, new_name)",
+        "reason": "syntax requires later approval; not a missing native operation or runtime qualification claim"
+      },
+      {
+        "facade_disposition": "native escape hatch",
+        "operation": "RenameTypeMember",
+        "proposal": "rename_type_member(parent_type_id_or_path, ordinal, new_name)",
+        "reason": "syntax requires later approval; not a missing native operation or runtime qualification claim"
+      },
+      {
+        "facade_disposition": "complete response convenience/page",
+        "operation": "SaveProgram",
+        "proposal": "save_program()",
+        "reason": "syntax requires later approval; not a missing native operation or runtime qualification claim"
+      },
+      {
+        "facade_disposition": "native escape hatch",
+        "operation": "SetComment",
+        "proposal": "set_comment(address, kind, text)",
+        "reason": "syntax requires later approval; not a missing native operation or runtime qualification claim"
+      },
+      {
+        "facade_disposition": "native escape hatch",
+        "operation": "SetFunctionLocalType",
+        "proposal": "set_function_local_type(address, local_id, data_type)",
+        "reason": "syntax requires later approval; not a missing native operation or runtime qualification claim"
+      },
+      {
+        "facade_disposition": "native escape hatch",
+        "operation": "SetFunctionParameterType",
+        "proposal": "set_function_parameter_type(address, ordinal, data_type)",
+        "reason": "syntax requires later approval; not a missing native operation or runtime qualification claim"
+      },
+      {
+        "facade_disposition": "native escape hatch",
+        "operation": "SetFunctionSignature",
+        "proposal": "set_function_signature(address, prototype)",
+        "reason": "syntax requires later approval; not a missing native operation or runtime qualification claim"
+      },
+      {
+        "facade_disposition": "native escape hatch",
+        "operation": "SetTypeAliasTarget",
+        "proposal": "set_type_alias_target(type_id_or_path, target_type)",
+        "reason": "syntax requires later approval; not a missing native operation or runtime qualification claim"
+      },
+      {
+        "facade_disposition": "native escape hatch",
+        "operation": "SetTypeEnumMemberComment",
+        "proposal": "set_type_enum_member_comment(type_id_or_path, ordinal, comment)",
+        "reason": "syntax requires later approval; not a missing native operation or runtime qualification claim"
+      },
+      {
+        "facade_disposition": "native escape hatch",
+        "operation": "SetTypeEnumMemberValue",
+        "proposal": "set_type_enum_member_value(type_id_or_path, ordinal, value)",
+        "reason": "syntax requires later approval; not a missing native operation or runtime qualification claim"
+      },
+      {
+        "facade_disposition": "native escape hatch",
+        "operation": "SetTypeMemberComment",
+        "proposal": "set_type_member_comment(parent_type_id_or_path, ordinal, comment)",
+        "reason": "syntax requires later approval; not a missing native operation or runtime qualification claim"
+      },
+      {
+        "facade_disposition": "native escape hatch",
+        "operation": "SetTypeMemberType",
+        "proposal": "set_type_member_type(parent_type_id_or_path, ordinal, member_type)",
+        "reason": "syntax requires later approval; not a missing native operation or runtime qualification claim"
+      },
+      {
+        "facade_disposition": "native escape hatch",
+        "operation": "Shutdown",
+        "proposal": "shutdown(policy)",
+        "reason": "syntax requires later approval; not a missing native operation or runtime qualification claim"
+      },
+      {
+        "facade_disposition": "complete response convenience/page",
+        "operation": "WriteBytes",
+        "proposal": "write_bytes(address, data)",
+        "reason": "syntax requires later approval; not a missing native operation or runtime qualification claim"
+      }
+    ],
+    "qualification": "inventory only; proposals explicitly unresolved, no new grammar authorization"
   },
   "types": {
     "AddBookmarkResponse": {
