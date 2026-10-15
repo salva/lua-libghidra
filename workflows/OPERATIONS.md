@@ -40,8 +40,15 @@ qualification remains M0 work, not a passed implementation gate.
 - HTTP access from the sibling PM container was rejected before and after restart.
 - DHCP assigned `.231` initially and `.233` after reboot. The current NIC MAC
   `5a:2d:93:d5:37:5f` is now persisted; the IP remains DHCP-managed.
-- Analyst launch request submitted through supported `POST /api/chat`; execution
-  confirmation is recorded below after its tools and child work are observed.
+- Analyst launch request through supported `POST /api/chat` accepted root brief
+  revision 2 and called `start_project` successfully at 19:32:39 UTC (PID 198).
+  Root planner activated `card-a`, “Establish M0 legal, native dependency, fixture
+  and inventory readiness,” at 19:33:38 UTC. Its independent planner session
+  executed `get_card` and multiple `read` calls with successful returned results
+  through 19:34 UTC. This establishes real child execution, not merely a running
+  status; binding implementation/qualification is not yet claimed.
+- Compared 1,662 installed bin/dist/web runtime files byte-for-byte against the
+  pinned PM release copy; all matched. Evidence: `release-verification.json`.
 
 Setup scripts and non-secret launch/probe evidence are under
 `/home/salva/g/ml/tmp/lua-libghidra-container-setup/`. That directory also contains
