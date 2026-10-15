@@ -1676,6 +1676,16 @@
       "tier": "full"
     },
     {
+      "adapter_source_review": {
+        "body_sha256": "0b49ab727485497183d12df1f008df9128a7f2ac8973e1a17b0defcd45d69257",
+        "line": 1388,
+        "path": "cpp/src/local_arch_adapter.cpp"
+      },
+      "alias_symbol_source_review": {
+        "body_sha256": "9fead3320fac27f759258ed4e6fe0104f02f82c1701972ab9350fa9bbddc8932",
+        "line": 1313,
+        "path": "cpp/src/local_client.cpp"
+      },
       "declaration": {
         "arguments": "const std::string& name, const std::string& target_type",
         "response_type": "CreateTypeAliasResponse",
@@ -1711,7 +1721,10 @@
           "path": "cpp/src/local_client.cpp"
         }
       },
-      "limitations": [],
+      "limitations": [
+        "findByName lookup, not numeric ID resolution; adapter false conflates absent/ineligible type and caught exceptions; all-slot operation is not atomic",
+        "creation passes alias and target names unchanged; unlike delete/retarget, LocalClient performs no leading-slash stripping for these names"
+      ],
       "lowlevel": "create_type_alias",
       "name": "CreateTypeAlias",
       "native_literal_errors": [
@@ -1753,6 +1766,8 @@
         "lua": "CreateTypeAliasResponse table/enum; resolve in types/enums",
         "native_type": "CreateTypeAliasResponse"
       },
+      "semantic_review": "LocalClient and applicable alias/comment adapter branches reviewed; downstream type system/all-slot failure and runtime gates remain unqualified",
+      "state_transitions": "loaded required; adapter mutation across slots; false -> recorded operation-specific error (not success with false flag); native revision only after success; adapter catches/logs exceptions as false",
       "surface_contract": {
         "facade": {
           "disposition": "native escape hatch",
@@ -2044,6 +2059,11 @@
       "tier": "excluded"
     },
     {
+      "alias_symbol_source_review": {
+        "body_sha256": "326a8a9b2f66f54d91a8dcba233075b807a60f8e652820395da88ddbe17477af",
+        "line": 1256,
+        "path": "cpp/src/local_client.cpp"
+      },
       "declaration": {
         "arguments": "std::uint64_t address, CommentKind kind",
         "response_type": "DeleteCommentResponse",
@@ -2121,6 +2141,8 @@
         "lua": "DeleteCommentResponse table/enum; resolve in types/enums",
         "native_type": "DeleteCommentResponse"
       },
+      "semantic_review": "LocalClient and applicable alias/comment adapter branches reviewed; downstream type system/all-slot failure and runtime gates remain unqualified",
+      "state_transitions": "loaded required; erase exact side-map address/kind; absent -> NOT_FOUND rather than deleted=false success; revision only after successful removal",
       "surface_contract": {
         "facade": {
           "disposition": "native escape hatch",
@@ -2406,6 +2428,11 @@
       "tier": "full"
     },
     {
+      "alias_symbol_source_review": {
+        "body_sha256": "3f044d398213c7fd89627e78bd1fad235427e60f8ac697e14045cfb000010c4a",
+        "line": 560,
+        "path": "cpp/src/local_client.cpp"
+      },
       "declaration": {
         "arguments": "std::uint64_t address, const std::string& name_filter",
         "response_type": "DeleteSymbolResponse",
@@ -2498,6 +2525,8 @@
         "lua": "DeleteSymbolResponse table/enum; resolve in types/enums",
         "native_type": "DeleteSymbolResponse"
       },
+      "semantic_review": "LocalClient and applicable alias/comment adapter branches reviewed; downstream type system/all-slot failure and runtime gates remain unqualified",
+      "state_transitions": "loaded required; address-only delete; ignored name_filter; false -> NOT_FOUND; native revision after success, deleted=true and deleted_count=1; no multi-symbol count claim",
       "surface_contract": {
         "facade": {
           "disposition": "native escape hatch",
@@ -2520,6 +2549,16 @@
       "tier": "full"
     },
     {
+      "adapter_source_review": {
+        "body_sha256": "9d1cdc6457541cb24a0ca7a2a209e3737ce35d65b816e3f35eca4422621cd493",
+        "line": 1488,
+        "path": "cpp/src/local_arch_adapter.cpp"
+      },
+      "alias_symbol_source_review": {
+        "body_sha256": "cb2c040c236489664272a80f1e165853fc5c3d2ba3fd3061bd0ae695ad3e2310",
+        "line": 789,
+        "path": "cpp/src/local_client.cpp"
+      },
       "declaration": {
         "arguments": "const std::string& type_id_or_path",
         "response_type": "DeleteTypeResponse",
@@ -2555,7 +2594,10 @@
           "path": "cpp/src/local_client.cpp"
         }
       },
-      "limitations": [],
+      "limitations": [
+        "findByName lookup, not numeric ID resolution; adapter false conflates absent/ineligible type and caught exceptions; all-slot operation is not atomic",
+        "error text mentions core types, but adapter has no explicit core-type predicate: delegates destroyType and catches failure; do not invent a core-type guard"
+      ],
       "lowlevel": "delete_type",
       "name": "DeleteType",
       "native_literal_errors": [
@@ -2589,6 +2631,8 @@
         "lua": "DeleteTypeResponse table/enum; resolve in types/enums",
         "native_type": "DeleteTypeResponse"
       },
+      "semantic_review": "LocalClient and applicable alias/comment adapter branches reviewed; downstream type system/all-slot failure and runtime gates remain unqualified",
+      "state_transitions": "loaded required; adapter mutation across slots; false -> recorded operation-specific error (not success with false flag); native revision only after success; adapter catches/logs exceptions as false",
       "surface_contract": {
         "facade": {
           "disposition": "native escape hatch",
@@ -2610,6 +2654,16 @@
       "tier": "full"
     },
     {
+      "adapter_source_review": {
+        "body_sha256": "9cce1749c4eaf02c8184d3cc29ec389c4b3e3b6c5d04270ed88acbf54a6c1359",
+        "line": 1404,
+        "path": "cpp/src/local_arch_adapter.cpp"
+      },
+      "alias_symbol_source_review": {
+        "body_sha256": "a472c5362cada7313ac38e484e612ffdef382bfbffbc448eb994d76b5ae031f6",
+        "line": 1330,
+        "path": "cpp/src/local_client.cpp"
+      },
       "declaration": {
         "arguments": "const std::string& type_id_or_path",
         "response_type": "DeleteTypeAliasResponse",
@@ -2645,7 +2699,9 @@
           "path": "cpp/src/local_client.cpp"
         }
       },
-      "limitations": [],
+      "limitations": [
+        "findByName lookup, not numeric ID resolution; adapter false conflates absent/ineligible type and caught exceptions; all-slot operation is not atomic"
+      ],
       "lowlevel": "delete_type_alias",
       "name": "DeleteTypeAlias",
       "native_literal_errors": [
@@ -2679,6 +2735,8 @@
         "lua": "DeleteTypeAliasResponse table/enum; resolve in types/enums",
         "native_type": "DeleteTypeAliasResponse"
       },
+      "semantic_review": "LocalClient and applicable alias/comment adapter branches reviewed; downstream type system/all-slot failure and runtime gates remain unqualified",
+      "state_transitions": "loaded required; adapter mutation across slots; false -> recorded operation-specific error (not success with false flag); native revision only after success; adapter catches/logs exceptions as false",
       "surface_contract": {
         "facade": {
           "disposition": "native escape hatch",
@@ -13707,6 +13765,11 @@
       "tier": "full"
     },
     {
+      "alias_symbol_source_review": {
+        "body_sha256": "b4375244b6824e4ca2f9ff01a870c340b5a0954353e51fc9a7f7f5e22f5f3238",
+        "line": 530,
+        "path": "cpp/src/local_client.cpp"
+      },
       "declaration": {
         "arguments": "std::uint64_t address, const std::string& new_name",
         "response_type": "RenameSymbolResponse",
@@ -13812,6 +13875,8 @@
         "lua": "RenameSymbolResponse table/enum; resolve in types/enums",
         "native_type": "RenameSymbolResponse"
       },
+      "semantic_review": "LocalClient and applicable alias/comment adapter branches reviewed; downstream type system/all-slot failure and runtime gates remain unqualified",
+      "state_transitions": "loaded required; missing symbol -> NOT_FOUND; only type=function renames via nameFunction; false -> RENAME_FAILED; nonfunction -> NOT_SUPPORTED; native revision only if ok",
       "surface_contract": {
         "facade": {
           "disposition": "complete response convenience/page",
@@ -13834,6 +13899,16 @@
       "tier": "core"
     },
     {
+      "adapter_source_review": {
+        "body_sha256": "6a9d729a35016b2145f084a13df9f0be1c09e61cb18cdb3b4db26afb96399dd6",
+        "line": 1502,
+        "path": "cpp/src/local_arch_adapter.cpp"
+      },
+      "alias_symbol_source_review": {
+        "body_sha256": "b7e7aa57fe79adb93a6046b20cc1f6dd300ab836a371781d814f40dd3977da99",
+        "line": 809,
+        "path": "cpp/src/local_client.cpp"
+      },
       "declaration": {
         "arguments": "const std::string& type_id_or_path, const std::string& new_name",
         "response_type": "RenameTypeResponse",
@@ -13869,7 +13944,9 @@
           "path": "cpp/src/local_client.cpp"
         }
       },
-      "limitations": [],
+      "limitations": [
+        "findByName lookup, not numeric ID resolution; adapter false conflates absent/ineligible type and caught exceptions; all-slot operation is not atomic"
+      ],
       "lowlevel": "rename_type",
       "name": "RenameType",
       "native_literal_errors": [
@@ -13921,6 +13998,8 @@
         "lua": "RenameTypeResponse table/enum; resolve in types/enums",
         "native_type": "RenameTypeResponse"
       },
+      "semantic_review": "LocalClient and applicable alias/comment adapter branches reviewed; downstream type system/all-slot failure and runtime gates remain unqualified",
+      "state_transitions": "loaded required; adapter mutation across slots; false -> recorded operation-specific error (not success with false flag); native revision only after success; adapter catches/logs exceptions as false",
       "surface_contract": {
         "facade": {
           "disposition": "native escape hatch",
@@ -14673,6 +14752,11 @@
       "tier": "excluded"
     },
     {
+      "alias_symbol_source_review": {
+        "body_sha256": "eef6f08ed2b3d62d4b1b2b9ebfcf01f7ce9648f0c02b754539fe43dd87d269ca",
+        "line": 1242,
+        "path": "cpp/src/local_client.cpp"
+      },
       "declaration": {
         "arguments": "std::uint64_t address, CommentKind kind, const std::string& text",
         "response_type": "SetCommentResponse",
@@ -14756,6 +14840,8 @@
         "lua": "SetCommentResponse table/enum; resolve in types/enums",
         "native_type": "SetCommentResponse"
       },
+      "semantic_review": "LocalClient and applicable alias/comment adapter branches reviewed; downstream type system/all-slot failure and runtime gates remain unqualified",
+      "state_transitions": "loaded required; store adapter side-map address/kind -> text without address mapping or comment-kind existence validation; empty text stored, not deletion; native revision increments and updated=true on normal return",
       "surface_contract": {
         "facade": {
           "disposition": "native escape hatch",
@@ -15511,6 +15597,16 @@
       "tier": "excluded"
     },
     {
+      "adapter_source_review": {
+        "body_sha256": "6a5af4db60ba621dbaf2c40d69596ab3381c4e75ac828c88c8ec3c41ee1cae5d",
+        "line": 1419,
+        "path": "cpp/src/local_arch_adapter.cpp"
+      },
+      "alias_symbol_source_review": {
+        "body_sha256": "8492c8542d1e0dc35b5679d2dbc46473f101e670de7f0673ee9007b221bf3138",
+        "line": 1350,
+        "path": "cpp/src/local_client.cpp"
+      },
       "declaration": {
         "arguments": "const std::string& type_id_or_path, const std::string& target_type",
         "response_type": "SetTypeAliasTargetResponse",
@@ -15546,7 +15642,10 @@
           "path": "cpp/src/local_client.cpp"
         }
       },
-      "limitations": [],
+      "limitations": [
+        "findByName lookup, not numeric ID resolution; adapter false conflates absent/ineligible type and caught exceptions; all-slot operation is not atomic",
+        "retarget destroys existing typedef before recreating; caught recreation failure may lose old alias, no rollback; normalized alias but new target name unchanged"
+      ],
       "lowlevel": "set_type_alias_target",
       "name": "SetTypeAliasTarget",
       "native_literal_errors": [
@@ -15588,6 +15687,8 @@
         "lua": "SetTypeAliasTargetResponse table/enum; resolve in types/enums",
         "native_type": "SetTypeAliasTargetResponse"
       },
+      "semantic_review": "LocalClient and applicable alias/comment adapter branches reviewed; downstream type system/all-slot failure and runtime gates remain unqualified",
+      "state_transitions": "loaded required; adapter mutation across slots; false -> recorded operation-specific error (not success with false flag); native revision only after success; adapter catches/logs exceptions as false",
       "surface_contract": {
         "facade": {
           "disposition": "native escape hatch",

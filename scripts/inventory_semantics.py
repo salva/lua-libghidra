@@ -322,3 +322,51 @@ def review_local_and_data_edits(u, operations):
             op['state_transitions']='loaded required; all-slot adapter edit; false -> '+('RENAME_FAILED' if name=='RenameDataItem' else 'NOT_FOUND')+'; native revision only after success; functions are not eligible data items'
         op['semantic_review']='LocalClient local/data/health branches reviewed; downstream mutation helper and runtime gates remain unqualified'
     return operations
+
+
+def review_alias_symbol_comments(u, operations):
+    """Destructive retarget and differing mutation failure envelopes."""
+    source=(u/LOCAL).read_text(); adapter=(u/ADAPTER).read_text()
+    helpers={'CreateTypeAlias':'createTypeAlias','DeleteTypeAlias':'deleteTypeAlias','SetTypeAliasTarget':'setTypeAliasTarget','DeleteType':'deleteType','RenameType':'renameType'}
+    names=set(helpers)|{'RenameSymbol','DeleteSymbol','SetComment','DeleteComment'}
+    for op in operations:
+        name=op['name']
+        if name not in names: continue
+        start,text=body(source,' '+name+'(')
+        op['alias_symbol_source_review']={'path':LOCAL,'line':source.count('\n',0,start)+1,'body_sha256':hashlib.sha256(text.encode()).hexdigest()}
+        assert 'if (!ensure_loaded())' in text
+        if name in helpers:
+            method=helpers[name]; hstart,htext=body(adapter,'ArchAdapter::'+method+'(')
+            assert 'catch (...)' in htext and 'return false;' in htext
+            op['adapter_source_review']={'path':ADAPTER,'line':adapter.count('\n',0,hstart)+1,'body_sha256':hashlib.sha256(htext.encode()).hexdigest()}
+            assert text.index('if (!ok)') < text.index('revision_++')
+            op['state_transitions']='loaded required; adapter mutation across slots; false -> recorded operation-specific error (not success with false flag); native revision only after success; adapter catches/logs exceptions as false'
+            op['limitations'].append('findByName lookup, not numeric ID resolution; adapter false conflates absent/ineligible type and caught exceptions; all-slot operation is not atomic')
+            if name=='CreateTypeAlias':
+                assert 'getTypedef(target, alias_name, 0, 0)' in htext
+                op['limitations'].append('creation passes alias and target names unchanged; unlike delete/retarget, LocalClient performs no leading-slash stripping for these names')
+            if name in ['DeleteTypeAlias','SetTypeAliasTarget']:
+                assert '.substr(1)' in text and 'if (!dt->getTypedef()) return false' in htext
+            if name=='SetTypeAliasTarget':
+                assert htext.index('findByName(new_target_name)') < htext.index('destroyType(dt)') < htext.index('getTypedef(new_target, alias_name, 0, 0)')
+                op['limitations'].append('retarget destroys existing typedef before recreating; caught recreation failure may lose old alias, no rollback; normalized alias but new target name unchanged')
+            if name=='DeleteType':
+                op['limitations'].append('error text mentions core types, but adapter has no explicit core-type predicate: delegates destroyType and catches failure; do not invent a core-type guard')
+        elif name=='RenameSymbol':
+            assert 'sym->type == "function"' in text and '"NOT_SUPPORTED"' in text
+            op['state_transitions']='loaded required; missing symbol -> NOT_FOUND; only type=function renames via nameFunction; false -> RENAME_FAILED; nonfunction -> NOT_SUPPORTED; native revision only if ok'
+        elif name=='DeleteSymbol':
+            assert 'resp.deleted_count = ok ? 1 : 0' in text
+            op['state_transitions']='loaded required; address-only delete; ignored name_filter; false -> NOT_FOUND; native revision after success, deleted=true and deleted_count=1; no multi-symbol count claim'
+        elif name=='SetComment':
+            assert 'resp.updated = true' in text
+            _,write=body(adapter,'ArchAdapter::setComment(')
+            assert 'comments_[{address, kind}] = text' in write
+            op['state_transitions']='loaded required; store adapter side-map address/kind -> text without address mapping or comment-kind existence validation; empty text stored, not deletion; native revision increments and updated=true on normal return'
+        else:
+            assert '"NOT_FOUND"' in text
+            _,erase=body(adapter,'ArchAdapter::deleteComment(')
+            assert 'comments_.erase({address, kind}) > 0' in erase
+            op['state_transitions']='loaded required; erase exact side-map address/kind; absent -> NOT_FOUND rather than deleted=false success; revision only after successful removal'
+        op['semantic_review']='LocalClient and applicable alias/comment adapter branches reviewed; downstream type system/all-slot failure and runtime gates remain unqualified'
+    return operations

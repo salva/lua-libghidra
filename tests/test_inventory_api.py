@@ -142,10 +142,27 @@ class InventoryTests(unittest.TestCase):
             with self.assertRaises(AssertionError):
                 module.inventory(root)
             local.write_text(local_original)
+            adapter.write_text(adapter_original.replace('comments_.erase({address, kind}) > 0', 'comments_.erase({address, kind}) >= 0'))
+            with self.assertRaises(AssertionError):
+                module.inventory(root)
+            adapter.write_text(adapter_original)
+            local.write_text(local_original.replace('sym->type == "function"', 'sym->type != "function"'))
+            with self.assertRaises(AssertionError):
+                module.inventory(root)
+            local.write_text(local_original)
             header = root/'cpp/src/local_arch_adapter.hpp'
             header.write_text(header.read_text().replace('std::map<std::pair<std::uint64_t, int>, std::string> comments_', 'std::multimap<std::pair<std::uint64_t, int>, std::string> comments_'))
             with self.assertRaises(AssertionError):
                 module.inventory(root)
+
+    def test_alias_loss_and_symbol_comment_outcomes(self):
+        self.assertIn('no rollback', ' '.join(self.ops['SetTypeAliasTarget']['limitations']))
+        self.assertIn('no leading-slash', ' '.join(self.ops['CreateTypeAlias']['limitations']))
+        self.assertIn('no explicit core-type', ' '.join(self.ops['DeleteType']['limitations']))
+        self.assertIn('nonfunction -> NOT_SUPPORTED', self.ops['RenameSymbol']['state_transitions'])
+        self.assertIn('deleted_count=1', self.ops['DeleteSymbol']['state_transitions'])
+        self.assertIn('empty text stored', self.ops['SetComment']['state_transitions'])
+        self.assertIn('rather than deleted=false', self.ops['DeleteComment']['state_transitions'])
 
     def test_local_status_errors_and_health_scope(self):
         self.assertIn('INVALID_TYPE', self.ops['SetFunctionLocalType']['state_transitions'])

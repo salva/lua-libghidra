@@ -309,3 +309,22 @@ coarse ordered native text, despite string/full-CRUD overstatements. A new drift
 probe substitutes program_loaded for pool existence and must fail the reviewed
 contract. Fifteen tests pass. Exhaustive field/helper/final-grammar review remains
 open; runtime qualification has not been claimed.
+
+## Alias/symbol/comment error branches (twelfth increment)
+
+Alias retarget checks the new target, destroys the existing typedef, then
+recreates it. A caught recreation failure can therefore lose the old alias;
+operation error is not rollback. Alias creation passes names unchanged, while
+alias deletion/retarget normalize one leading slash on the alias only. Adapter
+false conflates absence, ineligible kind and caught exceptions. DeleteType's
+core-type error wording is not an explicit core-type guard in its adapter.
+
+RenameSymbol supports functions only (NOT_FOUND absent, NOT_SUPPORTED otherwise,
+RENAME_FAILED failed function rename). DeleteSymbol ignores its name and returns
+count one only on success; absent is NOT_FOUND, not successful deleted=false.
+SetComment stores even empty text in the address/kind side map without address
+mapping validation. DeleteComment absent is NOT_FOUND. All preserve native
+revision/error branches separately from binding dispatched-mutation generation.
+New independent probes invert the rename kind test and erase outcome predicate;
+both fail reviewed assertions. Sixteen tests pass; remaining lookup/helper,
+conditional-field, numerical-domain and final surface grammar audit remains open.
