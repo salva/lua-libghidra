@@ -1,4 +1,14 @@
 {
+  "completeness_audit": {
+    "direct_request_paths": 156,
+    "excluded_operations": 40,
+    "expanded_response_paths": 345,
+    "factory_fields": 4,
+    "included_operations": 70,
+    "nested_request_paths": 20,
+    "python_local_methods": 27,
+    "qualification": "cross-ledger source accounting only; runtime fixtures and iterator qualification remain unqualified"
+  },
   "enums": {
     "CommentKind": {
       "lua": "documented lowercase names; unknown response values retain numeric native value",

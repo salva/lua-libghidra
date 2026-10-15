@@ -19,6 +19,20 @@ class InventoryTests(unittest.TestCase):
         cls.data = module.inventory(module.DEFAULT)
         cls.ops = {o['name']: o for o in cls.data['operations']}
 
+    def test_cross_ledger_gate_rejects_omissions_and_false_evidence(self):
+        from inventory_completeness import validate
+        import copy
+        self.assertEqual(validate(self.data)['expanded_response_paths'],345)
+        for kind in ('response','direct','evidence','python','excluded'):
+            data=copy.deepcopy(self.data)
+            op=next(o for o in data['operations'] if o['name']=='GetFunction')
+            if kind=='response':op['response']['fields'].pop()
+            elif kind=='direct':op['request'][0].pop('direct_argument_review')
+            elif kind=='evidence':op['evidence']['positive']['status']='qualified'
+            elif kind=='python':data['python_reconciliation']['methods'].pop()
+            else:data['operations'][0]['surface_contract']['lowlevel']={'call':'invented()'}
+            with self.assertRaises(AssertionError,msg=kind):validate(data)
+
     def test_definition_extractor_rejects_call_and_literal_brace_confusion(self):
         from inventory_semantics import body
         source = ('void caller() { helper(x); if (x) { unrelated(); } }\n'

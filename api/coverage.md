@@ -909,3 +909,18 @@ oracle; Lua must retain its separately specified upstream code fidelity. Runtime
 slots remain unqualified. Independent source probes swap timeout/address, replace
 open base address with zero and change unknown-code fallback; all must fail.
 Final cross-ledger completeness and unknown classification remain open.
+
+## Independent cross-ledger accounting gate
+
+Generation now also runs scripts/inventory_completeness.py: re-expand every
+request/response native model, match exact ordered path/type/Lua tuples, reject
+missing direct reviews, surface exposure of excluded operations, inconsistent
+Python mappings and fabricated runtime qualifications. Current included totals:
+156 direct scalar request paths, 20 nested request paths, 345 expanded response
+paths, four factory options, 27 local Python methods; 70 included/40 excluded
+service operations. Five artifact-corruption probes validate the gate separately
+from regeneration equality. This is source accounting, not runtime proof or
+blanket acceptance of all remaining prose. Final unknown/stale-unresolved
+classification remains open. The gate initially assumed excluded surfaces were
+null and counted nested container arguments as direct scalar fields; actual
+schema inspection corrected those hypotheses without suppressing omissions.
