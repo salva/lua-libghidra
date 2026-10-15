@@ -1,5 +1,17 @@
 # Native dependency readiness (M0 experiment, not a binding)
 
+## Operator disposition — engine patch authorized
+
+The operator authorized the exact bundled
+`cpp/patches/0001-bfd-sleigh-target-autodetect.patch` as a separately pinned and
+qualified engine profile. The previous requirement for an owner decision on this
+specific patch is settled; historical unmodified-profile failures remain evidence.
+Apply in a separate engine tree, lock base/patch provenance and digest, and run
+fresh qualification rather than relabelling previous tests as patched-profile
+successes. libghidra itself remains unchanged. See
+[launch authorization](../workflows/LAUNCH.md#authorized-engine-patch-profile).
+Independent license/distribution gates are not resolved by this technical decision.
+
 Original integration files are MIT, Copyright 2026 Salvador Fandiño. No M1
 adapter is present. Dependency license/applicability decisions are independent;
 this experiment does not authorize distribution.

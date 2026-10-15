@@ -6,6 +6,13 @@ Deployment policy stays in [operations](../workflows/OPERATIONS.md).
 
 ## M0 — Decisions, dependencies and real fixture readiness
 
+Operator-approved engine profile: apply the upstream-bundled
+`cpp/patches/0001-bfd-sleigh-target-autodetect.patch` in a separate pinned engine
+tree, recording base revision and patch provenance/digest. This narrowly relaxes
+the unmodified-engine requirement; libghidra remains unchanged. Requalify fresh
+build/install/PIC, external/embedded specs and explicit-hint behavior plus
+automatic-detection controls. See [authorization](../workflows/LAUNCH.md#authorized-engine-patch-profile).
+
 Confirm baseline/platform/tier and license applicability before implementation.
 The wrapper license is MIT (operator-selected; see [LICENSE](../LICENSE)).
 Record intended distribution, dependency sources/digests,

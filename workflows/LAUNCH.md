@@ -28,7 +28,22 @@ guest-local sudo as needed; preserve project-local credentials. Source/dependenc
 caches and temporary build outputs must be ignored by Git. Commit implemented
 changes promptly and do not push or publish without operator permission.
 
-## License decision
+## Authorized engine patch profile
+
+The operator authorizes applying libghidra's bundled
+`cpp/patches/0001-bfd-sleigh-target-autodetect.patch` to the pinned Ghidra engine
+in a separate dependency source tree. This is a narrow exception to the
+unmodified-engine constraint, not permission for arbitrary upstream modifications.
+Keep libghidra itself unchanged. Identify the base engine revision, patch source
+revision and patch digest in the dependency lock/provenance records.
+
+Resume the work of `card-a-b` using this profile and qualify it with fresh builds,
+installed-SDK whole-archive/PIC tests, external and embedded spec loading,
+explicit Sleigh-hint regressions and existing automatic-detection controls.
+Preserve unmodified-profile evidence and failures. Applying the patch does not
+itself pass M0 or resolve the separate license/distribution gates.
+
+## Wrapper license decision
 
 The operator selected MIT for this wrapper's original code and documentation.
 The root LICENSE records this choice; use MIT in future wrapper package metadata.
