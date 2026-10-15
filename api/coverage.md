@@ -606,3 +606,20 @@ non-first-slice grammar remain open. Runtime/iterator evidence stays unqualified
 Thirty tests pass, including independent optional-extraction drift rejection.
 An older regression requiring nonempty gaps failed when the ledger closed; updated
 to require empty response gaps while still requiring explicit unresolved obligations.
+
+## Definition extraction audit (twenty-seventh increment)
+
+All reviewed-contract body consumers now share a fail-closed bounded extractor:
+call/declaration occurrences terminated before a block cannot borrow a later
+function or conditional body; duplicate candidate definitions and unbalanced
+bodies are rejected. Comment, escaped quoted literal and C++ raw-string contents
+are masked at identical offsets before brace balancing. Source slices and hashes
+still use original bytes. Explicit nanobind lambda prefixes remain supported.
+This is not a general C++ parser: constructors/complex declarators and preprocessor
+branch evaluation are outside this bounded extractor's qualification. All current
+consumer signatures (LocalClient methods, qualified adapters/pool helpers, explicit
+helper definitions, converters and lambda prefixes) pass unchanged source artifact
+comparison. New synthetic tests reject call-only, duplicate and unbalanced inputs
+and verify comments/literals do not truncate a definition. Thirty-one inventory
+tests pass. No runtime evidence is inferred; request/domain and grammar audit
+remain open despite zero preservation-only response gaps.

@@ -6,14 +6,39 @@ ADAPTER = 'cpp/src/local_arch_adapter.cpp'
 LOCAL = 'cpp/src/local_client.cpp'
 
 
+def _code_mask(source):
+    """Blank comments/literals without changing offsets (bounded C++ lexer)."""
+    pattern = r'//[^\n]*|/\*[\s\S]*?\*/|R"([^ ()\\\t\r\n]{0,16})\([\s\S]*?\)\1"|"(?:\\[\s\S]|[^"\\])*"|\'(?:\\[\s\S]|[^\'\\])*\''
+    return re.sub(pattern, lambda m: ''.join('\n' if c=='\n' else ' ' for c in m[0]), source)
+
+
 def body(source, signature):
-    start = source.index(signature)
-    opening = source.index('{', start)
-    depth, end = 1, opening + 1
-    while depth:
-        depth += (source[end] == '{') - (source[end] == '}')
-        end += 1
-    return start, source[opening:end]
+    """Require one definition, never borrow a later call's following block.
+
+    Signatures can also identify the explicit nanobind lambda prefix. Masking
+    preserves source slices/hashes while braces in comments/literals cannot end
+    extraction. This is intentionally not a general C++ declarator parser.
+    """
+    code=_code_mask(source)
+    candidates=[]
+    for match in re.finditer(re.escape(signature),source):
+        start=match.start()
+        # A signature starting in a comment/literal is not a declaration.
+        first=next((i for i,c in enumerate(signature) if not c.isspace()),0)
+        if code[start+first].isspace():continue
+        opening=code.find('{',match.end())
+        if opening<0:continue
+        tail=code[match.end():opening]
+        if ';' in tail or '}' in tail:continue
+        candidates.append((start,opening))
+    assert len(candidates)==1, ('expected one definition',signature,len(candidates))
+    start,opening=candidates[0]
+    depth,end=1,opening+1
+    while depth and end<len(code):
+        depth+=(code[end]=='{')-(code[end]=='}')
+        end+=1
+    assert depth==0, ('unbalanced definition',signature)
+    return start,source[opening:end]
 
 
 def review_pages(u, operations):

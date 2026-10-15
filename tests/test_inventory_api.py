@@ -19,6 +19,24 @@ class InventoryTests(unittest.TestCase):
         cls.data = module.inventory(module.DEFAULT)
         cls.ops = {o['name']: o for o in cls.data['operations']}
 
+    def test_definition_extractor_rejects_call_and_literal_brace_confusion(self):
+        from inventory_semantics import body
+        source = ('void caller() { helper(x); if (x) { unrelated(); } }\n'
+                  '// helper(int x) { decoy }\n'
+                  'void helper(int x) { const char* s="}"; /* } */ '
+                  'const char* r=R"tag({ } })tag"; if(x) { run(); } }')
+        start,text=body(source,'helper(')
+        self.assertEqual(start,source.index('helper(int x)',source.index('void helper')))
+        self.assertTrue(text.endswith('if(x) { run(); } }'))
+        with self.assertRaises(AssertionError):
+            body('void caller() { helper(x); if(x) { wrong(); } }','helper(')
+        with self.assertRaises(AssertionError):
+            body('void helper() {} void helper() {}','helper(')
+        with self.assertRaises(AssertionError):
+            body('void helper() {','helper(')
+        # Nanobind lambda prefixes remain a supported explicit consumer.
+        self.assertEqual(body('.def("x", [](int x) { return x; })','.def("x", []')[1],'{ return x; }')
+
     def test_preserved_red_reproducer(self):
         # Exact acceptance trigger from red; stronger checks below prevent treating
         # mere existence as exhaustive semantic acceptance.
