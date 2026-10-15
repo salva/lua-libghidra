@@ -53,3 +53,25 @@ string scanner or change upstream merely to satisfy this gate.
   in this review dimension.
 
 VERDICT: CHANGES_REQUESTED
+
+## Re-review — be084da
+
+Rechecked corrected product documentation at
+`be084da9cb713aee39665d9e6acee476a56d992f`, including the new EXAMPLES.md,
+against the original validation finding and milestone/acceptance requirements.
+
+**V1 resolved.** COVERAGE now explicitly classifies ListDefinedStrings as core
+compatibility only. SPEC defines empty-success fidelity on a real known-string
+fixture, unloaded-program errors and argument validation as its acceptance;
+DESIGN removes its iterator and populated/order gates; PLAN M3 repeats the
+exception. These changes match the pinned upstream behavior and eliminate the
+unattainable discovery interpretation without adding a scanner.
+
+The revised build-time Python requirement, separate external/embedded spec
+profiles, candidate-offset signature-page limitation, and M2/M3 example split
+provide consistent executable qualification instructions. No additional necessary
+validation-dimension issues found. Pending native experiments remain explicit
+release gates, not claimed passes. This approves the documentation in this
+review dimension, not runtime qualification or autonomous execution.
+
+VERDICT: APPROVED

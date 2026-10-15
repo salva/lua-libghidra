@@ -88,3 +88,36 @@ Local-only scope and the SWIG exclusion are consistent throughout. No runtime
 acceptance or future persistence experiment is represented as completed.
 
 VERDICT: CHANGES_REQUESTED
+
+## Recheck — be084da
+
+Rechecked corrections at `be084da9cb713aee39665d9e6acee476a56d992f`
+against the same upstream pin. Reviewed the product-document changes, including
+the new proposed examples, for resolution and regressions. Original assessment
+above is preserved; this disposition supersedes its verdict.
+
+- **F1 resolved.** `docs/COVERAGE.md:24-25,46-58` separates the constant-empty
+  compatibility operation and coarse capability advertisements from actual
+  discovery/support. `docs/SPEC.md:192-201,232-235` supplies the limitation and
+  fidelity-only acceptance exception. DESIGN removes its iterator and PLAN
+  carries the corresponding fidelity gate. No unattainable populated-string
+  requirement remains.
+- **F2 resolved.** `docs/SPEC.md:185-201` and `docs/COVERAGE.md:59-63` explicitly
+  cover the ignored deletion selector, sizes, enum width/signedness and
+  struct-only creation. `docs/PLAN.md:90-92` carries the behavior checks without
+  inventing enforcement or replacement native implementations.
+- **F3 resolved.** `docs/SPEC.md:213-220`, `docs/DESIGN.md:99-112` and
+  `docs/COVERAGE.md:51-53` restrict the generic advancement rule to the correct
+  offset domain and make signature listing pages-only. Candidate filtering,
+  empty-page ambiguity and a separately designed future traversal are explicit;
+  PLAN preserves the pages-only scope.
+
+No substantive regression found in this review dimension. Added open-response
+examples preserve detached metadata and shared ownership; the build/runtime
+Python distinction and corrected CI archive provenance agree with inspected
+upstream `cpp/embed_specs.py:20,37` and `.github/workflows/ci.yml:32`.
+Persistence limitations, local-only scope and the SWIG exclusion remain intact.
+This approves the documentation corrections, not implementation or execution of
+the still-planned qualification gates.
+
+VERDICT: APPROVED

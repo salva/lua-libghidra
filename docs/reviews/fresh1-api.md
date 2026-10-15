@@ -51,3 +51,25 @@ The explicit field-manifest and runtime gates are appropriate deferred work;
 their incompleteness is not itself a finding.
 
 ## VERDICT CHANGES_REQUESTED
+
+## Re-review disposition — be084da
+
+Reviewed correction commit `be084da9cb713aee39665d9e6acee476a56d992f`, including
+the product-document diff and new EXAMPLES, against the same upstream pin.
+The original assessment above is preserved.
+
+**F1: RESOLVED.** `docs/SPEC.md:214-219` restricts actual-count advancement to
+returned-record cursor domains and explicitly makes signatures pages-only.
+`docs/DESIGN.md:99-109` separates cursor/filtering qualification from order,
+rejects empty signature pages as exhaustion, and requires a separate design
+and missing-signature tests for future traversal. `docs/COVERAGE.md:53-55,77-81`
+and `docs/PLAN.md:67-70` carry that restriction into scope and qualification.
+This addresses both duplicate traversal and premature exhaustion without
+inventing native continuation metadata.
+
+Regression review of the added call grammar, open metadata return convention,
+examples, numeric representations and error/pagination policies found no new
+substantive Lua API contract issue. Approval covers documentation only; deferred
+implementation and real-backend qualification remain gates.
+
+## VERDICT APPROVED

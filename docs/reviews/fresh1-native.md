@@ -66,3 +66,35 @@ this review. DESIGN:3 and PLAN:3 accurately state that no milestone has passed;
 approval here does not waive any of those experiments or authorize implementation.
 
 VERDICT: APPROVED
+
+## Re-review — fresh1 corrections at be084da
+
+Reviewed product-document changes from `699cc8a` to
+`be084da9cb713aee39665d9e6acee476a56d992f`, including the new EXAMPLES document.
+The original assessment above is preserved. No other reviewers' reports were
+read for this re-review.
+
+**Severity / required fixes:** none. No native-safety documentation regression
+identified.
+
+- DESIGN's C-Lua boundary now explicitly includes protected-call setup/exit,
+  allocation-triggered finalizer reentrancy and handle/closed-state revalidation
+  after Lua-running phases. Its distinction between sanitizer evidence and an
+  all-frame proof strengthens the existing gate.
+- SPEC's detached third open result and EXAMPLES' surviving native alias retain
+  the single shared owner and exactly-once closure model. The example closes
+  program context separately, then demonstrates `CLOSED` after scope exit and
+  continued access to detached metadata. It does not create a second engine.
+- Signature pages-only behavior and the defined-string fidelity exception narrow
+  iteration/support claims without weakening ownership, conversion or lifecycle
+  requirements. Buffered-yield invalidation remains explicit.
+- Build-time Python and the separate external/embedded spec profiles clarify
+  dependency and constructor qualification. Host-VM ABI resolution, PIC,
+  whole-archive linkage, process serialization, pool size one, and provisional
+  sol2 acceptance remain intact.
+
+This verdict concerns documentation readiness in the native-safety dimension.
+No runtime tests were executed; M0/M1 and release qualification remain gates,
+not established evidence. No product edits are requested.
+
+VERDICT: APPROVED

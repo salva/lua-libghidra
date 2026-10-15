@@ -64,3 +64,27 @@ no permission or compatibility result is presumed here. LuaRocks installation
 and dependency-lock implementation remain planned gates, not claimed deliverables.
 
 VERDICT: CHANGES_REQUESTED
+
+## Recheck disposition — be084da
+
+Reassessed corrections at `be084da9cb713aee39665d9e6acee476a56d992f`
+against the original product baseline, including README, SPEC, DESIGN, PLAN,
+COVERAGE and the new EXAMPLES. The original review above is preserved.
+
+- **F1 resolved.** README and SPEC now distinguish source-build Python >=3.10
+  with zlib from qualification Python and the Python-free runtime. DESIGN §5
+  requires early CMake/LuaRocks version/module checks, recording the interpreter,
+  and distinguishes prebuilt-SDK consumption. PLAN M0 carries the prerequisite.
+- **F2 resolved.** DESIGN §5 now specifies separate nonempty-root external-spec
+  and empty-root embedded-spec profiles, isolated HOME cache tests, and proof of
+  constructor selection. PLAN M5 explicitly requires both. External-root success
+  can no longer substitute for embedded-cache evidence.
+
+No documentation regression found in the assigned build/deployment scope.
+The corrected Ghidra release archive identity agrees with pinned upstream CI;
+engine/spec compatibility, dependency locks, packaging and host-ABI qualification
+remain explicitly pending gates. The explicit-root usage example is consistent
+with the external profile and does not replace the embedded-profile tests.
+Approval concerns the documentation only; no build or runtime result is implied.
+
+VERDICT: APPROVED

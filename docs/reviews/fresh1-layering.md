@@ -104,3 +104,30 @@ No product files were edited and no runtime tests were run. The two findings
 require documentation fixes, not a change to the accepted two-layer direction.
 
 VERDICT: CHANGES_REQUESTED
+
+## Re-review — be084da
+
+Rechecked corrected product documentation at
+`be084da9cb713aee39665d9e6acee476a56d992f`, including the new EXAMPLES document.
+The original assessment above is preserved; this disposition supersedes its
+verdict for the reviewed layering dimension.
+
+- **L1 resolved.** SPEC §2 explicitly returns `session, nil, open_response`,
+  preserves all detached metadata and defines its historical meaning after
+  subsequent lifecycle calls. EXAMPLES demonstrates retrieval without reopening
+  and retention after closure; PLAN M2 requires false/zero preservation checks.
+- **L2 resolved.** SPEC's first-slice grammar defines module helper exports,
+  separate client/program options, representative read/page/iterator signatures
+  and return shapes. EXAMPLES demonstrates `<close>`, missing records, binary
+  strings, response access, protected iteration and a surviving closed alias.
+  Its native mutation extension checks the actual outcome and invalidation.
+  Scheduling that core mutation example at M3 while executing the first-slice
+  example at M2 correctly matches the existing delivery tiers.
+
+The facade remains small, shares ownership/conversion with lowlevel, and retains
+metadata and the specialist escape hatch. No necessary unresolved layering or
+Lua-usability documentation issues were found. Runtime qualification remains a
+future implementation gate, not a claim of this review. Only this review file
+was edited; no commit was made.
+
+VERDICT: APPROVED
