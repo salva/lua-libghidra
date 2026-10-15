@@ -8,13 +8,14 @@ product; it does not authorize an autonomous run. Architecture is in
 
 Provide a maintainable, idiomatic Lua SDK for **0xeb/libghidra**, reusing its
 native C++ SDK. Lua scripts must be able to inspect and annotate programs,
-decompile functions, and manage supported program/project lifecycle operations.
-Both the offline LocalClient and live HTTP LibGhidraHost backend are product goals.
+decompile functions, and manage supported local program lifecycle operations.
+Only the offline LocalClient is in scope. HTTP/LibGhidraHost support and remote
+project management are deferred. SWIG must not be used.
 
 Research baseline: <https://github.com/0xeb/libghidra>, commit
 `d51ca813ae1b6b59519551a9be8c0b1ad74d862d`, reporting version `0.0.9`.
 This is a commit pin, not a claim that it equals the v0.0.9 release tag.
-Python's synchronous client, records and examples inspire coverage and naming;
+Python's LocalClient, records and local examples inspire coverage and naming;
 the C++ public interface defines callable native functionality. Python, Java and
 Ghidra installations must not be runtime dependencies for offline operation.
 
@@ -25,8 +26,9 @@ Ghidra installations must not be runtime dependencies for offline operation.
   Windows and macOS are deferred until separately built and tested.
 - Synchronous calls, usable from standalone Lua and an existing embedded Lua
   state. No hidden interpreter, event loop, global client or Python bridge.
-- HTTP and local build profiles; a local-enabled build also includes HTTP.
-  An HTTP-only build reports local construction as `BACKEND_UNAVAILABLE`.
+- One local-enabled build profile. Expose no HTTP client, connection factory or
+  transport configuration. Upstream transitive build dependencies may still
+  include HTTP code; this does not add a public HTTP API or network requirement.
 - Source installation using CMake and LuaRocks. Prebuilt binaries are optional
   later work, not an initial release condition.
 - Explicit language/compiler hints are supported. Native format detection is
@@ -39,13 +41,15 @@ Ghidra installations must not be runtime dependencies for offline operation.
 | --- | --- |
 | First usable slice | Construct/close client; status/capabilities; open/close program; function listing/lookup; memory reads; instruction listing; one-function decompilation |
 | Core release | Above plus revisions, save/discard; symbols, xrefs, memory blocks, types/members/signatures, strings, comments, basic blocks and CFG; rename function/symbol and write bytes |
-| Broad synchronous coverage | Remaining public synchronous operations: project/import, analysis jobs, type/signature edits, data edits, structural analysis, tags, bookmarks, breakpoint metadata, program options and other shared SDK methods |
+| Full local coverage | Remaining operations actually supported by the pinned native LocalClient, including supported edits and analysis queries; inventory and verify these rather than assuming shared-interface support |
 
 The first usable slice is not completion. Core release and broad coverage are
-separate milestones. Every public Python synchronous operation and C++ IClient
-operation must appear in a coverage manifest with its Lua mapping, backend
-support, test evidence, or explicit deferral. Python-only CLI helpers, async
-clients and headless-process launching are deferred. Do not implement missing
+separate milestones. Every public Python LocalClient operation and native
+LocalClient-supported operation must appear in a coverage manifest with its Lua
+mapping, test evidence, or explicit deferral. Shared-interface operations that
+are HTTP-only must be marked out of scope, not scheduled for implementation.
+Python-only CLI helpers, async clients and headless-process launching are
+deferred. Do not implement missing
 upstream analysis functionality inside the binding.
 
 ## 3. Lua contract
@@ -53,7 +57,7 @@ upstream analysis functionality inside the binding.
 ### Surface and data
 
 - `local ghidra = require("libghidra")`; no writes to `_G`.
-- Factories: `ghidra.connect{base_url=...}` and `ghidra.local_client{...}`.
+- Factory: `ghidra.local_client{...}`.
   `local_client` avoids Lua's reserved keyword `local`.
 - Client methods use `client:snake_case(...)`. Requests use plain option tables;
   simple identities can be positional, e.g. `get_function(address)` and
@@ -95,7 +99,7 @@ void operations return `true`. Error objects are tables with `code`, `message`,
 `operation`, `backend`, and optional `upstream_code`; `tostring(error)` is useful.
 Normalize known upstream statuses while preserving their original code. Keep
 unknown codes and messages. Distinguish invalid arguments, closed handles,
-unsupported operations, unavailable builds, timeout/transport errors and internal
+unsupported operations, unavailable local resources, analysis timeouts and internal
 exceptions. `ghidra.check(result, err)` raises the error object for callers who
 prefer `pcall`/`xpcall` or terse scripts. Allocation failures and Lua runtime
 errors remain Lua errors; ordinary SDK failures must not escape as C++ exceptions.
@@ -104,8 +108,8 @@ errors remain Lua errors; ordinary SDK failures must not escape as C++ exception
 
 - `client:close()` is idempotent and releases the native client. Further calls
   return `CLOSED`. `__gc` and Lua 5.4 `__close` release resources without raising.
-- Releasing a client is distinct from `close_program`, saving, discarding and
-  shutting down a remote host. Save/discard/shutdown policies are explicit.
+- Releasing a client is distinct from `close_program`, saving and discarding.
+  Save/discard policies are explicit.
   Local persistence configured upstream may affect destructor behavior; document
   verified behavior rather than claiming cleanup is a transaction rollback.
 - Results survive client closure and garbage collection.
@@ -116,7 +120,7 @@ errors remain Lua errors; ordinary SDK failures must not escape as C++ exception
   fetch lazily, retain the client, stop on exhaustion and raise structured errors
   on failure (generic `for` cannot return `nil, err` without hiding the error).
   No implicit prefetch; early loop exit requires no remote cursor cleanup.
-  Iteration is not a snapshot of a mutating remote program.
+  Iteration is not a snapshot of a mutating program.
 - Calls block their invoking thread. A client/Lua state is not concurrently
   shareable across OS threads. Coroutines do not make blocking calls asynchronous.
 
@@ -145,11 +149,13 @@ ghidra.check(client:close_program{policy = "discard"})
 ## 5. Acceptance
 
 1. Clean installation loads via `require` from outside the source/build tree;
-   both build profiles and an embedded-host smoke test pass.
+   the local build and an embedded-Lua-host smoke test pass.
 2. A locally compiled, redistributable fixture supports real local reads and
    decompilation at known addresses without Java/network at runtime.
-3. A pinned real LibGhidraHost passes project/program lifecycle, reads, edits,
-   save/reopen verification and pagination. A mock server alone is insufficient.
+3. The pinned real local backend passes supported program lifecycle, reads,
+   edits, configured state save/reopen verification and pagination. Use analyzed
+   project fixtures where required by supported local queries. Mocks alone are
+   insufficient; a running LibGhidraHost is not a test dependency.
 4. Boundary tests cover uint64 0, 2^53±1, 2^63±1, 2^64−1, overflow, bad strings,
    binary NULs, optional false/zero, nested arrays, unknown enums and bad requests.
 5. Close/GC/error paths pass ASan/UBSan where available, repeated-state lifecycle
@@ -160,8 +166,8 @@ ghidra.check(client:close_program{policy = "discard"})
    fixtures agree on normalized semantic results. Differences are explained;
    unstable addresses/order/text formatting are not blindly compared.
 8. API reference, examples, limitations, dependency pins/notices and coverage
-   manifest ship with the source package. Missing live infrastructure is reported
-   as unverified, not a passing release gate.
+   manifest ship with the source package. Missing local engine/specs or required
+   fixture evidence is reported as unverified, not a passing release gate.
 
 ## 6. Provenance
 

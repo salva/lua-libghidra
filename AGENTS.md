@@ -1,5 +1,8 @@
 # lua-libghidra working guidance
 
+- Scope is the native local libghidra functionality only; HTTP support is deferred.
+  Do not use SWIG, including for prototypes, generators or fallback bindings.
+
 - Read `docs/SPEC.md`, `docs/DESIGN.md` and `docs/PLAN.md` when available.
   Until requirements are agreed, do not invent a binding API or start implementation.
 - Keep product requirements and design separate from automation configuration.

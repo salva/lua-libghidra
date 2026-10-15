@@ -7,14 +7,16 @@ is a reasoned recommendation, not a completed build benchmark.
 
 Use **sol2 (the sol3 API)** for explicit native module registration and owning
 userdata, CMake/Ninja for building, and LuaRocks for source installation. Wrap
-libghidra's C++ IClient and factory APIs directly. Keep Lua conversions explicit;
+libghidra's native LocalClient through its public C++ interface and local factory.
+SWIG is explicitly prohibited, including as a fallback or code-generation tool.
+Keep Lua conversions explicit;
 do not expose STL containers, StatusOr, inheritance trees or native model objects.
 
 | Approach | Fit and tradeoff | Decision |
 | --- | --- | --- |
 | sol2 | Native C++ ownership, tables, userdata, multiple returns and existing Lua-state integration; template compile cost and error-boundary care required | Preferred for this C++20 SDK |
 | Direct Lua C API | Maximum control and minimal dependency; manual stack/lifetime/error bookkeeping across a broad record API | Narrow escape hatch; fallback if spike fails |
-| SWIG Lua | Generates broad C++ wrappers; custom typemaps still needed for tables, uint64, StatusOr and ownership; generated class surface is not the desired API | Not the default |
+| SWIG Lua | Excluded by operator direction | Must not be used |
 | LuaBridge3 | Plausible lighter C++ registration alternative; still needs the same explicit record/result adapters | Reconsider only for a measured sol2 blocker |
 | LuaJIT FFI | Good for stable C ABIs; upstream exposes a C++ API and target is standard Lua | Would require a new C shim and exclude primary runtime |
 | Pure Lua HTTP/protobuf | Lightweight remote-only possibility | Duplicates transport and cannot deliver local native backend |
@@ -38,7 +40,7 @@ src/convert/               request validators and response-to-table converters
 src/bindings/              service-group adapters
 tests/lua/                 public contract and lifecycle tests
 tests/native/              native adapter/fault-injection tests
-tests/integration/         offline and real-host scenarios
+tests/integration/         real local-backend scenarios
 tests/fixtures/            authored source + reproducible binary manifests
 examples/                  small executable Lua examples
 api/coverage.*             reviewed operation/field coverage manifest
@@ -104,27 +106,25 @@ class and `get_decompilation(address, {timeout_ms=...})` rather than keyword arg
 The registry must resolve C++/Python coverage differences explicitly rather than
 claiming that one language's feature list proves the other backend supports it.
 
-## 5. Backends and lifecycle
+## 5. Local backend and lifecycle
 
-HTTP factory options map to public HttpClientOptions: base URL, auth token,
-client identity, connect/read/write timeout milliseconds, and retry settings.
-Default to upstream zero retries; do not add transparent mutation retries.
-Construction need not establish connectivity: `get_status()` verifies reachability.
-Do not log credentials. Unsupported TLS/auth configurations must fail clearly,
-not fall back to an insecure transport.
+Expose only the local factory and supported local operations. No connection
+factory, URL/auth/retry configuration, HTTP dispatch or remote-host lifecycle
+is part of this implementation. Do not build a transport abstraction for possible
+future HTTP support; retaining the upstream IClient pointer is sufficient.
 
 Local factory options mirror native options: `ghidra_root`, `state_path`,
 `default_arch`, `pool_size`. Verify native open/detection semantics rather than
 porting Python's format-detection implementation. A bare binary does not imply
 full function discovery: upstream documents loader-symbol-only enumeration and
 address-driven decompilation. Some methods require analyzed project data or a
-live host. Report `NOT_SUPPORTED` faithfully and expose capabilities.
+live host. Those live-only operations are out of scope. Report `NOT_SUPPORTED`
+faithfully for input-dependent local limitations and expose capabilities.
 
 `close()` destroys the client once; GC and `__close` call the same nonthrowing
 release path. Explicit program/project close methods return operation errors and
 accept documented policies. Tests establish any state_path autosave effects.
-Remote ownership stays with the operator; client finalization never issues an
-implicit remote shutdown request. No background tasks are created initially.
+No remote host is managed. No background tasks are created initially.
 
 Out-of-band HTTP cancellation and headless launch are deferred. A blocking Lua
 call cannot be interrupted by another coroutine on the same state; exposing an
@@ -160,8 +160,8 @@ Account for protobuf/Abseil and HTTP dependencies and C++ ABI compatibility.
 LuaRocks uses a CMake-backed source rockspec and installs facade, module, type
 annotations, docs and notices in normal Lua locations. Test staged installation
 and dynamic-library discovery from a fresh working directory. Package metadata
-reports binding version, upstream commit, Lua ABI and enabled backends. An
-HTTP-only package must not advertise offline functionality. Avoid relying on
+reports binding version, upstream commit, Lua ABI and local engine/spec details.
+The local engine is required, not an optional package feature. Avoid relying on
 Python wheel binaries as a C++ SDK.
 
 ## 8. Verification and sources
@@ -169,9 +169,9 @@ Python wheel binaries as a C++ SDK.
 Use CTest to orchestrate plain Lua assertion tests, native tests and integration
 tiers; no large test framework is required initially. Add LuaLS annotations and
 StyLua formatting. Native sanitizers and injected errors cover ownership; real
-fixtures and a real host cover behavior. Python is an optional development oracle,
+fixtures and the real local engine cover behavior. Python LocalClient is an optional development oracle,
 never a dependency of the installed module. Record dependency/compiler versions,
-fixture hashes and host versions with comparisons.
+fixture hashes and engine/spec versions with comparisons.
 
 Inspected upstream sources at the pinned commit:
 
@@ -180,7 +180,6 @@ Inspected upstream sources at the pinned commit:
 - [C++ behavior/build docs](https://github.com/0xeb/libghidra/tree/d51ca813ae1b6b59519551a9be8c0b1ad74d862d/cpp)
 - [License](https://github.com/0xeb/libghidra/blob/d51ca813ae1b6b59519551a9be8c0b1ad74d862d/LICENSE)
 - [sol2 capabilities](https://sol2.readthedocs.io/en/latest/features.html)
-- [SWIG Lua documentation](https://www.swig.org/Doc4.3/Lua.html)
 - [Lua 5.4 manual](https://www.lua.org/manual/5.4/manual.html)
 
 No binding build or integration experiment has been performed during this design.

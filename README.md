@@ -11,6 +11,7 @@ drafted for review; no binding implementation or Saivage deployment exists yet.
 - [Plan](docs/PLAN.md): sequenced implementation work and validation gates.
 - [Automation operations](workflows/OPERATIONS.md): Saivage setup and launch policy.
 
-The proposed baseline is Lua 5.4 on Linux x86-64, C++20 with sol2, local and HTTP
-backends, CMake and LuaRocks. The plan records decisions to confirm before
+The proposed baseline is Lua 5.4 on Linux x86-64, C++20 with sol2, the local
+backend, CMake and LuaRocks. HTTP is out of scope for now; SWIG must not be used.
+The plan records decisions to confirm before
 implementation. Python supplies API inspiration, not a runtime dependency.
