@@ -152,3 +152,22 @@ discard succeeds, exposes native NO_PROGRAM (not CLOSED), retains owner status,
 and only binding owner close permits a new client. This covers the real native
 save-failure branch, not every possible native exception/outcome or persistence
 success. Run `ctest --test-dir build -R ownership_close_failure -V` after building.
+
+## ReadBytes operation-level ordering observer
+
+`read_bytes_dispatch_order` compiles the same owner/boundary sources with two
+nonallocating test-only callbacks: after accepted validation (before native
+request/lock) and immediately before SDK ReadBytes invocation. Production builds
+have neither callbacks nor new exports. The real native client has no program:
+0 and INT32_MAX each reach both phases once in order and return native NO_PROGRAM;
+INT32_MAX+1 and UINT32_MAX reach neither phase and return binding INVALID_ARGUMENT.
+The host replaces ordinary C++ new/new[] to observe request/response allocations
+and refuses any allocation over 1 MiB while calling the operation. Observed
+largest allocations are 42 bytes for accepted values and zero for rejected ones.
+No requested-size buffer or multi-gigabyte read is performed. This is not a
+malloc/aligned-allocation observer or full native allocation/exception sweep;
+source ordering plus dispatch counts establish oversized requests cannot reach
+the SDK's buffer allocation. Existing Lua tests cover facade delegation.
+
+Reproduce: build target `read_order_host`, then run
+`ctest --test-dir build -R read_bytes_dispatch_order -V`.

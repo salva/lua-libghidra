@@ -1,0 +1,63 @@
+// MIT Copyright 2026 Salvador Fandiño.
+#include <lua.hpp>
+#include <cassert>
+#include <cstdlib>
+#include <cstdio>
+#include <new>
+#include <cstdint>
+#include <string_view>
+extern "C" int luaopen_libghidra__native(lua_State*);
+static unsigned phases[2];
+static uint32_t observed[2];
+static bool watching=false;
+static size_t largest=0;
+// Observe C++ request/response allocations. Refuse huge allocations as a safety
+// backstop: an accidental accepted-bound read must never allocate gigabytes.
+void* operator new(size_t n) {
+ if(watching) { if(n>largest) largest=n; if(n>1024*1024) throw std::bad_alloc(); }
+ if(void* p=std::malloc(n?n:1)) return p;
+ throw std::bad_alloc();
+}
+void* operator new[](size_t n) { return ::operator new(n); }
+void operator delete(void* p) noexcept { std::free(p); }
+void operator delete[](void* p) noexcept { std::free(p); }
+void operator delete(void* p,size_t) noexcept { std::free(p); }
+void operator delete[](void* p,size_t) noexcept { std::free(p); }
+namespace llg {
+void observe_read_phase(int phase,uint32_t size) noexcept {
+ assert(phase==0 || phase==1);
+ if(phase==1) assert(phases[0]==1); // validated before SDK
+ ++phases[phase]; observed[phase]=size;
+}
+}
+static int call(lua_State* L) {
+ lua_getfield(L,1,"read_bytes"); lua_pushvalue(L,1);
+ lua_pushinteger(L,0); lua_pushvalue(L,2); lua_call(L,3,2); return 2;
+}
+int main() {
+ lua_State* L=luaL_newstate(); assert(L); luaL_openlibs(L);
+ luaL_requiref(L,"libghidra._native",luaopen_libghidra__native,0);
+ lua_getfield(L,-1,"local_client");
+ assert(lua_pcall(L,0,1,0)==LUA_OK && lua_isuserdata(L,-1));
+ int owner=lua_gettop(L);
+ const lua_Integer sizes[]={0,INT32_MAX,lua_Integer(INT32_MAX)+1,UINT32_MAX};
+ for(lua_Integer size:sizes) {
+  phases[0]=phases[1]=0; largest=0;
+  lua_pushcfunction(L,call); lua_pushvalue(L,owner); lua_pushinteger(L,size);
+  watching=true; int rc=lua_pcall(L,2,2,0); watching=false;
+  assert(rc==LUA_OK && lua_isnil(L,-2) && lua_istable(L,-1));
+  lua_getfield(L,-1,"code"); const char* code=lua_tostring(L,-1);
+  bool accepted=size<=INT32_MAX;
+  assert(code && std::string_view(code)==(accepted?"NO_PROGRAM":"INVALID_ARGUMENT"));
+  lua_pop(L,1);
+  lua_getfield(L,-1,"backend");
+  assert(std::string_view(lua_tostring(L,-1))==(accepted?"local":"binding")); lua_pop(L,1);
+  assert(phases[0]==unsigned(accepted) && phases[1]==unsigned(accepted));
+  if(accepted) assert(observed[0]==size && observed[1]==size);
+  assert(largest<1024*1024);
+  std::printf("ReadBytes %lld: validated=%u dispatched=%u largest C++ allocation=%zu PASS\n",
+              (long long)size,phases[0],phases[1],largest);
+  lua_pop(L,2);
+ }
+ lua_close(L);
+}

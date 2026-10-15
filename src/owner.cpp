@@ -8,6 +8,10 @@
 #include <cstdio>
 #include <stdexcept>
 namespace llg {
+#ifdef LLG_READ_OBSERVER
+// Test-build-only observer: no Lua calls, allocations or production exports.
+void observe_read_phase(int phase, uint32_t size) noexcept;
+#endif
 namespace {
 namespace c = libghidra::client;
 constexpr const char* mt = "libghidra.owner";
@@ -153,6 +157,9 @@ int dispatch(lua_State* L) {
   else if(!(ok && t.n==7 && !memcmp(t.s,"discard",7))) ok=false;
  } else if(kind==6) ok=read_u64(L,2,&address) && read_size(L,3,&size);
  if(!ok) return error(L,op,"invalid operation arguments");
+#ifdef LLG_READ_OBSERVER
+ if(kind==6) observe_read_phase(0,size); // validated, before native request/lock
+#endif
  luaL_checkstack(L,32,"dispatch stack");
  Slot* s=slot(L); // Revalidate AFTER all Lua-running parsing/stack growth.
  int top=lua_gettop(L),rc,n;
@@ -173,7 +180,11 @@ int dispatch(lua_State* L) {
      case 3: { c::ShutdownResponse r; if(take(p,client->Shutdown(policy),r)) p.flag=r.accepted; break; }
      case 4: take(p,client->GetRevision(),p.revision); break;
      case 5: take(p,client->GetCapabilities(),p.capabilities); break;
-     case 6: take(p,client->ReadBytes(address,size),p.bytes); break;
+     case 6:
+#ifdef LLG_READ_OBSERVER
+      observe_read_phase(1,size); // immediately before SDK invocation
+#endif
+      take(p,client->ReadBytes(address,size),p.bytes); break;
     }
    }
   } catch(const std::exception& e) { exception(p,e.what()); p.backend="binding"; }
