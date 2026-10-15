@@ -8,7 +8,7 @@ from pathlib import Path
 import re
 import sys
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from inventory_semantics import review_pages, review_aggregate_pages
+from inventory_semantics import review_pages, review_aggregate_pages, review_session_records
 
 PIN = 'd51ca813ae1b6b59519551a9be8c0b1ad74d862d'
 ROOT = Path(__file__).resolve().parents[1]
@@ -140,6 +140,7 @@ def inventory(u):
         ops.append(dict(name=name,lowlevel=snake if included else None,tier=tier,facade=facade,dispatch=cls if included else 'excluded',generation='invalidate before dispatch, including failure/partial effect' if cls!='read' and included else 'unchanged',program_state=('requires loaded program' if 'ensure_loaded()' in b else 'no ensure_loaded guard in override; inspect lifecycle/helper') if included else 'not locally implemented; inherited NOT_SUPPORTED',declaration=d,implementation={k:v for k,v in impl.items() if k!='body'} if impl else None,request=request,response={'native_type':d['response_type'],'lua':lua(d['response_type']),'fields':response_fields},native_literal_errors=sorted(set(re.findall(r'FromError\(\s*"([^"]*)"',b))),pagination=page,limitations=limitations,ignored_fields=ignored,evidence={'positive':{'status':'unqualified','fixture':None,'command':None,'assertions':'real supported case with all response fields; defined strings fidelity exception applies'},'negative':{'status':'unqualified','fixture':None,'command':None,'assertions':'unloaded/unsupported/validation and recorded limitations'},'python_oracle':'unqualified'},exclusion=None if included else 'HTTP/shared default only; api.hpp NOT_SUPPORTED does not establish local support'))
     review_pages(u, ops)
     review_aggregate_pages(u, ops)
+    review_session_records(u, ops)
     python=[]
     # Independent public operations and model fields, including HTTP/async/headless exclusions.
     for p in sorted((u/'python/src/libghidra').glob('*.py')):

@@ -153,3 +153,32 @@ A new independent source probe removes the signature presence guard and must
 fail the reviewed contract instead of accepting regeneration. This progress does
 not resolve exact facade signatures, Python/pybind conversions, all nested field
 semantics, remaining native mutation/lifecycle helpers, or runtime evidence gates.
+
+## Session/performance branch review (fifth repair attempt)
+
+Nine more operations now have explicit state-transition contracts: save, discard,
+revision, close, shutdown and four performance-store operations. Native revision
+and binding dispatch generation are separate: discard and close do not increment
+native revision, but dispatched binding lifecycle/mutation still invalidates
+iterators as specified. Shutdown while unloaded succeeds; CloseProgram while
+unloaded errors. Failed save during close precedes adapter reset and preserves
+logical access. An empty state_path skips saving in native close, unlike explicit
+SaveProgram's NO_STATE_PATH. The facade's stricter save-close policy remains a
+binding concern, not a claimed native error.
+
+resetAdapters destroys adapter objects but retains slot-owned decompiler engines.
+This is not engine unload or owner release. Discard is true even without a program
+and never rolls back. Performance records require a loaded program; empty bench_id
+uses lowercase invalid_argument. Upsert removes matches then appends (replacement
+moves to tail); delete increments revision only on actual removal; clear increments
+even when empty and casts removed count to uint32. ListPerfBenchmarks is a complete
+unpaged vector with bench_id identity and insertion/upsert order, not a generic
+paged enumeration. Runtime persistence, large-count bounds and real fixtures are
+still unqualified.
+
+Independent probes now detect adding engine reset to resetAdapters and changing
+conditional delete revision increments. A failed initial generator assertion
+incorrectly prohibited all reset calls; source review corrected it to prohibit
+engine reset while requiring adapter reset. That failed check was resolved, not
+counted as a passing run. Nine tests now pass. Remaining exhaustive conversion,
+mutation, field and facade review gates are still explicit.

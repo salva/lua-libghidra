@@ -323,7 +323,7 @@
         "invalid_argument"
       ],
       "pagination": null,
-      "program_state": "no ensure_loaded guard in override; inspect lifecycle/helper",
+      "program_state": "loaded required; empty bench_id -> lowercase invalid_argument",
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
@@ -450,6 +450,13 @@
         "lua": "AddPerfBenchmarkResponse table/enum; resolve in types/enums",
         "native_type": "AddPerfBenchmarkResponse"
       },
+      "semantic_review": "LocalClient session/performance error, state and revision branches reviewed; downstream persistence and runtime remain unqualified",
+      "session_source_review": {
+        "body_sha256": "bc9fc07906bb8525b1ba1adb87b567a59f2bc5b84f9d686fe6c2b845f2ebb79d",
+        "line": 216,
+        "path": "cpp/src/local_client.cpp"
+      },
+      "state_transitions": "erase matching bench_id then append detached record; replacement moves to tail; revision increments on every successful upsert; added=true",
       "tier": "full"
     },
     {
@@ -820,14 +827,16 @@
           "path": "cpp/src/local_client.cpp"
         }
       },
-      "limitations": [],
+      "limitations": [
+        "binding must constrain supported vector count <=UINT32_MAX before relying on removed_count; native cast can truncate larger counts"
+      ],
       "lowlevel": "clear_perf_benchmarks",
       "name": "ClearPerfBenchmarks",
       "native_literal_errors": [
         "NO_PROGRAM"
       ],
       "pagination": null,
-      "program_state": "no ensure_loaded guard in override; inspect lifecycle/helper",
+      "program_state": "loaded required",
       "request": [],
       "response": {
         "fields": [
@@ -855,6 +864,13 @@
         "lua": "ClearPerfBenchmarksResponse table/enum; resolve in types/enums",
         "native_type": "ClearPerfBenchmarksResponse"
       },
+      "semantic_review": "LocalClient session/performance error, state and revision branches reviewed; downstream persistence and runtime remain unqualified",
+      "session_source_review": {
+        "body_sha256": "2c09130cb833ae7983058593835c13ddfec1e4fe7c14eff619f498e2b56a873b",
+        "line": 254,
+        "path": "cpp/src/local_client.cpp"
+      },
+      "state_transitions": "removed_count uint32 cast from vector size; cleared=true even empty; clear then native revision increments unconditionally",
       "tier": "full"
     },
     {
@@ -894,13 +910,17 @@
         }
       },
       "limitations": [
-        "logical program access closure; engines retained; owner remains usable; do not label CLOSED"
+        "logical program access closure; engines retained; owner remains usable; do not label CLOSED",
+        "helper save failure occurs before logical close; owner CLOSED is binding release only; native close does not increment revision"
       ],
       "lowlevel": "close_program",
       "name": "CloseProgram",
-      "native_literal_errors": [],
+      "native_literal_errors": [
+        "NO_PROGRAM",
+        "SAVE_FAILED"
+      ],
       "pagination": null,
-      "program_state": "no ensure_loaded guard in override; inspect lifecycle/helper",
+      "program_state": "unloaded -> NO_PROGRAM",
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
@@ -926,6 +946,13 @@
         "lua": "CloseProgramResponse table/enum; resolve in types/enums",
         "native_type": "CloseProgramResponse"
       },
+      "semantic_review": "LocalClient session/performance error, state and revision branches reviewed; downstream persistence and runtime remain unqualified",
+      "session_source_review": {
+        "body_sha256": "62fbf1c8ed823726cfaf8505250e15860b8931ec1f224633ab05096aaf347580",
+        "line": 159,
+        "path": "cpp/src/local_client.cpp"
+      },
+      "state_transitions": "kSave with nonempty state_path attempts save; failure preserves access/benchmarks; empty state_path skips saving; all nonsave policies close; reset adapters, loaded=false and clear benchmarks; engines retained",
       "tier": "slice"
     },
     {
@@ -1980,7 +2007,7 @@
         "invalid_argument"
       ],
       "pagination": null,
-      "program_state": "no ensure_loaded guard in override; inspect lifecycle/helper",
+      "program_state": "loaded required; empty bench_id -> lowercase invalid_argument",
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
@@ -2006,6 +2033,13 @@
         "lua": "DeletePerfBenchmarkResponse table/enum; resolve in types/enums",
         "native_type": "DeletePerfBenchmarkResponse"
       },
+      "semantic_review": "LocalClient session/performance error, state and revision branches reviewed; downstream persistence and runtime remain unqualified",
+      "session_source_review": {
+        "body_sha256": "9239c5d6119bae7a1f51d3a9dcc76d7f09d9e7c934e9c4de6f86e6163a30b095",
+        "line": 268,
+        "path": "cpp/src/local_client.cpp"
+      },
+      "state_transitions": "erase matching bench_id; deleted=false if absent; revision increments only when an entry removed",
       "tier": "full"
     },
     {
@@ -2506,7 +2540,7 @@
       "name": "DiscardProgram",
       "native_literal_errors": [],
       "pagination": null,
-      "program_state": "no ensure_loaded guard in override; inspect lifecycle/helper",
+      "program_state": "owner open; no loaded-program guard",
       "request": [],
       "response": {
         "fields": [
@@ -2524,6 +2558,13 @@
         "lua": "DiscardProgramResponse table/enum; resolve in types/enums",
         "native_type": "DiscardProgramResponse"
       },
+      "semantic_review": "LocalClient session/performance error, state and revision branches reviewed; downstream persistence and runtime remain unqualified",
+      "session_source_review": {
+        "body_sha256": "d5e5578cf0fa8ee9613f8bad6130621acbab681bf181ebf69ae33189de3ce9b4",
+        "line": 185,
+        "path": "cpp/src/local_client.cpp"
+      },
+      "state_transitions": "discarded=true even unloaded; no rollback, state change or native revision increment",
       "tier": "core"
     },
     {
@@ -3850,7 +3891,7 @@
       "name": "GetRevision",
       "native_literal_errors": [],
       "pagination": null,
-      "program_state": "no ensure_loaded guard in override; inspect lifecycle/helper",
+      "program_state": "owner open; usable without program",
       "request": [],
       "response": {
         "fields": [
@@ -3918,6 +3959,13 @@
         "lua": "RevisionResponse table/enum; resolve in types/enums",
         "native_type": "RevisionResponse"
       },
+      "semantic_review": "LocalClient session/performance error, state and revision branches reviewed; downstream persistence and runtime remain unqualified",
+      "session_source_review": {
+        "body_sha256": "85aacc9ae925c891545c9ee83197b82c334d1b11d3137bce0c17038c6790282e",
+        "line": 192,
+        "path": "cpp/src/local_client.cpp"
+      },
+      "state_transitions": "modification_number exact UInt64 revision_; no reset/refresh implied",
       "tier": "core"
     },
     {
@@ -7984,6 +8032,14 @@
       "tier": "core"
     },
     {
+      "collection_contract": {
+        "identity": [
+          "bench_id"
+        ],
+        "order": "vector insertion/upsert order; replacements appended",
+        "pagination": "none: whole vector; no iterator cursor contract",
+        "qualification": "unqualified"
+      },
       "declaration": {
         "arguments": "",
         "response_type": "ListPerfBenchmarksResponse",
@@ -8026,7 +8082,7 @@
         "NO_PROGRAM"
       ],
       "pagination": null,
-      "program_state": "no ensure_loaded guard in override; inspect lifecycle/helper",
+      "program_state": "loaded required",
       "request": [],
       "response": {
         "fields": [
@@ -8144,6 +8200,13 @@
         "lua": "ListPerfBenchmarksResponse table/enum; resolve in types/enums",
         "native_type": "ListPerfBenchmarksResponse"
       },
+      "semantic_review": "LocalClient session/performance error, state and revision branches reviewed; downstream persistence and runtime remain unqualified",
+      "session_source_review": {
+        "body_sha256": "377a5743fb176b83ea0773b3155fb6f0ad0f879f7b1b860a964c207add0cd1ef",
+        "line": 243,
+        "path": "cpp/src/local_client.cpp"
+      },
+      "state_transitions": "complete vector in insertion/upsert order; no pagination/filter/cursor; identity bench_id; order not lexical",
       "tier": "full"
     },
     {
@@ -12085,7 +12148,7 @@
         "SAVE_FAILED"
       ],
       "pagination": null,
-      "program_state": "no ensure_loaded guard in override; inspect lifecycle/helper",
+      "program_state": "loaded program; empty state_path -> NO_STATE_PATH",
       "request": [],
       "response": {
         "fields": [
@@ -12103,6 +12166,13 @@
         "lua": "SaveProgramResponse table/enum; resolve in types/enums",
         "native_type": "SaveProgramResponse"
       },
+      "semantic_review": "LocalClient session/performance error, state and revision branches reviewed; downstream persistence and runtime remain unqualified",
+      "session_source_review": {
+        "body_sha256": "fea6aa65039311a7d1d12b5e3c4cb173dd63e82d5168afbd8172ef20c8259952",
+        "line": 164,
+        "path": "cpp/src/local_client.cpp"
+      },
+      "state_transitions": "saveState failure -> SAVE_FAILED; success saved=true; does not close or increment native revision",
       "tier": "core"
     },
     {
@@ -13624,13 +13694,14 @@
         }
       },
       "limitations": [
-        "logical program access closure; engines retained; owner remains usable; do not label CLOSED"
+        "logical program access closure; engines retained; owner remains usable; do not label CLOSED",
+        "helper save failure occurs before logical close; owner CLOSED is binding release only; native close does not increment revision"
       ],
       "lowlevel": "shutdown",
       "name": "Shutdown",
       "native_literal_errors": [],
       "pagination": null,
-      "program_state": "no ensure_loaded guard in override; inspect lifecycle/helper",
+      "program_state": "owner open; unloaded accepted=true",
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
@@ -13656,6 +13727,13 @@
         "lua": "ShutdownResponse table/enum; resolve in types/enums",
         "native_type": "ShutdownResponse"
       },
+      "semantic_review": "LocalClient session/performance error, state and revision branches reviewed; downstream persistence and runtime remain unqualified",
+      "session_source_review": {
+        "body_sha256": "e86f082c7193fe6c1c9515fe28e8ace179db07d154ec57d8d33f52822241b0d3",
+        "line": 199,
+        "path": "cpp/src/local_client.cpp"
+      },
+      "state_transitions": "loaded delegates closeProgramLocked; propagates failure code/message unchanged; success accepted=true; does not terminate host or release owner",
       "tier": "full"
     },
     {

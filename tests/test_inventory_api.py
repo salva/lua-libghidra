@@ -104,10 +104,29 @@ class InventoryTests(unittest.TestCase):
             with self.assertRaises(AssertionError):
                 module.inventory(root)
             local.write_text(local_original)
+            local.write_text(local_original.replace('if (deleted) revision_++', 'revision_++'))
+            with self.assertRaises(AssertionError):
+                module.inventory(root)
+            local.write_text(local_original)
+            pool = root/'cpp/src/decompiler_pool.cpp'
+            pool_original = pool.read_text()
+            pool.write_text(pool_original.replace('slot.adapter.reset();', 'slot.adapter.reset(); slot.decomp.reset();'))
+            with self.assertRaises(AssertionError):
+                module.inventory(root)
+            pool.write_text(pool_original)
             header = root/'cpp/src/local_arch_adapter.hpp'
             header.write_text(header.read_text().replace('std::map<std::pair<std::uint64_t, int>, std::string> comments_', 'std::multimap<std::pair<std::uint64_t, int>, std::string> comments_'))
             with self.assertRaises(AssertionError):
                 module.inventory(root)
+
+    def test_session_and_performance_branches(self):
+        self.assertIn('even unloaded', self.ops['DiscardProgram']['state_transitions'])
+        self.assertIn('empty state_path skips', self.ops['CloseProgram']['state_transitions'])
+        self.assertIn('unloaded accepted=true', self.ops['Shutdown']['program_state'])
+        self.assertIn('moves to tail', self.ops['AddPerfBenchmark']['state_transitions'])
+        self.assertIn('only when', self.ops['DeletePerfBenchmark']['state_transitions'])
+        self.assertIn('UINT32_MAX', ' '.join(self.ops['ClearPerfBenchmarks']['limitations']))
+        self.assertEqual(self.ops['ListPerfBenchmarks']['collection_contract']['identity'], ['bench_id'])
 
     def test_aggregate_cursor_domains_and_failure_retention(self):
         self.assertEqual(self.ops['ListFunctionSignatures']['pagination']['cursor_domain'], 'candidate functions')

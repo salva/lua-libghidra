@@ -131,3 +131,49 @@ def review_aggregate_pages(u, operations):
             op['limitations'].append('native batch retained; failed decompilations are present records, not missing optional values; error_message from decompileWithLocals')
         op['semantic_review']='aggregate cursor/filter/ordering branches reviewed; remaining conversion/field and runtime gates open'
     return operations
+
+
+def review_session_records(u, operations):
+    """Explicit state/error branches, kept separate from dispatch generation policy."""
+    source = (u/LOCAL).read_text()
+    _, close = body(source, 'closeProgramLocked(ShutdownPolicy policy)')
+    assert close.index('SAVE_FAILED') < close.index('resetAdapters()') < close.index('program_loaded_ = false')
+    assert 'should_save && !opts_.state_path.empty()' in close
+    pool = (u/'cpp/src/decompiler_pool.cpp').read_text()
+    _, reset = body(pool, 'DecompilerPool::resetAdapters(')
+    assert 'slot.adapter.reset()' in reset and 'slot.decomp.reset()' not in reset
+    contracts = {
+        'SaveProgram': ('loaded program; empty state_path -> NO_STATE_PATH', 'saveState failure -> SAVE_FAILED; success saved=true; does not close or increment native revision'),
+        'DiscardProgram': ('owner open; no loaded-program guard', 'discarded=true even unloaded; no rollback, state change or native revision increment'),
+        'GetRevision': ('owner open; usable without program', 'modification_number exact UInt64 revision_; no reset/refresh implied'),
+        'CloseProgram': ('unloaded -> NO_PROGRAM', 'kSave with nonempty state_path attempts save; failure preserves access/benchmarks; empty state_path skips saving; all nonsave policies close; reset adapters, loaded=false and clear benchmarks; engines retained'),
+        'Shutdown': ('owner open; unloaded accepted=true', 'loaded delegates closeProgramLocked; propagates failure code/message unchanged; success accepted=true; does not terminate host or release owner'),
+        'AddPerfBenchmark': ('loaded required; empty bench_id -> lowercase invalid_argument', 'erase matching bench_id then append detached record; replacement moves to tail; revision increments on every successful upsert; added=true'),
+        'ListPerfBenchmarks': ('loaded required', 'complete vector in insertion/upsert order; no pagination/filter/cursor; identity bench_id; order not lexical'),
+        'ClearPerfBenchmarks': ('loaded required', 'removed_count uint32 cast from vector size; cleared=true even empty; clear then native revision increments unconditionally'),
+        'DeletePerfBenchmark': ('loaded required; empty bench_id -> lowercase invalid_argument', 'erase matching bench_id; deleted=false if absent; revision increments only when an entry removed'),
+    }
+    for op in operations:
+        if op['name'] not in contracts: continue
+        name=op['name']; start,text=body(source, ' '+name+'(')
+        state, transitions=contracts[name]
+        op['program_state']=state
+        op['state_transitions']=transitions
+        op['semantic_review']='LocalClient session/performance error, state and revision branches reviewed; downstream persistence and runtime remain unqualified'
+        op['session_source_review']={'path':LOCAL,'line':source.count('\n',0,start)+1,'body_sha256':hashlib.sha256(text.encode()).hexdigest()}
+        if name in ['CloseProgram','Shutdown']:
+            op['native_literal_errors']=sorted(set(op['native_literal_errors']+['NO_PROGRAM','SAVE_FAILED'])) if name=='CloseProgram' else op['native_literal_errors']
+            op['limitations'].append('helper save failure occurs before logical close; owner CLOSED is binding release only; native close does not increment revision')
+        if 'PerfBenchmark' in name:
+            assert 'if (!program_loaded_)' in text
+            if name in ['AddPerfBenchmark','DeletePerfBenchmark']:
+                assert '"invalid_argument"' in text
+            if name=='AddPerfBenchmark':
+                assert text.index('perf_benchmarks_.erase') < text.index('perf_benchmarks_.push_back(record)')
+            if name=='DeletePerfBenchmark': assert 'if (deleted) revision_++' in text
+            if name=='ListPerfBenchmarks':
+                op['collection_contract']={'identity':['bench_id'],'order':'vector insertion/upsert order; replacements appended','pagination':'none: whole vector; no iterator cursor contract','qualification':'unqualified'}
+            if name=='ClearPerfBenchmarks':
+                op['limitations'].append('binding must constrain supported vector count <=UINT32_MAX before relying on removed_count; native cast can truncate larger counts')
+        if name=='DiscardProgram': assert 'program_loaded_' not in text and 'revision_++' not in text
+    return operations
