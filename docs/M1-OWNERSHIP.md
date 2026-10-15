@@ -287,3 +287,22 @@ it does not substitute for native phase-overlap instrumentation, every-frame
 longjmp audit, allocator-driven finalizer scheduling or full M1 qualification.
 Historical failing commands above remain intentional provenance, not expected
 failures or assertions removed from the test.
+
+### Combined native exception and Lua error-conversion allocation denial
+
+The response fault host now runs the Lua allocation sweep in two modes. The
+existing successful native response mode remains; the new mode persistently
+refuses ordinary C++ allocation from the first attempt AND sweeps persistent Lua
+growth refusal during the same GetCapabilities call. Every iteration requires
+an actual native refusal. Reached Lua refusal requires LUA_ERRMEM; the measured
+no-Lua-refusal tail instead requires NATIVE_EXCEPTION/binding/get_capabilities.
+Both modes require ordinary C++ block/byte balance and a complete restored-fault
+same-owner retry after every iteration. Current runs reach six denied Lua points
+in the native-exception mode (26 in successful native-response mode).
+
+This covers native catch/fallback followed by failing protected error conversion,
+with error rethrow only after Packet destruction. It does not manufacture a throw
+in a callback. Automatic GC is stopped, so no finalizer scheduling is claimed.
+It is not partial-engine construction cleanup, semantic destructor counting,
+all-frame/sanitizer qualification, or exhaustive native allocation traces.
+Reproduce with target read_order_host and CTest read_bytes_dispatch_order.

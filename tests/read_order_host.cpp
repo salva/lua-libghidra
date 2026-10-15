@@ -146,18 +146,32 @@ int main() {
  std::printf("GetCapabilities allocation sweep: %u reached failures, success tail, same-owner retries and block/byte balance PASS\n",reached);
  // Deny Lua conversion allocations after a successful allocating native call.
  // The Packet's vector/strings must die even when conversion longjmps.
+ for(int native_fault=0;native_fault<2;++native_fault) {
  unsigned lua_reached=0,lua_tail=0;
  lua_gc(L,LUA_GCSTOP);
  for(size_t point=1;point<=512;++point) {
   const size_t blocks=live_blocks,bytes=live_bytes;
   lua_pushcfunction(L,capabilities); lua_pushvalue(L,owner);
   allocator.calls=allocator.refused=0; allocator.fail=point;
+  attempts=denied=0; deny_after=1;
+  watching=deny=bool(native_fault);
   int result=lua_pcall(L,1,2,0);
+  watching=deny=false;
   allocator.fail=SIZE_MAX;
+  if(native_fault) assert(denied>0);
   if(allocator.refused) {
    ++lua_reached; assert(result==LUA_ERRMEM); lua_pop(L,1);
   } else {
-   ++lua_tail; assert(result==LUA_OK && lua_istable(L,-2) && lua_rawlen(L,-2)>0);
+   ++lua_tail; assert(result==LUA_OK);
+   if(native_fault) {
+    assert(lua_isnil(L,-2) && lua_istable(L,-1));
+    lua_getfield(L,-1,"code");
+    assert(std::string_view(lua_tostring(L,-1))=="NATIVE_EXCEPTION"); lua_pop(L,1);
+    lua_getfield(L,-1,"backend");
+    assert(std::string_view(lua_tostring(L,-1))=="binding"); lua_pop(L,1);
+    lua_getfield(L,-1,"operation");
+    assert(std::string_view(lua_tostring(L,-1))=="get_capabilities"); lua_pop(L,1);
+   } else assert(lua_istable(L,-2) && lua_rawlen(L,-2)>0);
    lua_pop(L,2);
   }
   assert(live_blocks==blocks && live_bytes==bytes);
@@ -167,7 +181,8 @@ int main() {
   if(lua_tail) break;
  }
  assert(lua_reached>1 && lua_tail==1);
- std::printf("GetCapabilities Lua conversion OOM: %u reached, success tail, native block/byte balance PASS\n",lua_reached);
+ std::printf("GetCapabilities Lua conversion OOM (native fault=%d): %u reached, success tail, native block/byte balance PASS\n",native_fault,lua_reached);
  lua_gc(L,LUA_GCRESTART);
+ }
  lua_close(L); assert(allocator.bytes==0);
 }
