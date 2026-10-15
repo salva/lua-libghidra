@@ -1,0 +1,37 @@
+ 0x0000000000000001 (NEEDED)             Shared library: [libbfd-2.42-system.so]
+ 0x0000000000000001 (NEEDED)             Shared library: [libstdc++.so.6]
+ 0x0000000000000001 (NEEDED)             Shared library: [libm.so.6]
+ 0x0000000000000001 (NEEDED)             Shared library: [libgcc_s.so.1]
+ 0x0000000000000001 (NEEDED)             Shared library: [libc.so.6]
+ 0x0000000000000001 (NEEDED)             Shared library: [ld-linux-x86-64.so.2]
+                 U lua_absindex
+                 U lua_createtable
+                 U lua_error
+                 U lua_isinteger
+                 U luaL_newmetatable
+                 U luaL_setmetatable
+                 U luaL_testudata
+                 U lua_newuserdatauv
+                 U lua_next
+000000000021b6a0 T luaopen_libghidra__native
+                 U lua_pushboolean
+                 U lua_pushcclosure
+                 U lua_pushinteger
+                 U lua_pushlstring
+                 U lua_pushnil
+                 U lua_pushstring
+                 U lua_setfield
+                 U lua_settop
+                 U lua_toboolean
+                 U lua_tointegerx
+                 U lua_tolstring
+                 U lua_type
+	linux-vdso.so.1 (0x00007cf67d250000)
+	libm.so.6 => /lib/x86_64-linux-gnu/libm.so.6 (0x00007cf67d118000)
+	libc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x00007cf67ce00000)
+	/lib64/ld-linux-x86-64.so.2 (0x00007cf67d252000)
+	linux-vdso.so.1 (0x00007dc64eb42000)
+	liblua5.4.so.0 => /lib/x86_64-linux-gnu/liblua5.4.so.0 (0x00007dc64eaef000)
+	libc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x00007dc64e800000)
+	libm.so.6 => /lib/x86_64-linux-gnu/libm.so.6 (0x00007dc64e717000)
+	/lib64/ld-linux-x86-64.so.2 (0x00007dc64eb44000)

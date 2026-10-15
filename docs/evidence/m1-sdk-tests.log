@@ -1,0 +1,48 @@
+Internal ctest changing into directory: /work/lua-libghidra/build
+UpdateCTestConfiguration  from :/work/lua-libghidra/build/DartConfiguration.tcl
+Parse Config file:/work/lua-libghidra/build/DartConfiguration.tcl
+UpdateCTestConfiguration  from :/work/lua-libghidra/build/DartConfiguration.tcl
+Parse Config file:/work/lua-libghidra/build/DartConfiguration.tcl
+Test project /work/lua-libghidra/build
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 1
+    Start 1: boundary_lua
+
+1: Test command: /usr/bin/lua5.4 "/work/lua-libghidra/tests/run.lua" "/work/lua-libghidra" "/work/lua-libghidra/build"
+1: Working Directory: /work/lua-libghidra/build
+1: Test timeout computed to be: 1500
+1: boundary: exact UInt64, errors, page and no-buffer size validation PASS
+1/4 Test #1: boundary_lua .....................   Passed    0.03 sec
+test 2
+    Start 2: boundary_host
+
+2: Test command: /work/lua-libghidra/build/boundary_host
+2: Working Directory: /work/lua-libghidra/build
+2: Test timeout computed to be: 1500
+2: detached conversions + persistent OOM sweep: 110 allocation boundaries PASS
+2/4 Test #2: boundary_host ....................   Passed    0.05 sec
+test 3
+    Start 3: boundary_static_vm
+
+3: Test command: /work/lua-libghidra/build/boundary_static_host "/work/lua-libghidra/tests/run.lua" "/work/lua-libghidra" "/work/lua-libghidra/build"
+3: Working Directory: /work/lua-libghidra/build
+3: Test timeout computed to be: 1500
+3: boundary: exact UInt64, errors, page and no-buffer size validation PASS
+3/4 Test #3: boundary_static_vm ...............   Passed    0.02 sec
+test 4
+    Start 4: boundary_shared_vm
+
+4: Test command: /work/lua-libghidra/build/boundary_shared_host "/work/lua-libghidra/tests/run.lua" "/work/lua-libghidra" "/work/lua-libghidra/build"
+4: Working Directory: /work/lua-libghidra/build
+4: Test timeout computed to be: 1500
+4: boundary: exact UInt64, errors, page and no-buffer size validation PASS
+4/4 Test #4: boundary_shared_vm ...............   Passed    0.01 sec
+
+100% tests passed, 0 tests failed out of 4
+
+Total Test time (real) =   0.12 sec

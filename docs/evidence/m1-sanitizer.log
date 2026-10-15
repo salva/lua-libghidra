@@ -1,0 +1,25 @@
+-- The C compiler identification is GNU 13.3.0
+-- The CXX compiler identification is GNU 13.3.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
+-- Found Threads: TRUE  
+-- Found PkgConfig: /usr/bin/pkg-config (found version "1.8.1") 
+-- Checking for module 'lua5.4'
+--   Found lua5.4, version 5.4.6
+-- Configuring done (2.5s)
+-- Generating done (0.1s)
+-- Build files have been written to: /work/lua-libghidra/.saivage/work/cards/card-b-a/sanitizer-foundation/build
+[1/3] Building CXX object CMakeFiles/boundary_host.dir/tests/boundary_host.cpp.o
+[2/3] Building CXX object CMakeFiles/boundary_host.dir/src/boundary.cpp.o
+[3/3] Linking CXX executable boundary_host
+detached conversions + persistent OOM sweep: 110 allocation boundaries PASS

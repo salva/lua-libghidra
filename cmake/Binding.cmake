@@ -1,0 +1,38 @@
+# MIT Copyright 2026 Salvador Fandiño.
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(LUA REQUIRED lua5.4)
+add_library(lua_ghidra MODULE ${PROJECT_SOURCE_DIR}/src/boundary.cpp)
+target_include_directories(lua_ghidra PRIVATE ${LUA_INCLUDE_DIRS})
+target_compile_options(lua_ghidra PRIVATE -Wall -Wextra -Wpedantic)
+target_link_libraries(lua_ghidra PRIVATE binding_local_whole)
+# Deliberately NO liblua: every Lua symbol must resolve to the loading host.
+set_target_properties(lua_ghidra PROPERTIES PREFIX "" OUTPUT_NAME _native
+  LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/libghidra")
+set(LUA_MODULE_DIR lib/lua/5.4 CACHE STRING "Lua native module installation directory")
+set(LUA_SOURCE_DIR share/lua/5.4 CACHE STRING "Lua source installation directory")
+install(TARGETS lua_ghidra LIBRARY DESTINATION "${LUA_MODULE_DIR}/libghidra")
+install(DIRECTORY "${PROJECT_SOURCE_DIR}/lua/libghidra" DESTINATION "${LUA_SOURCE_DIR}")
+include(CTest)
+if(BUILD_TESTING)
+  find_program(LUA_EXECUTABLE lua5.4 REQUIRED)
+  add_test(NAME boundary_lua COMMAND ${LUA_EXECUTABLE}
+    ${PROJECT_SOURCE_DIR}/tests/run.lua ${PROJECT_SOURCE_DIR} ${CMAKE_BINARY_DIR})
+  add_executable(boundary_host ${PROJECT_SOURCE_DIR}/tests/boundary_host.cpp
+    ${PROJECT_SOURCE_DIR}/src/boundary.cpp)
+  target_include_directories(boundary_host PRIVATE ${LUA_INCLUDE_DIRS} ${PROJECT_SOURCE_DIR}/src)
+  target_compile_options(boundary_host PRIVATE -UNDEBUG)
+  target_link_libraries(boundary_host PRIVATE ${LUA_LIBRARIES})
+  add_test(NAME boundary_host COMMAND boundary_host)
+  find_library(LUA_STATIC_ARCHIVE NAMES liblua5.4.a REQUIRED)
+  add_executable(boundary_static_host ${PROJECT_SOURCE_DIR}/tests/embedded.c)
+  target_include_directories(boundary_static_host PRIVATE ${LUA_INCLUDE_DIRS})
+  target_link_libraries(boundary_static_host PRIVATE ${LUA_STATIC_ARCHIVE} m dl)
+  target_link_options(boundary_static_host PRIVATE -Wl,--export-dynamic)
+  add_test(NAME boundary_static_vm COMMAND boundary_static_host
+    ${PROJECT_SOURCE_DIR}/tests/run.lua ${PROJECT_SOURCE_DIR} ${CMAKE_BINARY_DIR})
+  add_executable(boundary_shared_host ${PROJECT_SOURCE_DIR}/tests/embedded.c)
+  target_include_directories(boundary_shared_host PRIVATE ${LUA_INCLUDE_DIRS})
+  target_link_libraries(boundary_shared_host PRIVATE ${LUA_LIBRARIES})
+  add_test(NAME boundary_shared_vm COMMAND boundary_shared_host
+    ${PROJECT_SOURCE_DIR}/tests/run.lua ${PROJECT_SOURCE_DIR} ${CMAKE_BINARY_DIR})
+endif()

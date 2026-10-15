@@ -1,0 +1,6 @@
+-- Install configuration: "RelWithDebInfo"
+-- Installing: /work/lua-libghidra/.saivage/work/cards/card-b-a/staged-check/prefix/lib/lua/5.4/libghidra/_native.so
+-- Installing: /work/lua-libghidra/.saivage/work/cards/card-b-a/staged-check/prefix/share/lua/5.4/libghidra
+-- Installing: /work/lua-libghidra/.saivage/work/cards/card-b-a/staged-check/prefix/share/lua/5.4/libghidra/lowlevel.lua
+-- Installing: /work/lua-libghidra/.saivage/work/cards/card-b-a/staged-check/prefix/share/lua/5.4/libghidra/init.lua
+boundary: exact UInt64, errors, page and no-buffer size validation PASS
