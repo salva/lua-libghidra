@@ -1,8 +1,41 @@
 # M0 license applicability determination
 
 Research for [[card:card-a-a]], 2026-10-15. This is a factual license/authority
-assessment, not legal assurance, a binding license selection, or permission to
-publish. No binding was implemented and no permission request was sent.
+assessment, not legal assurance or permission to publish. The operator has
+selected MIT for original wrapper code/documentation (see update below). No binding was implemented and no permission request was sent.
+
+## Owner MIT decision — current authority update
+
+Inspected owner commit `eeb4315816046819c92902a2db1e2e1a8082c66e`, root
+[LICENSE](../LICENSE), and its README/SPEC/PLAN/LAUNCH changes. This is new
+repository authority, not a permission inferred from prior research. The root
+license says “Copyright (c) 2026 Salvador Fandiño” and grants MIT rights for
+original wrapper code/documentation. LAUNCH explicitly says this “settles the
+wrapper-license choice, not third-party license applicability or permission to
+publish”. Use MIT for future wrapper package metadata; no license choice remains
+for the owner to make here.
+
+Keep the complete MIT copyright/permission notice and disclaimer with copies or
+substantial portions of original wrapper material. Keep upstream HOS and each
+third-party license/notices separately scoped in packaging; do not label the
+entire linked module/dependency bundle MIT or replace upstream copyright with the
+wrapper copyright. Visible libghidra/Elias Bachaalany origin/provenance disclosure,
+exact applicable HOS license/source references and other dependency obligations
+remain as described below. MIT does not grant rights in HOS-covered expression
+or cure the HOS/GPL BFD compatibility obstacle. MIT itself is permissive and is
+not the source of that obstacle.
+
+Earlier statements below about no tracked root LICENSE or a missing wrapper
+license describe the original pre-eeb4315 investigation only, not current state.
+The planned-artifact mapping and upstream source manifest remain useful: no
+upstream pin/terms or planned binding behavior changed in this owner commit.
+What changed is one owner decision; this is not a research reset. The remaining
+pre-implementation gate is a defensible applicability determination for the actual
+source-informed method, or adequate written rightsholder permission if covered
+protected-expression derivation is involved. Intended-use/profile confirmation
+and actual dependency/link inventory remain needed only to settle the applicable
+distribution obligations; publication direction remains separate. Neither blanket
+prohibition nor automatic wrapper exemption follows from the MIT decision.
 
 ## Determination and boundary
 
@@ -16,7 +49,7 @@ native-behavior observations alone do not prove protected-expression derivation,
 but that provenance is not evidence of independent development either. An
 unqualified exemption for this actual plan would be unsupported.
 
-M0's applicability/permission and owner license/intended-use gate therefore remains
+M0's upstream applicability/permission and intended-use gate therefore remains
 open **before binding implementation**, as SPEC §6 requires. A decision on whether
 the actual planned adaptation crosses the defined protected-expression boundary,
 or written permission sufficient to cover it, is needed. Merely calling it a
@@ -194,12 +227,13 @@ Other evidenced constraints and remaining inventory:
    actual method uses no protected-expression derivation. Owner preference alone
    cannot waive upstream rights. If permission is needed, authorize a request via
    the published issue path; none has been sent by this research task.
-2. **Own files and intended use:** Which binding license is chosen, by whom with
-   rights to choose it, and is intended use internal-only, source distribution,
-   binary/LuaRocks/container distribution, commercial or another model? LAUNCH
-   does not answer this and public availability of upstream does not supply it.
-   Publication still requires separate operator direction. This decision cannot
-   override HOS or GPL conditions.
+2. **Intended use only (wrapper license settled):** MIT is selected for original
+   wrapper code and documentation, Copyright (c) 2026 Salvador Fandiño. Is intended
+   use internal-only, source distribution, binary/LuaRocks/container distribution,
+   commercial or another model? The MIT grant permits these uses of the original
+   wrapper material; it does not establish the intended dependency-distribution
+   profile or authorize this agent to publish. Confirm that profile only as needed
+   to resolve dependency obligations. Do not ask for wrapper license selection again.
 3. **BFD distribution strategy:** If combined artifacts will be distributed, what
    rights/approved profile will make HOS and GPL obligations simultaneously
    satisfiable? Obtain the necessary rightsholder grants, or explicitly approve
