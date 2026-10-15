@@ -21,6 +21,7 @@ from inventory_performance_fields import review_performance_fields
 from inventory_mutation_results import review_mutation_results
 from inventory_status_fields import review_status_fields
 from inventory_special_results import review_special_results
+from inventory_container_results import review_container_results
 
 PIN = 'd51ca813ae1b6b59519551a9be8c0b1ad74d862d'
 ROOT = Path(__file__).resolve().parents[1]
@@ -168,6 +169,7 @@ def inventory(u):
     review_mutation_results(u, ops, types)
     review_status_fields(u, ops, types)
     review_special_results(u, ops, types)
+    review_container_results(u, ops)
     surfaces(ops)
     python=[]
     # Independent public operations and model fields, including HTTP/async/headless exclusions.

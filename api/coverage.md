@@ -588,3 +588,21 @@ scanner or iterator introduced. DataItem.value_repr remains empty initializer,
 not decoded rendering. Independent bytes-extraction and capability-status drift
 probes are rejected; twenty-nine tests pass. Container response, request/helper/
 domain and final grammar accounting remain open; runtime slots unqualified.
+
+## Container population audit (twenty-sixth increment)
+
+Twenty-four response containers are source-reconciled separately from their nested
+record producers. Five lookup optionals copy adapter absence/presence; signature
+lookup first invokes decompileAt without checking its result. Single decompilation
+is different: loaded success always has a record, including completed=false failure.
+Vectors become dense arrays preserving native sequence/duplicates; never key by
+address, sort, deduplicate or drop false-valued records. Each vector references its
+reviewed wrapper population/filter/cursor pipeline, including candidate-first
+signatures and retained batch failures. Empty vector is empty table, not absence.
+
+The preservation-only response-field ledger is now empty (24 -> 0), not a claim of
+complete inventory acceptance: request/default/helper/domain audit and final
+non-first-slice grammar remain open. Runtime/iterator evidence stays unqualified.
+Thirty tests pass, including independent optional-extraction drift rejection.
+An older regression requiring nonempty gaps failed when the ledger closed; updated
+to require empty response gaps while still requiring explicit unresolved obligations.

@@ -256,10 +256,23 @@ class InventoryTests(unittest.TestCase):
             with self.assertRaises(AssertionError):
                 module.inventory(root)
             local.write_text(local_original)
+            local.write_text(local_original.replace('resp.function = pool_->primaryAdapter().getFunction(address)', 'resp.function = {}'))
+            with self.assertRaises(AssertionError):
+                module.inventory(root)
+            local.write_text(local_original)
             header = root/'cpp/src/local_arch_adapter.hpp'
             header.write_text(header.read_text().replace('std::map<std::pair<std::uint64_t, int>, std::string> comments_', 'std::multimap<std::pair<std::uint64_t, int>, std::string> comments_'))
             with self.assertRaises(AssertionError):
                 module.inventory(root)
+
+    def test_optional_and_vector_container_population(self):
+        for name in ['GetFunction','GetSymbol','GetInstruction','GetType','GetFunctionSignature']:
+            self.assertIn('absent remains absent',self.ops[name]['response']['fields'][0]['semantics'])
+        self.assertIn('ALWAYS present',self.ops['GetDecompilation']['response']['fields'][0]['semantics'])
+        self.assertIn('completed=false',self.ops['GetDecompilation']['response']['fields'][0]['semantics'])
+        for name in ['ListFunctions','ListFunctionSignatures','ListXrefs','GetComments']:
+            self.assertIn('preserving native sequence and duplicates',self.ops[name]['response']['fields'][0]['semantics'])
+        self.assertEqual(len([o for o in self.ops.values() if 'container_result_review' in o]),24)
 
     def test_special_result_absence_and_schema_are_not_observations(self):
         def sem(op,name):
@@ -426,8 +439,9 @@ class InventoryTests(unittest.TestCase):
         audit=self.data['semantic_audit']
         self.assertEqual(audit['included_operations'], 70)
         self.assertEqual(audit['wrapper_transition_review_missing'], [])
-        self.assertTrue(audit['response_field_semantics_unreviewed'])
-        self.assertTrue(all(row['path'] for row in audit['response_field_semantics_unreviewed']))
+        self.assertEqual(audit['response_field_semantics_unreviewed'], [])
+        # Empty preservation-only ledger does not qualify request/helper/runtime semantics.
+        self.assertTrue(self.data['unresolved'])
 
     def test_alias_loss_and_symbol_comment_outcomes(self):
         self.assertIn('no rollback', ' '.join(self.ops['SetTypeAliasTarget']['limitations']))

@@ -3590,6 +3590,13 @@
       "tier": "slice"
     },
     {
+      "container_result_review": {
+        "body_sha256": "57c1871d2823ae29b9365ae5259fedbe8c0802a7318c9c10cfb5995e0b25c0dd",
+        "field": "comments",
+        "line": 1221,
+        "path": "cpp/src/local_client.cpp",
+        "qualification": "source-only, runtime evidence unqualified"
+      },
       "declaration": {
         "arguments": "std::uint64_t range_start, std::uint64_t range_end, int limit, int offset",
         "response_type": "GetCommentsResponse",
@@ -3712,7 +3719,7 @@
             "native_type": "std::vector<CommentRecord>",
             "optional": false,
             "path": "comments",
-            "semantics": "native field preserved; no truthiness substitution"
+            "semantics": "dense Lua array of returned native records, preserving native sequence and duplicates (no keying by address/id, sorting, dedup or truthiness filtering); empty vector -> empty table, not absence; population/filter/cursor pipeline: loaded required; enumerate then paginate native adapter records BEFORE one-to-one response conversion; conversion preserves candidate count; no native revision change; nested field producer/default review remains separate; no stable identity or runtime iterator qualification implied"
           },
           {
             "lua": "exact UInt64",
@@ -3774,6 +3781,13 @@
       "tier": "core"
     },
     {
+      "container_result_review": {
+        "body_sha256": "450bfbca3479e69cb5cdd4a775794e7e7a93c7a9a0a7ab58d32e7a77cffe2321",
+        "field": "decompilation",
+        "line": 295,
+        "path": "cpp/src/local_client.cpp",
+        "qualification": "source-only, runtime evidence unqualified"
+      },
       "declaration": {
         "arguments": "std::uint64_t address, int timeout_ms",
         "response_type": "GetDecompilationResponse",
@@ -3898,7 +3912,7 @@
             "native_type": "std::optional<DecompilationRecord>",
             "optional": true,
             "path": "decompilation",
-            "semantics": "native field preserved; no truthiness substitution"
+            "semantics": "optional is ALWAYS present on loaded success: failed decompile constructs completed=false/error record, success moves record; never treat completed=false as absence or nil,error; nested branch-specific defaults/population separately reconciled"
           },
           {
             "lua": "exact UInt64",
@@ -4237,6 +4251,13 @@
       "tier": "slice"
     },
     {
+      "container_result_review": {
+        "body_sha256": "780c03fcdb7404eb824d0aa3cae3fa0b32ccae566f53cc96d8745d18fc56768d",
+        "field": "function",
+        "line": 355,
+        "path": "cpp/src/local_client.cpp",
+        "qualification": "source-only, runtime evidence unqualified"
+      },
       "declaration": {
         "arguments": "std::uint64_t address",
         "response_type": "GetFunctionResponse",
@@ -4366,7 +4387,7 @@
             "native_type": "std::optional<FunctionRecord>",
             "optional": true,
             "path": "function",
-            "semantics": "native field preserved; no truthiness substitution"
+            "semantics": "adapter optional copied directly: absent remains absent (Lua nil field), present becomes record table including false/zero/empty nested fields; absent native success can include caught adapter failure, not native NOT_FOUND; facade uses synthetic NOT_FOUND third-result policy, not error substitution in lowlevel"
           },
           {
             "lua": "exact UInt64",
@@ -4530,6 +4551,13 @@
       "tier": "slice"
     },
     {
+      "container_result_review": {
+        "body_sha256": "b501cb425d3d8879054c007df2a98827fd4ad35661102a424a2ea6ba44310fc6",
+        "field": "signature",
+        "line": 1040,
+        "path": "cpp/src/local_client.cpp",
+        "qualification": "source-only, runtime evidence unqualified"
+      },
       "declaration": {
         "arguments": "std::uint64_t address",
         "response_type": "GetFunctionSignatureResponse",
@@ -4660,7 +4688,7 @@
             "native_type": "std::optional<FunctionSignatureRecord>",
             "optional": true,
             "path": "signature",
-            "semantics": "native field preserved; no truthiness substitution"
+            "semantics": "adapter optional copied directly: absent remains absent (Lua nil field), present becomes record table including false/zero/empty nested fields; absent native success can include caught adapter failure, not native NOT_FOUND; facade uses synthetic NOT_FOUND third-result policy, not error substitution in lowlevel; preceding decompileAt result ignored before optional signature extraction"
           },
           {
             "lua": "exact UInt64",
@@ -4884,6 +4912,13 @@
       "tier": "core"
     },
     {
+      "container_result_review": {
+        "body_sha256": "3f01657fa4a5a536ac5ec4bba4c948a5509ebfda18808ed93650b1a42027ec64",
+        "field": "instruction",
+        "line": 1191,
+        "path": "cpp/src/local_client.cpp",
+        "qualification": "source-only, runtime evidence unqualified"
+      },
       "declaration": {
         "arguments": "std::uint64_t address",
         "response_type": "GetInstructionResponse",
@@ -5003,7 +5038,7 @@
             "native_type": "std::optional<InstructionRecord>",
             "optional": true,
             "path": "instruction",
-            "semantics": "native field preserved; no truthiness substitution"
+            "semantics": "adapter optional copied directly: absent remains absent (Lua nil field), present becomes record table including false/zero/empty nested fields; absent native success can include caught adapter failure, not native NOT_FOUND; facade uses synthetic NOT_FOUND third-result policy, not error substitution in lowlevel"
           },
           {
             "lua": "exact UInt64",
@@ -5725,6 +5760,13 @@
       "tier": "slice"
     },
     {
+      "container_result_review": {
+        "body_sha256": "725ec33437c0a3ac19d6e9f797dc463ab2352a82978c3938ca351f70065a2653",
+        "field": "symbol",
+        "line": 508,
+        "path": "cpp/src/local_client.cpp",
+        "qualification": "source-only, runtime evidence unqualified"
+      },
       "declaration": {
         "arguments": "std::uint64_t address",
         "response_type": "GetSymbolResponse",
@@ -5858,7 +5900,7 @@
             "native_type": "std::optional<SymbolRecord>",
             "optional": true,
             "path": "symbol",
-            "semantics": "native field preserved; no truthiness substitution"
+            "semantics": "adapter optional copied directly: absent remains absent (Lua nil field), present becomes record table including false/zero/empty nested fields; absent native success can include caught adapter failure, not native NOT_FOUND; facade uses synthetic NOT_FOUND third-result policy, not error substitution in lowlevel"
           },
           {
             "lua": "exact UInt64",
@@ -6052,6 +6094,13 @@
       "tier": "core"
     },
     {
+      "container_result_review": {
+        "body_sha256": "0f79605670d0200f14d77b77c84c48599b9687c7bc6a0d3b1de3bb1dc728edfb",
+        "field": "type",
+        "line": 634,
+        "path": "cpp/src/local_client.cpp",
+        "qualification": "source-only, runtime evidence unqualified"
+      },
       "declaration": {
         "arguments": "const std::string& path",
         "response_type": "GetTypeResponse",
@@ -6184,7 +6233,7 @@
             "native_type": "std::optional<TypeRecord>",
             "optional": true,
             "path": "type",
-            "semantics": "native field preserved; no truthiness substitution"
+            "semantics": "adapter optional copied directly: absent remains absent (Lua nil field), present becomes record table including false/zero/empty nested fields; absent native success can include caught adapter failure, not native NOT_FOUND; facade uses synthetic NOT_FOUND third-result policy, not error substitution in lowlevel"
           },
           {
             "lua": "exact UInt64",
@@ -6742,6 +6791,13 @@
       "tier": "excluded"
     },
     {
+      "container_result_review": {
+        "body_sha256": "31818a2fbea14a44db7d14819525b181f50f2aca30ef12e43b01fdad83d70e68",
+        "field": "blocks",
+        "line": 424,
+        "path": "cpp/src/local_client.cpp",
+        "qualification": "source-only, runtime evidence unqualified"
+      },
       "declaration": {
         "arguments": "std::uint64_t range_start, std::uint64_t range_end, int limit, int offset",
         "response_type": "ListBasicBlocksResponse",
@@ -6903,7 +6959,7 @@
             "native_type": "std::vector<BasicBlockRecord>",
             "optional": false,
             "path": "blocks",
-            "semantics": "native field preserved; no truthiness substitution"
+            "semantics": "dense Lua array of returned native records, preserving native sequence and duplicates (no keying by address/id, sorting, dedup or truthiness filtering); empty vector -> empty table, not absence; population/filter/cursor pipeline: loaded required; select function entries by range, aggregate per-function graph/reference output, then paginate aggregate; serial preserves traversal concatenation; parallel appends under mutex in completion order and propagates future errors; no wrapper revision increment; nested field producer/default review remains separate; no stable identity or runtime iterator qualification implied"
           },
           {
             "lua": "exact UInt64",
@@ -7331,6 +7387,13 @@
       "tier": "excluded"
     },
     {
+      "container_result_review": {
+        "body_sha256": "5bef21c866c597b1e6e0fb0a50a6f21207c58ede101704098eac2786c268c9a9",
+        "field": "edges",
+        "line": 465,
+        "path": "cpp/src/local_client.cpp",
+        "qualification": "source-only, runtime evidence unqualified"
+      },
       "declaration": {
         "arguments": "std::uint64_t range_start, std::uint64_t range_end, int limit, int offset",
         "response_type": "ListCFGEdgesResponse",
@@ -7493,7 +7556,7 @@
             "native_type": "std::vector<CFGEdgeRecord>",
             "optional": false,
             "path": "edges",
-            "semantics": "native field preserved; no truthiness substitution"
+            "semantics": "dense Lua array of returned native records, preserving native sequence and duplicates (no keying by address/id, sorting, dedup or truthiness filtering); empty vector -> empty table, not absence; population/filter/cursor pipeline: loaded required; select function entries by range, aggregate per-function graph/reference output, then paginate aggregate; serial preserves traversal concatenation; parallel appends under mutex in completion order and propagates future errors; no wrapper revision increment; nested field producer/default review remains separate; no stable identity or runtime iterator qualification implied"
           },
           {
             "lua": "exact UInt64",
@@ -7581,6 +7644,13 @@
       "tier": "core"
     },
     {
+      "container_result_review": {
+        "body_sha256": "38f359c3921083c7283522c7c184a3add82b88f137c24e0cac1458097f263627",
+        "field": "data_items",
+        "line": 1273,
+        "path": "cpp/src/local_client.cpp",
+        "qualification": "source-only, runtime evidence unqualified"
+      },
       "declaration": {
         "arguments": "std::uint64_t range_start, std::uint64_t range_end, int limit, int offset",
         "response_type": "ListDataItemsResponse",
@@ -7701,7 +7771,7 @@
             "native_type": "std::vector<DataItemRecord>",
             "optional": false,
             "path": "data_items",
-            "semantics": "native field preserved; no truthiness substitution"
+            "semantics": "dense Lua array of returned native records, preserving native sequence and duplicates (no keying by address/id, sorting, dedup or truthiness filtering); empty vector -> empty table, not absence; population/filter/cursor pipeline: loaded required; enumerate then paginate native adapter records BEFORE one-to-one response conversion; conversion preserves candidate count; no native revision change; nested field producer/default review remains separate; no stable identity or runtime iterator qualification implied"
           },
           {
             "lua": "exact UInt64",
@@ -7799,6 +7869,13 @@
       "tier": "full"
     },
     {
+      "container_result_review": {
+        "body_sha256": "ea714eddbcde2e03d2794422a6438a62de1d780bc5d68e3eb5293cd85bf59996",
+        "field": "decompilations",
+        "line": 323,
+        "path": "cpp/src/local_client.cpp",
+        "qualification": "source-only, runtime evidence unqualified"
+      },
       "declaration": {
         "arguments": "std::uint64_t range_start, std::uint64_t range_end, int limit, int offset, int timeout_ms",
         "response_type": "ListDecompilationsResponse",
@@ -7981,7 +8058,7 @@
             "native_type": "std::vector<DecompilationRecord>",
             "optional": false,
             "path": "decompilations",
-            "semantics": "native field preserved; no truthiness substitution"
+            "semantics": "dense Lua array of returned native records, preserving native sequence and duplicates (no keying by address/id, sorting, dedup or truthiness filtering); empty vector -> empty table, not absence; population/filter/cursor pipeline: loaded required; paginate candidate functions first, collect addresses/names in candidate order, dispatch one native decompileMany batch, move all returned records unchanged; failed candidate records retained, no wrapper revision increment; nested field producer/default review remains separate; no stable identity or runtime iterator qualification implied"
           },
           {
             "lua": "exact UInt64",
@@ -8953,6 +9030,13 @@
       "tier": "excluded"
     },
     {
+      "container_result_review": {
+        "body_sha256": "0a86e81e93a10b030ae704eb5643d2416ba3ea7898a5d9d80331e4f4f81a966e",
+        "field": "signatures",
+        "line": 1053,
+        "path": "cpp/src/local_client.cpp",
+        "qualification": "source-only, runtime evidence unqualified"
+      },
       "declaration": {
         "arguments": "std::uint64_t range_start, std::uint64_t range_end, int limit, int offset",
         "response_type": "ListFunctionSignaturesResponse",
@@ -9108,7 +9192,7 @@
             "native_type": "std::vector<FunctionSignatureRecord>",
             "optional": false,
             "path": "signatures",
-            "semantics": "native field preserved; no truthiness substitution"
+            "semantics": "dense Lua array of returned native records, preserving native sequence and duplicates (no keying by address/id, sorting, dedup or truthiness filtering); empty vector -> empty table, not absence; population/filter/cursor pipeline: loaded required; paginate candidate functions first; decompile/extract each, remove absent signatures AFTER pagination; serial traversal and parallel indexed output retain candidate relative order; empty results do not establish exhaustion; no wrapper revision increment; nested field producer/default review remains separate; no stable identity or runtime iterator qualification implied"
           },
           {
             "lua": "exact UInt64",
@@ -9503,6 +9587,13 @@
       "tier": "excluded"
     },
     {
+      "container_result_review": {
+        "body_sha256": "cef53554d00cfcac680e5d4a11641613ac8f8fd046ccb9076e6a2fc6e0bb892f",
+        "field": "functions",
+        "line": 364,
+        "path": "cpp/src/local_client.cpp",
+        "qualification": "source-only, runtime evidence unqualified"
+      },
       "declaration": {
         "arguments": "std::uint64_t range_start, std::uint64_t range_end, int limit, int offset",
         "response_type": "ListFunctionsResponse",
@@ -9668,7 +9759,7 @@
             "native_type": "std::vector<FunctionRecord>",
             "optional": false,
             "path": "functions",
-            "semantics": "native field preserved; no truthiness substitution"
+            "semantics": "dense Lua array of returned native records, preserving native sequence and duplicates (no keying by address/id, sorting, dedup or truthiness filtering); empty vector -> empty table, not absence; population/filter/cursor pipeline: loaded required; primary adapter enumeration then paginate into functions; no post-page removal or native revision change; native empty enumeration is successful empty page; nested field producer/default review remains separate; no stable identity or runtime iterator qualification implied"
           },
           {
             "lua": "exact UInt64",
@@ -9984,6 +10075,13 @@
       "tier": "excluded"
     },
     {
+      "container_result_review": {
+        "body_sha256": "9d7bf566570719f161d316f337184cca5524ef6921c4896514f44273c109cc67",
+        "field": "instructions",
+        "line": 1200,
+        "path": "cpp/src/local_client.cpp",
+        "qualification": "source-only, runtime evidence unqualified"
+      },
       "declaration": {
         "arguments": "std::uint64_t range_start, std::uint64_t range_end, int limit, int offset",
         "response_type": "ListInstructionsResponse",
@@ -10146,7 +10244,7 @@
             "native_type": "std::vector<InstructionRecord>",
             "optional": false,
             "path": "instructions",
-            "semantics": "native field preserved; no truthiness substitution"
+            "semantics": "dense Lua array of returned native records, preserving native sequence and duplicates (no keying by address/id, sorting, dedup or truthiness filtering); empty vector -> empty table, not absence; population/filter/cursor pipeline: loaded required; primary adapter enumeration then paginate into instructions; no post-page removal or native revision change; native empty enumeration is successful empty page; request at most limit+offset decoded instructions before slicing; checked signed sum must fit INT_MAX; nested field producer/default review remains separate; no stable identity or runtime iterator qualification implied"
           },
           {
             "lua": "exact UInt64",
@@ -10253,6 +10351,13 @@
       "tier": "slice"
     },
     {
+      "container_result_review": {
+        "body_sha256": "ff4d5c03da82921fa341a9b75ceb58aea7c70a74529a5319a950d68b1a501352",
+        "field": "functions",
+        "line": 382,
+        "path": "cpp/src/local_client.cpp",
+        "qualification": "source-only, runtime evidence unqualified"
+      },
       "declaration": {
         "arguments": "std::uint64_t range_start, std::uint64_t range_end, int limit, int offset",
         "response_type": "ListFunctionsResponse",
@@ -10420,7 +10525,7 @@
             "native_type": "std::vector<FunctionRecord>",
             "optional": false,
             "path": "functions",
-            "semantics": "native field preserved; no truthiness substitution"
+            "semantics": "dense Lua array of returned native records, preserving native sequence and duplicates (no keying by address/id, sorting, dedup or truthiness filtering); empty vector -> empty table, not absence; population/filter/cursor pipeline: loaded required; unavailable project leaf index -> NOT_SUPPORTED; select functions by range, binary-search leaf entries, then paginate matched functions; no graph fallback and no wrapper revision increment; nested field producer/default review remains separate; no stable identity or runtime iterator qualification implied"
           },
           {
             "lua": "exact UInt64",
@@ -10746,6 +10851,13 @@
       "tier": "excluded"
     },
     {
+      "container_result_review": {
+        "body_sha256": "5cd355fd78f8bcd0a57faf7123d000b84c08029b551ee8164b44e14a50bda3fb",
+        "field": "blocks",
+        "line": 1177,
+        "path": "cpp/src/local_client.cpp",
+        "qualification": "source-only, runtime evidence unqualified"
+      },
       "declaration": {
         "arguments": "int limit, int offset",
         "response_type": "ListMemoryBlocksResponse",
@@ -10896,7 +11008,7 @@
             "native_type": "std::vector<MemoryBlockRecord>",
             "optional": false,
             "path": "blocks",
-            "semantics": "native field preserved; no truthiness substitution"
+            "semantics": "dense Lua array of returned native records, preserving native sequence and duplicates (no keying by address/id, sorting, dedup or truthiness filtering); empty vector -> empty table, not absence; population/filter/cursor pipeline: loaded required; primary adapter enumeration then paginate into blocks; no post-page removal or native revision change; native empty enumeration is successful empty page; nested field producer/default review remains separate; no stable identity or runtime iterator qualification implied"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -11937,6 +12049,13 @@
       "tier": "excluded"
     },
     {
+      "container_result_review": {
+        "body_sha256": "198083b9738310856f8ff8833e7dbad3a6f61054823054775aa3b3f13e83d416",
+        "field": "symbols",
+        "line": 517,
+        "path": "cpp/src/local_client.cpp",
+        "qualification": "source-only, runtime evidence unqualified"
+      },
       "declaration": {
         "arguments": "std::uint64_t range_start, std::uint64_t range_end, int limit, int offset",
         "response_type": "ListSymbolsResponse",
@@ -12105,7 +12224,7 @@
             "native_type": "std::vector<SymbolRecord>",
             "optional": false,
             "path": "symbols",
-            "semantics": "native field preserved; no truthiness substitution"
+            "semantics": "dense Lua array of returned native records, preserving native sequence and duplicates (no keying by address/id, sorting, dedup or truthiness filtering); empty vector -> empty table, not absence; population/filter/cursor pipeline: loaded required; primary adapter enumeration then paginate into symbols; no post-page removal or native revision change; native empty enumeration is successful empty page; nested field producer/default review remains separate; no stable identity or runtime iterator qualification implied"
           },
           {
             "lua": "exact UInt64",
@@ -12402,6 +12521,13 @@
       "tier": "excluded"
     },
     {
+      "container_result_review": {
+        "body_sha256": "3be6b0a445935617a0e2463d97d49922e6f207acfcbf64386364d6ece31722e7",
+        "field": "aliases",
+        "line": 643,
+        "path": "cpp/src/local_client.cpp",
+        "qualification": "source-only, runtime evidence unqualified"
+      },
       "declaration": {
         "arguments": "const std::string& query, int limit, int offset",
         "response_type": "ListTypeAliasesResponse",
@@ -12532,7 +12658,7 @@
             "native_type": "std::vector<TypeAliasRecord>",
             "optional": false,
             "path": "aliases",
-            "semantics": "native field preserved; no truthiness substitution"
+            "semantics": "dense Lua array of returned native records, preserving native sequence and duplicates (no keying by address/id, sorting, dedup or truthiness filtering); empty vector -> empty table, not absence; population/filter/cursor pipeline: loaded required; primary adapter enumeration then paginate into aliases; no post-page removal or native revision change; native empty enumeration is successful empty page; nested field producer/default review remains separate; no stable identity or runtime iterator qualification implied"
           },
           {
             "lua": "exact UInt64",
@@ -12638,6 +12764,13 @@
       "tier": "core"
     },
     {
+      "container_result_review": {
+        "body_sha256": "fc9482fa7172dd6acfbcb6e95b443c14e359f418bdc22c487fc5c75decbcad12",
+        "field": "members",
+        "line": 604,
+        "path": "cpp/src/local_client.cpp",
+        "qualification": "source-only, runtime evidence unqualified"
+      },
       "declaration": {
         "arguments": "const std::string& type_id_or_path, int limit, int offset",
         "response_type": "ListTypeEnumMembersResponse",
@@ -12773,7 +12906,7 @@
             "native_type": "std::vector<TypeEnumMemberRecord>",
             "optional": false,
             "path": "members",
-            "semantics": "native field preserved; no truthiness substitution"
+            "semantics": "dense Lua array of returned native records, preserving native sequence and duplicates (no keying by address/id, sorting, dedup or truthiness filtering); empty vector -> empty table, not absence; population/filter/cursor pipeline: loaded required; primary adapter enumeration then paginate into members; no post-page removal or native revision change; native empty enumeration is successful empty page; normalize exactly one leading slash before member lookup; nested field producer/default review remains separate; no stable identity or runtime iterator qualification implied"
           },
           {
             "lua": "exact UInt64",
@@ -12909,6 +13042,13 @@
       "tier": "core"
     },
     {
+      "container_result_review": {
+        "body_sha256": "8f301391b48a33ce5206ad0eca3635d436fe6796017ec4e47c25fc238e22dbf1",
+        "field": "enums",
+        "line": 592,
+        "path": "cpp/src/local_client.cpp",
+        "qualification": "source-only, runtime evidence unqualified"
+      },
       "declaration": {
         "arguments": "const std::string& query, int limit, int offset",
         "response_type": "ListTypeEnumsResponse",
@@ -13041,7 +13181,7 @@
             "native_type": "std::vector<TypeEnumRecord>",
             "optional": false,
             "path": "enums",
-            "semantics": "native field preserved; no truthiness substitution"
+            "semantics": "dense Lua array of returned native records, preserving native sequence and duplicates (no keying by address/id, sorting, dedup or truthiness filtering); empty vector -> empty table, not absence; population/filter/cursor pipeline: loaded required; primary adapter enumeration then paginate into enums; no post-page removal or native revision change; native empty enumeration is successful empty page; nested field producer/default review remains separate; no stable identity or runtime iterator qualification implied"
           },
           {
             "lua": "exact UInt64",
@@ -13162,6 +13302,13 @@
       "tier": "core"
     },
     {
+      "container_result_review": {
+        "body_sha256": "4965a8d05a423faaabf709f7b361e570e86f2002de6bf0eb08d5ff0d27d3bd25",
+        "field": "members",
+        "line": 619,
+        "path": "cpp/src/local_client.cpp",
+        "qualification": "source-only, runtime evidence unqualified"
+      },
       "declaration": {
         "arguments": "const std::string& type_id_or_path, int limit, int offset",
         "response_type": "ListTypeMembersResponse",
@@ -13319,7 +13466,7 @@
             "native_type": "std::vector<TypeMemberRecord>",
             "optional": false,
             "path": "members",
-            "semantics": "native field preserved; no truthiness substitution"
+            "semantics": "dense Lua array of returned native records, preserving native sequence and duplicates (no keying by address/id, sorting, dedup or truthiness filtering); empty vector -> empty table, not absence; population/filter/cursor pipeline: loaded required; primary adapter enumeration then paginate into members; no post-page removal or native revision change; native empty enumeration is successful empty page; normalize exactly one leading slash before member lookup; nested field producer/default review remains separate; no stable identity or runtime iterator qualification implied"
           },
           {
             "lua": "exact UInt64",
@@ -13485,6 +13632,13 @@
       "tier": "core"
     },
     {
+      "container_result_review": {
+        "body_sha256": "2886430d2aeeb55b6c6cac89dd1f8708f06d4657178990179b6998ec3cda8f3e",
+        "field": "unions",
+        "line": 655,
+        "path": "cpp/src/local_client.cpp",
+        "qualification": "source-only, runtime evidence unqualified"
+      },
       "declaration": {
         "arguments": "const std::string& query, int limit, int offset",
         "response_type": "ListTypeUnionsResponse",
@@ -13616,7 +13770,7 @@
             "native_type": "std::vector<TypeUnionRecord>",
             "optional": false,
             "path": "unions",
-            "semantics": "native field preserved; no truthiness substitution"
+            "semantics": "dense Lua array of returned native records, preserving native sequence and duplicates (no keying by address/id, sorting, dedup or truthiness filtering); empty vector -> empty table, not absence; population/filter/cursor pipeline: loaded required; primary adapter enumeration then paginate into unions; no post-page removal or native revision change; native empty enumeration is successful empty page; nested field producer/default review remains separate; no stable identity or runtime iterator qualification implied"
           },
           {
             "lua": "exact UInt64",
@@ -13722,6 +13876,13 @@
       "tier": "core"
     },
     {
+      "container_result_review": {
+        "body_sha256": "1824871250eb86da88787b9fe0fbe0982c20eeaa84943f883726ec8dae3ad7f1",
+        "field": "types",
+        "line": 580,
+        "path": "cpp/src/local_client.cpp",
+        "qualification": "source-only, runtime evidence unqualified"
+      },
       "declaration": {
         "arguments": "const std::string& query, int limit, int offset",
         "response_type": "ListTypesResponse",
@@ -13879,7 +14040,7 @@
             "native_type": "std::vector<TypeRecord>",
             "optional": false,
             "path": "types",
-            "semantics": "native field preserved; no truthiness substitution"
+            "semantics": "dense Lua array of returned native records, preserving native sequence and duplicates (no keying by address/id, sorting, dedup or truthiness filtering); empty vector -> empty table, not absence; population/filter/cursor pipeline: loaded required; primary adapter enumeration then paginate into types; no post-page removal or native revision change; native empty enumeration is successful empty page; nested field producer/default review remains separate; no stable identity or runtime iterator qualification implied"
           },
           {
             "lua": "exact UInt64",
@@ -14060,6 +14221,13 @@
       "tier": "core"
     },
     {
+      "container_result_review": {
+        "body_sha256": "bdade759647d89869952e71a88ea069b13411f7a9741f81e835ecc17df09f5ea",
+        "field": "xrefs",
+        "line": 1110,
+        "path": "cpp/src/local_client.cpp",
+        "qualification": "source-only, runtime evidence unqualified"
+      },
       "declaration": {
         "arguments": "std::uint64_t range_start, std::uint64_t range_end, int limit, int offset",
         "response_type": "ListXrefsResponse",
@@ -14245,7 +14413,7 @@
             "native_type": "std::vector<XrefRecord>",
             "optional": false,
             "path": "xrefs",
-            "semantics": "native field preserved; no truthiness substitution"
+            "semantics": "dense Lua array of returned native records, preserving native sequence and duplicates (no keying by address/id, sorting, dedup or truthiness filtering); empty vector -> empty table, not absence; population/filter/cursor pipeline: loaded required; select function entries by range, aggregate per-function graph/reference output, then paginate aggregate; serial preserves traversal concatenation; parallel appends under mutex in completion order and propagates future errors; no wrapper revision increment; xref helper owns decompilation/extraction in same instance, no preceding decompileAt that would clear analysis; nested field producer/default review remains separate; no stable identity or runtime iterator qualification implied"
           },
           {
             "lua": "exact UInt64",
@@ -29213,128 +29381,7 @@
       "Finalize non-first-slice facade call grammar rather than positional proposals",
       "Qualify runtime fixtures separately; preserve all unqualified slots"
     ],
-    "response_field_semantics_unreviewed": [
-      {
-        "native_type": "std::vector<CommentRecord>",
-        "operation": "GetComments",
-        "path": "comments"
-      },
-      {
-        "native_type": "std::optional<DecompilationRecord>",
-        "operation": "GetDecompilation",
-        "path": "decompilation"
-      },
-      {
-        "native_type": "std::optional<FunctionRecord>",
-        "operation": "GetFunction",
-        "path": "function"
-      },
-      {
-        "native_type": "std::optional<FunctionSignatureRecord>",
-        "operation": "GetFunctionSignature",
-        "path": "signature"
-      },
-      {
-        "native_type": "std::optional<InstructionRecord>",
-        "operation": "GetInstruction",
-        "path": "instruction"
-      },
-      {
-        "native_type": "std::optional<SymbolRecord>",
-        "operation": "GetSymbol",
-        "path": "symbol"
-      },
-      {
-        "native_type": "std::optional<TypeRecord>",
-        "operation": "GetType",
-        "path": "type"
-      },
-      {
-        "native_type": "std::vector<BasicBlockRecord>",
-        "operation": "ListBasicBlocks",
-        "path": "blocks"
-      },
-      {
-        "native_type": "std::vector<CFGEdgeRecord>",
-        "operation": "ListCFGEdges",
-        "path": "edges"
-      },
-      {
-        "native_type": "std::vector<DataItemRecord>",
-        "operation": "ListDataItems",
-        "path": "data_items"
-      },
-      {
-        "native_type": "std::vector<DecompilationRecord>",
-        "operation": "ListDecompilations",
-        "path": "decompilations"
-      },
-      {
-        "native_type": "std::vector<FunctionSignatureRecord>",
-        "operation": "ListFunctionSignatures",
-        "path": "signatures"
-      },
-      {
-        "native_type": "std::vector<FunctionRecord>",
-        "operation": "ListFunctions",
-        "path": "functions"
-      },
-      {
-        "native_type": "std::vector<InstructionRecord>",
-        "operation": "ListInstructions",
-        "path": "instructions"
-      },
-      {
-        "native_type": "std::vector<FunctionRecord>",
-        "operation": "ListLeafFunctions",
-        "path": "functions"
-      },
-      {
-        "native_type": "std::vector<MemoryBlockRecord>",
-        "operation": "ListMemoryBlocks",
-        "path": "blocks"
-      },
-      {
-        "native_type": "std::vector<SymbolRecord>",
-        "operation": "ListSymbols",
-        "path": "symbols"
-      },
-      {
-        "native_type": "std::vector<TypeAliasRecord>",
-        "operation": "ListTypeAliases",
-        "path": "aliases"
-      },
-      {
-        "native_type": "std::vector<TypeEnumMemberRecord>",
-        "operation": "ListTypeEnumMembers",
-        "path": "members"
-      },
-      {
-        "native_type": "std::vector<TypeEnumRecord>",
-        "operation": "ListTypeEnums",
-        "path": "enums"
-      },
-      {
-        "native_type": "std::vector<TypeMemberRecord>",
-        "operation": "ListTypeMembers",
-        "path": "members"
-      },
-      {
-        "native_type": "std::vector<TypeUnionRecord>",
-        "operation": "ListTypeUnions",
-        "path": "unions"
-      },
-      {
-        "native_type": "std::vector<TypeRecord>",
-        "operation": "ListTypes",
-        "path": "types"
-      },
-      {
-        "native_type": "std::vector<XrefRecord>",
-        "operation": "ListXrefs",
-        "path": "xrefs"
-      }
-    ],
+    "response_field_semantics_unreviewed": [],
     "scope": "Explicit accounting audit only; empty wrapper list would not establish full nested/default/domain review or runtime qualification",
     "wrapper_transition_review_missing": []
   },
