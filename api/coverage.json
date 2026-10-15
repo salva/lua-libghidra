@@ -51,6 +51,12 @@
     "factory": "CreateLocalClient(LocalClientOptions) -> unique_ptr<IClient>; lowlevel local_client, facade open constructs once then opens; failure releases new owner",
     "factory_fields": [
       {
+        "factory_review": {
+          "binding_default": "native empty string initializer; binding configuration grammar governs omission, not truthiness",
+          "consumer": "cpp/src/local_client.cpp / cpp/src/decompiler_pool.cpp",
+          "lifecycle": "CreateLocalClient unique_ptr factory constructs pool immediately; no StatusOr wrapper, construction exceptions may escape; binding single-process owner reservation/cleanup on failure and serialized destruction remain required, unqualified",
+          "qualification": "source only; positive/negative construction, owner-slot recovery and resource-path fixtures unqualified"
+        },
         "lua": "Lua string (no transcoding)",
         "model": "LocalClientOptions",
         "name": "ghidra_root",
@@ -58,9 +64,15 @@
         "native_type": "std::string",
         "optional": false,
         "path": "ghidra_root",
-        "semantics": "native field preserved; no truthiness substitution"
+        "semantics": "native empty string chooses default Decompiler constructor per slot; nonempty forwarded unchanged to constructor; no path expansion/canonicalization in these consumers; embedded-spec availability/invalid-path failure and downstream resource initialization unqualified"
       },
       {
+        "factory_review": {
+          "binding_default": "native empty string initializer; binding configuration grammar governs omission, not truthiness",
+          "consumer": "cpp/src/local_client.cpp / cpp/src/decompiler_pool.cpp",
+          "lifecycle": "CreateLocalClient unique_ptr factory constructs pool immediately; no StatusOr wrapper, construction exceptions may escape; binding single-process owner reservation/cleanup on failure and serialized destruction remain required, unqualified",
+          "qualification": "source only; positive/negative construction, owner-slot recovery and resource-path fixtures unqualified"
+        },
         "lua": "Lua string (no transcoding)",
         "model": "LocalClientOptions",
         "name": "state_path",
@@ -68,9 +80,15 @@
         "native_type": "std::string",
         "optional": false,
         "path": "state_path",
-        "semantics": "native field preserved; no truthiness substitution"
+        "semantics": "native empty string disables best-effort load and native close-save; explicit SaveProgram then NO_STATE_PATH; nonempty forwarded unchanged to loadState after successful open (return ignored), saveState on explicit save or should_save close; no native autosave on default destructor; failed save precedes adapter reset; facade save-close missing path validation remains distinct"
       },
       {
+        "factory_review": {
+          "binding_default": "native empty string initializer; binding configuration grammar governs omission, not truthiness",
+          "consumer": "cpp/src/local_client.cpp / cpp/src/decompiler_pool.cpp",
+          "lifecycle": "CreateLocalClient unique_ptr factory constructs pool immediately; no StatusOr wrapper, construction exceptions may escape; binding single-process owner reservation/cleanup on failure and serialized destruction remain required, unqualified",
+          "qualification": "source only; positive/negative construction, owner-slot recovery and resource-path fixtures unqualified"
+        },
         "lua": "Lua string (no transcoding)",
         "model": "LocalClientOptions",
         "name": "default_arch",
@@ -78,9 +96,15 @@
         "native_type": "std::string",
         "optional": false,
         "path": "default_arch",
-        "semantics": "native field preserved; no truthiness substitution"
+        "semantics": "native empty string default retained; OpenProgram binary route uses only when request.language_id empty (compiler hint not appended then); nonempty request hint overrides; project loading ignores it but response language echo can still use it; not detected architecture proof"
       },
       {
+        "factory_review": {
+          "binding_default": "1",
+          "consumer": "cpp/src/local_client.cpp / cpp/src/decompiler_pool.cpp",
+          "lifecycle": "CreateLocalClient unique_ptr factory constructs pool immediately; no StatusOr wrapper, construction exceptions may escape; binding single-process owner reservation/cleanup on failure and serialized destruction remain required, unqualified",
+          "qualification": "source only; positive/negative construction, owner-slot recovery and resource-path fixtures unqualified"
+        },
         "lua": "checked Lua integer (int)",
         "model": "LocalClientOptions",
         "name": "pool_size",
@@ -88,7 +112,7 @@
         "native_type": "int",
         "optional": false,
         "path": "pool_size",
-        "semantics": "native field preserved; no truthiness substitution"
+        "semantics": "native int default 1; LocalClient clamps <=0 to 1 BEFORE conversion into pool size_t, pool also clamps to >=1; >1 allocates independent engines and changes parallel branch ordering; Lua MUST accept exactly 1 only, reject other values before owner allocation; no native maximum/resource-failure guarantee inferred"
       }
     ],
     "factory_tier": "slice",

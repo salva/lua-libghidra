@@ -93,6 +93,17 @@ class InventoryTests(unittest.TestCase):
         self.assertIn('ONE leading slash',self.ops['ListTypeMembers']['request'][0]['semantics'])
         self.assertIn('empty input still dispatched',self.ops['WriteBytes']['request'][1]['semantics'])
 
+    def test_factory_fields_have_consumption_and_owner_failure_slots(self):
+        fields={f['name']:f for f in self.data['lifecycle']['factory_fields']}
+        self.assertEqual(set(fields),{'ghidra_root','state_path','default_arch','pool_size'})
+        self.assertIn('exactly 1',fields['pool_size']['semantics'])
+        self.assertIn('BEFORE conversion',fields['pool_size']['semantics'])
+        self.assertIn('return ignored',fields['state_path']['semantics'])
+        self.assertIn('not detected architecture',fields['default_arch']['semantics'])
+        for f in fields.values():
+            self.assertIn('exceptions may escape',f['factory_review']['lifecycle'])
+            self.assertIn('unqualified',f['factory_review']['qualification'])
+
     def test_preserved_red_reproducer(self):
         # Exact acceptance trigger from red; stronger checks below prevent treating
         # mere existence as exhaustive semantic acceptance.
@@ -358,6 +369,10 @@ class InventoryTests(unittest.TestCase):
             with self.assertRaises(AssertionError):
                 module.inventory(root)
             adapter.write_text(adapter_original)
+            local.write_text(local_original.replace('std::max(opts_.pool_size, 1)', 'std::max(opts_.pool_size, 2)'))
+            with self.assertRaises(AssertionError):
+                module.inventory(root)
+            local.write_text(local_original)
             header = root/'cpp/src/local_arch_adapter.hpp'
             header.write_text(header.read_text().replace('std::map<std::pair<std::uint64_t, int>, std::string> comments_', 'std::multimap<std::pair<std::uint64_t, int>, std::string> comments_'))
             with self.assertRaises(AssertionError):

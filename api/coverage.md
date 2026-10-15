@@ -696,3 +696,18 @@ not numeric IDs or unions. Runtime lookup/storage/boundary slots remain
 unqualified. Direct ledger: 80 reviewed, 76 remaining. Drift probe removes signed
 read cast and fails closed; earlier ordering assertion now checks token presence
 before index rather than leaking ValueError. Thirty-six tests pass.
+
+## Factory option consumption (thirty-third increment)
+
+All four LocalClientOptions fields now reconcile exact opts_ reads and native
+constructor/pool consumers. Empty ghidra_root selects default Decompiler per
+slot; resource availability stays unqualified. Native pool_size clamps <=0 to
+one before size_t conversion and accepts >1, unlike mandatory Lua exactly-one
+validation. default_arch is binary empty-language fallback, not detected metadata.
+state_path empty disables load/close-save but explicit save errors; nonempty
+best-effort load ignores return. Factory returns unique_ptr, not StatusOr;
+construction exceptions can escape and default destruction is not autosave.
+Single-owner reservation/recovery, serialized destruction and resource-path
+positive/negative slots remain unqualified. Exact option set and pool clamp drift
+are checked; thirty-seven focused tests pass. Direct request ledger remains
+80 reviewed/76 remaining; final grammar and remaining argument review open.
