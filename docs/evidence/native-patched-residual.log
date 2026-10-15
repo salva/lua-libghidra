@@ -1,0 +1,23 @@
+constructed profile=external
+open language=x86:LE:64:default compiler=gcc format=raw base=0
+completed=1 fallback=0 error=
+
+int4 func_0x00401106(int4 param_1)
+
+{
+  return param_1 * 3 + 7;
+}
+
+constructed profile=external
+open language=x86:LE:64:default compiler=gcc format=raw base=4198432
+RAW_IMAGE_RESIDUAL_EXIT=4
+-- Found Python3: /usr/bin/python3 (found suitable version "3.12.3", minimum required is "3.10") found components: Interpreter 
+-- 
+-- 29.3.0
+-- libghidra: BFD-backed ELF loader enabled (lib=/usr/lib/x86_64-linux-gnu/libbfd.so)
+-- Found Python3: /usr/bin/python3 (found version "3.12.3") found components: Interpreter 
+-- Embedded specs up-to-date (385 files), skipping generation.
+
+-- Configuring done (0.5s)
+-- Generating done (0.2s)
+-- Build files have been written to: /work/lua-libghidra/.saivage/work/cards/card-a-b/red-native-offline/build

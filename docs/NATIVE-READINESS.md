@@ -173,3 +173,65 @@ identified qualified dependency profile, or whether unmodified-engine semantics
 must be retained and explicit-hint readiness remains unavailable. The lock/pins
 and unmodified SDK remain intact pending that decision. This is separate from
 the HOS applicability/legal gate and does not reopen wrapper MIT selection.
+
+## Qualified authorized patched profile — current result
+
+The narrow authorization above has now been implemented, not merely proposed.
+`native-patched.lock.json` binds the original full input lock digest, pinned
+engine base, libghidra patch-source revision, exact patch SHA256 and operator
+commit. Default preparation and the original SDK remain **unmodified** profiles.
+Use a fresh output directory for the separate profile:
+
+```sh
+python3 scripts/prepare-native.py --offline --archives ARCHIVES \
+  --output FRESH_INPUTS --profile bfd-sleigh-target-autodetect
+scripts/build-native-sdk.sh FRESH_INPUTS FRESH_BUILD /path/to/separate-sdk
+python3 scripts/check-native-patched.py FRESH_BUILD/consumer FRESH_INPUTS/engine FRESH_TEST_WORK
+python3 scripts/check-native-profile-inputs.py ARCHIVES FRESH_INPUTS
+```
+
+Both preparation and the **whole fresh SDK recipe** ran successfully inside
+`unshare -n` (ordinary guest user inside namespace), using retained verified
+archives. Separate protobuf/Abseil PIC build/install, 492-step local build/install
+and installed-only consumer shared WHOLE_ARCHIVE `-z defs` link all passed.
+Full build stdout/stderr, qualification and source integrity logs are retained as
+`docs/evidence/native-patched-*`. Original failure evidence is untouched.
+
+Installed SDK controls passed for **explicit x86 Sleigh/gcc and autodetection**:
+external specs, embedded cold/warm/warm-unwritable, plus expected missing and
+mode-000 external-root failures and cold-unwritable HOME cache diagnostics.
+Every positive case checks completed/nonfallback and actual arithmetic content.
+External roots do not create HOME; embedded sentinels/file inventory are checked.
+The installed shared closure's ldd still has only the locked BFD/compression/C/C++
+runtimes, no Lua/Java/Python. Source integrity confirms libghidra authored sources
+unchanged (normal known_languages.py generation excluded); only the two patch
+engine code files differ, and spec overlay bytes match the locked release zip.
+Initial integrity comparison incorrectly treated the intentionally separate
+release-spec overlay as engine edits; corrected comparison verifies those bytes
+against the zip rather than ignoring the discrepancy. Initial failed diagnostic
+is retained, not erased by the successful subsequent check.
+
+Stable **separate** guest deliverables (original paths still preserved):
+
+- `/work/lua-libghidra/.cache/native-inputs-patched/engine`: external specs/root.
+- `/work/lua-libghidra/.cache/native-sdk-patched`: full installed SDK; use as
+  CMAKE_PREFIX_PATH with `tests/installed-sdk` whole-archive template.
+- `native_probe` and `native-smoke` in that prefix; probe call:
+  `native_probe EXTERNAL_ROOT native-smoke 0x401106 x86:LE:64:default`.
+
+Owning primitive repair branches: `binary` retains its old BFD target branch;
+colon-bearing Sleigh IDs now use empty loader target while preserving archid;
+`default` and other named BFD targets keep their old paths. Empty target becomes
+NULL at bfd_openr for object-format detection. BFD check/error handling is not
+bypassed. Real ELF explicit-hint and format=raw ELF formerly failing cases now
+complete arithmetic decompilation; autodetect remains successful.
+
+**Residual, not waived:** actual raw .text still fails exit 4, now correctly
+`not in recognized object file format` rather than invalid BFD target. This exact
+patch does not make raw bytes a BFD object or fix capability selection. This is
+not the required ELF explicit-hint reproducer, and is not represented as passing.
+The analyzed-project reconstructed-memory path may encounter that separate
+issue; no analyzed-project fixture semantics are claimed qualified. Independent
+legal/distribution gates remain open; no M1 binding or publication authorization
+is inferred. This qualifies the scoped native SDK/object loader/spec profile,
+not every M0 fixture requirement or all architectures.

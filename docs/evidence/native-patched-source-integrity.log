@@ -1,0 +1,5 @@
+Excluded normal generated language metadata
+libghidra changed authored files: []
+All spec overlay bytes match separately locked release zip
+engine changed authored files: ['Ghidra/Features/Decompiler/src/decompile/cpp/bfd_arch.cc', 'Ghidra/Features/Decompiler/src/decompile/cpp/loadimage_bfd.cc']
+Only the two authorized engine files differ from archive inputs

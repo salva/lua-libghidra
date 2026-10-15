@@ -1,0 +1,161 @@
+external-explicit exit= 0
+constructed profile=external
+open language=x86:LE:64:default compiler=gcc format= base=0
+completed=1 fallback=0 error=
+
+int4 func_0x00401106(int4 param_1)
+
+{
+  return param_1 * 3 + 7;
+}
+
+embedded-cold-explicit exit= 0
+constructed profile=embedded
+open language=x86:LE:64:default compiler=gcc format= base=0
+completed=1 fallback=0 error=
+
+int4 func_0x00401106(int4 param_1)
+
+{
+  return param_1 * 3 + 7;
+}
+
+embedded-warm-explicit exit= 0
+constructed profile=embedded
+open language=x86:LE:64:default compiler=gcc format= base=0
+completed=1 fallback=0 error=
+
+int4 func_0x00401106(int4 param_1)
+
+{
+  return param_1 * 3 + 7;
+}
+
+embedded-warm-unwritable-explicit exit= 0
+constructed profile=embedded
+open language=x86:LE:64:default compiler=gcc format= base=0
+completed=1 fallback=0 error=
+
+int4 func_0x00401106(int4 param_1)
+
+{
+  return param_1 * 3 + 7;
+}
+
+embedded-cold-unwritable-explicit exit= 4
+constructed profile=embedded
+open language=x86:LE:64:default compiler=gcc format= base=0
+ghidra_cpp: failed to create cache dir /proc/.ghidracpp/cache/sleigh/e96baec8337e3053
+ghidra_cpp: failed to create directory for Ghidra/Processors/6502/data/languages/6502.cspec
+ghidra_cpp: failed to extract specs to /proc/.ghidracpp/cache/sleigh/e96baec8337e3053
+LOAD_FAILED: No sleigh specification for x86:LE:64:default
+external-missing-explicit exit= 4
+constructed profile=external
+open language=x86:LE:64:default compiler=gcc format= base=0
+LOAD_FAILED: No sleigh specification for x86:LE:64:default
+external-unreadable-explicit exit= 4
+constructed profile=external
+open language=x86:LE:64:default compiler=gcc format= base=0
+LOAD_FAILED: No sleigh specification for x86:LE:64:default
+external-auto exit= 0
+constructed profile=external
+open language= compiler= format= base=0
+completed=1 fallback=0 error=
+
+int4 func_0x00401106(int4 param_1)
+
+{
+  return param_1 * 3 + 7;
+}
+
+embedded-cold-auto exit= 0
+constructed profile=embedded
+open language= compiler= format= base=0
+completed=1 fallback=0 error=
+
+int4 func_0x00401106(int4 param_1)
+
+{
+  return param_1 * 3 + 7;
+}
+
+embedded-warm-auto exit= 0
+constructed profile=embedded
+open language= compiler= format= base=0
+completed=1 fallback=0 error=
+
+int4 func_0x00401106(int4 param_1)
+
+{
+  return param_1 * 3 + 7;
+}
+
+embedded-warm-unwritable-auto exit= 0
+constructed profile=embedded
+open language= compiler= format= base=0
+completed=1 fallback=0 error=
+
+int4 func_0x00401106(int4 param_1)
+
+{
+  return param_1 * 3 + 7;
+}
+
+embedded-cold-unwritable-auto exit= 4
+constructed profile=embedded
+open language= compiler= format= base=0
+ghidra_cpp: failed to create cache dir /proc/.ghidracpp/cache/sleigh/e96baec8337e3053
+ghidra_cpp: failed to create directory for Ghidra/Processors/6502/data/languages/6502.cspec
+ghidra_cpp: failed to extract specs to /proc/.ghidracpp/cache/sleigh/e96baec8337e3053
+LOAD_FAILED: No sleigh specification for x86:LE:64:default
+external-missing-auto exit= 4
+constructed profile=external
+open language= compiler= format= base=0
+LOAD_FAILED: No sleigh specification for x86:LE:64:default
+external-unreadable-auto exit= 4
+constructed profile=external
+open language= compiler= format= base=0
+LOAD_FAILED: No sleigh specification for x86:LE:64:default
+ALL PATCHED PROFILE CONTROLS PASSED
+	linux-vdso.so.1 (0x0000751eff80e000)
+	libbfd-2.42-system.so => /lib/x86_64-linux-gnu/libbfd-2.42-system.so (0x0000751efe497000)
+	libstdc++.so.6 => /lib/x86_64-linux-gnu/libstdc++.so.6 (0x0000751efe200000)
+	libm.so.6 => /lib/x86_64-linux-gnu/libm.so.6 (0x0000751efe117000)
+	libgcc_s.so.1 => /lib/x86_64-linux-gnu/libgcc_s.so.1 (0x0000751eff7d3000)
+	libc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x0000751efde00000)
+	/lib64/ld-linux-x86-64.so.2 (0x0000751eff810000)
+	libz.so.1 => /lib/x86_64-linux-gnu/libz.so.1 (0x0000751eff7b5000)
+	libzstd.so.1 => /lib/x86_64-linux-gnu/libzstd.so.1 (0x0000751efe05d000)
+	libsframe.so.1 => /lib/x86_64-linux-gnu/libsframe.so.1 (0x0000751eff7ac000)
+Internal ctest changing into directory: /work/lua-libghidra/.saivage/work/cards/card-a-b/patched-sdk-build/local
+Test project /work/lua-libghidra/.saivage/work/cards/card-a-b/patched-sdk-build/local
+    Start 1: native_external_constructor
+1/1 Test #1: native_external_constructor ......   Passed    0.01 sec
+
+100% tests passed, 0 tests failed out of 1
+
+Total Test time (real) =   0.01 sec
+-- Detecting CXX compile features - done
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
+-- Found Threads: TRUE  
+-- Configuring done (0.6s)
+-- Generating done (0.0s)
+-- Build files have been written to: /work/lua-libghidra/.saivage/work/cards/card-a-b/patched-sdk-build/consumer
+[1/6] Building C object CMakeFiles/native_smoke.dir/work/lua-libghidra/tests/native_smoke.c.o
+[2/6] Building CXX object CMakeFiles/installed_closure.dir/work/lua-libghidra/tests/native_link_closure.cpp.o
+[3/6] Linking C executable native_smoke
+[4/6] Linking CXX shared library libinstalled_closure.so
+[5/6] Building CXX object CMakeFiles/native_probe.dir/work/lua-libghidra/tests/native_probe.cpp.o
+[6/6] Linking CXX executable native_probe
+constructed profile=external
+open language= compiler= format= base=0
+completed=1 fallback=0 error=
+
+int4 func_0x00401106(int4 param_1)
+
+{
+  return param_1 * 3 + 7;
+}
+completed=1 fallback=0 error=
+  return param_1 * 3 + 7;
