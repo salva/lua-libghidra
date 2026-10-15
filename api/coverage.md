@@ -397,3 +397,20 @@ both fail reviewed assertions. Nineteen focused tests pass. The remaining generi
 response paths are still listed in semantic_audit; request/default/domain/helper
 and final non-first-slice grammar audits remain open. No iterator or runtime
 positive/negative qualification is claimed.
+
+## Type-family producer fields (sixteenth increment)
+
+Five more producer/operation contracts account for all TypeRecord, TypeAliasRecord,
+TypeEnumRecord and TypeUnionRecord fields. Type lookup ID is literal zero; list
+IDs are filtered counters restarting per request. Synthetic slash path_name does
+not establish hierarchical path lookup. Category/archive/universal-ID/undefined
+metadata remain model defaults. Type length preserves signed native getSize;
+enum width and union size convert signed getSize to uint64 (negative values would
+convert modulo 2^64), not validated measured layout. Enum is_signed stays false by
+initializer, not detected signedness. Alias declaration is constructed without a
+semicolon or general declarator-fidelity promise. These default/assignment facts
+are source accounting, not runtime qualification.
+
+Independent probes replace type page IDs and alias declaration composition; both
+must fail reviewed assertions. Twenty tests pass. Remaining generic field paths,
+request/helper/domain review and final grammar remain explicit acceptance gaps.

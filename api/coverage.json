@@ -5586,6 +5586,30 @@
           "path": "python/src/libghidra/local.py"
         }
       },
+      "record_field_reviews": [
+        {
+          "assigned_fields": [
+            "display_name",
+            "kind",
+            "length",
+            "name",
+            "path_name",
+            "type_id"
+          ],
+          "body_sha256": "79dee899c83d6ecdbb7d0ec75ae177250506abb90e7759011be5f9cc4e5cf58b",
+          "default_only_fields": [
+            "category_path",
+            "is_not_yet_defined",
+            "source_archive",
+            "universal_id"
+          ],
+          "line": 664,
+          "method": "getType",
+          "model": "TypeRecord",
+          "path": "cpp/src/local_arch_adapter.cpp",
+          "qualification": "all declared record fields accounted against producer; runtime fixtures unqualified"
+        }
+      ],
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
@@ -5616,7 +5640,12 @@
             "native_type": "std::uint64_t",
             "optional": false,
             "path": "type.type_id",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 664,
+              "method": "getType",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "literal zero for lookup; not resolved native type ID"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -5626,7 +5655,12 @@
             "native_type": "std::string",
             "optional": false,
             "path": "type.name",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 664,
+              "method": "getType",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "native datatype getName unchanged"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -5636,7 +5670,12 @@
             "native_type": "std::string",
             "optional": false,
             "path": "type.path_name",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 664,
+              "method": "getType",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "synthetic slash plus native name, not hierarchical database path or proof lookup accepts slash"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -5646,7 +5685,12 @@
             "native_type": "std::string",
             "optional": false,
             "path": "type.category_path",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 664,
+              "method": "getType",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "not assigned by getType; retain model initializer empty; not measured metadata or durable identity"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -5656,7 +5700,12 @@
             "native_type": "std::string",
             "optional": false,
             "path": "type.display_name",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 664,
+              "method": "getType",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "native datatype getDisplayName unchanged"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -5666,7 +5715,12 @@
             "native_type": "std::string",
             "optional": false,
             "path": "type.kind",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 664,
+              "method": "getType",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "metatype_to_kind string; not Lua enum or independently detected category"
           },
           {
             "lua": "checked Lua integer (int)",
@@ -5676,7 +5730,12 @@
             "native_type": "int",
             "optional": false,
             "path": "type.length",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 664,
+              "method": "getType",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "native signed getSize assigned to model integer; preserve signed value, including native unknown-size sentinel"
           },
           {
             "lua": "boolean (preserve false)",
@@ -5686,7 +5745,12 @@
             "native_type": "bool",
             "optional": false,
             "path": "type.is_not_yet_defined",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 664,
+              "method": "getType",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "not assigned by getType; retain model initializer false; not measured metadata or durable identity"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -5696,7 +5760,12 @@
             "native_type": "std::string",
             "optional": false,
             "path": "type.source_archive",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 664,
+              "method": "getType",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "not assigned by getType; retain model initializer empty; not measured metadata or durable identity"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -5706,7 +5775,12 @@
             "native_type": "std::string",
             "optional": false,
             "path": "type.universal_id",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 664,
+              "method": "getType",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "not assigned by getType; retain model initializer empty; not measured metadata or durable identity"
           }
         ],
         "lua": "GetTypeResponse table/enum; resolve in types/enums",
@@ -11527,6 +11601,24 @@
         }
       },
       "program_state": "loaded program and valid primary adapter required; otherwise NO_PROGRAM",
+      "record_field_reviews": [
+        {
+          "assigned_fields": [
+            "declaration",
+            "name",
+            "path_name",
+            "target_type",
+            "type_id"
+          ],
+          "body_sha256": "de51ebaa1f069440ae52fba9c253f831ac24a71e62b92ee65b05529d4001c233",
+          "default_only_fields": [],
+          "line": 685,
+          "method": "listTypeAliases",
+          "model": "TypeAliasRecord",
+          "path": "cpp/src/local_arch_adapter.cpp",
+          "qualification": "all declared record fields accounted against producer; runtime fixtures unqualified"
+        }
+      ],
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
@@ -11573,7 +11665,12 @@
             "native_type": "std::uint64_t",
             "optional": false,
             "path": "aliases.type_id",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 685,
+              "method": "listTypeAliases",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "filtered zero-based uint64 counter BEFORE pagination; restarts per request, not durable native type identity"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -11583,7 +11680,12 @@
             "native_type": "std::string",
             "optional": false,
             "path": "aliases.path_name",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 685,
+              "method": "listTypeAliases",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "synthetic slash plus native name, not hierarchical database path or proof lookup accepts slash"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -11593,7 +11695,12 @@
             "native_type": "std::string",
             "optional": false,
             "path": "aliases.name",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 685,
+              "method": "listTypeAliases",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "native datatype getName unchanged"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -11603,7 +11710,12 @@
             "native_type": "std::string",
             "optional": false,
             "path": "aliases.target_type",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 685,
+              "method": "listTypeAliases",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "typedef target getName unchanged; only typedef entries emitted"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -11613,7 +11725,12 @@
             "native_type": "std::string",
             "optional": false,
             "path": "aliases.declaration",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 685,
+              "method": "listTypeAliases",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "constructed typedef + space + target name + space + alias name, without semicolon or declarator fidelity guarantee"
           }
         ],
         "lua": "ListTypeAliasesResponse table/enum; resolve in types/enums",
@@ -11935,6 +12052,26 @@
         }
       },
       "program_state": "loaded program and valid primary adapter required; otherwise NO_PROGRAM",
+      "record_field_reviews": [
+        {
+          "assigned_fields": [
+            "name",
+            "path_name",
+            "type_id",
+            "width"
+          ],
+          "body_sha256": "e69bebccd40ea5fb81b5663583de585c4c7fcbeaea0123ea3ec2117e6dc286e9",
+          "default_only_fields": [
+            "declaration",
+            "is_signed"
+          ],
+          "line": 403,
+          "method": "listTypeEnums",
+          "model": "TypeEnumRecord",
+          "path": "cpp/src/local_arch_adapter.cpp",
+          "qualification": "all declared record fields accounted against producer; runtime fixtures unqualified"
+        }
+      ],
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
@@ -11981,7 +12118,12 @@
             "native_type": "std::uint64_t",
             "optional": false,
             "path": "enums.type_id",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 403,
+              "method": "listTypeEnums",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "filtered zero-based uint64 counter BEFORE pagination; restarts per request, not durable native type identity"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -11991,7 +12133,12 @@
             "native_type": "std::string",
             "optional": false,
             "path": "enums.path_name",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 403,
+              "method": "listTypeEnums",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "synthetic slash plus native name, not hierarchical database path or proof lookup accepts slash"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -12001,7 +12148,12 @@
             "native_type": "std::string",
             "optional": false,
             "path": "enums.name",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 403,
+              "method": "listTypeEnums",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "native datatype getName unchanged"
           },
           {
             "lua": "exact UInt64",
@@ -12011,7 +12163,12 @@
             "native_type": "std::uint64_t",
             "optional": false,
             "path": "enums.width",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 403,
+              "method": "listTypeEnums",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "TypeEnum getSize in bytes; signed native value converted to uint64 modulo 2^64 if negative; is_signed not inferred"
           },
           {
             "lua": "boolean (preserve false)",
@@ -12021,7 +12178,12 @@
             "native_type": "bool",
             "optional": false,
             "path": "enums.is_signed",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 403,
+              "method": "listTypeEnums",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "not assigned by listTypeEnums; retain model initializer false; not measured metadata or durable identity"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -12031,7 +12193,12 @@
             "native_type": "std::string",
             "optional": false,
             "path": "enums.declaration",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 403,
+              "method": "listTypeEnums",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "not assigned by listTypeEnums; retain model initializer empty; not measured metadata or durable identity"
           }
         ],
         "lua": "ListTypeEnumsResponse table/enum; resolve in types/enums",
@@ -12393,6 +12560,25 @@
         }
       },
       "program_state": "loaded program and valid primary adapter required; otherwise NO_PROGRAM",
+      "record_field_reviews": [
+        {
+          "assigned_fields": [
+            "name",
+            "path_name",
+            "size",
+            "type_id"
+          ],
+          "body_sha256": "4e20ffdd35d06af5a9a1f55403037cb3d5b8cd965061604daf7a3dd364882f37",
+          "default_only_fields": [
+            "declaration"
+          ],
+          "line": 718,
+          "method": "listTypeUnions",
+          "model": "TypeUnionRecord",
+          "path": "cpp/src/local_arch_adapter.cpp",
+          "qualification": "all declared record fields accounted against producer; runtime fixtures unqualified"
+        }
+      ],
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
@@ -12439,7 +12625,12 @@
             "native_type": "std::uint64_t",
             "optional": false,
             "path": "unions.type_id",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 718,
+              "method": "listTypeUnions",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "filtered zero-based uint64 counter BEFORE pagination; restarts per request, not durable native type identity"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -12449,7 +12640,12 @@
             "native_type": "std::string",
             "optional": false,
             "path": "unions.path_name",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 718,
+              "method": "listTypeUnions",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "synthetic slash plus native name, not hierarchical database path or proof lookup accepts slash"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -12459,7 +12655,12 @@
             "native_type": "std::string",
             "optional": false,
             "path": "unions.name",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 718,
+              "method": "listTypeUnions",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "native datatype getName unchanged"
           },
           {
             "lua": "exact UInt64",
@@ -12469,7 +12670,12 @@
             "native_type": "std::uint64_t",
             "optional": false,
             "path": "unions.size",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 718,
+              "method": "listTypeUnions",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "native signed union getSize converted to uint64 modulo 2^64 if negative; no member-layout measurement"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -12479,7 +12685,12 @@
             "native_type": "std::string",
             "optional": false,
             "path": "unions.declaration",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 718,
+              "method": "listTypeUnions",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "not assigned by listTypeUnions; retain model initializer empty; not measured metadata or durable identity"
           }
         ],
         "lua": "ListTypeUnionsResponse table/enum; resolve in types/enums",
@@ -12607,6 +12818,30 @@
           "path": "python/src/libghidra/local.py"
         }
       },
+      "record_field_reviews": [
+        {
+          "assigned_fields": [
+            "display_name",
+            "kind",
+            "length",
+            "name",
+            "path_name",
+            "type_id"
+          ],
+          "body_sha256": "29dcc593a5d77efa57231deda418ea971c89dedef951fdc4f0f822debb0acc0b",
+          "default_only_fields": [
+            "category_path",
+            "is_not_yet_defined",
+            "source_archive",
+            "universal_id"
+          ],
+          "line": 370,
+          "method": "listTypes",
+          "model": "TypeRecord",
+          "path": "cpp/src/local_arch_adapter.cpp",
+          "qualification": "all declared record fields accounted against producer; runtime fixtures unqualified"
+        }
+      ],
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
@@ -12653,7 +12888,12 @@
             "native_type": "std::uint64_t",
             "optional": false,
             "path": "types.type_id",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 370,
+              "method": "listTypes",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "filtered zero-based uint64 counter BEFORE pagination; restarts per request, not durable native type identity"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -12663,7 +12903,12 @@
             "native_type": "std::string",
             "optional": false,
             "path": "types.name",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 370,
+              "method": "listTypes",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "native datatype getName unchanged"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -12673,7 +12918,12 @@
             "native_type": "std::string",
             "optional": false,
             "path": "types.path_name",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 370,
+              "method": "listTypes",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "synthetic slash plus native name, not hierarchical database path or proof lookup accepts slash"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -12683,7 +12933,12 @@
             "native_type": "std::string",
             "optional": false,
             "path": "types.category_path",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 370,
+              "method": "listTypes",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "not assigned by listTypes; retain model initializer empty; not measured metadata or durable identity"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -12693,7 +12948,12 @@
             "native_type": "std::string",
             "optional": false,
             "path": "types.display_name",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 370,
+              "method": "listTypes",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "native datatype getDisplayName unchanged"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -12703,7 +12963,12 @@
             "native_type": "std::string",
             "optional": false,
             "path": "types.kind",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 370,
+              "method": "listTypes",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "metatype_to_kind string; not Lua enum or independently detected category"
           },
           {
             "lua": "checked Lua integer (int)",
@@ -12713,7 +12978,12 @@
             "native_type": "int",
             "optional": false,
             "path": "types.length",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 370,
+              "method": "listTypes",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "native signed getSize assigned to model integer; preserve signed value, including native unknown-size sentinel"
           },
           {
             "lua": "boolean (preserve false)",
@@ -12723,7 +12993,12 @@
             "native_type": "bool",
             "optional": false,
             "path": "types.is_not_yet_defined",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 370,
+              "method": "listTypes",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "not assigned by listTypes; retain model initializer false; not measured metadata or durable identity"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -12733,7 +13008,12 @@
             "native_type": "std::string",
             "optional": false,
             "path": "types.source_archive",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 370,
+              "method": "listTypes",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "not assigned by listTypes; retain model initializer empty; not measured metadata or durable identity"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -12743,7 +13023,12 @@
             "native_type": "std::string",
             "optional": false,
             "path": "types.universal_id",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 370,
+              "method": "listTypes",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "not assigned by listTypes; retain model initializer empty; not measured metadata or durable identity"
           }
         ],
         "lua": "ListTypesResponse table/enum; resolve in types/enums",
@@ -27869,56 +28154,6 @@
         "path": "type"
       },
       {
-        "native_type": "std::uint64_t",
-        "operation": "GetType",
-        "path": "type.type_id"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "GetType",
-        "path": "type.name"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "GetType",
-        "path": "type.path_name"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "GetType",
-        "path": "type.category_path"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "GetType",
-        "path": "type.display_name"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "GetType",
-        "path": "type.kind"
-      },
-      {
-        "native_type": "int",
-        "operation": "GetType",
-        "path": "type.length"
-      },
-      {
-        "native_type": "bool",
-        "operation": "GetType",
-        "path": "type.is_not_yet_defined"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "GetType",
-        "path": "type.source_archive"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "GetType",
-        "path": "type.universal_id"
-      },
-      {
         "native_type": "std::vector<BasicBlockRecord>",
         "operation": "ListBasicBlocks",
         "path": "blocks"
@@ -28284,31 +28519,6 @@
         "path": "aliases"
       },
       {
-        "native_type": "std::uint64_t",
-        "operation": "ListTypeAliases",
-        "path": "aliases.type_id"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "ListTypeAliases",
-        "path": "aliases.path_name"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "ListTypeAliases",
-        "path": "aliases.name"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "ListTypeAliases",
-        "path": "aliases.target_type"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "ListTypeAliases",
-        "path": "aliases.declaration"
-      },
-      {
         "native_type": "std::vector<TypeEnumMemberRecord>",
         "operation": "ListTypeEnumMembers",
         "path": "members"
@@ -28332,36 +28542,6 @@
         "native_type": "std::vector<TypeEnumRecord>",
         "operation": "ListTypeEnums",
         "path": "enums"
-      },
-      {
-        "native_type": "std::uint64_t",
-        "operation": "ListTypeEnums",
-        "path": "enums.type_id"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "ListTypeEnums",
-        "path": "enums.path_name"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "ListTypeEnums",
-        "path": "enums.name"
-      },
-      {
-        "native_type": "std::uint64_t",
-        "operation": "ListTypeEnums",
-        "path": "enums.width"
-      },
-      {
-        "native_type": "bool",
-        "operation": "ListTypeEnums",
-        "path": "enums.is_signed"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "ListTypeEnums",
-        "path": "enums.declaration"
       },
       {
         "native_type": "std::vector<TypeMemberRecord>",
@@ -28394,84 +28574,9 @@
         "path": "unions"
       },
       {
-        "native_type": "std::uint64_t",
-        "operation": "ListTypeUnions",
-        "path": "unions.type_id"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "ListTypeUnions",
-        "path": "unions.path_name"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "ListTypeUnions",
-        "path": "unions.name"
-      },
-      {
-        "native_type": "std::uint64_t",
-        "operation": "ListTypeUnions",
-        "path": "unions.size"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "ListTypeUnions",
-        "path": "unions.declaration"
-      },
-      {
         "native_type": "std::vector<TypeRecord>",
         "operation": "ListTypes",
         "path": "types"
-      },
-      {
-        "native_type": "std::uint64_t",
-        "operation": "ListTypes",
-        "path": "types.type_id"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "ListTypes",
-        "path": "types.name"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "ListTypes",
-        "path": "types.path_name"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "ListTypes",
-        "path": "types.category_path"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "ListTypes",
-        "path": "types.display_name"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "ListTypes",
-        "path": "types.kind"
-      },
-      {
-        "native_type": "int",
-        "operation": "ListTypes",
-        "path": "types.length"
-      },
-      {
-        "native_type": "bool",
-        "operation": "ListTypes",
-        "path": "types.is_not_yet_defined"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "ListTypes",
-        "path": "types.source_archive"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "ListTypes",
-        "path": "types.universal_id"
       },
       {
         "native_type": "std::vector<XrefRecord>",

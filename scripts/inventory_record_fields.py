@@ -50,6 +50,27 @@ def review_record_fields(u, operations, types):
             'source_name':'literal raw; not detected source file name',
         }),
     }
+    type_common={
+        'name':'native datatype getName unchanged',
+        'path_name':'synthetic slash plus native name, not hierarchical database path or proof lookup accepts slash',
+    }
+    type_details={
+        'display_name':'native datatype getDisplayName unchanged',
+        'kind':'metatype_to_kind string; not Lua enum or independently detected category',
+        'length':'native signed getSize assigned to model integer; preserve signed value, including native unknown-size sentinel',
+    }
+    counter='filtered zero-based uint64 counter BEFORE pagination; restarts per request, not durable native type identity'
+    contracts.update({
+        'getType': ('TypeRecord',['GetType'],dict(type_common, **type_details, type_id='literal zero for lookup; not resolved native type ID')),
+        'listTypes': ('TypeRecord',['ListTypes'],dict(type_common, **type_details, type_id=counter)),
+        'listTypeAliases': ('TypeAliasRecord',['ListTypeAliases'],dict(type_common, type_id=counter,
+            target_type='typedef target getName unchanged; only typedef entries emitted',
+            declaration='constructed typedef + space + target name + space + alias name, without semicolon or declarator fidelity guarantee')),
+        'listTypeEnums': ('TypeEnumRecord',['ListTypeEnums'],dict(type_common, type_id=counter,
+            width='TypeEnum getSize in bytes; signed native value converted to uint64 modulo 2^64 if negative; is_signed not inferred')),
+        'listTypeUnions': ('TypeUnionRecord',['ListTypeUnions'],dict(type_common, type_id=counter,
+            size='native signed union getSize converted to uint64 modulo 2^64 if negative; no member-layout measurement')),
+    })
     for method,(model,names,semantics) in contracts.items():
         start,text=body(source,'ArchAdapter::'+method+'(')
         assigned=set(re.findall(r'rec\.(\w+)\s*=',text))
@@ -58,6 +79,9 @@ def review_record_fields(u, operations, types):
             assert 'size = fns[i + 1].addr - fns[i].addr' in text
         if method=='listSymbols': assert 'rec.symbol_id = id_counter++' in text
         if method=='listMemoryBlocks': assert 'rec.size = rec.end_address + 1' in text
+        if method=='listTypeAliases': assert 'rec.declaration = "typedef " + target->getName() + " " + dt->getName()' in text
+        if method in ['listTypes','listTypeEnums','listTypeAliases','listTypeUnions']: assert 'rec.type_id = id_counter++' in text
+        if method=='getType': assert 'rec.type_id = 0' in text
         if method=='getInstruction': assert 'if (!emit.body.empty())' in text
         declared={f['name']:f for f in types[model]['fields']}
         assert assigned<=set(declared)

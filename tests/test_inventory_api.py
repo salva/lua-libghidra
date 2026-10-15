@@ -174,10 +174,32 @@ class InventoryTests(unittest.TestCase):
             with self.assertRaises(AssertionError):
                 module.inventory(root)
             adapter.write_text(adapter_original)
+            adapter.write_text(adapter_original.replace('rec.type_id = id_counter++', 'rec.type_id = 0'))
+            with self.assertRaises(AssertionError):
+                module.inventory(root)
+            adapter.write_text(adapter_original)
+            adapter.write_text(adapter_original.replace('rec.declaration = "typedef " + target->getName() + " " + dt->getName()', 'rec.declaration = dt->getName()'))
+            with self.assertRaises(AssertionError):
+                module.inventory(root)
+            adapter.write_text(adapter_original)
             header = root/'cpp/src/local_arch_adapter.hpp'
             header.write_text(header.read_text().replace('std::map<std::pair<std::uint64_t, int>, std::string> comments_', 'std::multimap<std::pair<std::uint64_t, int>, std::string> comments_'))
             with self.assertRaises(AssertionError):
                 module.inventory(root)
+
+    def test_type_record_field_population_and_synthetic_metadata(self):
+        def field(op, name):
+            return next(f for f in self.ops[op]['response']['fields'] if f['name']==name)
+        self.assertIn('literal zero',field('GetType','type_id')['semantics'])
+        self.assertIn('restarts',field('ListTypes','type_id')['semantics'])
+        self.assertIn('not assigned',field('ListTypes','category_path')['semantics'])
+        self.assertIn('false',field('ListTypeEnums','is_signed')['semantics'])
+        self.assertIn('without semicolon',field('ListTypeAliases','declaration')['semantics'])
+        self.assertIn('modulo',field('ListTypeUnions','size')['semantics'])
+        for name in ['GetType','ListTypes','ListTypeEnums','ListTypeAliases','ListTypeUnions']:
+            review=self.ops[name]['record_field_reviews'][0]
+            declared={f['name'] for f in self.data['types'][review['model']]['fields']}
+            self.assertEqual(declared,set(review['assigned_fields'])|set(review['default_only_fields']))
 
     def test_record_fields_are_producer_specific_and_exhaustive(self):
         def field(op, name):
