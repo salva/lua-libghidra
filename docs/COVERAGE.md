@@ -5,7 +5,8 @@ Inventory at the [SPEC pin](SPEC.md): public interfaces in
 Names below are native C++ operations; low-level names are snake_case.
 All listed local overrides belong to the full target; tier marks first delivery.
 No row is runtime-qualified. Each needs a positive real supported case, including
-analyzed-project inputs where required, plus negative limitation tests.
+analyzed-project inputs where required, plus negative limitation tests. The
+constant-empty compatibility row below has an explicit fidelity-only gate.
 
 | Header / subsystem | Tier | Native operations |
 | --- | --- | --- |
@@ -21,7 +22,8 @@ analyzed-project inputs where required, plus negative limitation tests.
 | xrefs.hpp | Core | ListXrefs |
 | memory.hpp | Core | ListMemoryBlocks, WriteBytes |
 | types.hpp | Core | GetType, ListTypes, ListTypeAliases, ListTypeUnions, ListTypeEnums, ListTypeEnumMembers, ListTypeMembers, GetFunctionSignature, ListFunctionSignatures |
-| listing.hpp | Core | GetComments, ListDefinedStrings |
+| listing.hpp | Core | GetComments |
+| listing.hpp | Core compatibility | ListDefinedStrings (always-empty loaded-program response; no discovery) |
 | decompiler.hpp | Full | ListDecompilations (native batch) |
 | functions.hpp | Full | ListLeafFunctions (project reference index required) |
 | symbols.hpp | Full | DeleteSymbol |
@@ -42,6 +44,25 @@ DeleteTypeEnum; GetPcode; ListInstructionOperands; bookmarks and breakpoints. HT
 do not expand scope. Project-backed OpenProgram and ListLeafFunctions remain in
 scope despite absent local project-management APIs.
 
+## Pinned operation limitations
+
+GetCapabilities preserves upstream coarse subsystem labels verbatim; it is not
+proof of per-operation support (including strings, type kinds or enum deletion).
+The explicit inventory and qualification evidence govern binding support claims.
+
+- ListFunctionSignatures is pages-only: limit/offset count candidate functions,
+  and absent signatures are filtered after pagination. Empty output does not
+  establish exhaustion. No signature iterator is promised.
+- ListDefinedStrings ignores all range/page fields and always returns empty on
+  a loaded program. Test empty-success envelope fidelity on a real fixture with
+  known strings, unloaded error and binding validation. No populated/order gate,
+  facade iterator, scanner implementation or string-discovery claim.
+- DeleteSymbol ignores name; it is not a deletion guard. CreateType ignores size
+  and accepts only struct kind. AddTypeMember ignores size and appends using the
+  referenced type. CreateTypeEnum ignores width/is_signed. Preserve these fields
+  and caveats in the manifest and test their actual behavior/unsupported kinds.
+  Do not silently enforce them through replacement implementations.
+
 ## Public-layer mapping
 
 Lowlevel covers every included operation with complete responses. Facade offers
@@ -55,6 +76,8 @@ conveniences. This is intentional facade coverage, not missing native coverage.
 Before each adapter lands, `api/coverage.*` expands this inventory to one row per
 operation: exact low/high names, every field's native type/Lua representation,
 defaults/ignored keys, response extraction, mutation classification, pagination
-identity/order, supported fixture, success assertions and negative evidence.
+identity/order, cursor domain and post-pagination filtering, supported fixture,
+success assertions and negative evidence. Apply SPEC's compatibility exception
+for defined strings rather than demanding unattainable discovery evidence.
 Reconcile Python's narrower facade independently; it is neither the full native
 inventory nor authority for native architecture detection.

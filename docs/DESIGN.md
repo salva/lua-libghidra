@@ -57,6 +57,9 @@ boundary using ordinary C-built Lua. Prove no leaks, double destruction or skipp
 destructors under ASan/UBSan. If sol2 hides unsafe frames, use direct C API there
 or throughout; never waive the gate based on pcall. check and iterator raising
 live in Lua after native return.
+Include protected-call setup/exit and allocation-triggered finalizer reentrancy
+in the audit; recheck handle validity/closed state after any Lua-running phase
+before native dispatch. Sanitizers supplement, not replace, the all-frame proof.
 
 ## 3. Pagination and generation
 
@@ -74,8 +77,8 @@ fixture. Compound keys use exact UInt64 hex and length-delimited text:
 | Page family | Identity (native field meaning) |
 | --- | --- |
 | Functions, leaves | entry_address |
-| Signatures, decompilations | function_entry_address |
-| Instructions, data items, defined strings | Address |
+| Decompilations | function_entry_address |
+| Instructions, data items | Address |
 | Symbols | Address plus name (and namespace if returned) |
 | Memory blocks | start_address plus name |
 | Types, aliases, unions, enums | path_name (full native type path) |
@@ -93,9 +96,17 @@ last ordering key, bounded by page size. Reject oversized pages, repeated pages,
 duplicate identities within a page and non-advancing/overlapping order as
 `PAGINATION_STALLED`; do not silently deduplicate. Verify native order (not
 necessarily numeric) and define the comparator per operation in the manifest.
-One offending page ends iteration: no unbounded retries/history set. Advance by
-actual count with checked arithmetic. Without reliable continuation metadata,
-stop on an empty page, not a short page. No implicit unbounded request.
+One offending page ends iteration: no unbounded retries/history set. Only for
+families whose offsets count returned records, advance by actual count with
+checked arithmetic and, without reliable continuation metadata, stop on an empty
+page rather than a short page. Record cursor domain and post-pagination filtering
+alongside identity/order in the manifest; these are separate qualification checks.
+ListFunctionSignatures paginates candidate functions then omits absent signatures:
+pages-only, no initial iterator. Empty filtered pages are not exhaustion and
+returned count is not candidate progress. A future input-aware traversal requires
+a separate design and missing-signature tests within/across pages.
+ListDefinedStrings is a constant-empty native compatibility stub; omit its facade
+iterator and populated/order gates. No implicit unbounded request in any family.
 
 All calls share native dispatch classification (read/mutation/lifecycle).
 Generation invalidation happens before mutating/lifecycle dispatch, including
@@ -121,13 +132,22 @@ objects otherwise disappear from archives. Installed packages export
 LINK_LIBRARY:WHOLE_ARCHIVE) for the local archive and verify registration/link
 closure. A release SDK with HTTP-only libraries is insufficient.
 
+Local source configuration unconditionally runs `cmake/EmbedSpecs.cmake` and
+`embed_specs.py`, even with Python bindings disabled. Require Python >=3.10
+(evaluated union annotations) with importable Python zlib and an early CMake/
+LuaRocks version/module check. Record interpreter version in the build lock.
+Consuming a prebuilt local SDK need not run this generator. This build dependency
+is distinct from Python's qualification-oracle role and the Python-free runtime.
+
 M0 dependency lock records URLs, revisions, archive SHA-256, options and licenses
 independently for:
 
 - libghidra `d51ca813ae1b6b59519551a9be8c0b1ad74d862d`;
 - Ghidra engine source `2035b8153afaf7ce2edde24a2c80b62bbcf5127f`;
-- compiled Sleigh archive: upstream `specs12.1.3` is a candidate, **not qualified**
-  until digest and engine compatibility are verified. Source lacks compiled .sla;
+- compiled Sleigh archive: pinned upstream CI uses
+  `ghidra_12.1.3_PUBLIC_20260817.zip` from NSA Ghidra release `Ghidra_12.1.3_build`
+  (not a verified artifact named `specs12.1.3`). Record its exact URL and SHA-256;
+  engine compatibility remains **unqualified** here. Source lacks compiled .sla;
 - protobuf exactly v29.3 (checked-in generated code requires 5029003), compatible
   Abseil, httplib v0.16.3, and a tested sol2 release if retained;
 - Lua ABI, toolchain and all transitive libraries.
@@ -141,10 +161,19 @@ obligations; require PIC-capable archives or shared libraries, fail configuratio
 for unqualified system archives. Do not label BFD permissive. No-BFD profiles
 are deferred pending separate loader qualification.
 
-Require explicit spec root (`ghidra_root`) in qualification. Native embedded spec
-extraction uses `$HOME/.ghidracpp/cache/sleigh`; document writable HOME cache
-requirements instead of relying on a warm developer cache. Test cold, warm,
-missing and unwritable cache/spec roots. Clearly diagnose unavailable engines/specs.
+Qualify two distinct spec-loading profiles and prove the intended constructor
+path was exercised:
+
+- **External specs:** nonempty explicit `ghidra_root`, deterministic external
+  specs; test valid, missing and unreadable roots. This constructor bypasses
+  embedded extraction and does not require its HOME cache.
+- **Embedded specs:** empty `ghidra_root`, compiled-in specs; isolated HOME with
+  cold, warm and unwritable `$HOME/.ghidracpp/cache/sleigh`. Cold extraction needs
+  a writable cache; record actual warm/unwritable behavior and diagnostics rather
+  than inferring it from external-root success.
+
+Both profiles remain qualification gates, including missing-spec diagnostics;
+an explicit-root test cannot count as evidence for cache handling.
 
 Compile against the selected Lua ABI without bundling another VM. Test dynamic
 Lua hosts and statically embedded hosts exporting Lua symbols; inspect module

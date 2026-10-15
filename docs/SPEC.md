@@ -13,6 +13,9 @@ C++20, CMake and LuaRocks source installation. Lua 5.3 requires later independen
 qualification. HTTP, remote lifecycle, async APIs and SWIG are excluded.
 Installed operation requires no Python, Java, Ghidra application or network.
 Development fixture generation may use Java/Ghidra.
+Source builds require Python >=3.10 with its zlib module for upstream spec
+embedding, independently of the required Python qualification oracle; neither
+is an installed-runtime dependency. See DESIGN's two spec-loading profiles.
 
 Calls are synchronous. Initial `pool_size` is exactly 1; reject other values.
 Only one live binding-owned native client per process is supported, including
@@ -28,8 +31,13 @@ same process. These are binding restrictions, not proven native safety claims.
   Snake-case methods map native operations to complete detached response tables,
   preserving optional fields, metadata, outcomes and errors. `_native` is private.
 - `require("libghidra").open(options)` constructs a client, opens its program and
-  returns a Session; on open failure it releases the client. Separate factory
-  and open request keys are documented and validated, never silently forwarded.
+  returns `session, nil, open_response`; on factory/open failure it returns
+  `nil, error` and releases any newly created client. The detached response is
+  from that exact open, not refreshed state after later native close/reopen.
+  Preserve every field, including `has_entry_point=false`, zero addresses and
+  empty strings; no second open is needed to retrieve it. Architecture metadata
+  remains echoed, not authoritative detection. Factory/open keys are separated
+  as specified below, never silently forwarded.
   Session offers direct records, byte strings and lazy iterators for common reads.
   `session:native()` returns the low-level view of the **same** owning handle.
   It does not allocate another engine. A Session is mutable program context,
@@ -58,6 +66,37 @@ failures, `"binding"` for validation/lifecycle/conversion errors), and optional
 exceptions. No SDK exception escapes C++. Allocation/runtime errors remain Lua
 errors. Iterators raise structured errors: generic `for` cannot convey a second
 error result reliably.
+
+### First-slice call grammar
+
+Both modules export the same `check` and `u64` helpers (no globals).
+`ghidra.open{client={...}, program={...}}` requires `program`; omitted `client`
+means `{}`. Client keys: `ghidra_root`, `state_path`, `default_arch` (default
+empty strings), `pool_size` (default 1, only 1 accepted). Program keys:
+`program_path`, `project_path`, `language_id`, `compiler_spec_id`, `format`
+(default empty strings), `base_address` (default UInt64 zero). At least one path
+is required; a nonempty project_path selects native project-backed loading.
+Low-level `local_client(client_options)` and `client:open_program(program_options)`
+use those separate tables; only low-level open additionally accepts ignored
+`project_name` (default empty) and `read_only` (default false).
+
+| Call | Return shape / options |
+| --- | --- |
+| Both: `get_status()`, `get_capabilities()` | Complete native value (health table / capability array), or nil,error |
+| Both: `get_function(address)`, `get_instruction(address)` | Low-level envelope; facade record,nil,envelope or missing-result tuple |
+| Both: `read_bytes(address, size)` | size checked uint32; low-level envelope; facade binary string,nil,envelope |
+| Both: `get_decompilation(address, options)` | options defaults {}; low-level timeout_ms defaults 30000 (ignored); facade permits no timeout key; return as above |
+| Both: `list_functions(options)`, `list_instructions(options)` | Complete page envelope; options defaults {} |
+| Facade: `iter_functions(options)` | Lazy zero-argument iterator function yielding one record, then nil; raises structured errors |
+| Both: `close_program{policy="discard"}` | Complete outcome; policy required (save/discard), no implicit save |
+| Both: `close()`; facade: `native()` | true or shared low-level view respectively |
+
+Page options are `range_start` (default UInt64 zero), `range_end` (default UInt64
+maximum), `limit` (100), `offset` (0). Iterator options replace `limit` with
+`page_size` (100); same range/offset defaults. Native inclusive ranges and compound
+integer checks apply. There is no instruction iterator in the first slice.
+Other families require their recorded per-operation contract before expansion.
+See [proposed examples](EXAMPLES.md); M2 executes them with fixture-manifest inputs.
 
 ## 3. Values and validation
 
@@ -143,6 +182,23 @@ Python detection may otherwise differ. Get/list decompilation ignores
 an explicitly supplied timeout, makes no deadline promise, and passes the native
 default internally. No coroutine cancellation claim.
 
+Additional pinned limitations (low-level accepts and validates these native
+fields, but does not pretend they affect execution):
+
+| Operation | Limitation |
+| --- | --- |
+| DeleteSymbol | name ignored; deletion selects by address, not an address/name guard |
+| CreateType | size ignored; only kind="struct" supported; other kinds return NOT_SUPPORTED |
+| AddTypeMember | size ignored; native appends after existing members, using referenced type |
+| CreateTypeEnum | width and is_signed ignored by native defineEnum call |
+| ListDefinedStrings | Ignores ranges/limit/offset; loaded program always returns empty success; no defined-string database |
+
+These mutation operations are specialist native() calls, with no facade promise
+of enforcing ignored fields. GetCapabilities is a faithful coarse upstream
+subsystem advertisement, not an operation-level support oracle; its strings/full
+CRUD claims do not override the qualified coverage inventory. ListDefinedStrings
+is core low-level compatibility only, with no facade iterator or string scanner.
+
 ## 5. Iteration
 
 Iterators retain the shared handle, fetch lazily without prefetch, and check
@@ -155,7 +211,12 @@ Records already returned remain detached. Iteration is not a universal snapshot
 and cannot detect externally changed files or engines.
 
 Per-operation identity/order and bounded progress rules are in DESIGN.
-Advance by actual returned count; short pages alone do not prove exhaustion.
+For families whose offset domain is the returned-record sequence, advance by
+actual returned count; short pages alone do not prove exhaustion.
+ListFunctionSignatures is **pages-only** initially: native offset/limit select
+candidate functions before missing signatures are filtered out. Neither returned
+count nor an empty signature page measures consumed candidates or exhaustion.
+Preserve the native response without invented continuation metadata.
 Native serial ordering must be qualified before enabling each iterator; sorting
 individual pages cannot repair unstable global ordering.
 
@@ -168,6 +229,10 @@ with expected semantic content. Preserve/test incomplete and fallback results
 separately. Python comparisons are required release qualification, although
 Python is optional for installed users. Core and full releases both pass M5;
 absent evidence is an open gate, never a pass.
+Exception to populated discovery acceptance: ListDefinedStrings must return
+faithful empty success on an open real fixture containing known strings, plus
+the unloaded-program error and binding validation tests. This qualifies envelope
+fidelity only, not discovery; populated-page/order tests do not apply to this stub.
 
 Boundary coverage includes uint64 0, 2^53±1, 2^63±1, 2^64−1, overflow, false/zero,
 NULs, nested optionals, ordinals, compound pagination limits, stale iterators,

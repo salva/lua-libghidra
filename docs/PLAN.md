@@ -11,6 +11,8 @@ Record binding license, intended distribution, dependency sources/digests,
 spec compatibility, deterministic BFD profile and notices. Inventory every native
 and Python local operation and every request/response field in `api/coverage.*`.
 Mark HTTP-only stubs excluded; they are not local implementations.
+Check source-build Python >=3.10 and importable zlib early; record build-tool and
+qualification-oracle versions separately from the Python-free runtime profile.
 
 Create authored redistributable binary source and compiler/flags/source-hash/
 binary-hash manifest with known symbols, bytes and instruction expectations.
@@ -46,6 +48,11 @@ Exercise known bytes/instructions and semantic nonfallback decompilation using
 M0 fixtures. Qualify Python oracle with identical pin/architecture/specs; compare
 normalized fields, not formatting. Test false/zero, optional/nested values,
 uint64 boundaries, zero-based ordinals, flags and outcome presence.
+Execute SPEC's first-slice grammar and EXAMPLES with real manifest inputs;
+verify open's third-result metadata without reopening, including false/zero
+fields and retention after later close. Capability output must remain faithful
+without being treated as a precise operation-support oracle. The mutation example
+is an M3 extension, not an extra first-slice adapter requirement.
 
 Exit: positive real-engine cases through both surfaces, installed examples and
 negative/fallback diagnostics; no runtime Python/Java/network dependency.
@@ -57,11 +64,17 @@ as each lands. Test compound INT_MAX boundaries, positive page sizes,
 empty/exact/partial/capped pages, stable serial CFG/block order, stalled pages,
 errors and early exit. Test generation invalidation across native escape-hatch
 calls and before buffered yields. No universal snapshot claim.
+Verify signature candidate-offset/filtering semantics as page calls only; require
+no signature iterator. Qualify defined-string empty-success fidelity on a fixture
+with known strings, unloaded error and argument validation; no populated-page or
+discovery gate applies to this constant-empty compatibility operation.
 
 Verify per-category save/reopen on disposable fixtures, no-op discard,
 empty-state-path facade save rejection versus native behavior, nonpersistent
 byte overlay and destructor no-save. Every supported core row needs a positive
-test; negative NOT_SUPPORTED alone cannot satisfy it.
+test; negative NOT_SUPPORTED alone cannot satisfy it. The explicitly classified
+defined-string stub satisfies only the fidelity gate above. Execute the M3 native
+mutation/invalidation example with a disposable fixture.
 
 Exit: all core rows qualified/documented. Route core release through M5 now;
 M4 is not a prerequisite for a labelled core release.
@@ -74,6 +87,9 @@ performance records and local Shutdown. Each service slice includes positive
 supported cases, errors, complete field maps and low/high-layer dispositions.
 Preserve actual batch semantics without invented atomicity. Reconcile public
 headers against LocalClient overrides and Python; each omission has a tier/reason.
+Test ignored mutation fields (DeleteSymbol name, CreateType/AddTypeMember size,
+CreateTypeEnum width/is_signed) and unsupported CreateType kinds; preserve the
+documented limits rather than promising enforcement of ignored arguments.
 
 Exit: every local operation accounted for and supported cases demonstrated.
 
@@ -81,8 +97,10 @@ Exit: every local operation accounted for and supported cases demonstrated.
 
 From clean directories run CMake/LuaRocks offline install, standalone/embedded
 hosts, values, lifecycle/fault injection/sanitizers, pagination, real binary and
-analyzed fixtures and required normalized Python comparisons. Test cold and
-unwritable caches, explicit specs and runtime network/Java absence. Record exact
+analyzed fixtures and required normalized Python comparisons. Run both DESIGN
+profiles: explicit external roots (valid/missing/unreadable), and empty-root
+embedded specs (isolated cold/warm/unwritable HOME cache), proving constructor
+selection for each. Test runtime network/Java/Python absence. Record exact
 compiler/engine/spec/Lua/dependency identities and actual linked licenses/PIC.
 Ship API reference, manifest, examples, limitations, license/source links and
 visible attribution. Missing tests block qualification; publication requires
