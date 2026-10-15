@@ -23,6 +23,15 @@ def review_mutation_results(u, operations, types):
         'WriteBytes': {'bytes_written':'static_cast<std::uint32_t>(data.size())'},
         'PatchBytesBatch': {'patch_count':'static_cast<std::uint32_t>(patches.size())','bytes_written':'total_bytes'},
     }
+    acknowledged_updates=['CreateType','CreateTypeAlias','CreateTypeEnum','AddTypeMember',
+        'AddTypeEnumMember','RenameTypeMember','SetTypeMemberType',
+        'RenameTypeEnumMember','SetTypeEnumMemberValue','SetTypeAliasTarget']
+    acknowledged_deletes=['DeleteType','DeleteTypeAlias','DeleteTypeMember',
+        'DeleteTypeEnumMember','DeleteComment','DeleteDataItem']
+    side_maps=['SetComment','SetTypeMemberComment','SetTypeEnumMemberComment']
+    for name in acknowledged_updates: contracts[name]={'updated':'ok'}
+    for name in acknowledged_deletes: contracts[name]={'deleted':'ok'}
+    for name in side_maps: contracts[name]={'updated':'true'}
     for op in operations:
         name=op['name']
         if name not in contracts:continue
@@ -43,11 +52,17 @@ def review_mutation_results(u, operations, types):
         if name in ['RenameFunctionLocal','SetFunctionLocalType']:
             assert text.index('switch (')<text.index('revision_++')<text.index('resp.updated = true')
             assert '::FromError(' in text[:text.index('revision_++')]
+        if name in side_maps:
+            assert 'if (!ok)' not in text and 'return true;' in text
+            assert text.index('revision_++')<text.index('resp.updated = true')
+            assert 'ordinal >= ' not in text
         for field in op['response']['fields']:
             key=field['name']
             expression=assignments.get(key)
             if key in defaults:
                 field['semantics']='never assigned by '+name+'; retain model initializer '+declared[key]['native_default']+'; not looked up from program or parsed from supplied prototype'
+            elif name in side_maps:
+                field['semantics']='literal true after side-map setter dispatch with unconditional true lambda and ignored aggregate status; empty text stored, no existence/kind/address/ordinal validation; native revision increments even if replacing same value; acknowledgement is not proof of existing member edit or native project comment persistence'
             elif key in ['updated','renamed','deleted']:
                 field['semantics']='successful response only: true after mutation status accepted; failed native status returns StatusOr error, NOT successful false response; flag is native acknowledgement, not independent readback/rollback/atomicity proof'
             elif key=='deleted_count':

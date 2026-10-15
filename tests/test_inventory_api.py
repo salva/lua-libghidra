@@ -240,10 +240,26 @@ class InventoryTests(unittest.TestCase):
             with self.assertRaises(AssertionError):
                 module.inventory(root)
             adapter.write_text(adapter_original)
+            local.write_text(local_original.replace('resp.deleted = ok', 'resp.deleted = false'))
+            with self.assertRaises(AssertionError):
+                module.inventory(root)
+            local.write_text(local_original)
+            local.write_text(local_original.replace('resp.updated = true', 'resp.updated = false'))
+            with self.assertRaises(AssertionError):
+                module.inventory(root)
+            local.write_text(local_original)
             header = root/'cpp/src/local_arch_adapter.hpp'
             header.write_text(header.read_text().replace('std::map<std::pair<std::uint64_t, int>, std::string> comments_', 'std::multimap<std::pair<std::uint64_t, int>, std::string> comments_'))
             with self.assertRaises(AssertionError):
                 module.inventory(root)
+
+    def test_type_delete_and_side_map_flags_are_distinct(self):
+        for name in ['CreateType','AddTypeMember','DeleteComment','DeleteTypeEnumMember']:
+            self.assertIn('NOT successful false',self.ops[name]['response']['fields'][0]['semantics'])
+        for name in ['SetComment','SetTypeMemberComment','SetTypeEnumMemberComment']:
+            self.assertIn('unconditional true lambda',self.ops[name]['response']['fields'][0]['semantics'])
+            self.assertIn('no existence',self.ops[name]['response']['fields'][0]['semantics'])
+        self.assertEqual(self.ops['SetTypeAliasTarget']['mutation_result_review']['assignments'],{'updated':'ok'})
 
     def test_member_producer_assignments_and_default_identity(self):
         def sem(op,name):
@@ -278,7 +294,7 @@ class InventoryTests(unittest.TestCase):
         self.assertIn('exactly 1',sem('DeleteSymbol','deleted_count'))
         self.assertIn('input data.size',sem('WriteBytes','bytes_written'))
         self.assertIn('modulo on overflow',sem('PatchBytesBatch','bytes_written'))
-        self.assertEqual(len([o for o in self.ops.values() if 'mutation_result_review' in o]),13)
+        self.assertEqual(len([o for o in self.ops.values() if 'mutation_result_review' in o]),32)
 
     def test_performance_is_caller_data_and_double_is_number(self):
         op=self.ops['AddPerfBenchmark']

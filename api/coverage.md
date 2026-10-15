@@ -557,3 +557,19 @@ also prevented misdescribing unsigned member size as signed storage. Two new
 independent producer-expression probes reject altered size/value extraction.
 Twenty-seven focused tests pass; exhaustive request/helper/domain and remaining
 response/grammar work remains open. Runtime evidence remains unqualified.
+
+## Complete type/delete/comment acknowledgement accounting (twenty-fourth increment)
+
+The owning mutation-result reconciler now covers 32 operations, adding nineteen
+reviewed type/member/alias/create/delete/comment producers. Exact assignment sets
+and error-before-success ordering are checked. For status-driven edits/deletes,
+false belongs to an error response, not successful false. Side-map comment setters
+are separate: literal true follows unconditional-true dispatch, not type/member
+existence validation or native project persistence. Empty strings and same-value
+replacement are not suppressed; native revision still increments. Earlier
+reconstruction, ignored-field and destructive-retarget limitations remain in force;
+acknowledgement does not imply atomicity, rollback or canonical readback.
+
+Fresh generation/check and twenty-eight tests pass, including independent altered
+delete/update flag probes. Direct/container response accounting, request/helper/
+domain audit and final grammar remain open. Runtime evidence stays unqualified.

@@ -563,6 +563,14 @@
         "path": "cpp/src/local_client.cpp"
       },
       "lowlevel": "add_type_enum_member",
+      "mutation_result_review": {
+        "assignments": {
+          "updated": "ok"
+        },
+        "body_sha256": "7e7c1b2b79d7fedf979ab0ddefb507923e1d6d3c6550e56812d683280c0ecabf",
+        "path": "cpp/src/local_client.cpp",
+        "qualification": "source response/extraction branches only; runtime positive/negative and atomicity unqualified"
+      },
       "name": "AddTypeEnumMember",
       "native_literal_errors": [
         "ADD_ENUM_MEMBER_FAILED"
@@ -605,7 +613,12 @@
             "native_type": "bool",
             "optional": false,
             "path": "updated",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 760,
+              "method": "AddTypeEnumMember",
+              "path": "cpp/src/local_client.cpp"
+            },
+            "semantics": "successful response only: true after mutation status accepted; failed native status returns StatusOr error, NOT successful false response; flag is native acknowledgement, not independent readback/rollback/atomicity proof"
           }
         ],
         "lua": "AddTypeEnumMemberResponse table/enum; resolve in types/enums",
@@ -687,6 +700,14 @@
         "ignored native fields: size"
       ],
       "lowlevel": "add_type_member",
+      "mutation_result_review": {
+        "assignments": {
+          "updated": "ok"
+        },
+        "body_sha256": "3a28f122cee5b28d8280803087a5cc01e3f1356f1c8476de701e1620f20cea47",
+        "path": "cpp/src/local_client.cpp",
+        "qualification": "source response/extraction branches only; runtime positive/negative and atomicity unqualified"
+      },
       "name": "AddTypeMember",
       "native_literal_errors": [
         "ADD_MEMBER_FAILED"
@@ -737,7 +758,12 @@
             "native_type": "bool",
             "optional": false,
             "path": "updated",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 707,
+              "method": "AddTypeMember",
+              "path": "cpp/src/local_client.cpp"
+            },
+            "semantics": "successful response only: true after mutation status accepted; failed native status returns StatusOr error, NOT successful false response; flag is native acknowledgement, not independent readback/rollback/atomicity proof"
           }
         ],
         "lua": "AddTypeMemberResponse table/enum; resolve in types/enums",
@@ -1672,6 +1698,14 @@
         "only struct kind; others NOT_SUPPORTED"
       ],
       "lowlevel": "create_type",
+      "mutation_result_review": {
+        "assignments": {
+          "updated": "ok"
+        },
+        "body_sha256": "cb82c3bddc2d17325ba280c642808952a0d105f7817c6a6df9ece725cbafa461",
+        "path": "cpp/src/local_client.cpp",
+        "qualification": "source response/extraction branches only; runtime positive/negative and atomicity unqualified"
+      },
       "name": "CreateType",
       "native_literal_errors": [
         "CREATE_TYPE_FAILED",
@@ -1715,7 +1749,12 @@
             "native_type": "bool",
             "optional": false,
             "path": "updated",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 685,
+              "method": "CreateType",
+              "path": "cpp/src/local_client.cpp"
+            },
+            "semantics": "successful response only: true after mutation status accepted; failed native status returns StatusOr error, NOT successful false response; flag is native acknowledgement, not independent readback/rollback/atomicity proof"
           }
         ],
         "lua": "CreateTypeResponse table/enum; resolve in types/enums",
@@ -1795,6 +1834,14 @@
         "creation passes alias and target names unchanged; unlike delete/retarget, LocalClient performs no leading-slash stripping for these names"
       ],
       "lowlevel": "create_type_alias",
+      "mutation_result_review": {
+        "assignments": {
+          "updated": "ok"
+        },
+        "body_sha256": "9fead3320fac27f759258ed4e6fe0104f02f82c1701972ab9350fa9bbddc8932",
+        "path": "cpp/src/local_client.cpp",
+        "qualification": "source response/extraction branches only; runtime positive/negative and atomicity unqualified"
+      },
       "name": "CreateTypeAlias",
       "native_literal_errors": [
         "CREATE_ALIAS_FAILED"
@@ -1829,7 +1876,12 @@
             "native_type": "bool",
             "optional": false,
             "path": "updated",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 1313,
+              "method": "CreateTypeAlias",
+              "path": "cpp/src/local_client.cpp"
+            },
+            "semantics": "successful response only: true after mutation status accepted; failed native status returns StatusOr error, NOT successful false response; flag is native acknowledgement, not independent readback/rollback/atomicity proof"
           }
         ],
         "lua": "CreateTypeAliasResponse table/enum; resolve in types/enums",
@@ -1906,6 +1958,14 @@
         "ignored native fields: width, is_signed"
       ],
       "lowlevel": "create_type_enum",
+      "mutation_result_review": {
+        "assignments": {
+          "updated": "ok"
+        },
+        "body_sha256": "f24c6c35c6f1285ecd470825a2a44990fd5584991e5df19903b25d670d4c0293",
+        "path": "cpp/src/local_client.cpp",
+        "qualification": "source response/extraction branches only; runtime positive/negative and atomicity unqualified"
+      },
       "name": "CreateTypeEnum",
       "native_literal_errors": [
         "CREATE_ENUM_FAILED"
@@ -1948,7 +2008,12 @@
             "native_type": "bool",
             "optional": false,
             "path": "updated",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 742,
+              "method": "CreateTypeEnum",
+              "path": "cpp/src/local_client.cpp"
+            },
+            "semantics": "successful response only: true after mutation status accepted; failed native status returns StatusOr error, NOT successful false response; flag is native acknowledgement, not independent readback/rollback/atomicity proof"
           }
         ],
         "lua": "CreateTypeEnumResponse table/enum; resolve in types/enums",
@@ -2170,6 +2235,14 @@
       },
       "limitations": [],
       "lowlevel": "delete_comment",
+      "mutation_result_review": {
+        "assignments": {
+          "deleted": "ok"
+        },
+        "body_sha256": "326a8a9b2f66f54d91a8dcba233075b807a60f8e652820395da88ddbe17477af",
+        "path": "cpp/src/local_client.cpp",
+        "qualification": "source response/extraction branches only; runtime positive/negative and atomicity unqualified"
+      },
       "name": "DeleteComment",
       "native_literal_errors": [
         "NOT_FOUND"
@@ -2204,7 +2277,12 @@
             "native_type": "bool",
             "optional": false,
             "path": "deleted",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 1256,
+              "method": "DeleteComment",
+              "path": "cpp/src/local_client.cpp"
+            },
+            "semantics": "successful response only: true after mutation status accepted; failed native status returns StatusOr error, NOT successful false response; flag is native acknowledgement, not independent readback/rollback/atomicity proof"
           }
         ],
         "lua": "DeleteCommentResponse table/enum; resolve in types/enums",
@@ -2276,6 +2354,14 @@
       },
       "limitations": [],
       "lowlevel": "delete_data_item",
+      "mutation_result_review": {
+        "assignments": {
+          "deleted": "ok"
+        },
+        "body_sha256": "974511343e6f17be53d6148d019fc061c82e06532c2e36d5e08a8687ad975d52",
+        "path": "cpp/src/local_client.cpp",
+        "qualification": "source response/extraction branches only; runtime positive/negative and atomicity unqualified"
+      },
       "name": "DeleteDataItem",
       "native_literal_errors": [
         "NOT_FOUND"
@@ -2302,7 +2388,12 @@
             "native_type": "bool",
             "optional": false,
             "path": "deleted",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 1430,
+              "method": "DeleteDataItem",
+              "path": "cpp/src/local_client.cpp"
+            },
+            "semantics": "successful response only: true after mutation status accepted; failed native status returns StatusOr error, NOT successful false response; flag is native acknowledgement, not independent readback/rollback/atomicity proof"
           }
         ],
         "lua": "DeleteDataItemResponse table/enum; resolve in types/enums",
@@ -2696,6 +2787,14 @@
         "error text mentions core types, but adapter has no explicit core-type predicate: delegates destroyType and catches failure; do not invent a core-type guard"
       ],
       "lowlevel": "delete_type",
+      "mutation_result_review": {
+        "assignments": {
+          "deleted": "ok"
+        },
+        "body_sha256": "cb2c040c236489664272a80f1e165853fc5c3d2ba3fd3061bd0ae695ad3e2310",
+        "path": "cpp/src/local_client.cpp",
+        "qualification": "source response/extraction branches only; runtime positive/negative and atomicity unqualified"
+      },
       "name": "DeleteType",
       "native_literal_errors": [
         "DELETE_TYPE_FAILED"
@@ -2722,7 +2821,12 @@
             "native_type": "bool",
             "optional": false,
             "path": "deleted",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 789,
+              "method": "DeleteType",
+              "path": "cpp/src/local_client.cpp"
+            },
+            "semantics": "successful response only: true after mutation status accepted; failed native status returns StatusOr error, NOT successful false response; flag is native acknowledgement, not independent readback/rollback/atomicity proof"
           }
         ],
         "lua": "DeleteTypeResponse table/enum; resolve in types/enums",
@@ -2800,6 +2904,14 @@
         "findByName lookup, not numeric ID resolution; adapter false conflates absent/ineligible type and caught exceptions; all-slot operation is not atomic"
       ],
       "lowlevel": "delete_type_alias",
+      "mutation_result_review": {
+        "assignments": {
+          "deleted": "ok"
+        },
+        "body_sha256": "a472c5362cada7313ac38e484e612ffdef382bfbffbc448eb994d76b5ae031f6",
+        "path": "cpp/src/local_client.cpp",
+        "qualification": "source response/extraction branches only; runtime positive/negative and atomicity unqualified"
+      },
       "name": "DeleteTypeAlias",
       "native_literal_errors": [
         "DELETE_ALIAS_FAILED"
@@ -2826,7 +2938,12 @@
             "native_type": "bool",
             "optional": false,
             "path": "deleted",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 1330,
+              "method": "DeleteTypeAlias",
+              "path": "cpp/src/local_client.cpp"
+            },
+            "semantics": "successful response only: true after mutation status accepted; failed native status returns StatusOr error, NOT successful false response; flag is native acknowledgement, not independent readback/rollback/atomicity proof"
           }
         ],
         "lua": "DeleteTypeAliasResponse table/enum; resolve in types/enums",
@@ -2968,6 +3085,14 @@
         "enum is reconstructed from names and uint64-cast values; side-map ordinal comments not remapped here; negative-value roundtrip/width behavior unqualified"
       ],
       "lowlevel": "delete_type_enum_member",
+      "mutation_result_review": {
+        "assignments": {
+          "deleted": "ok"
+        },
+        "body_sha256": "20fee06e9b0f71f12f030ac9999b8ab85a2467340fc9a467c0deb6102f5e8082",
+        "path": "cpp/src/local_client.cpp",
+        "qualification": "source response/extraction branches only; runtime positive/negative and atomicity unqualified"
+      },
       "name": "DeleteTypeEnumMember",
       "native_literal_errors": [
         "DELETE_ENUM_MEMBER_FAILED",
@@ -3008,7 +3133,12 @@
             "native_type": "bool",
             "optional": false,
             "path": "deleted",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 935,
+              "method": "DeleteTypeEnumMember",
+              "path": "cpp/src/local_client.cpp"
+            },
+            "semantics": "successful response only: true after mutation status accepted; failed native status returns StatusOr error, NOT successful false response; flag is native acknowledgement, not independent readback/rollback/atomicity proof"
           }
         ],
         "lua": "DeleteTypeEnumMemberResponse table/enum; resolve in types/enums",
@@ -3083,6 +3213,14 @@
         "remaining offsets retained explicitly; deletion does not compact gaps; side-map member comments are not rebuilt/remapped here"
       ],
       "lowlevel": "delete_type_member",
+      "mutation_result_review": {
+        "assignments": {
+          "deleted": "ok"
+        },
+        "body_sha256": "8ce4f80498c30065e168440f1b6869dad3e64aa013288850e9f111828c711d10",
+        "path": "cpp/src/local_client.cpp",
+        "qualification": "source response/extraction branches only; runtime positive/negative and atomicity unqualified"
+      },
       "name": "DeleteTypeMember",
       "native_literal_errors": [
         "DELETE_MEMBER_FAILED",
@@ -3123,7 +3261,12 @@
             "native_type": "bool",
             "optional": false,
             "path": "deleted",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 831,
+              "method": "DeleteTypeMember",
+              "path": "cpp/src/local_client.cpp"
+            },
+            "semantics": "successful response only: true after mutation status accepted; failed native status returns StatusOr error, NOT successful false response; flag is native acknowledgement, not independent readback/rollback/atomicity proof"
           }
         ],
         "lua": "DeleteTypeMemberResponse table/enum; resolve in types/enums",
@@ -16268,6 +16411,14 @@
         "enum is reconstructed from names and uint64-cast values; side-map ordinal comments not remapped here; negative-value roundtrip/width behavior unqualified"
       ],
       "lowlevel": "rename_type_enum_member",
+      "mutation_result_review": {
+        "assignments": {
+          "updated": "ok"
+        },
+        "body_sha256": "51592faac0a11c5dc17b73e72b5c7da5df6672dd3ff95356e70a81c13e5e4011",
+        "path": "cpp/src/local_client.cpp",
+        "qualification": "source response/extraction branches only; runtime positive/negative and atomicity unqualified"
+      },
       "name": "RenameTypeEnumMember",
       "native_literal_errors": [
         "NOT_FOUND",
@@ -16316,7 +16467,12 @@
             "native_type": "bool",
             "optional": false,
             "path": "updated",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 968,
+              "method": "RenameTypeEnumMember",
+              "path": "cpp/src/local_client.cpp"
+            },
+            "semantics": "successful response only: true after mutation status accepted; failed native status returns StatusOr error, NOT successful false response; flag is native acknowledgement, not independent readback/rollback/atomicity proof"
           }
         ],
         "lua": "RenameTypeEnumMemberResponse table/enum; resolve in types/enums",
@@ -16392,6 +16548,14 @@
         "remaining offsets retained explicitly; deletion does not compact gaps; side-map member comments are not rebuilt/remapped here"
       ],
       "lowlevel": "rename_type_member",
+      "mutation_result_review": {
+        "assignments": {
+          "updated": "ok"
+        },
+        "body_sha256": "54282c84d39f6d77f8ffce7c6edec18ca9a5c08f713dab4c29c8acfe143633e0",
+        "path": "cpp/src/local_client.cpp",
+        "qualification": "source response/extraction branches only; runtime positive/negative and atomicity unqualified"
+      },
       "name": "RenameTypeMember",
       "native_literal_errors": [
         "NOT_FOUND",
@@ -16440,7 +16604,12 @@
             "native_type": "bool",
             "optional": false,
             "path": "updated",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 865,
+              "method": "RenameTypeMember",
+              "path": "cpp/src/local_client.cpp"
+            },
+            "semantics": "successful response only: true after mutation status accepted; failed native status returns StatusOr error, NOT successful false response; flag is native acknowledgement, not independent readback/rollback/atomicity proof"
           }
         ],
         "lua": "RenameTypeMemberResponse table/enum; resolve in types/enums",
@@ -17006,6 +17175,14 @@
       },
       "limitations": [],
       "lowlevel": "set_comment",
+      "mutation_result_review": {
+        "assignments": {
+          "updated": "true"
+        },
+        "body_sha256": "eef6f08ed2b3d62d4b1b2b9ebfcf01f7ce9648f0c02b754539fe43dd87d269ca",
+        "path": "cpp/src/local_client.cpp",
+        "qualification": "source response/extraction branches only; runtime positive/negative and atomicity unqualified"
+      },
       "name": "SetComment",
       "native_literal_errors": [],
       "pagination": null,
@@ -17046,7 +17223,12 @@
             "native_type": "bool",
             "optional": false,
             "path": "updated",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 1242,
+              "method": "SetComment",
+              "path": "cpp/src/local_client.cpp"
+            },
+            "semantics": "literal true after side-map setter dispatch with unconditional true lambda and ignored aggregate status; empty text stored, no existence/kind/address/ordinal validation; native revision increments even if replacing same value; acknowledgement is not proof of existing member edit or native project comment persistence"
           }
         ],
         "lua": "SetCommentResponse table/enum; resolve in types/enums",
@@ -17934,6 +18116,14 @@
         "retarget destroys existing typedef before recreating; caught recreation failure may lose old alias, no rollback; normalized alias but new target name unchanged"
       ],
       "lowlevel": "set_type_alias_target",
+      "mutation_result_review": {
+        "assignments": {
+          "updated": "ok"
+        },
+        "body_sha256": "8492c8542d1e0dc35b5679d2dbc46473f101e670de7f0673ee9007b221bf3138",
+        "path": "cpp/src/local_client.cpp",
+        "qualification": "source response/extraction branches only; runtime positive/negative and atomicity unqualified"
+      },
       "name": "SetTypeAliasTarget",
       "native_literal_errors": [
         "SET_ALIAS_TARGET_FAILED"
@@ -17968,7 +18158,12 @@
             "native_type": "bool",
             "optional": false,
             "path": "updated",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 1350,
+              "method": "SetTypeAliasTarget",
+              "path": "cpp/src/local_client.cpp"
+            },
+            "semantics": "successful response only: true after mutation status accepted; failed native status returns StatusOr error, NOT successful false response; flag is native acknowledgement, not independent readback/rollback/atomicity proof"
           }
         ],
         "lua": "SetTypeAliasTargetResponse table/enum; resolve in types/enums",
@@ -18037,6 +18232,14 @@
         "arbitrary nonexistent type/ordinal comments accepted; empty text stored, not deletion; later type/member lookup may not expose entry; no name/ordinal remapping on reconstruction is performed in this override"
       ],
       "lowlevel": "set_type_enum_member_comment",
+      "mutation_result_review": {
+        "assignments": {
+          "updated": "true"
+        },
+        "body_sha256": "6724195b17242de60d4b19191935adb4e822db3267acfb1593c0e79fcac2d95f",
+        "path": "cpp/src/local_client.cpp",
+        "qualification": "source response/extraction branches only; runtime positive/negative and atomicity unqualified"
+      },
       "name": "SetTypeEnumMemberComment",
       "native_literal_errors": [],
       "pagination": null,
@@ -18082,7 +18285,12 @@
             "native_type": "bool",
             "optional": false,
             "path": "updated",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 1392,
+              "method": "SetTypeEnumMemberComment",
+              "path": "cpp/src/local_client.cpp"
+            },
+            "semantics": "literal true after side-map setter dispatch with unconditional true lambda and ignored aggregate status; empty text stored, no existence/kind/address/ordinal validation; native revision increments even if replacing same value; acknowledgement is not proof of existing member edit or native project comment persistence"
           }
         ],
         "lua": "SetTypeEnumMemberCommentResponse table/enum; resolve in types/enums",
@@ -18158,6 +18366,14 @@
         "enum is reconstructed from names and uint64-cast values; side-map ordinal comments not remapped here; negative-value roundtrip/width behavior unqualified"
       ],
       "lowlevel": "set_type_enum_member_value",
+      "mutation_result_review": {
+        "assignments": {
+          "updated": "ok"
+        },
+        "body_sha256": "cbc12271ce91e5798287b406b824eb57abf8569a8a3eb834968feb69b2febde9",
+        "path": "cpp/src/local_client.cpp",
+        "qualification": "source response/extraction branches only; runtime positive/negative and atomicity unqualified"
+      },
       "name": "SetTypeEnumMemberValue",
       "native_literal_errors": [
         "NOT_FOUND",
@@ -18206,7 +18422,12 @@
             "native_type": "bool",
             "optional": false,
             "path": "updated",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 1002,
+              "method": "SetTypeEnumMemberValue",
+              "path": "cpp/src/local_client.cpp"
+            },
+            "semantics": "successful response only: true after mutation status accepted; failed native status returns StatusOr error, NOT successful false response; flag is native acknowledgement, not independent readback/rollback/atomicity proof"
           }
         ],
         "lua": "SetTypeEnumMemberValueResponse table/enum; resolve in types/enums",
@@ -18276,6 +18497,14 @@
         "arbitrary nonexistent type/ordinal comments accepted; empty text stored, not deletion; later type/member lookup may not expose entry; no name/ordinal remapping on reconstruction is performed in this override"
       ],
       "lowlevel": "set_type_member_comment",
+      "mutation_result_review": {
+        "assignments": {
+          "updated": "true"
+        },
+        "body_sha256": "7ff7796157657bad4ed452b83906810b73daa46a1d9a2e2d5299ea1de478e1f2",
+        "path": "cpp/src/local_client.cpp",
+        "qualification": "source response/extraction branches only; runtime positive/negative and atomicity unqualified"
+      },
       "name": "SetTypeMemberComment",
       "native_literal_errors": [],
       "pagination": null,
@@ -18321,7 +18550,12 @@
             "native_type": "bool",
             "optional": false,
             "path": "updated",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 1374,
+              "method": "SetTypeMemberComment",
+              "path": "cpp/src/local_client.cpp"
+            },
+            "semantics": "literal true after side-map setter dispatch with unconditional true lambda and ignored aggregate status; empty text stored, no existence/kind/address/ordinal validation; native revision increments even if replacing same value; acknowledgement is not proof of existing member edit or native project comment persistence"
           }
         ],
         "lua": "SetTypeMemberCommentResponse table/enum; resolve in types/enums",
@@ -18397,6 +18631,14 @@
         "remaining offsets retained explicitly; deletion does not compact gaps; side-map member comments are not rebuilt/remapped here"
       ],
       "lowlevel": "set_type_member_type",
+      "mutation_result_review": {
+        "assignments": {
+          "updated": "ok"
+        },
+        "body_sha256": "f4259db29ffd3dbd4c3f48df5006355d1a91429a1c12746385679525c48715a9",
+        "path": "cpp/src/local_client.cpp",
+        "qualification": "source response/extraction branches only; runtime positive/negative and atomicity unqualified"
+      },
       "name": "SetTypeMemberType",
       "native_literal_errors": [
         "NOT_FOUND",
@@ -18445,7 +18687,12 @@
             "native_type": "bool",
             "optional": false,
             "path": "updated",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 900,
+              "method": "SetTypeMemberType",
+              "path": "cpp/src/local_client.cpp"
+            },
+            "semantics": "successful response only: true after mutation status accepted; failed native status returns StatusOr error, NOT successful false response; flag is native acknowledgement, not independent readback/rollback/atomicity proof"
           }
         ],
         "lua": "SetTypeMemberTypeResponse table/enum; resolve in types/enums",
@@ -28892,61 +29139,6 @@
     ],
     "response_field_semantics_unreviewed": [
       {
-        "native_type": "bool",
-        "operation": "AddTypeEnumMember",
-        "path": "updated"
-      },
-      {
-        "native_type": "bool",
-        "operation": "AddTypeMember",
-        "path": "updated"
-      },
-      {
-        "native_type": "bool",
-        "operation": "CreateType",
-        "path": "updated"
-      },
-      {
-        "native_type": "bool",
-        "operation": "CreateTypeAlias",
-        "path": "updated"
-      },
-      {
-        "native_type": "bool",
-        "operation": "CreateTypeEnum",
-        "path": "updated"
-      },
-      {
-        "native_type": "bool",
-        "operation": "DeleteComment",
-        "path": "deleted"
-      },
-      {
-        "native_type": "bool",
-        "operation": "DeleteDataItem",
-        "path": "deleted"
-      },
-      {
-        "native_type": "bool",
-        "operation": "DeleteType",
-        "path": "deleted"
-      },
-      {
-        "native_type": "bool",
-        "operation": "DeleteTypeAlias",
-        "path": "deleted"
-      },
-      {
-        "native_type": "bool",
-        "operation": "DeleteTypeEnumMember",
-        "path": "deleted"
-      },
-      {
-        "native_type": "bool",
-        "operation": "DeleteTypeMember",
-        "path": "deleted"
-      },
-      {
         "native_type": "std::string",
         "operation": "GetCapabilities",
         "path": "id"
@@ -29120,46 +29312,6 @@
         "native_type": "std::vector<std::uint8_t>",
         "operation": "ReadBytes",
         "path": "data"
-      },
-      {
-        "native_type": "bool",
-        "operation": "RenameTypeEnumMember",
-        "path": "updated"
-      },
-      {
-        "native_type": "bool",
-        "operation": "RenameTypeMember",
-        "path": "updated"
-      },
-      {
-        "native_type": "bool",
-        "operation": "SetComment",
-        "path": "updated"
-      },
-      {
-        "native_type": "bool",
-        "operation": "SetTypeAliasTarget",
-        "path": "updated"
-      },
-      {
-        "native_type": "bool",
-        "operation": "SetTypeEnumMemberComment",
-        "path": "updated"
-      },
-      {
-        "native_type": "bool",
-        "operation": "SetTypeEnumMemberValue",
-        "path": "updated"
-      },
-      {
-        "native_type": "bool",
-        "operation": "SetTypeMemberComment",
-        "path": "updated"
-      },
-      {
-        "native_type": "bool",
-        "operation": "SetTypeMemberType",
-        "path": "updated"
       }
     ],
     "scope": "Explicit accounting audit only; empty wrapper list would not establish full nested/default/domain review or runtime qualification",
