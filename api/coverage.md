@@ -668,3 +668,17 @@ no discovery iterator. Validation remains separate. All runtime boundary slots
 stay unqualified. Direct request ledger: 62 reviewed, 94 remaining; factory and
 non-first-slice grammar review still open. Thirty-four focused tests pass,
 including independent normalization-sentinel drift rejection.
+
+## Query and ignored direct arguments (thirty-first increment)
+
+Four datatype query paths now source-reconcile empty-filter bypass and exact
+case-sensitive byte-substring matching before pages; no regex/glob/path hierarchy
+or approved non-slice optionality is inferred. Seven ignored direct fields now
+have consumption review: DeleteSymbol name_filter, two decompile timeout_ms
+fields, CreateType/AddTypeMember size and CreateTypeEnum width/is_signed.
+Ignored does not waive typed/narrow Lua validation or promise advertised effects.
+Deletion remains address-only; facade timeout rejection, reconstruction bounds
+and enum limitations remain intact. Consumption matching distinguishes m.size
+from bare size argument, with a bounded lexical check (not general C++ name
+resolution). Independent query and ignored-name consumption probes reject drift.
+Direct ledger: 73 reviewed, 83 remaining; runtime slots remain unqualified.

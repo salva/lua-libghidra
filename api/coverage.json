@@ -801,11 +801,17 @@
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "helper": "AddTypeMember",
+            "qualification": "source only; runtime ignored-field slots unqualified"
+          },
           "ignored": true,
           "lua": "exact UInt64",
           "name": "size",
           "native_type": "std::uint64_t",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "native argument never read in LocalClient body; preserve ignored-field fidelity, do not implement its advertised effect; typed/narrow input validation and defaults remain surface-specific before dispatch; ignored is not permission to accept arbitrary Lua values; runtime positive/negative slots unqualified; requested size does not control reconstructed layout; existing member signed-int offsets/sizes/sums still require <=INT_MAX independently"
         }
       ],
       "response": {
@@ -1792,11 +1798,17 @@
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "helper": "CreateType",
+            "qualification": "source only; runtime ignored-field slots unqualified"
+          },
           "ignored": true,
           "lua": "exact UInt64",
           "name": "size",
           "native_type": "std::uint64_t",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "native argument never read in LocalClient body; preserve ignored-field fidelity, do not implement its advertised effect; typed/narrow input validation and defaults remain surface-specific before dispatch; ignored is not permission to accept arbitrary Lua values; runtime positive/negative slots unqualified; requested size does not control reconstructed layout; existing member signed-int offsets/sizes/sums still require <=INT_MAX independently"
         }
       ],
       "response": {
@@ -2043,19 +2055,31 @@
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "helper": "CreateTypeEnum",
+            "qualification": "source only; runtime ignored-field slots unqualified"
+          },
           "ignored": true,
           "lua": "exact UInt64",
           "name": "width",
           "native_type": "std::uint64_t",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "native argument never read in LocalClient body; preserve ignored-field fidelity, do not implement its advertised effect; typed/narrow input validation and defaults remain surface-specific before dispatch; ignored is not permission to accept arbitrary Lua values; runtime positive/negative slots unqualified; enum width/signedness not enforced by this wrapper"
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "helper": "CreateTypeEnum",
+            "qualification": "source only; runtime ignored-field slots unqualified"
+          },
           "ignored": true,
           "lua": "boolean (preserve false)",
           "name": "is_signed",
           "native_type": "bool",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "native argument never read in LocalClient body; preserve ignored-field fidelity, do not implement its advertised effect; typed/narrow input validation and defaults remain surface-specific before dispatch; ignored is not permission to accept arbitrary Lua values; runtime positive/negative slots unqualified; enum width/signedness not enforced by this wrapper"
         }
       ],
       "response": {
@@ -2730,11 +2754,17 @@
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "helper": "DeleteSymbol",
+            "qualification": "source only; runtime ignored-field slots unqualified"
+          },
           "ignored": true,
           "lua": "Lua string (no transcoding)",
           "name": "name_filter",
           "native_type": "const std::string&",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "native argument never read in LocalClient body; preserve ignored-field fidelity, do not implement its advertised effect; typed/narrow input validation and defaults remain surface-specific before dispatch; ignored is not permission to accept arbitrary Lua values; runtime positive/negative slots unqualified; deletion is address-only, name is not a guard"
         }
       ],
       "response": {
@@ -3979,11 +4009,17 @@
         },
         {
           "binding_default": "30000 (ignored)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "helper": "GetDecompilation",
+            "qualification": "source only; runtime ignored-field slots unqualified"
+          },
           "ignored": true,
           "lua": "checked Lua integer (int)",
           "name": "timeout_ms",
           "native_type": "int",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "native argument never read in LocalClient body; preserve ignored-field fidelity, do not implement its advertised effect; typed/narrow input validation and defaults remain surface-specific before dispatch; ignored is not permission to accept arbitrary Lua values; runtime positive/negative slots unqualified; no native timeout forwarded/enforced; facade rejects timeout option, lowlevel retains typed ignored field"
         }
       ],
       "response": {
@@ -8221,11 +8257,17 @@
         },
         {
           "binding_default": "30000 (ignored)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp",
+            "helper": "ListDecompilations",
+            "qualification": "source only; runtime ignored-field slots unqualified"
+          },
           "ignored": true,
           "lua": "checked Lua integer (int)",
           "name": "timeout_ms",
           "native_type": "int",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "native argument never read in LocalClient body; preserve ignored-field fidelity, do not implement its advertised effect; typed/narrow input validation and defaults remain surface-specific before dispatch; ignored is not permission to accept arbitrary Lua values; runtime positive/negative slots unqualified; no native timeout forwarded/enforced; facade rejects timeout option, lowlevel retains typed ignored field"
         }
       ],
       "response": {
@@ -12961,11 +13003,17 @@
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_arch_adapter.cpp",
+            "helper": "listTypeAliases",
+            "qualification": "source only; runtime filter slots unqualified"
+          },
           "ignored": false,
           "lua": "Lua string (no transcoding)",
           "name": "query",
           "native_type": "const std::string&",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "native std::string forwarded unchanged; empty query disables filter; nonempty case-sensitive byte substring of datatype name before pagination, not regex/glob/path hierarchy, no case-folding; Lua input default/requiredness outside approved slice grammar remains explicit unresolved surface policy; native empty behavior is not optionality proof; runtime NUL/non-ASCII matching unqualified"
         },
         {
           "binding_default": "100",
@@ -13508,11 +13556,17 @@
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_arch_adapter.cpp",
+            "helper": "listTypeEnums",
+            "qualification": "source only; runtime filter slots unqualified"
+          },
           "ignored": false,
           "lua": "Lua string (no transcoding)",
           "name": "query",
           "native_type": "const std::string&",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "native std::string forwarded unchanged; empty query disables filter; nonempty case-sensitive byte substring of datatype name before pagination, not regex/glob/path hierarchy, no case-folding; Lua input default/requiredness outside approved slice grammar remains explicit unresolved surface policy; native empty behavior is not optionality proof; runtime NUL/non-ASCII matching unqualified"
         },
         {
           "binding_default": "100",
@@ -14121,11 +14175,17 @@
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_arch_adapter.cpp",
+            "helper": "listTypeUnions",
+            "qualification": "source only; runtime filter slots unqualified"
+          },
           "ignored": false,
           "lua": "Lua string (no transcoding)",
           "name": "query",
           "native_type": "const std::string&",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "native std::string forwarded unchanged; empty query disables filter; nonempty case-sensitive byte substring of datatype name before pagination, not regex/glob/path hierarchy, no case-folding; Lua input default/requiredness outside approved slice grammar remains explicit unresolved surface policy; native empty behavior is not optionality proof; runtime NUL/non-ASCII matching unqualified"
         },
         {
           "binding_default": "100",
@@ -14403,11 +14463,17 @@
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_arch_adapter.cpp",
+            "helper": "listTypes",
+            "qualification": "source only; runtime filter slots unqualified"
+          },
           "ignored": false,
           "lua": "Lua string (no transcoding)",
           "name": "query",
           "native_type": "const std::string&",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "native std::string forwarded unchanged; empty query disables filter; nonempty case-sensitive byte substring of datatype name before pagination, not regex/glob/path hierarchy, no case-folding; Lua input default/requiredness outside approved slice grammar remains explicit unresolved surface policy; native empty behavior is not optionality proof; runtime NUL/non-ASCII matching unqualified"
         },
         {
           "binding_default": "100",
@@ -29899,11 +29965,6 @@
         "reason": "direct argument consumption/default/domain review not yet independently reconciled"
       },
       {
-        "operation": "AddTypeMember",
-        "path": "size",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
         "operation": "ApplyDataType",
         "path": "address",
         "reason": "direct argument consumption/default/domain review not yet independently reconciled"
@@ -29929,11 +29990,6 @@
         "reason": "direct argument consumption/default/domain review not yet independently reconciled"
       },
       {
-        "operation": "CreateType",
-        "path": "size",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
         "operation": "CreateTypeAlias",
         "path": "name",
         "reason": "direct argument consumption/default/domain review not yet independently reconciled"
@@ -29946,16 +30002,6 @@
       {
         "operation": "CreateTypeEnum",
         "path": "name",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "CreateTypeEnum",
-        "path": "width",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "CreateTypeEnum",
-        "path": "is_signed",
         "reason": "direct argument consumption/default/domain review not yet independently reconciled"
       },
       {
@@ -29981,11 +30027,6 @@
       {
         "operation": "DeleteSymbol",
         "path": "address",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "DeleteSymbol",
-        "path": "name_filter",
         "reason": "direct argument consumption/default/domain review not yet independently reconciled"
       },
       {
@@ -30024,11 +30065,6 @@
         "reason": "direct argument consumption/default/domain review not yet independently reconciled"
       },
       {
-        "operation": "GetDecompilation",
-        "path": "timeout_ms",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
         "operation": "GetFunction",
         "path": "address",
         "reason": "direct argument consumption/default/domain review not yet independently reconciled"
@@ -30054,38 +30090,13 @@
         "reason": "direct argument consumption/default/domain review not yet independently reconciled"
       },
       {
-        "operation": "ListDecompilations",
-        "path": "timeout_ms",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "ListTypeAliases",
-        "path": "query",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
         "operation": "ListTypeEnumMembers",
         "path": "type_id_or_path",
         "reason": "direct argument consumption/default/domain review not yet independently reconciled"
       },
       {
-        "operation": "ListTypeEnums",
-        "path": "query",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
         "operation": "ListTypeMembers",
         "path": "type_id_or_path",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "ListTypeUnions",
-        "path": "query",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "ListTypes",
-        "path": "query",
         "reason": "direct argument consumption/default/domain review not yet independently reconciled"
       },
       {
@@ -30341,6 +30352,26 @@
     ],
     "direct_arguments_reviewed": [
       {
+        "operation": "AddTypeMember",
+        "path": "size"
+      },
+      {
+        "operation": "CreateType",
+        "path": "size"
+      },
+      {
+        "operation": "CreateTypeEnum",
+        "path": "width"
+      },
+      {
+        "operation": "CreateTypeEnum",
+        "path": "is_signed"
+      },
+      {
+        "operation": "DeleteSymbol",
+        "path": "name_filter"
+      },
+      {
         "operation": "GetComments",
         "path": "range_start"
       },
@@ -30355,6 +30386,10 @@
       {
         "operation": "GetComments",
         "path": "offset"
+      },
+      {
+        "operation": "GetDecompilation",
+        "path": "timeout_ms"
       },
       {
         "operation": "ListBasicBlocks",
@@ -30419,6 +30454,10 @@
       {
         "operation": "ListDecompilations",
         "path": "offset"
+      },
+      {
+        "operation": "ListDecompilations",
+        "path": "timeout_ms"
       },
       {
         "operation": "ListDefinedStrings",
@@ -30526,6 +30565,10 @@
       },
       {
         "operation": "ListTypeAliases",
+        "path": "query"
+      },
+      {
+        "operation": "ListTypeAliases",
         "path": "limit"
       },
       {
@@ -30542,6 +30585,10 @@
       },
       {
         "operation": "ListTypeEnums",
+        "path": "query"
+      },
+      {
+        "operation": "ListTypeEnums",
         "path": "limit"
       },
       {
@@ -30558,11 +30605,19 @@
       },
       {
         "operation": "ListTypeUnions",
+        "path": "query"
+      },
+      {
+        "operation": "ListTypeUnions",
         "path": "limit"
       },
       {
         "operation": "ListTypeUnions",
         "path": "offset"
+      },
+      {
+        "operation": "ListTypes",
+        "path": "query"
       },
       {
         "operation": "ListTypes",

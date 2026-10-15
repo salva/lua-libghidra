@@ -51,7 +51,7 @@ class InventoryTests(unittest.TestCase):
                     self.assertIn('must not be inferred',f['request_field_review']['native_absence'])
 
     def test_page_argument_domains_are_not_native_unbounded_defaults(self):
-        self.assertEqual(len(self.data['request_audit']['direct_arguments_reviewed']),62)
+        self.assertEqual(len(self.data['request_audit']['direct_arguments_reviewed']),73)
         for op in self.ops.values():
             if 'page_wrapper_review' not in op:continue
             args={a['name']:a for a in op['request']}
@@ -70,6 +70,16 @@ class InventoryTests(unittest.TestCase):
             self.assertIn('no discovery iterator',a['semantics'])
         args={a['name']:a for a in self.ops['ListInstructions']['request']}
         self.assertIn('beginning exactly at range_start',args['range_start']['semantics'])
+
+    def test_query_and_ignored_argument_consumption(self):
+        for name in ['ListTypes','ListTypeAliases','ListTypeEnums','ListTypeUnions']:
+            q=next(a for a in self.ops[name]['request'] if a['name']=='query')
+            self.assertIn('case-sensitive byte substring',q['semantics'])
+            self.assertIn('not optionality proof',q['semantics'])
+        for name,key in [('DeleteSymbol','name_filter'),('CreateTypeEnum','width'),('GetDecompilation','timeout_ms')]:
+            a=next(a for a in self.ops[name]['request'] if a['name']==key)
+            self.assertTrue(a['ignored'])
+            self.assertIn('never read',a['semantics'])
 
     def test_preserved_red_reproducer(self):
         # Exact acceptance trigger from red; stronger checks below prevent treating
@@ -324,6 +334,14 @@ class InventoryTests(unittest.TestCase):
             with self.assertRaises(AssertionError):
                 module.inventory(root)
             adapter.write_text(adapter_original)
+            adapter.write_text(adapter_original.replace('dt->getName().find(query)', 'dt->getName().find(query + query)'))
+            with self.assertRaises(AssertionError):
+                module.inventory(root)
+            adapter.write_text(adapter_original)
+            local.write_text(local_original.replace('return a.deleteSymbol(address);', 'return a.deleteSymbol(address + name_filter.size());'))
+            with self.assertRaises(AssertionError):
+                module.inventory(root)
+            local.write_text(local_original)
             header = root/'cpp/src/local_arch_adapter.hpp'
             header.write_text(header.read_text().replace('std::map<std::pair<std::uint64_t, int>, std::string> comments_', 'std::multimap<std::pair<std::uint64_t, int>, std::string> comments_'))
             with self.assertRaises(AssertionError):

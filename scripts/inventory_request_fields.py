@@ -49,6 +49,32 @@ def review_request_fields(u, operations):
         code=_code_mask(text)
         for arg in op['request']:
             nested=arg['nested_fields']
+            query_consumers={'ListTypes':('listTypes','dt'),'ListTypeAliases':('listTypeAliases','dt'),'ListTypeEnums':('listTypeEnums','te'),'ListTypeUnions':('listTypeUnions','dt')}
+            ignored={'DeleteSymbol':{'name_filter'},'GetDecompilation':{'timeout_ms'},'ListDecompilations':{'timeout_ms'},'CreateType':{'size'},'AddTypeMember':{'size'},'CreateTypeEnum':{'width','is_signed'}}
+            if not nested and name in query_consumers and arg['name']=='query':
+                consumer,var=query_consumers[name]
+                assert consumer+'(query)' in code
+                _,producer=body(adapter,'ArchAdapter::'+consumer+'(')
+                assert '!query.empty() && '+var+'->getName().find(query) == std::string::npos' in producer
+                arg['semantics']='native std::string forwarded unchanged; empty query disables filter; nonempty case-sensitive byte substring of datatype name before pagination, not regex/glob/path hierarchy, no case-folding; Lua input default/requiredness outside approved slice grammar remains explicit unresolved surface policy; native empty behavior is not optionality proof; runtime NUL/non-ASCII matching unqualified'
+                arg['direct_argument_review']={'consumer':ADAPTER,'helper':consumer,'qualification':'source only; runtime filter slots unqualified'}
+                reviewed.append({'operation':name,'path':arg['name']})
+                continue
+            if not nested and arg['name'] in ignored.get(name,set()):
+                assert not re.search(r'(?<![.\w])'+arg['name']+r'\b',code),(name,arg['name'])
+                arg['ignored']=True
+                arg['semantics']='native argument never read in LocalClient body; preserve ignored-field fidelity, do not implement its advertised effect; typed/narrow input validation and defaults remain surface-specific before dispatch; ignored is not permission to accept arbitrary Lua values; runtime positive/negative slots unqualified'
+                if arg['name']=='timeout_ms':
+                    arg['semantics']+='; no native timeout forwarded/enforced; facade rejects timeout option, lowlevel retains typed ignored field'
+                elif arg['name']=='size':
+                    arg['semantics']+='; requested size does not control reconstructed layout; existing member signed-int offsets/sizes/sums still require <=INT_MAX independently'
+                elif arg['name']=='name_filter':
+                    arg['semantics']+='; deletion is address-only, name is not a guard'
+                else:
+                    arg['semantics']+='; enum width/signedness not enforced by this wrapper'
+                arg['direct_argument_review']={'consumer':LOCAL,'helper':name,'qualification':'source only; runtime ignored-field slots unqualified'}
+                reviewed.append({'operation':name,'path':arg['name']})
+                continue
             if not nested and name in range_consumers and arg['name'] in ['range_start','range_end']:
                 key=arg['name']
                 consumer=range_consumers[name]
