@@ -4,4 +4,4 @@ local function check(value, err, response)
   if value == nil then error(err, 2) end
   return value, response
 end
-return { u64 = native.u64, check = check }
+return { u64 = native.u64, check = check, local_client = native.local_client }

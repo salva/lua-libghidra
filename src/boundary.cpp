@@ -179,6 +179,9 @@ static int page_check(lua_State* L) {
 static void function(lua_State* L, const char* key, lua_CFunction f) {
     lua_pushcfunction(L, f); lua_setfield(L, -2, key);
 }
+#ifdef LLG_OWNER
+void owner_module(lua_State*);
+#endif
 int module(lua_State* L) {
     luaL_newmetatable(L, mt);
     function(L, "__tostring", hex); function(L, "__eq", eq);
@@ -191,7 +194,11 @@ int module(lua_State* L) {
     lua_setfield(L, -2, "__index"); lua_pop(L, 1);
     lua_createtable(L, 0, 3);
     function(L, "u64", make); function(L, "_validate_read_size", size_check);
-    function(L, "_validate_page", page_check); return 1;
+    function(L, "_validate_page", page_check);
+#ifdef LLG_OWNER
+    owner_module(L);
+#endif
+    return 1;
 }
 }
 extern "C" int luaopen_libghidra__native(lua_State* L) { return llg::module(L); }
