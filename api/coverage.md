@@ -892,3 +892,20 @@ only _native is None and raises ImportError with diagnostic build guidance.
 All these are source claims; runtime fixtures remain unqualified. Independent
 probes change optional truthiness, error delimiter and compiler branch and must
 fail. Final cross-ledger/unknown classification remains separate work.
+
+## Native dispatch values and Python error mapping
+
+Every one of the 27 local exports now independently checks actual native call
+arguments, not only the called operation and returned field. Open additionally
+reconciles all eight request assignments; close explicitly casts policy; rename
+uses lambda name rather than Python new_name. A valid field/operation set with
+swapped argument values is not accepted by generation.
+
+ErrorCode.from_rpc_code uses exact Enum value matching without normalization;
+ValueError becomes OTHER, losing the original unknown code. GhidraError stores
+the mapped code/message and formats code.value + colon-space + message. These
+AST-checked source transformations make Python unsuitable as a raw unknown-code
+oracle; Lua must retain its separately specified upstream code fidelity. Runtime
+slots remain unqualified. Independent source probes swap timeout/address, replace
+open base address with zero and change unknown-code fallback; all must fail.
+Final cross-ledger completeness and unknown classification remain open.

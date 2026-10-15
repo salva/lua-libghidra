@@ -112,6 +112,18 @@ def reconcile_python(u, operations, types):
         text=exports[name]
         native_calls=re.findall(r'self\.(\w+)\(', text)
         assert native_calls == [op['name']], (name,native_calls)
+        # Independently constrain dispatch values, not merely the method name.
+        native_args=[a.arg for a in n.args.args if a.arg!='self']
+        if name in {'rename_function','rename_symbol'}: native_args=['address','name']
+        if name=='open_program':
+            native_args=['req']
+            assignments=dict(re.findall(r'req\.(\w+)\s*=\s*([^;]+);',text))
+            expected_open={'program_path','read_only','project_path','project_name','language_id','compiler_spec_id','format','base_address'}
+            assert set(assignments)==expected_open
+            assert all(expr.strip()==key for key,expr in assignments.items())
+        if name=='close_program': native_args=['static_cast<ShutdownPolicy>(policy)']
+        expected_dispatch='self.'+op['name']+'('+', '.join(native_args)+')'
+        assert re.sub(r'\s+','',expected_dispatch) in re.sub(r'\s+','',text), (name,expected_dispatch)
         extraction=lookup.get(name,flags.get(name,pages.get(name,'complete dict/array')))
         if name in lookup:
             assert 'resp.'+extraction+'.has_value()' in text and 'nb::none()' in text
@@ -152,7 +164,7 @@ def reconcile_python(u, operations, types):
             exported=set(re.findall(r'd\["(\w+)"\]\s*=',text))
             omitted=sorted(direct_fields-exported)
         defaults={a.arg:ast.unparse(v) for a,v in zip(n.args.args[-len(n.args.defaults):],n.args.defaults)} if n.args.defaults else {}
-        record={'method':name,'native_operation':op['name'],'source':{'path':LOCALPY,'line':n.lineno},'binding_extraction':extraction,'binding_return_expressions':actual_returns,'wrapper_contract':wrapper_contracts[name],'python_return_expressions':[ast.unparse(x.value) for x in ast.walk(n) if isinstance(x,ast.Return) and x.value], 'native_response_fields_not_exported':omitted,'python_defaults':defaults,'binding_body_sha256':hashlib.sha256(text.encode()).hexdigest(),'qualification':'source reviewed; runtime unqualified'}
+        record={'method':name,'native_operation':op['name'],'source':{'path':LOCALPY,'line':n.lineno},'binding_extraction':extraction,'native_dispatch_expression':expected_dispatch,'binding_return_expressions':actual_returns,'wrapper_contract':wrapper_contracts[name],'python_return_expressions':[ast.unparse(x.value) for x in ast.walk(n) if isinstance(x,ast.Return) and x.value], 'native_response_fields_not_exported':omitted,'python_defaults':defaults,'binding_body_sha256':hashlib.sha256(text.encode()).hexdigest(),'qualification':'source reviewed; runtime unqualified'}
         if name in ['close_program','save_program','discard_program']:
             record['fidelity']='Python returns scalar bool, unlike faithful Lua response envelope; no extra native fields currently present'
         if name=='get_type': record['fidelity']='Python returns bare TypeRecord/None, not GetTypeResponse; Lua lowlevel must preserve envelope'
@@ -198,11 +210,24 @@ def reconcile_python(u, operations, types):
     assert isinstance(exc,ast.Call) and ast.unparse(exc.func)=='ImportError' and len(exc.args)==1 and not exc.keywords
     assert isinstance(exc.args[0],ast.Constant) and isinstance(exc.args[0].value,str)
     private_audit={name:{'statements':text.splitlines(),'qualification':'source only; runtime unqualified'} for name,text in private_expected.items()}
+    error_path='python/src/libghidra/errors.py'
+    error_tree=ast.parse((u/error_path).read_text())
+    error_code=next(x for x in error_tree.body if isinstance(x,ast.ClassDef) and x.name=='ErrorCode')
+    mapper=next(x for x in error_code.body if isinstance(x,ast.FunctionDef) and x.name=='from_rpc_code')
+    assert statements(mapper)==expected_statements('try:\n    return ErrorCode(code)\nexcept ValueError:\n    return ErrorCode.OTHER')
+    error_class=next(x for x in error_tree.body if isinstance(x,ast.ClassDef) and x.name=='GhidraError')
+    error_init=next(x for x in error_class.body if isinstance(x,ast.FunctionDef) and x.name=='__init__')
+    assert statements(error_init)==expected_statements('self.code = code\nself.message = message\nsuper().__init__(f"{code.value}: {message}")')
+    error_mapping={'path':error_path,'line':mapper.lineno,
+        'known':'exact ErrorCode(value) match; no case normalization',
+        'unknown':'ValueError -> ErrorCode.OTHER; original unknown code is lost, not preserved',
+        'exception':'GhidraError retains mapped code and message; exception text formats code.value + colon-space + message',
+        'qualification':'source AST checked; runtime fixture unqualified'}
     helpers=[]
     for n in tree.body:
         if isinstance(n,ast.FunctionDef):
             helpers.append({'name':n.name,'path':LOCALPY,'line':n.lineno,'calls':sorted(set(ast.unparse(x.func) for x in ast.walk(n) if isinstance(x,ast.Call))), 'body_sha256':hashlib.sha256(ast.dump(n,include_attributes=False).encode()).hexdigest(), 'reviewed_statements':[ast.unparse(x) for x in n.body] if n.name in expected_helpers else None, 'review_status':'exact reconstruction AST reconciled; runtime unqualified' if n.name in expected_helpers else 'control flow reviewed; diagnostic text not a behavior gate; runtime unqualified'})
-    return {'methods':audits,'record_converters':converters,'conversion_helpers':helpers,'private_lifecycle_and_errors':private_audit,'non_converter_helpers':{'detect_arch':'detect language ID; OSError/UnsupportedFormatError -> None; other exceptions propagate','_require_native':'only _native is None raises ImportError with diagnostic string; otherwise returns None'},
+    return {'methods':audits,'record_converters':converters,'conversion_helpers':helpers,'private_lifecycle_and_errors':private_audit,'error_mapping':error_mapping,'non_converter_helpers':{'detect_arch':'detect language ID; OSError/UnsupportedFormatError -> None; other exceptions propagate','_require_native':'only _native is None raises ImportError with diagnostic string; otherwise returns None'},
             'errors':'nanobind unwrap throws ValueError(code + colon-space + message); Python _call catches ValueError and maps ErrorCode; unknown-code preservation not established by Python mapping; Lua must preserve upstream code/message',
             'architecture':'Python open may mutate request language/compiler from format detection; native echo is not authoritative detection; use identical explicit hints for oracle',
             'nested_enums':'Python _to_decompilation converts locals/tokens and their enum kinds via Python IntEnum constructors; unknown values can raise ValueError unlike Lua numeric unknown-value preservation',

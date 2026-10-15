@@ -1372,6 +1372,7 @@
         ],
         "fidelity": "Python returns scalar bool, unlike faithful Lua response envelope; no extra native fields currently present",
         "method": "close_program",
+        "native_dispatch_expression": "self.CloseProgram(static_cast<ShutdownPolicy>(policy))",
         "native_operation": "CloseProgram",
         "native_response_fields_not_exported": [],
         "python_defaults": {
@@ -3863,6 +3864,7 @@
         ],
         "fidelity": "Python returns scalar bool, unlike faithful Lua response envelope; no extra native fields currently present",
         "method": "discard_program",
+        "native_dispatch_expression": "self.DiscardProgram()",
         "native_operation": "DiscardProgram",
         "native_response_fields_not_exported": [],
         "python_defaults": {},
@@ -4053,6 +4055,7 @@
           "to_list(unwrap(self.GetCapabilities()))"
         ],
         "method": "get_capabilities",
+        "native_dispatch_expression": "self.GetCapabilities()",
         "native_operation": "GetCapabilities",
         "native_response_fields_not_exported": [],
         "python_defaults": {},
@@ -4450,6 +4453,7 @@
           "nb::none()"
         ],
         "method": "get_decompilation",
+        "native_dispatch_expression": "self.GetDecompilation(address, timeout_ms)",
         "native_operation": "GetDecompilation",
         "native_response_fields_not_exported": [],
         "python_defaults": {
@@ -4973,6 +4977,7 @@
           "nb::none()"
         ],
         "method": "get_function",
+        "native_dispatch_expression": "self.GetFunction(address)",
         "native_operation": "GetFunction",
         "native_response_fields_not_exported": [],
         "python_defaults": {},
@@ -5684,6 +5689,7 @@
           "nb::none()"
         ],
         "method": "get_instruction",
+        "native_dispatch_expression": "self.GetInstruction(address)",
         "native_operation": "GetInstruction",
         "native_response_fields_not_exported": [],
         "python_defaults": {},
@@ -6197,6 +6203,7 @@
           "unwrap(self.GetRevision()).modification_number"
         ],
         "method": "get_revision",
+        "native_dispatch_expression": "self.GetRevision()",
         "native_operation": "GetRevision",
         "native_response_fields_not_exported": [],
         "python_defaults": {},
@@ -6392,6 +6399,7 @@
           "to_dict(unwrap(self.GetStatus()))"
         ],
         "method": "get_status",
+        "native_dispatch_expression": "self.GetStatus()",
         "native_operation": "GetStatus",
         "native_response_fields_not_exported": [],
         "python_defaults": {},
@@ -6614,6 +6622,7 @@
           "nb::none()"
         ],
         "method": "get_symbol",
+        "native_dispatch_expression": "self.GetSymbol(address)",
         "native_operation": "GetSymbol",
         "native_response_fields_not_exported": [],
         "python_defaults": {},
@@ -6981,6 +6990,7 @@
         ],
         "fidelity": "Python returns bare TypeRecord/None, not GetTypeResponse; Lua lowlevel must preserve envelope",
         "method": "get_type",
+        "native_dispatch_expression": "self.GetType(path)",
         "native_operation": "GetType",
         "native_response_fields_not_exported": [],
         "python_defaults": {},
@@ -7715,6 +7725,7 @@
         ],
         "fidelity": "Python defaults limit=0 (native unbounded), unlike binding positive bounded limit=100; no such unbounded request on Lua surfaces",
         "method": "list_basic_blocks",
+        "native_dispatch_expression": "self.ListBasicBlocks(range_start, range_end, limit, offset)",
         "native_operation": "ListBasicBlocks",
         "native_response_fields_not_exported": [],
         "python_defaults": {
@@ -8363,6 +8374,7 @@
         ],
         "fidelity": "Python defaults limit=0 (native unbounded), unlike binding positive bounded limit=100; no such unbounded request on Lua surfaces",
         "method": "list_cfg_edges",
+        "native_dispatch_expression": "self.ListCFGEdges(range_start, range_end, limit, offset)",
         "native_operation": "ListCFGEdges",
         "native_response_fields_not_exported": [],
         "python_defaults": {
@@ -8938,6 +8950,7 @@
         ],
         "fidelity": "Python defaults limit=0 (native unbounded), unlike binding positive bounded limit=100; no such unbounded request on Lua surfaces",
         "method": "list_decompilations",
+        "native_dispatch_expression": "self.ListDecompilations(range_start, range_end, limit, offset, timeout_ms)",
         "native_operation": "ListDecompilations",
         "native_response_fields_not_exported": [],
         "python_defaults": {
@@ -9493,6 +9506,7 @@
         ],
         "fidelity": "Python defaults limit=0 (native unbounded), unlike binding positive bounded limit=100; no such unbounded request on Lua surfaces",
         "method": "list_defined_strings",
+        "native_dispatch_expression": "self.ListDefinedStrings(range_start, range_end, limit, offset)",
         "native_operation": "ListDefinedStrings",
         "native_response_fields_not_exported": [],
         "python_defaults": {
@@ -10795,6 +10809,7 @@
         ],
         "fidelity": "Python defaults limit=0 (native unbounded), unlike binding positive bounded limit=100; no such unbounded request on Lua surfaces",
         "method": "list_functions",
+        "native_dispatch_expression": "self.ListFunctions(range_start, range_end, limit, offset)",
         "native_operation": "ListFunctions",
         "native_response_fields_not_exported": [],
         "python_defaults": {
@@ -11335,6 +11350,7 @@
         ],
         "fidelity": "Python defaults limit=0 (native unbounded), unlike binding positive bounded limit=100; no such unbounded request on Lua surfaces",
         "method": "list_instructions",
+        "native_dispatch_expression": "self.ListInstructions(range_start, range_end, limit, offset)",
         "native_operation": "ListInstructions",
         "native_response_fields_not_exported": [],
         "python_defaults": {
@@ -11661,6 +11677,7 @@
         ],
         "fidelity": "Python defaults limit=0 (native unbounded), unlike binding positive bounded limit=100; no such unbounded request on Lua surfaces",
         "method": "list_leaf_functions",
+        "native_dispatch_expression": "self.ListLeafFunctions(range_start, range_end, limit, offset)",
         "native_operation": "ListLeafFunctions",
         "native_response_fields_not_exported": [],
         "python_defaults": {
@@ -12210,6 +12227,7 @@
         ],
         "fidelity": "Python defaults limit=0 (native unbounded), unlike binding positive bounded limit=100; no such unbounded request on Lua surfaces",
         "method": "list_memory_blocks",
+        "native_dispatch_expression": "self.ListMemoryBlocks(limit, offset)",
         "native_operation": "ListMemoryBlocks",
         "native_response_fields_not_exported": [],
         "python_defaults": {
@@ -13455,6 +13473,7 @@
         ],
         "fidelity": "Python defaults limit=0 (native unbounded), unlike binding positive bounded limit=100; no such unbounded request on Lua surfaces",
         "method": "list_symbols",
+        "native_dispatch_expression": "self.ListSymbols(range_start, range_end, limit, offset)",
         "native_operation": "ListSymbols",
         "native_response_fields_not_exported": [],
         "python_defaults": {
@@ -14858,6 +14877,7 @@
         ],
         "fidelity": "Python defaults limit=0 (native unbounded), unlike binding positive bounded limit=100; no such unbounded request on Lua surfaces",
         "method": "list_type_members",
+        "native_dispatch_expression": "self.ListTypeMembers(type_id_or_path, limit, offset)",
         "native_operation": "ListTypeMembers",
         "native_response_fields_not_exported": [],
         "python_defaults": {
@@ -15506,6 +15526,7 @@
         ],
         "fidelity": "Python defaults limit=0 (native unbounded), unlike binding positive bounded limit=100; no such unbounded request on Lua surfaces",
         "method": "list_types",
+        "native_dispatch_expression": "self.ListTypes(query, limit, offset)",
         "native_operation": "ListTypes",
         "native_response_fields_not_exported": [],
         "python_defaults": {
@@ -15896,6 +15917,7 @@
         ],
         "fidelity": "Python defaults limit=0 (native unbounded), unlike binding positive bounded limit=100; no such unbounded request on Lua surfaces",
         "method": "list_xrefs",
+        "native_dispatch_expression": "self.ListXrefs(range_start, range_end, limit, offset)",
         "native_operation": "ListXrefs",
         "native_response_fields_not_exported": [],
         "python_defaults": {
@@ -16534,6 +16556,7 @@
         ],
         "fidelity": "Python native binding exports only program_name/language_id/compiler_spec/image_base; Python model defaults must not be mistaken for native metadata",
         "method": "open_program",
+        "native_dispatch_expression": "self.OpenProgram(req)",
         "native_operation": "OpenProgram",
         "native_response_fields_not_exported": [
           "entry_point",
@@ -17307,6 +17330,7 @@
           "nb::bytes(reinterpret_cast<const char*>(resp.data.data()), resp.data.size())"
         ],
         "method": "read_bytes",
+        "native_dispatch_expression": "self.ReadBytes(address, length)",
         "native_operation": "ReadBytes",
         "native_response_fields_not_exported": [],
         "python_defaults": {},
@@ -17712,6 +17736,7 @@
           "d"
         ],
         "method": "rename_function",
+        "native_dispatch_expression": "self.RenameFunction(address, name)",
         "native_operation": "RenameFunction",
         "native_response_fields_not_exported": [],
         "python_defaults": {},
@@ -18291,6 +18316,7 @@
           "d"
         ],
         "method": "rename_symbol",
+        "native_dispatch_expression": "self.RenameSymbol(address, name)",
         "native_operation": "RenameSymbol",
         "native_response_fields_not_exported": [],
         "python_defaults": {},
@@ -18980,6 +19006,7 @@
         ],
         "fidelity": "Python returns scalar bool, unlike faithful Lua response envelope; no extra native fields currently present",
         "method": "save_program",
+        "native_dispatch_expression": "self.SaveProgram()",
         "native_operation": "SaveProgram",
         "native_response_fields_not_exported": [],
         "python_defaults": {},
@@ -31059,6 +31086,14 @@
         ]
       }
     ],
+    "error_mapping": {
+      "exception": "GhidraError retains mapped code and message; exception text formats code.value + colon-space + message",
+      "known": "exact ErrorCode(value) match; no case normalization",
+      "line": 65,
+      "path": "python/src/libghidra/errors.py",
+      "qualification": "source AST checked; runtime fixture unqualified",
+      "unknown": "ValueError -> ErrorCode.OTHER; original unknown code is lost, not preserved"
+    },
     "errors": "nanobind unwrap throws ValueError(code + colon-space + message); Python _call catches ValueError and maps ErrorCode; unknown-code preservation not established by Python mapping; Lua must preserve upstream code/message",
     "methods": [
       {
@@ -31068,6 +31103,7 @@
           "to_dict(unwrap(self.GetStatus()))"
         ],
         "method": "get_status",
+        "native_dispatch_expression": "self.GetStatus()",
         "native_operation": "GetStatus",
         "native_response_fields_not_exported": [],
         "python_defaults": {},
@@ -31094,6 +31130,7 @@
           "to_list(unwrap(self.GetCapabilities()))"
         ],
         "method": "get_capabilities",
+        "native_dispatch_expression": "self.GetCapabilities()",
         "native_operation": "GetCapabilities",
         "native_response_fields_not_exported": [],
         "python_defaults": {},
@@ -31121,6 +31158,7 @@
         ],
         "fidelity": "Python native binding exports only program_name/language_id/compiler_spec/image_base; Python model defaults must not be mistaken for native metadata",
         "method": "open_program",
+        "native_dispatch_expression": "self.OpenProgram(req)",
         "native_operation": "OpenProgram",
         "native_response_fields_not_exported": [
           "entry_point",
@@ -31161,6 +31199,7 @@
         ],
         "fidelity": "Python returns scalar bool, unlike faithful Lua response envelope; no extra native fields currently present",
         "method": "close_program",
+        "native_dispatch_expression": "self.CloseProgram(static_cast<ShutdownPolicy>(policy))",
         "native_operation": "CloseProgram",
         "native_response_fields_not_exported": [],
         "python_defaults": {
@@ -31189,6 +31228,7 @@
         ],
         "fidelity": "Python returns scalar bool, unlike faithful Lua response envelope; no extra native fields currently present",
         "method": "save_program",
+        "native_dispatch_expression": "self.SaveProgram()",
         "native_operation": "SaveProgram",
         "native_response_fields_not_exported": [],
         "python_defaults": {},
@@ -31215,6 +31255,7 @@
         ],
         "fidelity": "Python returns scalar bool, unlike faithful Lua response envelope; no extra native fields currently present",
         "method": "discard_program",
+        "native_dispatch_expression": "self.DiscardProgram()",
         "native_operation": "DiscardProgram",
         "native_response_fields_not_exported": [],
         "python_defaults": {},
@@ -31240,6 +31281,7 @@
           "unwrap(self.GetRevision()).modification_number"
         ],
         "method": "get_revision",
+        "native_dispatch_expression": "self.GetRevision()",
         "native_operation": "GetRevision",
         "native_response_fields_not_exported": [],
         "python_defaults": {},
@@ -31267,6 +31309,7 @@
           "nb::none()"
         ],
         "method": "get_function",
+        "native_dispatch_expression": "self.GetFunction(address)",
         "native_operation": "GetFunction",
         "native_response_fields_not_exported": [],
         "python_defaults": {},
@@ -31295,6 +31338,7 @@
         ],
         "fidelity": "Python defaults limit=0 (native unbounded), unlike binding positive bounded limit=100; no such unbounded request on Lua surfaces",
         "method": "list_functions",
+        "native_dispatch_expression": "self.ListFunctions(range_start, range_end, limit, offset)",
         "native_operation": "ListFunctions",
         "native_response_fields_not_exported": [],
         "python_defaults": {
@@ -31327,6 +31371,7 @@
         ],
         "fidelity": "Python defaults limit=0 (native unbounded), unlike binding positive bounded limit=100; no such unbounded request on Lua surfaces",
         "method": "list_leaf_functions",
+        "native_dispatch_expression": "self.ListLeafFunctions(range_start, range_end, limit, offset)",
         "native_operation": "ListLeafFunctions",
         "native_response_fields_not_exported": [],
         "python_defaults": {
@@ -31358,6 +31403,7 @@
           "d"
         ],
         "method": "rename_function",
+        "native_dispatch_expression": "self.RenameFunction(address, name)",
         "native_operation": "RenameFunction",
         "native_response_fields_not_exported": [],
         "python_defaults": {},
@@ -31385,6 +31431,7 @@
         ],
         "fidelity": "Python defaults limit=0 (native unbounded), unlike binding positive bounded limit=100; no such unbounded request on Lua surfaces",
         "method": "list_basic_blocks",
+        "native_dispatch_expression": "self.ListBasicBlocks(range_start, range_end, limit, offset)",
         "native_operation": "ListBasicBlocks",
         "native_response_fields_not_exported": [],
         "python_defaults": {
@@ -31417,6 +31464,7 @@
         ],
         "fidelity": "Python defaults limit=0 (native unbounded), unlike binding positive bounded limit=100; no such unbounded request on Lua surfaces",
         "method": "list_cfg_edges",
+        "native_dispatch_expression": "self.ListCFGEdges(range_start, range_end, limit, offset)",
         "native_operation": "ListCFGEdges",
         "native_response_fields_not_exported": [],
         "python_defaults": {
@@ -31449,6 +31497,7 @@
           "nb::none()"
         ],
         "method": "get_decompilation",
+        "native_dispatch_expression": "self.GetDecompilation(address, timeout_ms)",
         "native_operation": "GetDecompilation",
         "native_response_fields_not_exported": [],
         "python_defaults": {
@@ -31479,6 +31528,7 @@
         ],
         "fidelity": "Python defaults limit=0 (native unbounded), unlike binding positive bounded limit=100; no such unbounded request on Lua surfaces",
         "method": "list_decompilations",
+        "native_dispatch_expression": "self.ListDecompilations(range_start, range_end, limit, offset, timeout_ms)",
         "native_operation": "ListDecompilations",
         "native_response_fields_not_exported": [],
         "python_defaults": {
@@ -31512,6 +31562,7 @@
           "nb::none()"
         ],
         "method": "get_symbol",
+        "native_dispatch_expression": "self.GetSymbol(address)",
         "native_operation": "GetSymbol",
         "native_response_fields_not_exported": [],
         "python_defaults": {},
@@ -31540,6 +31591,7 @@
         ],
         "fidelity": "Python defaults limit=0 (native unbounded), unlike binding positive bounded limit=100; no such unbounded request on Lua surfaces",
         "method": "list_symbols",
+        "native_dispatch_expression": "self.ListSymbols(range_start, range_end, limit, offset)",
         "native_operation": "ListSymbols",
         "native_response_fields_not_exported": [],
         "python_defaults": {
@@ -31571,6 +31623,7 @@
           "d"
         ],
         "method": "rename_symbol",
+        "native_dispatch_expression": "self.RenameSymbol(address, name)",
         "native_operation": "RenameSymbol",
         "native_response_fields_not_exported": [],
         "python_defaults": {},
@@ -31597,6 +31650,7 @@
           "nb::bytes(reinterpret_cast<const char*>(resp.data.data()), resp.data.size())"
         ],
         "method": "read_bytes",
+        "native_dispatch_expression": "self.ReadBytes(address, length)",
         "native_operation": "ReadBytes",
         "native_response_fields_not_exported": [],
         "python_defaults": {},
@@ -31624,6 +31678,7 @@
         ],
         "fidelity": "Python defaults limit=0 (native unbounded), unlike binding positive bounded limit=100; no such unbounded request on Lua surfaces",
         "method": "list_memory_blocks",
+        "native_dispatch_expression": "self.ListMemoryBlocks(limit, offset)",
         "native_operation": "ListMemoryBlocks",
         "native_response_fields_not_exported": [],
         "python_defaults": {
@@ -31654,6 +31709,7 @@
           "nb::none()"
         ],
         "method": "get_instruction",
+        "native_dispatch_expression": "self.GetInstruction(address)",
         "native_operation": "GetInstruction",
         "native_response_fields_not_exported": [],
         "python_defaults": {},
@@ -31682,6 +31738,7 @@
         ],
         "fidelity": "Python defaults limit=0 (native unbounded), unlike binding positive bounded limit=100; no such unbounded request on Lua surfaces",
         "method": "list_instructions",
+        "native_dispatch_expression": "self.ListInstructions(range_start, range_end, limit, offset)",
         "native_operation": "ListInstructions",
         "native_response_fields_not_exported": [],
         "python_defaults": {
@@ -31714,6 +31771,7 @@
         ],
         "fidelity": "Python defaults limit=0 (native unbounded), unlike binding positive bounded limit=100; no such unbounded request on Lua surfaces",
         "method": "list_defined_strings",
+        "native_dispatch_expression": "self.ListDefinedStrings(range_start, range_end, limit, offset)",
         "native_operation": "ListDefinedStrings",
         "native_response_fields_not_exported": [],
         "python_defaults": {
@@ -31746,6 +31804,7 @@
         ],
         "fidelity": "Python defaults limit=0 (native unbounded), unlike binding positive bounded limit=100; no such unbounded request on Lua surfaces",
         "method": "list_xrefs",
+        "native_dispatch_expression": "self.ListXrefs(range_start, range_end, limit, offset)",
         "native_operation": "ListXrefs",
         "native_response_fields_not_exported": [],
         "python_defaults": {
@@ -31779,6 +31838,7 @@
         ],
         "fidelity": "Python returns bare TypeRecord/None, not GetTypeResponse; Lua lowlevel must preserve envelope",
         "method": "get_type",
+        "native_dispatch_expression": "self.GetType(path)",
         "native_operation": "GetType",
         "native_response_fields_not_exported": [],
         "python_defaults": {},
@@ -31806,6 +31866,7 @@
         ],
         "fidelity": "Python defaults limit=0 (native unbounded), unlike binding positive bounded limit=100; no such unbounded request on Lua surfaces",
         "method": "list_types",
+        "native_dispatch_expression": "self.ListTypes(query, limit, offset)",
         "native_operation": "ListTypes",
         "native_response_fields_not_exported": [],
         "python_defaults": {
@@ -31837,6 +31898,7 @@
         ],
         "fidelity": "Python defaults limit=0 (native unbounded), unlike binding positive bounded limit=100; no such unbounded request on Lua surfaces",
         "method": "list_type_members",
+        "native_dispatch_expression": "self.ListTypeMembers(type_id_or_path, limit, offset)",
         "native_operation": "ListTypeMembers",
         "native_response_fields_not_exported": [],
         "python_defaults": {

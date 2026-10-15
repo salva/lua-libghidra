@@ -492,6 +492,17 @@ class InventoryTests(unittest.TestCase):
             bindings.write_text(original_bindings.replace('to_dict(resp.function.value())', 'to_dict(resp.symbol.value())'))
             with self.assertRaises(AssertionError):module.inventory(root)
             bindings.write_text(original_bindings)
+            bindings.write_text(original_bindings.replace('self.GetDecompilation(address, timeout_ms)', 'self.GetDecompilation(timeout_ms, address)'))
+            with self.assertRaises(AssertionError):module.inventory(root)
+            bindings.write_text(original_bindings)
+            bindings.write_text(original_bindings.replace('req.base_address = base_address;', 'req.base_address = 0;'))
+            with self.assertRaises(AssertionError):module.inventory(root)
+            bindings.write_text(original_bindings)
+            errors=root/'python/src/libghidra/errors.py'
+            original_errors=errors.read_text()
+            errors.write_text(original_errors.replace('return ErrorCode.OTHER', 'return ErrorCode.API_ERROR'))
+            with self.assertRaises(AssertionError):module.inventory(root)
+            errors.write_text(original_errors)
             py_local=root/'python/src/libghidra/local.py'
             original_py=py_local.read_text()
             py_local.write_text(original_py.replace('d.get("kind", 0)', 'd.get("kind", 1)',1))
@@ -763,6 +774,13 @@ class InventoryTests(unittest.TestCase):
         self.assertTrue(next(r for r in req if r['name']=='name_filter')['ignored'])
         self.assertIn('NO_STATE_PATH', self.ops['CloseProgram']['surface_contract']['facade']['save_policy'])
         self.assertIn('size', self.ops['ReadBytes']['surface_contract']['lowlevel']['argument_alias'])
+
+    def test_python_dispatch_values_and_error_mapping_reviewed(self):
+        audit=self.data['python_reconciliation']
+        self.assertIn('original unknown code is lost',audit['error_mapping']['unknown'])
+        self.assertTrue(all(row['native_dispatch_expression'] for row in audit['methods']))
+        get=next(r for r in audit['methods'] if r['method']=='get_decompilation')
+        self.assertEqual(get['native_dispatch_expression'],'self.GetDecompilation(address, timeout_ms)')
 
     def test_python_wrapper_branch_and_lifecycle_contracts(self):
         audit=self.data['python_reconciliation']
