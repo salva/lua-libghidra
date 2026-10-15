@@ -34,6 +34,51 @@ historical and superseded **for planning** by this disposition. They must not be
 read as current completion requirements. No factual derivation or compatibility
 uncertainty is rewritten as a proven exemption.
 
+## Final bounded report — supported planning closure
+
+**Classification retained:** supported, as accepted in
+`record:///status.md?card=card-a-a&v=27`, assessing exploration evidence v24.
+This supports completion of [[card:card-a-a]] for project planning on the explicit
+operator disposition above; it does not promote research evidence to legal
+policy or assert parent/project acceptance. Those decisions remain with their
+respective owners.
+
+**Evidence:** the pinned upstream license, decisive quotations, repository
+intended-use/provenance observations and third-party source references are
+retained below and in [the 17-source digest manifest](M0-LICENSE-SOURCES.tsv).
+Original evidence was committed in `76bfb7e`; planned-artifact analysis in
+`b1a44d8`; MIT decision incorporation in `4420eab`; planning reconciliation in
+`0b3cb2e`. The direct operator instruction, not an inferred upstream grant,
+supplies the planning disposition. MIT is settled for original wrapper material.
+
+**Inference and uncertainty:** HOS permits unchanged dependency use and makes
+its relevant derivative boundary conditional on material reliance on protected
+expression, not mere compatibility or AI access. The planned adapter mapping
+establishes neither blanket prohibition nor a proven exemption. Operator
+acceptance settles this card's planning treatment without resolving that legal
+uncertainty. Unmodified dependency experiments remain distinct from implementing
+a binding. No new rightsholder permission, compatibility proof or upstream
+relicensing is represented.
+
+**Outstanding delegated scope / actionable handoff:** the owner should propagate
+DONE-for-planning downstream without reopening the same permission question or
+changing unrelated [[card:card-a-c]]. Dependency/packaging owners still need the
+actual selected binutils/transitive and linked-member inventory, corresponding
+source delivery and complete notices for the eventual distribution profile.
+Which exact components/versions are linked or bundled, which source-conveyance
+method applies, and how any combined HOS/GPL BFD distribution is made compliant
+remain unresolved here. Illustrative binutils 2.44 evidence is not the selected
+build. Exhaustive transitive qualification is outstanding, not waived or claimed
+complete by this bounded report. Preserve MIT and separately scoped upstream
+and third-party notices, attribution and exact source/license links. Technical
+qualification and any release acceptance remain their owners' work.
+
+**Limits and recommendation:** accept this bounded report only as supported
+planning closure by disposition; do not repeat applicability research to complete
+this card. No legal clearance, publication/send/push authorization, technical
+milestone pass or parent/project approval follows. Full research and historical
+blockers remain below for provenance, explicitly superseded for planning.
+
 ## Owner MIT decision — current authority update
 
 Inspected owner commit `eeb4315816046819c92902a2db1e2e1a8082c66e`, root
