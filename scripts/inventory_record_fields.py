@@ -98,4 +98,51 @@ def review_record_fields(u, operations, types):
                 name=field['name']
                 field['semantics']=semantics.get(name, 'not assigned by '+method+'; retain model initializer '+declared[name]['native_default']+'; not measured metadata or durable identity')
                 field['producer_review']={'path':ADAPTER,'method':method,'line':review['line']}
+    review_signature_fields(source, operations, types)
     return operations
+
+
+def review_signature_fields(source, operations, types):
+    method='getFunctionSignature'
+    start,text=body(source,'ArchAdapter::'+method+'(')
+    contracts={
+        'FunctionSignatureRecord': ('rec', {
+            'function_entry_address':'requested address copied after queryFunction succeeds; not independently normalized function entry',
+            'function_name':'Funcdata getName unchanged',
+            'has_var_args':'FuncProto isDotdotdot boolean',
+            'return_type':'output datatype name when nonnull, otherwise literal void',
+            'calling_convention':'FuncProto getModelName unchanged; separate field, not embedded in prototype string',
+            'parameters':'ProtoParameter traversal order, one appended record per native numParams entry; nested ordinal is zero-based not Lua index',
+            'prototype':'constructed return type, function name, parenthesized comma-separated datatype/name parameters and conditional varargs; no calling convention or general C declarator fidelity',
+        }),
+        'ParameterRecord': ('prec', {
+            'ordinal':'signed native int4 loop index from zero to numParams-1; model checked integer, not 1-based Lua array index',
+            'name':'ProtoParameter getName unchanged',
+            'data_type':'parameter datatype name when nonnull, otherwise literal undefined',
+            'formal_data_type':'copied from data_type; not an independently extracted formal datatype',
+        }),
+    }
+    assert 'ret_type ? ret_type->getName() : "void"' in text
+    assert 'pt ? pt->getName() : "undefined"' in text
+    assert 'prec.formal_data_type = prec.data_type' in text
+    assert 'if (rec.has_var_args)' in text and 'if (num_params > 0)' in text
+    assert 'rec.calling_convention = proto.getModelName()' in text
+    for model,(variable,semantics) in contracts.items():
+        assigned=set(re.findall(r'\b'+variable+r'\.(\w+)\s*=',text))
+        appended=set(re.findall(r'\b'+variable+r'\.(\w+)\.push_back\(',text))
+        assert assigned|appended==set(semantics),(model,assigned|appended)
+        declared={f['name']:f for f in types[model]['fields']}
+        assert set(semantics)<=set(declared)
+        for op in operations:
+            if op['name'] not in ['GetFunctionSignature','ListFunctionSignatures']:continue
+            review={'path':ADAPTER,'line':source.count('\n',0,start)+1,'method':method,
+                    'body_sha256':hashlib.sha256(text.encode()).hexdigest(),
+                    'model':model,'assigned_fields':sorted(assigned|appended),
+                    'default_only_fields':sorted(set(declared)-set(semantics)),
+                    'qualification':'all declared signature/parameter fields accounted against producer; runtime unqualified'}
+            op.setdefault('record_field_reviews',[]).append(review)
+            for field in op['response']['fields']:
+                if field['model']!=model:continue
+                name=field['name']
+                field['semantics']=semantics.get(name,'not assigned by '+method+'; retain model initializer '+declared[name]['native_default']+'; not measured parameter metadata')
+                field['producer_review']={'path':ADAPTER,'method':method,'line':review['line']}

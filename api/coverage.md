@@ -414,3 +414,22 @@ are source accounting, not runtime qualification.
 Independent probes replace type page IDs and alias declaration composition; both
 must fail reviewed assertions. Twenty tests pass. Remaining generic field paths,
 request/helper/domain review and final grammar remain explicit acceptance gaps.
+
+## Signature and nested parameter producer fields (seventeenth increment)
+
+Signature lookup and signature pages now account every FunctionSignatureRecord
+and nested ParameterRecord field against the same extraction producer. The field
+reconciler includes vector push_back as population, not just scalar assignments.
+Return type falls back to void; parameter datatype falls back to undefined;
+formal_data_type copies data_type rather than independent formal extraction.
+Auto-parameter/forced-indirect flags remain false initializers, not measured facts.
+Ordinal remains zero-based and distinct from dense Lua array position. Calling
+convention is a separate getModelName field and is absent from the constructed
+prototype, whose declarator fidelity is limited. Requested address is echoed as
+function_entry_address after queryFunction succeeds.
+
+Independent probes alter formal-type copying and missing-return fallback; both
+must fail reviewed assertions. Twenty-one focused tests pass. Signature paging
+still filters missing signatures after candidate pagination, remains pages-only,
+and has no runtime qualification. Other model families, request/default/helper/
+domain review and final grammar remain open.

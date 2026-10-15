@@ -4185,6 +4185,44 @@
       "native_literal_errors": [],
       "pagination": null,
       "program_state": "loaded program and valid primary adapter required; otherwise NO_PROGRAM",
+      "record_field_reviews": [
+        {
+          "assigned_fields": [
+            "calling_convention",
+            "function_entry_address",
+            "function_name",
+            "has_var_args",
+            "parameters",
+            "prototype",
+            "return_type"
+          ],
+          "body_sha256": "5acdfb9c22673a79ac7cc499b966082aadbe673bb8aa17c90a8555a23a2d8d20",
+          "default_only_fields": [],
+          "line": 774,
+          "method": "getFunctionSignature",
+          "model": "FunctionSignatureRecord",
+          "path": "cpp/src/local_arch_adapter.cpp",
+          "qualification": "all declared signature/parameter fields accounted against producer; runtime unqualified"
+        },
+        {
+          "assigned_fields": [
+            "data_type",
+            "formal_data_type",
+            "name",
+            "ordinal"
+          ],
+          "body_sha256": "5acdfb9c22673a79ac7cc499b966082aadbe673bb8aa17c90a8555a23a2d8d20",
+          "default_only_fields": [
+            "is_auto_parameter",
+            "is_forced_indirect"
+          ],
+          "line": 774,
+          "method": "getFunctionSignature",
+          "model": "ParameterRecord",
+          "path": "cpp/src/local_arch_adapter.cpp",
+          "qualification": "all declared signature/parameter fields accounted against producer; runtime unqualified"
+        }
+      ],
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
@@ -4215,7 +4253,12 @@
             "native_type": "std::uint64_t",
             "optional": false,
             "path": "signature.function_entry_address",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 774,
+              "method": "getFunctionSignature",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "requested address copied after queryFunction succeeds; not independently normalized function entry"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -4225,7 +4268,12 @@
             "native_type": "std::string",
             "optional": false,
             "path": "signature.function_name",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 774,
+              "method": "getFunctionSignature",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "Funcdata getName unchanged"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -4235,7 +4283,12 @@
             "native_type": "std::string",
             "optional": false,
             "path": "signature.prototype",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 774,
+              "method": "getFunctionSignature",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "constructed return type, function name, parenthesized comma-separated datatype/name parameters and conditional varargs; no calling convention or general C declarator fidelity"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -4245,7 +4298,12 @@
             "native_type": "std::string",
             "optional": false,
             "path": "signature.return_type",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 774,
+              "method": "getFunctionSignature",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "output datatype name when nonnull, otherwise literal void"
           },
           {
             "lua": "boolean (preserve false)",
@@ -4255,7 +4313,12 @@
             "native_type": "bool",
             "optional": false,
             "path": "signature.has_var_args",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 774,
+              "method": "getFunctionSignature",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "FuncProto isDotdotdot boolean"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -4265,7 +4328,12 @@
             "native_type": "std::string",
             "optional": false,
             "path": "signature.calling_convention",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 774,
+              "method": "getFunctionSignature",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "FuncProto getModelName unchanged; separate field, not embedded in prototype string"
           },
           {
             "lua": "dense 1-based array of ParameterRecord table/enum; resolve in types/enums",
@@ -4275,7 +4343,12 @@
             "native_type": "std::vector<ParameterRecord>",
             "optional": false,
             "path": "signature.parameters",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 774,
+              "method": "getFunctionSignature",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "ProtoParameter traversal order, one appended record per native numParams entry; nested ordinal is zero-based not Lua index"
           },
           {
             "lua": "checked Lua integer (int)",
@@ -4285,7 +4358,12 @@
             "native_type": "int",
             "optional": false,
             "path": "signature.parameters.ordinal",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 774,
+              "method": "getFunctionSignature",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "signed native int4 loop index from zero to numParams-1; model checked integer, not 1-based Lua array index"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -4295,7 +4373,12 @@
             "native_type": "std::string",
             "optional": false,
             "path": "signature.parameters.name",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 774,
+              "method": "getFunctionSignature",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "ProtoParameter getName unchanged"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -4305,7 +4388,12 @@
             "native_type": "std::string",
             "optional": false,
             "path": "signature.parameters.data_type",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 774,
+              "method": "getFunctionSignature",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "parameter datatype name when nonnull, otherwise literal undefined"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -4315,7 +4403,12 @@
             "native_type": "std::string",
             "optional": false,
             "path": "signature.parameters.formal_data_type",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 774,
+              "method": "getFunctionSignature",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "copied from data_type; not an independently extracted formal datatype"
           },
           {
             "lua": "boolean (preserve false)",
@@ -4325,7 +4418,12 @@
             "native_type": "bool",
             "optional": false,
             "path": "signature.parameters.is_auto_parameter",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 774,
+              "method": "getFunctionSignature",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "not assigned by getFunctionSignature; retain model initializer false; not measured parameter metadata"
           },
           {
             "lua": "boolean (preserve false)",
@@ -4335,7 +4433,12 @@
             "native_type": "bool",
             "optional": false,
             "path": "signature.parameters.is_forced_indirect",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 774,
+              "method": "getFunctionSignature",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "not assigned by getFunctionSignature; retain model initializer false; not measured parameter metadata"
           }
         ],
         "lua": "GetFunctionSignatureResponse table/enum; resolve in types/enums",
@@ -8272,6 +8375,44 @@
         }
       },
       "program_state": "loaded program and valid primary adapter required; otherwise NO_PROGRAM",
+      "record_field_reviews": [
+        {
+          "assigned_fields": [
+            "calling_convention",
+            "function_entry_address",
+            "function_name",
+            "has_var_args",
+            "parameters",
+            "prototype",
+            "return_type"
+          ],
+          "body_sha256": "5acdfb9c22673a79ac7cc499b966082aadbe673bb8aa17c90a8555a23a2d8d20",
+          "default_only_fields": [],
+          "line": 774,
+          "method": "getFunctionSignature",
+          "model": "FunctionSignatureRecord",
+          "path": "cpp/src/local_arch_adapter.cpp",
+          "qualification": "all declared signature/parameter fields accounted against producer; runtime unqualified"
+        },
+        {
+          "assigned_fields": [
+            "data_type",
+            "formal_data_type",
+            "name",
+            "ordinal"
+          ],
+          "body_sha256": "5acdfb9c22673a79ac7cc499b966082aadbe673bb8aa17c90a8555a23a2d8d20",
+          "default_only_fields": [
+            "is_auto_parameter",
+            "is_forced_indirect"
+          ],
+          "line": 774,
+          "method": "getFunctionSignature",
+          "model": "ParameterRecord",
+          "path": "cpp/src/local_arch_adapter.cpp",
+          "qualification": "all declared signature/parameter fields accounted against producer; runtime unqualified"
+        }
+      ],
       "request": [
         {
           "binding_default": "0",
@@ -8326,7 +8467,12 @@
             "native_type": "std::uint64_t",
             "optional": false,
             "path": "signatures.function_entry_address",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 774,
+              "method": "getFunctionSignature",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "requested address copied after queryFunction succeeds; not independently normalized function entry"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -8336,7 +8482,12 @@
             "native_type": "std::string",
             "optional": false,
             "path": "signatures.function_name",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 774,
+              "method": "getFunctionSignature",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "Funcdata getName unchanged"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -8346,7 +8497,12 @@
             "native_type": "std::string",
             "optional": false,
             "path": "signatures.prototype",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 774,
+              "method": "getFunctionSignature",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "constructed return type, function name, parenthesized comma-separated datatype/name parameters and conditional varargs; no calling convention or general C declarator fidelity"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -8356,7 +8512,12 @@
             "native_type": "std::string",
             "optional": false,
             "path": "signatures.return_type",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 774,
+              "method": "getFunctionSignature",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "output datatype name when nonnull, otherwise literal void"
           },
           {
             "lua": "boolean (preserve false)",
@@ -8366,7 +8527,12 @@
             "native_type": "bool",
             "optional": false,
             "path": "signatures.has_var_args",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 774,
+              "method": "getFunctionSignature",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "FuncProto isDotdotdot boolean"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -8376,7 +8542,12 @@
             "native_type": "std::string",
             "optional": false,
             "path": "signatures.calling_convention",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 774,
+              "method": "getFunctionSignature",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "FuncProto getModelName unchanged; separate field, not embedded in prototype string"
           },
           {
             "lua": "dense 1-based array of ParameterRecord table/enum; resolve in types/enums",
@@ -8386,7 +8557,12 @@
             "native_type": "std::vector<ParameterRecord>",
             "optional": false,
             "path": "signatures.parameters",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 774,
+              "method": "getFunctionSignature",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "ProtoParameter traversal order, one appended record per native numParams entry; nested ordinal is zero-based not Lua index"
           },
           {
             "lua": "checked Lua integer (int)",
@@ -8396,7 +8572,12 @@
             "native_type": "int",
             "optional": false,
             "path": "signatures.parameters.ordinal",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 774,
+              "method": "getFunctionSignature",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "signed native int4 loop index from zero to numParams-1; model checked integer, not 1-based Lua array index"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -8406,7 +8587,12 @@
             "native_type": "std::string",
             "optional": false,
             "path": "signatures.parameters.name",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 774,
+              "method": "getFunctionSignature",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "ProtoParameter getName unchanged"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -8416,7 +8602,12 @@
             "native_type": "std::string",
             "optional": false,
             "path": "signatures.parameters.data_type",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 774,
+              "method": "getFunctionSignature",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "parameter datatype name when nonnull, otherwise literal undefined"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -8426,7 +8617,12 @@
             "native_type": "std::string",
             "optional": false,
             "path": "signatures.parameters.formal_data_type",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 774,
+              "method": "getFunctionSignature",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "copied from data_type; not an independently extracted formal datatype"
           },
           {
             "lua": "boolean (preserve false)",
@@ -8436,7 +8632,12 @@
             "native_type": "bool",
             "optional": false,
             "path": "signatures.parameters.is_auto_parameter",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 774,
+              "method": "getFunctionSignature",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "not assigned by getFunctionSignature; retain model initializer false; not measured parameter metadata"
           },
           {
             "lua": "boolean (preserve false)",
@@ -8446,7 +8647,12 @@
             "native_type": "bool",
             "optional": false,
             "path": "signatures.parameters.is_forced_indirect",
-            "semantics": "native field preserved; no truthiness substitution"
+            "producer_review": {
+              "line": 774,
+              "method": "getFunctionSignature",
+              "path": "cpp/src/local_arch_adapter.cpp"
+            },
+            "semantics": "not assigned by getFunctionSignature; retain model initializer false; not measured parameter metadata"
           }
         ],
         "lua": "ListFunctionSignaturesResponse table/enum; resolve in types/enums",
@@ -28014,71 +28220,6 @@
         "path": "signature"
       },
       {
-        "native_type": "std::uint64_t",
-        "operation": "GetFunctionSignature",
-        "path": "signature.function_entry_address"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "GetFunctionSignature",
-        "path": "signature.function_name"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "GetFunctionSignature",
-        "path": "signature.prototype"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "GetFunctionSignature",
-        "path": "signature.return_type"
-      },
-      {
-        "native_type": "bool",
-        "operation": "GetFunctionSignature",
-        "path": "signature.has_var_args"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "GetFunctionSignature",
-        "path": "signature.calling_convention"
-      },
-      {
-        "native_type": "std::vector<ParameterRecord>",
-        "operation": "GetFunctionSignature",
-        "path": "signature.parameters"
-      },
-      {
-        "native_type": "int",
-        "operation": "GetFunctionSignature",
-        "path": "signature.parameters.ordinal"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "GetFunctionSignature",
-        "path": "signature.parameters.name"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "GetFunctionSignature",
-        "path": "signature.parameters.data_type"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "GetFunctionSignature",
-        "path": "signature.parameters.formal_data_type"
-      },
-      {
-        "native_type": "bool",
-        "operation": "GetFunctionSignature",
-        "path": "signature.parameters.is_auto_parameter"
-      },
-      {
-        "native_type": "bool",
-        "operation": "GetFunctionSignature",
-        "path": "signature.parameters.is_forced_indirect"
-      },
-      {
         "native_type": "std::optional<InstructionRecord>",
         "operation": "GetInstruction",
         "path": "instruction"
@@ -28367,71 +28508,6 @@
         "native_type": "std::vector<FunctionSignatureRecord>",
         "operation": "ListFunctionSignatures",
         "path": "signatures"
-      },
-      {
-        "native_type": "std::uint64_t",
-        "operation": "ListFunctionSignatures",
-        "path": "signatures.function_entry_address"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "ListFunctionSignatures",
-        "path": "signatures.function_name"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "ListFunctionSignatures",
-        "path": "signatures.prototype"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "ListFunctionSignatures",
-        "path": "signatures.return_type"
-      },
-      {
-        "native_type": "bool",
-        "operation": "ListFunctionSignatures",
-        "path": "signatures.has_var_args"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "ListFunctionSignatures",
-        "path": "signatures.calling_convention"
-      },
-      {
-        "native_type": "std::vector<ParameterRecord>",
-        "operation": "ListFunctionSignatures",
-        "path": "signatures.parameters"
-      },
-      {
-        "native_type": "int",
-        "operation": "ListFunctionSignatures",
-        "path": "signatures.parameters.ordinal"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "ListFunctionSignatures",
-        "path": "signatures.parameters.name"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "ListFunctionSignatures",
-        "path": "signatures.parameters.data_type"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "ListFunctionSignatures",
-        "path": "signatures.parameters.formal_data_type"
-      },
-      {
-        "native_type": "bool",
-        "operation": "ListFunctionSignatures",
-        "path": "signatures.parameters.is_auto_parameter"
-      },
-      {
-        "native_type": "bool",
-        "operation": "ListFunctionSignatures",
-        "path": "signatures.parameters.is_forced_indirect"
       },
       {
         "native_type": "std::vector<FunctionRecord>",

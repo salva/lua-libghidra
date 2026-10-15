@@ -182,10 +182,33 @@ class InventoryTests(unittest.TestCase):
             with self.assertRaises(AssertionError):
                 module.inventory(root)
             adapter.write_text(adapter_original)
+            adapter.write_text(adapter_original.replace('prec.formal_data_type = prec.data_type', 'prec.formal_data_type = "formal"'))
+            with self.assertRaises(AssertionError):
+                module.inventory(root)
+            adapter.write_text(adapter_original)
+            adapter.write_text(adapter_original.replace('ret_type ? ret_type->getName() : "void"', 'ret_type ? ret_type->getName() : "undefined"'))
+            with self.assertRaises(AssertionError):
+                module.inventory(root)
+            adapter.write_text(adapter_original)
             header = root/'cpp/src/local_arch_adapter.hpp'
             header.write_text(header.read_text().replace('std::map<std::pair<std::uint64_t, int>, std::string> comments_', 'std::multimap<std::pair<std::uint64_t, int>, std::string> comments_'))
             with self.assertRaises(AssertionError):
                 module.inventory(root)
+
+    def test_signature_nested_fields_and_default_parameter_flags(self):
+        for op in ['GetFunctionSignature', 'ListFunctionSignatures']:
+            fields={f['name']:f for f in self.ops[op]['response']['fields']}
+            self.assertIn('otherwise literal void',fields['return_type']['semantics'])
+            self.assertIn('otherwise literal undefined',fields['data_type']['semantics'])
+            self.assertIn('copied from data_type',fields['formal_data_type']['semantics'])
+            self.assertIn('false',fields['is_auto_parameter']['semantics'])
+            self.assertIn('false',fields['is_forced_indirect']['semantics'])
+            self.assertIn('no calling convention',fields['prototype']['semantics'])
+            reviews=self.ops[op]['record_field_reviews']
+            self.assertEqual({r['model'] for r in reviews},{'FunctionSignatureRecord','ParameterRecord'})
+            for review in reviews:
+                declared={f['name'] for f in self.data['types'][review['model']]['fields']}
+                self.assertEqual(declared,set(review['assigned_fields'])|set(review['default_only_fields']))
 
     def test_type_record_field_population_and_synthetic_metadata(self):
         def field(op, name):
