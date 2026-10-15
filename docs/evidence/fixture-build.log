@@ -1,0 +1,16 @@
+[1/2] Building CXX object CMakeFiles/project_probe.dir/work/lua-libghidra/tests/project_probe.cpp.o
+FAILED: CMakeFiles/project_probe.dir/work/lua-libghidra/tests/project_probe.cpp.o 
+/usr/bin/c++ -DLIBGHIDRA_HAS_BFD=1 -isystem /work/lua-libghidra/.cache/native-sdk-patched/include -std=gnu++20 -fPIE -MD -MT CMakeFiles/project_probe.dir/work/lua-libghidra/tests/project_probe.cpp.o -MF CMakeFiles/project_probe.dir/work/lua-libghidra/tests/project_probe.cpp.o.d -o CMakeFiles/project_probe.dir/work/lua-libghidra/tests/project_probe.cpp.o -c /work/lua-libghidra/tests/project_probe.cpp
+/work/lua-libghidra/tests/project_probe.cpp: In function ‘int main(int, char**)’:
+/work/lua-libghidra/tests/project_probe.cpp:22:71: error: ‘struct libghidra::client::FunctionRecord’ has no member named ‘entry’
+   22 |  for(auto &f:leaves.value->functions) std::cout<<"leaf "<<std::hex<<f.entry<<" "<<f.name<<"\n";
+      |                                                                       ^~~~~
+ninja: build stopped: subcommand failed.
+[1/2] Building CXX object CMakeFiles/project_probe.dir/work/lua-libghidra/tests/project_probe.cpp.o
+[2/2] Linking CXX executable project_probe
+[1/2] Building CXX object CMakeFiles/project_probe.dir/work/lua-libghidra/tests/project_probe.cpp.o
+[2/2] Linking CXX executable project_probe
+[1/2] Building CXX object CMakeFiles/project_probe.dir/work/lua-libghidra/tests/project_probe.cpp.o
+[2/2] Linking CXX executable project_probe
+[1/2] Building CXX object CMakeFiles/project_probe.dir/work/lua-libghidra/tests/project_probe.cpp.o
+[2/2] Linking CXX executable project_probe

@@ -1,0 +1,12 @@
+tests/fixtures/authored.c: OK
+tests/fixtures/inputs/authored.elf: OK
+tests/fixtures/inputs/text.bin: OK
+tests/fixtures/MakeFixture.java: OK
+tests/fixtures/project/authored.gpr: OK
+tests/fixtures/project/authored.rep/idata/00/~00000000.db/db.1.gbf: OK
+tests/fixtures/project/authored.rep/idata/00/00000000.prp: OK
+tests/fixtures/project/authored.rep/idata/~index.dat: OK
+tests/fixtures/project/authored.rep/idata/~journal.dat: OK
+tests/fixtures/project/authored.rep/project.prp: OK
+tests/fixtures/project/authored.rep/user/~index.dat: OK
+tests/fixtures/project/authored.rep/versioned/~index.dat: OK

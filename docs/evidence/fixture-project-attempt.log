@@ -1,0 +1,14 @@
+project open passed
+completed=1 fallback=0
+
+int4 native_smoke(void)
+
+{
+  int4 unaff_EDI;
+  
+  return unaff_EDI * 3 + 7;
+}
+
+leaves=1
+leaf 401106 native_smoke
+call xrefs absent

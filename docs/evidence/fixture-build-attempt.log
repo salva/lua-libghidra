@@ -1,0 +1,30 @@
+-- The C compiler identification is GNU 13.3.0
+-- The CXX compiler identification is GNU 13.3.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
+-- Found Threads: TRUE  
+-- Configuring done (0.6s)
+-- Generating done (0.0s)
+-- Build files have been written to: /work/lua-libghidra/.saivage/work/cards/card-a-d/fixture-consumer
+[1/2] Building CXX object CMakeFiles/project_probe.dir/work/lua-libghidra/tests/project_probe.cpp.o
+FAILED: CMakeFiles/project_probe.dir/work/lua-libghidra/tests/project_probe.cpp.o 
+/usr/bin/c++ -DLIBGHIDRA_HAS_BFD=1 -isystem /work/lua-libghidra/.cache/native-sdk-patched/include -std=gnu++20 -fPIE -MD -MT CMakeFiles/project_probe.dir/work/lua-libghidra/tests/project_probe.cpp.o -MF CMakeFiles/project_probe.dir/work/lua-libghidra/tests/project_probe.cpp.o.d -o CMakeFiles/project_probe.dir/work/lua-libghidra/tests/project_probe.cpp.o -c /work/lua-libghidra/tests/project_probe.cpp
+/work/lua-libghidra/tests/project_probe.cpp: In function ‘int main(int, char**)’:
+/work/lua-libghidra/tests/project_probe.cpp:22:71: error: ‘struct libghidra::client::FunctionRecord’ has no member named ‘address’; did you mean ‘end_address’?
+   22 |  for(auto &f:leaves.value->functions) std::cout<<"leaf "<<std::hex<<f.address<<" "<<f.name<<"\n";
+      |                                                                       ^~~~~~~
+      |                                                                       end_address
+/work/lua-libghidra/tests/project_probe.cpp:32:34: error: ‘struct libghidra::client::ListDataItemsResponse’ has no member named ‘items’
+   32 |  std::cout<<"data="<<data.value->items.size()<<"\n";
+      |                                  ^~~~~
+ninja: build stopped: subcommand failed.

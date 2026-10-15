@@ -235,3 +235,16 @@ issue; no analyzed-project fixture semantics are claimed qualified. Independent
 legal/distribution gates remain open; no M1 binding or publication authorization
 is inferred. This qualifies the scoped native SDK/object loader/spec profile,
 not every M0 fixture requirement or all architectures.
+
+## Real fixture follow-up (current)
+
+The prior absence of executed project evidence is superseded by
+[tests/fixtures/README.md](../tests/fixtures/README.md) and
+[evidence/fixture-qualification.log](evidence/fixture-qualification.log).
+A real Ghidra 12.1.3 analyzed database with no FileBytes loads through native
+project open's documented external ELF override; semantic nonfallback arithmetic,
+project leaves, call xrefs, native comment roundtrip and discovered data pass.
+No additional engine/libghidra patch was made. This does not repair or qualify
+the FileBytes reconstructed raw-memory branch. Earlier limitations/failures are
+retained as history, not reclassified as successes. Licensing is settled for
+project planning per M0-LICENSE; distribution/notices remain separate obligations.

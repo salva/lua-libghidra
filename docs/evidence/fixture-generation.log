@@ -1,0 +1,78 @@
+openjdk version "21.0.12.1" 2026-08-18
+OpenJDK Runtime Environment (build 21.0.12.1+1-1-24.04.4-Ubuntu)
+OpenJDK 64-Bit Server VM (build 21.0.12.1+1-1-24.04.4-Ubuntu, mixed mode)
+INFO  Using log config file: jar:file:/work/lua-libghidra/.saivage/work/cards/card-a-d/fixture-tools/ghidra_12.1.3_PUBLIC/Ghidra/Framework/Generic/lib/Generic.jar!/generic.log4j.xml (LoggingInitialization)  
+INFO  Using log file: /home/salva/.config/ghidra/ghidra_12.1.3_PUBLIC/application.log (LoggingInitialization)  
+INFO  Loading user preferences: /home/salva/.config/ghidra/ghidra_12.1.3_PUBLIC/preferences (Preferences)  
+INFO  Searching for classes... (ClassSearcher)  
+INFO  Class search complete (971 ms) (ClassSearcher)  
+INFO  Initializing SSL Context (DefaultSSLContextInitializer)  
+INFO  Initializing Random Number Generator... (SecureRandomFactory)  
+INFO  Random Number Generator initialization complete: NativePRNGNonBlocking (SecureRandomFactory)  
+INFO  Trust manager disabled, cacerts have not been set (DefaultTrustManagerFactory)  
+WARN  Neither the -import parameter nor the -process parameter was specified; therefore, the specified prescripts and/or postscripts will be executed without any type of program context. (HeadlessAnalyzer)  
+INFO  Headless startup complete (2257 ms) (AnalyzeHeadless)  
+INFO  Class searcher loaded 59 extension points (20 false positives) (ClassSearcher)  
+INFO  HEADLESS Script Paths:
+    /work/lua-libghidra/tests/fixtures
+    /work/lua-libghidra/.saivage/work/cards/card-a-d/fixture-tools/ghidra_12.1.3_PUBLIC/Ghidra/Features/FileFormats/ghidra_scripts
+    /work/lua-libghidra/.saivage/work/cards/card-a-d/fixture-tools/ghidra_12.1.3_PUBLIC/Ghidra/Features/SwiftDemangler/ghidra_scripts
+    /work/lua-libghidra/.saivage/work/cards/card-a-d/fixture-tools/ghidra_12.1.3_PUBLIC/Ghidra/Features/GnuDemangler/ghidra_scripts
+    /work/lua-libghidra/.saivage/work/cards/card-a-d/fixture-tools/ghidra_12.1.3_PUBLIC/Ghidra/Features/WildcardAssembler/ghidra_scripts
+    /work/lua-libghidra/.saivage/work/cards/card-a-d/fixture-tools/ghidra_12.1.3_PUBLIC/Ghidra/Features/PDB/ghidra_scripts
+    /work/lua-libghidra/.saivage/work/cards/card-a-d/fixture-tools/ghidra_12.1.3_PUBLIC/Ghidra/Processors/PIC/ghidra_scripts
+    /work/lua-libghidra/.saivage/work/cards/card-a-d/fixture-tools/ghidra_12.1.3_PUBLIC/Ghidra/Debug/Debugger/ghidra_scripts
+    /work/lua-libghidra/.saivage/work/cards/card-a-d/fixture-tools/ghidra_12.1.3_PUBLIC/Ghidra/Processors/DATA/ghidra_scripts
+    /work/lua-libghidra/.saivage/work/cards/card-a-d/fixture-tools/ghidra_12.1.3_PUBLIC/Ghidra/Debug/Debugger-rmi-trace/ghidra_scripts
+    /work/lua-libghidra/.saivage/work/cards/card-a-d/fixture-tools/ghidra_12.1.3_PUBLIC/Ghidra/Processors/Atmel/ghidra_scripts
+    /work/lua-libghidra/.saivage/work/cards/card-a-d/fixture-tools/ghidra_12.1.3_PUBLIC/Ghidra/Features/FunctionID/ghidra_scripts
+    /work/lua-libghidra/.saivage/work/cards/card-a-d/fixture-tools/ghidra_12.1.3_PUBLIC/Ghidra/Features/SystemEmulation/ghidra_scripts
+    /work/lua-libghidra/.saivage/work/cards/card-a-d/fixture-tools/ghidra_12.1.3_PUBLIC/Ghidra/Features/Base/ghidra_scripts
+    /work/lua-libghidra/.saivage/work/cards/card-a-d/fixture-tools/ghidra_12.1.3_PUBLIC/Ghidra/Processors/8051/ghidra_scripts
+    /work/lua-libghidra/.saivage/work/cards/card-a-d/fixture-tools/ghidra_12.1.3_PUBLIC/Ghidra/Features/BSim/ghidra_scripts
+    /work/lua-libghidra/.saivage/work/cards/card-a-d/fixture-tools/ghidra_12.1.3_PUBLIC/Ghidra/Processors/JVM/ghidra_scripts
+    /work/lua-libghidra/.saivage/work/cards/card-a-d/fixture-tools/ghidra_12.1.3_PUBLIC/Ghidra/Features/PyGhidra/ghidra_scripts
+    /work/lua-libghidra/.saivage/work/cards/card-a-d/fixture-tools/ghidra_12.1.3_PUBLIC/Ghidra/Features/Decompiler/ghidra_scripts
+    /work/lua-libghidra/.saivage/work/cards/card-a-d/fixture-tools/ghidra_12.1.3_PUBLIC/Ghidra/Features/MicrosoftCodeAnalyzer/ghidra_scripts
+    /work/lua-libghidra/.saivage/work/cards/card-a-d/fixture-tools/ghidra_12.1.3_PUBLIC/Ghidra/Features/BytePatterns/ghidra_scripts
+    /work/lua-libghidra/.saivage/work/cards/card-a-d/fixture-tools/ghidra_12.1.3_PUBLIC/Ghidra/Features/DecompilerDependent/ghidra_scripts
+    /work/lua-libghidra/.saivage/work/cards/card-a-d/fixture-tools/ghidra_12.1.3_PUBLIC/Ghidra/Features/VersionTracking/ghidra_scripts (HeadlessAnalyzer)  
+INFO  HEADLESS: execution starts (HeadlessAnalyzer)  
+INFO  Creating project: /work/lua-libghidra/tests/fixtures/project/authored (HeadlessAnalyzer)  
+INFO  Creating project: /work/lua-libghidra/tests/fixtures/project/authored (DefaultProject)  
+INFO  REPORT: Execute script: MakeFixture.java '/work/lua-libghidra/tests/fixtures/inputs/text.bin'  (HeadlessAnalyzer)  
+INFO  SCRIPT: /work/lua-libghidra/tests/fixtures/MakeFixture.java (HeadlessAnalyzer)  
+INFO  Packed database cache: /var/tmp/salva-ghidra/packed-db-cache (PackedDatabaseCache)  
+INFO  Applied data type archive: generic_clib_64 (ApplyDataArchiveAnalyzer)  
+INFO  -----------------------------------------------------
+    ASCII Strings                              0.340 secs
+    Apply Data Archives                        0.187 secs
+    Call Convention ID                         0.000 secs
+    Call-Fixup Installer                       0.001 secs
+    Create Address Tables                      0.000 secs
+    Create Function                            0.002 secs
+    Data Reference                             0.000 secs
+    Decompiler Switch Analysis                 0.628 secs
+    Demangler GNU                              0.008 secs
+    Disassemble                                0.017 secs
+    Disassemble Entry Points                   0.001 secs
+    Embedded Media                             0.006 secs
+    External Entry References                  0.000 secs
+    Function ID                                0.033 secs
+    Function Start Pre Search                  0.005 secs
+    Function Start Search                      0.058 secs
+    Function Start Search After Code           0.000 secs
+    Function Start Search After Data           0.001 secs
+    Non-Returning Functions - Discovered       0.002 secs
+    Reference                                  0.000 secs
+    Scalar Operand References                  0.002 secs
+    Shared Return Calls                        0.003 secs
+    Stack                                      0.011 secs
+    Subroutine References                      0.001 secs
+    x86 Constant Reference Analyzer            0.027 secs
+-----------------------------------------------------
+     Total Time   1 secs
+-----------------------------------------------------
+ (AutoAnalysisManager)  
+INFO  /authored: file created (salva) (LocalFileSystem)  
+INFO  MakeFixture.java> AUTHORED_PROJECT language=x86:LE:64:default entry=00401020 (GhidraScript)  

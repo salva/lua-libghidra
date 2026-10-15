@@ -43,6 +43,28 @@ analyzed fixtures; open engine/spec gates block M1 rather than waiting
 for packaging. Licensing research is closed for planning by operator disposition;
 actual dependency notices/source and packaging qualification are not waived. This document does not authorize implementation.
 
+### M0 fixture exit evidence — 2026-10-15
+
+**Passed scoped fixture gate:** [authored offline inputs and provenance](../tests/fixtures/README.md),
+real Ghidra analyzed ProgramDB plus native project open using the documented
+external ELF override (no FileBytes), project reference-index leaf identities,
+call xref, comment roundtrip, discovered DWORD data identity, known bytes and
+instruction length, and completed nonfallback arithmetic semantics. Direct C++
+installed-SDK probes are authoritative. [Qualification log](evidence/fixture-qualification.log),
+[generation log](evidence/fixture-generation.log), hashes and negative missing-project
+log are retained. Original binary-only reproducer remains unchanged.
+Dependency profile qualification is in [NATIVE-READINESS](NATIVE-READINESS.md).
+
+This closes the reproduced absence of real binary/project fixture evidence; it
+is not M1 implementation or a blanket claim every M0 decision passed. The
+reconstructed FileBytes/raw path still has the documented BFD limitation; this
+fixture intentionally qualifies the supported external-executable branch, not
+that path. Ghidra comments/data/prototypes are not assumed imported; native
+comment mutation and decompiler-discovered data are checked explicitly. Remaining
+operator/platform/tier decisions below and M5 notices/corresponding-source,
+packaging and script migration obligations remain. Planning license disposition
+is settled, MIT wrapper selected; no publication/legal clearance is inferred.
+
 ## M1 — Build, ownership and value boundary
 
 Build source/installed-SDK whole-archive paths with PIC; test standalone and

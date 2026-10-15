@@ -1,0 +1,34 @@
+project open passed
+completed=1 fallback=0
+
+int4 native_smoke(void)
+
+{
+  int4 unaff_EDI;
+  
+  return unaff_EDI * 3 + 7;
+}
+
+leaves=2
+leaf 401106 native_smoke
+leaf 40113c read_authored_value
+
+bool main(void)
+
+{
+  int4 iVar1;
+  
+  iVar1 = native_smoke();
+  return iVar1 != 0x13;
+}
+
+xrefs=1
+comment=authored native comment
+
+int4 read_authored_value(void)
+
+{
+  return iRam0000000000404010 + 5;
+}
+
+data=1

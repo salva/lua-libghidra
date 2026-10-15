@@ -1,0 +1,2 @@
+Failed to open project: Project file not found: tests/fixtures/project/missing.gpr
+exit=1 (expected 1)
