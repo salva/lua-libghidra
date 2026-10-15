@@ -54,8 +54,18 @@ static int capabilities(lua_State* L) {
  lua_getfield(L,1,"get_capabilities"); lua_pushvalue(L,1);
  lua_call(L,1,2); return 2;
 }
+struct LuaAllocator { size_t bytes=0, calls=0, fail=SIZE_MAX, refused=0; };
+static void* lua_allocate(void* ud,void* p,size_t old,size_t n) {
+ auto* a=static_cast<LuaAllocator*>(ud); if(!p) old=0;
+ if(!n) { a->bytes-=old; std::free(p); return nullptr; }
+ if(n>old && ++a->calls>=a->fail) { ++a->refused; return nullptr; }
+ void* q=std::realloc(p,n);
+ if(q) a->bytes=a->bytes-old+n;
+ return q;
+}
 int main() {
- lua_State* L=luaL_newstate(); assert(L); luaL_openlibs(L);
+ LuaAllocator allocator;
+ lua_State* L=lua_newstate(lua_allocate,&allocator); assert(L); luaL_openlibs(L);
  luaL_requiref(L,"libghidra._native",luaopen_libghidra__native,0);
  lua_getfield(L,-1,"local_client");
  assert(lua_pcall(L,0,1,0)==LUA_OK && lua_isuserdata(L,-1));
@@ -134,5 +144,30 @@ int main() {
  }
  assert(reached>1 && unreached==1);
  std::printf("GetCapabilities allocation sweep: %u reached failures, success tail, same-owner retries and block/byte balance PASS\n",reached);
- lua_close(L);
+ // Deny Lua conversion allocations after a successful allocating native call.
+ // The Packet's vector/strings must die even when conversion longjmps.
+ unsigned lua_reached=0,lua_tail=0;
+ lua_gc(L,LUA_GCSTOP);
+ for(size_t point=1;point<=512;++point) {
+  const size_t blocks=live_blocks,bytes=live_bytes;
+  lua_pushcfunction(L,capabilities); lua_pushvalue(L,owner);
+  allocator.calls=allocator.refused=0; allocator.fail=point;
+  int result=lua_pcall(L,1,2,0);
+  allocator.fail=SIZE_MAX;
+  if(allocator.refused) {
+   ++lua_reached; assert(result==LUA_ERRMEM); lua_pop(L,1);
+  } else {
+   ++lua_tail; assert(result==LUA_OK && lua_istable(L,-2) && lua_rawlen(L,-2)>0);
+   lua_pop(L,2);
+  }
+  assert(live_blocks==blocks && live_bytes==bytes);
+  lua_pushcfunction(L,capabilities); lua_pushvalue(L,owner);
+  assert(lua_pcall(L,1,2,0)==LUA_OK && lua_istable(L,-2)); lua_pop(L,2);
+  assert(live_blocks==blocks && live_bytes==bytes);
+  if(lua_tail) break;
+ }
+ assert(lua_reached>1 && lua_tail==1);
+ std::printf("GetCapabilities Lua conversion OOM: %u reached, success tail, native block/byte balance PASS\n",lua_reached);
+ lua_gc(L,LUA_GCRESTART);
+ lua_close(L); assert(allocator.bytes==0);
 }

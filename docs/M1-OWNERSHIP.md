@@ -228,3 +228,19 @@ without requiring global engine caches to vanish. Counts include executable
 ordinary new/new[] only; they do not measure Lua/malloc/aligned allocation,
 prove semantic destructor execution, cover partial engine construction, or
 constitute exhaustive whole-engine fault qualification.
+
+### Lua conversion OOM with attributable native response balance
+
+The host additionally uses a byte-counting realloc-based Lua allocator. After
+native allocation faults are restored, it sweeps persistent Lua allocation
+denial during GetCapabilities, requiring LUA_ERRMEM for actual denials and a
+nonempty response for the measured success tail. Ordinary C++ outstanding
+block/byte counts must return to pre-call baseline after every conversion error
+and every same-owner retry. Current SDK/Lua reaches 26 denied points then success.
+Lua bytes must be zero at lua_close. Automatic GC is stopped during this sweep
+to avoid unrelated finalization changing native baselines; this is deliberately
+not finalizer scheduling. This connects protected conversion/rethrow to actual
+native response cleanup under C-built Lua longjmp, not just successful native
+exception handling. It remains bounded response-storage evidence, not semantic
+destructor counting, all-frame proof, partial-engine cleanup or full native heap
+instrumentation. Reproduce through the existing read_bytes_dispatch_order test.
