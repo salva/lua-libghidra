@@ -171,3 +171,15 @@ the SDK's buffer allocation. Existing Lua tests cover facade delegation.
 
 Reproduce: build target `read_order_host`, then run
 `ctest --test-dir build -R read_bytes_dispatch_order -V`.
+
+The same host additionally enables persistent ordinary C++ new/new[] denial
+only after constructing the real owner and preparing the call. ReadBytes(0,0)
+on the unloaded owner must actually hit denial after the SDK-dispatch marker,
+return nil plus NATIVE_EXCEPTION/binding/read_bytes with nonempty message,
+and then return native NO_PROGRAM on a same-owner retry once allocations resume.
+This exercises real std::bad_alloc propagation through SDK/binding lock scopes,
+the nonallocating exception fallback and protected conversion, rather than
+injecting an exception at an artificial callback. Denial remains enabled through
+catch and conversion. It is bounded native-allocation failure/recovery evidence,
+not partial-engine-construction cleanup, exhaustive native fault sweeps,
+destructor accounting, malloc/aligned faults or full dependency sanitizer proof.

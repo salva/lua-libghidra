@@ -10,11 +10,13 @@ extern "C" int luaopen_libghidra__native(lua_State*);
 static unsigned phases[2];
 static uint32_t observed[2];
 static bool watching=false;
+static bool deny=false;
+static unsigned denied=0;
 static size_t largest=0;
 // Observe C++ request/response allocations. Refuse huge allocations as a safety
 // backstop: an accidental accepted-bound read must never allocate gigabytes.
 void* operator new(size_t n) {
- if(watching) { if(n>largest) largest=n; if(n>1024*1024) throw std::bad_alloc(); }
+ if(watching) { if(n>largest) largest=n; if(deny) { ++denied; throw std::bad_alloc(); } if(n>1024*1024) throw std::bad_alloc(); }
  if(void* p=std::malloc(n?n:1)) return p;
  throw std::bad_alloc();
 }
@@ -59,5 +61,29 @@ int main() {
               (long long)size,phases[0],phases[1],largest);
   lua_pop(L,2);
  }
+ // Fail real C++ allocation in the SDK NO_PROGRAM/error-copy phase. Denial
+ // stays enabled through catch and protected Lua conversion (Lua uses malloc).
+ phases[0]=phases[1]=0; denied=0;
+ lua_pushcfunction(L,call); lua_pushvalue(L,owner); lua_pushinteger(L,0);
+ watching=true; deny=true;
+ int rc=lua_pcall(L,2,2,0);
+ watching=false; deny=false;
+ assert(denied>0 && rc==LUA_OK && lua_isnil(L,-2) && lua_istable(L,-1));
+ lua_getfield(L,-1,"code");
+ assert(std::string_view(lua_tostring(L,-1))=="NATIVE_EXCEPTION"); lua_pop(L,1);
+ lua_getfield(L,-1,"backend");
+ assert(std::string_view(lua_tostring(L,-1))=="binding"); lua_pop(L,1);
+ lua_getfield(L,-1,"operation");
+ assert(std::string_view(lua_tostring(L,-1))=="read_bytes"); lua_pop(L,1);
+ lua_getfield(L,-1,"message");
+ assert(lua_isstring(L,-1) && lua_rawlen(L,-1)>0); lua_pop(L,1);
+ assert(phases[0]==1 && phases[1]==1); lua_pop(L,2);
+ // Native and binding locks must unwind; same live owner must remain usable.
+ phases[0]=phases[1]=0;
+ lua_pushcfunction(L,call); lua_pushvalue(L,owner); lua_pushinteger(L,0);
+ assert(lua_pcall(L,2,2,0)==LUA_OK);
+ lua_getfield(L,-1,"code");
+ assert(std::string_view(lua_tostring(L,-1))=="NO_PROGRAM"); lua_pop(L,3);
+ std::printf("ReadBytes native bad_alloc: %u actual denials, structured exception and same-owner recovery PASS\n",denied);
  lua_close(L);
 }
