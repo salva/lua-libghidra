@@ -374,6 +374,7 @@ def review_alias_symbol_comments(u, operations):
             if name in ['DeleteTypeAlias','SetTypeAliasTarget']:
                 assert '.substr(1)' in text and 'if (!dt->getTypedef()) return false' in htext
             if name=='SetTypeAliasTarget':
+                assert all(token in htext for token in ['findByName(new_target_name)', 'destroyType(dt)', 'getTypedef(new_target, alias_name, 0, 0)'])
                 assert htext.index('findByName(new_target_name)') < htext.index('destroyType(dt)') < htext.index('getTypedef(new_target, alias_name, 0, 0)')
                 op['limitations'].append('retarget destroys existing typedef before recreating; caught recreation failure may lose old alias, no rollback; normalized alias but new target name unchanged')
             if name=='DeleteType':

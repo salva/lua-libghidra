@@ -1947,19 +1947,31 @@
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp / cpp/src/local_arch_adapter.cpp",
+            "helper": "createTypeAlias",
+            "qualification": "source only; no runtime qualification"
+          },
           "ignored": false,
           "lua": "Lua string (no transcoding)",
           "name": "name",
           "native_type": "const std::string&",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "service name binds positionally to LocalClient alias_name; required Lua string, nonempty at adapter, forwarded literally as typedef name; NO slash stripping, numeric ID interpretation or hierarchy resolution; duplicate/identifier validity delegated to TypeFactory; adapter false conflates absent/ineligible/caught errors, surfaced as operation-specific error not successful false; native revision only after success, binding generation invalidates before dispatched mutation including errors; validation-only rejection does not; runtime identifier/NUL/non-ASCII/rollback and positive/negative slots unqualified"
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp / cpp/src/local_arch_adapter.cpp",
+            "helper": "createTypeAlias",
+            "qualification": "source only; no runtime qualification"
+          },
           "ignored": false,
           "lua": "Lua string (no transcoding)",
           "name": "target_type",
           "native_type": "const std::string&",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "service target_type binds positionally to LocalClient target_name; required Lua string, nonempty at adapter, literal findByName target; NO slash stripping or numeric ID resolution; absent target fails CREATE_ALIAS_FAILED rather than native NOT_FOUND; adapter false conflates absent/ineligible/caught errors, surfaced as operation-specific error not successful false; native revision only after success, binding generation invalidates before dispatched mutation including errors; validation-only rejection does not; runtime identifier/NUL/non-ASCII/rollback and positive/negative slots unqualified"
         }
       ],
       "response": {
@@ -2918,11 +2930,17 @@
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp / cpp/src/local_arch_adapter.cpp",
+            "helper": "deleteType",
+            "qualification": "source only; no runtime qualification"
+          },
           "ignored": false,
           "lua": "Lua string (no transcoding)",
           "name": "type_id_or_path",
           "native_type": "const std::string&",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "required Lua string; remove exactly ONE leading slash, then literal findByName; not numeric ID, recursive slash removal or hierarchical path; empty normalized name fails; DELETE_TYPE_FAILED core-type wording is not explicit adapter core guard; ; adapter false conflates absent/ineligible/caught errors, surfaced as operation-specific error not successful false; native revision only after success, binding generation invalidates before dispatched mutation including errors; validation-only rejection does not; runtime identifier/NUL/non-ASCII/rollback and positive/negative slots unqualified"
         }
       ],
       "response": {
@@ -3035,11 +3053,17 @@
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp / cpp/src/local_arch_adapter.cpp",
+            "helper": "deleteTypeAlias",
+            "qualification": "source only; no runtime qualification"
+          },
           "ignored": false,
           "lua": "Lua string (no transcoding)",
           "name": "type_id_or_path",
           "native_type": "const std::string&",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "required Lua string; service type_id_or_path binds positionally to LocalClient alias_name; remove exactly ONE leading slash, then literal findByName; not numeric ID, recursive slash removal or hierarchical path; empty normalized name fails; must resolve typedef, not arbitrary datatype; ; adapter false conflates absent/ineligible/caught errors, surfaced as operation-specific error not successful false; native revision only after success, binding generation invalidates before dispatched mutation including errors; validation-only rejection does not; runtime identifier/NUL/non-ASCII/rollback and positive/negative slots unqualified"
         }
       ],
       "response": {
@@ -17183,19 +17207,31 @@
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp / cpp/src/local_arch_adapter.cpp",
+            "helper": "renameType",
+            "qualification": "source only; no runtime qualification"
+          },
           "ignored": false,
           "lua": "Lua string (no transcoding)",
           "name": "type_id_or_path",
           "native_type": "const std::string&",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "required Lua string; remove exactly ONE leading slash, then literal findByName; not numeric ID, recursive slash removal or hierarchical path; empty normalized name fails; ; adapter false conflates absent/ineligible/caught errors, surfaced as operation-specific error not successful false; native revision only after success, binding generation invalidates before dispatched mutation including errors; validation-only rejection does not; runtime identifier/NUL/non-ASCII/rollback and positive/negative slots unqualified"
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp / cpp/src/local_arch_adapter.cpp",
+            "helper": "renameType",
+            "qualification": "source only; no runtime qualification"
+          },
           "ignored": false,
           "lua": "Lua string (no transcoding)",
           "name": "new_name",
           "native_type": "const std::string&",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "required nonempty Lua string copied literally to TypeFactory setName, NO new-name slash stripping or wrapper identifier/duplicate validation; response name is request echo, not canonical readback; ; adapter false conflates absent/ineligible/caught errors, surfaced as operation-specific error not successful false; native revision only after success, binding generation invalidates before dispatched mutation including errors; validation-only rejection does not; runtime identifier/NUL/non-ASCII/rollback and positive/negative slots unqualified"
         }
       ],
       "response": {
@@ -19073,19 +19109,31 @@
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp / cpp/src/local_arch_adapter.cpp",
+            "helper": "setTypeAliasTarget",
+            "qualification": "source only; no runtime qualification"
+          },
           "ignored": false,
           "lua": "Lua string (no transcoding)",
           "name": "type_id_or_path",
           "native_type": "const std::string&",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "required Lua string; service type_id_or_path binds positionally to LocalClient alias_name; remove exactly ONE leading slash, then literal findByName; not numeric ID, recursive slash removal or hierarchical path; empty normalized name fails; must resolve typedef, not arbitrary datatype; destroy-then-recreate alias may be lost on caught recreation error, no rollback; ; adapter false conflates absent/ineligible/caught errors, surfaced as operation-specific error not successful false; native revision only after success, binding generation invalidates before dispatched mutation including errors; validation-only rejection does not; runtime identifier/NUL/non-ASCII/rollback and positive/negative slots unqualified"
         },
         {
           "binding_default": "required (unless nested native default is recorded)",
+          "direct_argument_review": {
+            "consumer": "cpp/src/local_client.cpp / cpp/src/local_arch_adapter.cpp",
+            "helper": "setTypeAliasTarget",
+            "qualification": "source only; no runtime qualification"
+          },
           "ignored": false,
           "lua": "Lua string (no transcoding)",
           "name": "target_type",
           "native_type": "const std::string&",
-          "nested_fields": []
+          "nested_fields": [],
+          "semantics": "service target_type binds positionally to LocalClient new_target_name; required nonempty Lua string, target findByName literal, NO target slash stripping; target must exist BEFORE old alias destruction; destroy-then-recreate alias may be lost on caught recreation error, no rollback; ; adapter false conflates absent/ineligible/caught errors, surfaced as operation-specific error not successful false; native revision only after success, binding generation invalidates before dispatched mutation including errors; validation-only rejection does not; runtime identifier/NUL/non-ASCII/rollback and positive/negative slots unqualified"
         }
       ],
       "response": {
@@ -30212,16 +30260,6 @@
         "reason": "direct argument consumption/default/domain review not yet independently reconciled"
       },
       {
-        "operation": "CreateTypeAlias",
-        "path": "name",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "CreateTypeAlias",
-        "path": "target_type",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
         "operation": "CreateTypeEnum",
         "path": "name",
         "reason": "direct argument consumption/default/domain review not yet independently reconciled"
@@ -30249,16 +30287,6 @@
       {
         "operation": "DeleteSymbol",
         "path": "address",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "DeleteType",
-        "path": "type_id_or_path",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "DeleteTypeAlias",
-        "path": "type_id_or_path",
         "reason": "direct argument consumption/default/domain review not yet independently reconciled"
       },
       {
@@ -30337,16 +30365,6 @@
         "reason": "direct argument consumption/default/domain review not yet independently reconciled"
       },
       {
-        "operation": "RenameType",
-        "path": "type_id_or_path",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "RenameType",
-        "path": "new_name",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
         "operation": "SetComment",
         "path": "address",
         "reason": "direct argument consumption/default/domain review not yet independently reconciled"
@@ -30392,16 +30410,6 @@
         "reason": "direct argument consumption/default/domain review not yet independently reconciled"
       },
       {
-        "operation": "SetTypeAliasTarget",
-        "path": "type_id_or_path",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
-        "operation": "SetTypeAliasTarget",
-        "path": "target_type",
-        "reason": "direct argument consumption/default/domain review not yet independently reconciled"
-      },
-      {
         "operation": "Shutdown",
         "path": "policy",
         "reason": "direct argument consumption/default/domain review not yet independently reconciled"
@@ -30417,6 +30425,14 @@
         "path": "size"
       },
       {
+        "operation": "CreateTypeAlias",
+        "path": "name"
+      },
+      {
+        "operation": "CreateTypeAlias",
+        "path": "target_type"
+      },
+      {
         "operation": "CreateTypeEnum",
         "path": "width"
       },
@@ -30427,6 +30443,14 @@
       {
         "operation": "DeleteSymbol",
         "path": "name_filter"
+      },
+      {
+        "operation": "DeleteType",
+        "path": "type_id_or_path"
+      },
+      {
+        "operation": "DeleteTypeAlias",
+        "path": "type_id_or_path"
       },
       {
         "operation": "DeleteTypeEnumMember",
@@ -30745,6 +30769,14 @@
         "path": "new_name"
       },
       {
+        "operation": "RenameType",
+        "path": "type_id_or_path"
+      },
+      {
+        "operation": "RenameType",
+        "path": "new_name"
+      },
+      {
         "operation": "RenameTypeEnumMember",
         "path": "type_id_or_path"
       },
@@ -30775,6 +30807,14 @@
       {
         "operation": "SetFunctionParameterType",
         "path": "data_type"
+      },
+      {
+        "operation": "SetTypeAliasTarget",
+        "path": "type_id_or_path"
+      },
+      {
+        "operation": "SetTypeAliasTarget",
+        "path": "target_type"
       },
       {
         "operation": "SetTypeEnumMemberComment",

@@ -738,3 +738,16 @@ reconstruction, side-map provenance, metadata loss and dispatch generation
 limitations remain. Ledger: 106 reviewed/50 remaining. Thirty-nine tests include
 independent selected enum-value drift rejection; runtime qualification and final
 non-first-slice grammar remain open.
+
+## Type/alias request identities (thirty-sixth increment)
+
+Eight direct paths reconcile creation versus normalized lookup: alias creation
+forwards both strings literally, delete/retarget normalize only the alias by one
+slash, and target lookup remains literal. Service name/target_type/type_id_or_path
+keys bind positionally to different LocalClient parameter names. RenameType
+normalizes old name only, delegates new-name validation to TypeFactory. DeleteType
+core-type error wording is not an explicit adapter guard. Retarget resolves the
+new target before destroying old typedef, then recreation may fail without
+rollback. Native revision, binding dispatch generation and validation-only failure
+remain distinct. Ledger: 114 reviewed/42 remaining; 40 tests include independent
+new-target-consumption drift rejection. No runtime qualification or M1 changes.

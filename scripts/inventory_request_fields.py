@@ -49,6 +49,53 @@ def review_request_fields(u, operations):
         code=_code_mask(text)
         for arg in op['request']:
             nested=arg['nested_fields']
+            type_alias_ops={'CreateTypeAlias':'createTypeAlias','DeleteTypeAlias':'deleteTypeAlias','SetTypeAliasTarget':'setTypeAliasTarget','DeleteType':'deleteType','RenameType':'renameType'}
+            if not nested and name in type_alias_ops:
+                consumer=type_alias_ops[name]
+                _,producer=body(adapter,'ArchAdapter::'+consumer+'(')
+                assert arg['native_type']=='const std::string&'
+                if name=='CreateTypeAlias':
+                    assert 'a.createTypeAlias(alias_name, target_name)' in code
+                    assert 'alias_name.empty() || target_name.empty()' in producer
+                    assert 'tf->findByName(target_name)' in producer and 'tf->getTypedef(target, alias_name, 0, 0)' in producer
+                    assert 'substr(' not in code
+                    if arg['name']=='name':
+                        sem='service name binds positionally to LocalClient alias_name; required Lua string, nonempty at adapter, forwarded literally as typedef name; NO slash stripping, numeric ID interpretation or hierarchy resolution; duplicate/identifier validity delegated to TypeFactory'
+                    else:
+                        assert arg['name']=='target_type'
+                        sem='service target_type binds positionally to LocalClient target_name; required Lua string, nonempty at adapter, literal findByName target; NO slash stripping or numeric ID resolution; absent target fails CREATE_ALIAS_FAILED rather than native NOT_FOUND'
+                else:
+                    local_key='alias_name' if 'Alias' in name else 'type_id_or_path'
+                    assert 'std::string name = '+local_key in code
+                    assert "if (!name.empty() && name[0] == '/') name = name.substr(1);" in text
+                    if name=='SetTypeAliasTarget':
+                        assert 'a.setTypeAliasTarget(name, new_target_name)' in code
+                        assert 'tf->findByName(new_target_name)' in producer
+                        assert 'tf->destroyType(dt)' in producer and 'tf->getTypedef(new_target, alias_name, 0, 0)' in producer
+                        assert producer.index('tf->destroyType(dt)')<producer.index('tf->getTypedef(new_target, alias_name, 0, 0)')
+                    if arg['name']=='type_id_or_path':
+                        sem='required Lua string; '+('service type_id_or_path binds positionally to LocalClient alias_name; ' if 'Alias' in name else '')+'remove exactly ONE leading slash, then literal findByName; not numeric ID, recursive slash removal or hierarchical path; empty normalized name fails; '
+                        if 'Alias' in name:
+                            assert '!dt->getTypedef()' in producer
+                            sem+='must resolve typedef, not arbitrary datatype; '
+                        if name=='DeleteType':
+                            assert 'arch_->types->destroyType(dt)' in producer
+                            sem+='DELETE_TYPE_FAILED core-type wording is not explicit adapter core guard; '
+                    elif name=='RenameType':
+                        assert arg['name']=='new_name'
+                        assert 'a.renameType(name, new_name)' in code and 'arch_->types->setName(dt, new_name)' in producer
+                        assert 'new_name.empty()' in producer
+                        sem='required nonempty Lua string copied literally to TypeFactory setName, NO new-name slash stripping or wrapper identifier/duplicate validation; response name is request echo, not canonical readback; '
+                    else:
+                        assert name=='SetTypeAliasTarget' and arg['name']=='target_type'
+                        assert 'new_target_name.empty()' in producer
+                        sem='service target_type binds positionally to LocalClient new_target_name; required nonempty Lua string, target findByName literal, NO target slash stripping; target must exist BEFORE old alias destruction; '
+                    if name=='SetTypeAliasTarget':
+                        sem+='destroy-then-recreate alias may be lost on caught recreation error, no rollback; '
+                arg['semantics']=sem+'; adapter false conflates absent/ineligible/caught errors, surfaced as operation-specific error not successful false; native revision only after success, binding generation invalidates before dispatched mutation including errors; validation-only rejection does not; runtime identifier/NUL/non-ASCII/rollback and positive/negative slots unqualified'
+                arg['direct_argument_review']={'consumer':LOCAL+' / '+ADAPTER,'helper':consumer,'qualification':'source only; no runtime qualification'}
+                reviewed.append({'operation':name,'path':arg['name']})
+                continue
             payloads={
                 'RenameTypeMember':('new_name','std::string field_name = (i == ordinal) ? new_name : existing[i].name;','required Lua string copied verbatim into selected FieldDef name; no wrapper identifier/empty/uniqueness validation; whole struct reconstruction preserves other names/types and signed-int-cast offsets, not isolated rename; downstream parser acceptance and declarator fidelity unqualified'),
                 'SetTypeMemberType':('member_type','std::string type_str = (i == ordinal) ? member_type : existing[i].member_type;','required Lua string copied verbatim into selected FieldDef type, not normalized path/ID; no wrapper type validation; whole struct rebuilt using existing offsets narrowed to signed int; requested member size not part of this operation; downstream type parsing/layout acceptance unqualified'),

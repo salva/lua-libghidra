@@ -51,7 +51,7 @@ class InventoryTests(unittest.TestCase):
                     self.assertIn('must not be inferred',f['request_field_review']['native_absence'])
 
     def test_page_argument_domains_are_not_native_unbounded_defaults(self):
-        self.assertEqual(len(self.data['request_audit']['direct_arguments_reviewed']),106)
+        self.assertEqual(len(self.data['request_audit']['direct_arguments_reviewed']),114)
         for op in self.ops.values():
             if 'page_wrapper_review' not in op:continue
             args={a['name']:a for a in op['request']}
@@ -125,6 +125,17 @@ class InventoryTests(unittest.TestCase):
         self.assertIn('LocalClient new_type',sem('SetFunctionParameterType','data_type'))
         self.assertIn('not normalized path/ID',sem('SetTypeMemberType','member_type'))
         self.assertIn('whole struct reconstruction',sem('RenameTypeMember','new_name'))
+
+    def test_alias_inputs_are_not_all_normalized_paths(self):
+        def sem(op,key):
+            return next(a['semantics'] for a in self.ops[op]['request'] if a['name']==key)
+        self.assertIn('LocalClient alias_name',sem('CreateTypeAlias','name'))
+        self.assertIn('NO slash stripping',sem('CreateTypeAlias','target_type'))
+        self.assertIn('exactly ONE',sem('DeleteTypeAlias','type_id_or_path'))
+        self.assertIn('NO target slash stripping',sem('SetTypeAliasTarget','target_type'))
+        self.assertIn('may be lost',sem('SetTypeAliasTarget','target_type'))
+        self.assertIn('not explicit adapter core guard',sem('DeleteType','type_id_or_path'))
+        self.assertIn('NO new-name slash stripping',sem('RenameType','new_name'))
 
     def test_preserved_red_reproducer(self):
         # Exact acceptance trigger from red; stronger checks below prevent treating
@@ -403,6 +414,10 @@ class InventoryTests(unittest.TestCase):
             with self.assertRaises(AssertionError):
                 module.inventory(root)
             local.write_text(local_original)
+            adapter.write_text(adapter_original.replace('tf->findByName(new_target_name)', 'tf->findByName(alias_name)'))
+            with self.assertRaises(AssertionError):
+                module.inventory(root)
+            adapter.write_text(adapter_original)
             header = root/'cpp/src/local_arch_adapter.hpp'
             header.write_text(header.read_text().replace('std::map<std::pair<std::uint64_t, int>, std::string> comments_', 'std::multimap<std::pair<std::uint64_t, int>, std::string> comments_'))
             with self.assertRaises(AssertionError):
