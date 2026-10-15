@@ -1,0 +1,4 @@
+LOAD_FAILED: Unable to open image file: /work/lua-libghidra/.saivage/work/cards/card-a-b/loader-route-consumer/native_smoke
+LOAD_FAILED: Unable to open image file: /work/lua-libghidra/.saivage/work/cards/card-a-b/loader-route-consumer/native_smoke
+LOAD_FAILED: Unable to open image file: /work/lua-libghidra/.saivage/work/cards/card-a-b/smoke-text.raw
+LOAD_FAILED: Architecture string does not look like sleigh id: binary:gcc

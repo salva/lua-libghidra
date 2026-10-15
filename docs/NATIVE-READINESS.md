@@ -123,3 +123,41 @@ LGPL/GPL-with-runtime-exception notices. Lock URLs identify original correspondi
 sources for downloaded inputs; Ubuntu source package/version information is in
 the retained copyright inventories. These notices are evidence, not a conclusion
 that combined distribution is permitted or an already complete distribution kit.
+
+## Loader-route disposition (third repair attempt)
+
+The optional native probe arguments now expose native `format` and `base_address`
+without transforming them. `scripts/check-native-loader-gap.py BUILD SPECS WORK`
+records the residual gap and checks a positive control; its exit zero means
+**known gap reproduced**, not readiness passed. Actual installed SDK results:
+
+| Native request | Result |
+| --- | --- |
+| ELF, explicit x86:LE:64:default + gcc | open exit 4, unable to open image |
+| Same ELF + format=raw | same failure |
+| objcopy .text raw image + explicit hint, original .text VMA | same failure |
+| ELF, empty hint (control) | completed nonfallback arithmetic |
+
+Source diagnosis is now narrower: `BfdArchitectureCapability::isFileMatch`
+returns true for any readable file except one beginning `<bi`; it is not a BFD
+format probe. Consequently raw input and `format=raw` do not select RawLoadImage
+on this BFD-enabled build. `Decompiler::loadBinary` selects capability before
+examining format; format only suppresses PE flattening after raw capability
+selection. `BfdArchitecture::buildLoader` hands a colon-bearing Sleigh hint to
+BFD as its object target; BFD rejects it before Sleigh compatibility is tested.
+The analyzed-project preferred memory-image route ultimately calls
+`loadBinary(scratch, project_language_id, 0, "raw")`; fallback calls
+`loadBinary(binary, project_language_id)`. Neither bypasses this owning primitive.
+This is source-path evidence, **not an executed analyzed-project fixture test**.
+
+The pinned upstream libghidra bundles
+`cpp/patches/0001-bfd-sleigh-target-autodetect.patch`. A dry run applies cleanly
+to both engine files but applying it changes the accepted pinned *unmodified*
+engine. We have not applied it. No-BFD is explicitly deferred by DESIGN and is
+not an admissible silent workaround; changing language to empty discards the
+explicit architecture contract. The specific required owner disposition is
+whether this shipped upstream engine patch may be applied as an explicitly
+identified qualified dependency profile, or whether unmodified-engine semantics
+must be retained and explicit-hint readiness remains unavailable. The lock/pins
+and unmodified SDK remain intact pending that decision. This is separate from
+the HOS applicability/legal gate and does not reopen wrapper MIT selection.

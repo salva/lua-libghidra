@@ -15,6 +15,14 @@ int main(int argc, char** argv) {
       request.program_path = argv[2];
       request.language_id = argc > 4 ? argv[4] : "x86:LE:64:default";
       request.compiler_spec_id = request.language_id.empty() ? "" : "gcc";
+      // Optional diagnostic controls expose the native loader route verbatim.
+      // They are not a binding adapter and do not rewrite the architecture hint.
+      if (argc > 5) request.format = argv[5];
+      if (argc > 6) request.base_address = std::stoull(argv[6], nullptr, 0);
+      std::cout << "open language=" << request.language_id
+                << " compiler=" << request.compiler_spec_id
+                << " format=" << request.format
+                << " base=" << request.base_address << '\n';
       auto opened = client->OpenProgram(request);
       if (!opened.status.ok()) { std::cerr << opened.status.code << ": " << opened.status.message << '\n'; return 4; }
       auto result = client->GetDecompilation(std::stoull(argv[3], nullptr, 0), 30000);

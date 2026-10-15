@@ -1,0 +1,14 @@
+constructed profile=external
+open language=x86:LE:64:default compiler=gcc format= base=0
+PROFILE=elf-explicit EXIT=4
+constructed profile=external
+open language=x86:LE:64:default compiler=gcc format=raw base=0
+PROFILE=elf-format-raw EXIT=4
+constructed profile=external
+open language=x86:LE:64:default compiler=gcc format=raw base=4198432
+PROFILE=raw-explicit EXIT=4
+constructed profile=external
+open language=binary compiler=gcc format=raw base=0
+PROFILE=raw-bfd-target EXIT=4
+checking file Ghidra/Features/Decompiler/src/decompile/cpp/bfd_arch.cc
+checking file Ghidra/Features/Decompiler/src/decompile/cpp/loadimage_bfd.cc

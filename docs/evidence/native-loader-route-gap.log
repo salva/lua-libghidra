@@ -1,0 +1,34 @@
+elf-explicit exit= 4
+constructed profile=external
+open language=x86:LE:64:default compiler=gcc format= base=0
+LOAD_FAILED: Unable to open image file: /work/lua-libghidra/.saivage/work/cards/card-a-b/loader-route-consumer/native_smoke
+elf-format-raw exit= 4
+constructed profile=external
+open language=x86:LE:64:default compiler=gcc format=raw base=0
+LOAD_FAILED: Unable to open image file: /work/lua-libghidra/.saivage/work/cards/card-a-b/loader-route-consumer/native_smoke
+raw-explicit exit= 4
+constructed profile=external
+open language=x86:LE:64:default compiler=gcc format=raw base=4198432
+LOAD_FAILED: Unable to open image file: /work/lua-libghidra/.saivage/work/cards/card-a-b/loader-gap-regression/smoke-text.raw
+elf-auto control exit= 0
+constructed profile=external
+open language= compiler= format= base=0
+completed=1 fallback=0 error=
+
+int4 func_0x00401106(int4 param_1)
+
+{
+  return param_1 * 3 + 7;
+}
+
+KNOWN GAP CONFIRMED, NOT READINESS PASS
+-- Found Python3: /usr/bin/python3 (found suitable version "3.12.3", minimum required is "3.10") found components: Interpreter 
+-- 
+-- 29.3.0
+-- libghidra: BFD-backed ELF loader enabled (lib=/usr/lib/x86_64-linux-gnu/libbfd.so)
+-- Found Python3: /usr/bin/python3 (found version "3.12.3") found components: Interpreter 
+-- Embedded specs up-to-date (385 files), skipping generation.
+
+-- Configuring done (0.5s)
+-- Generating done (0.1s)
+-- Build files have been written to: /work/lua-libghidra/.saivage/work/cards/card-a-b/red-native-offline/build
