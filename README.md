@@ -23,5 +23,7 @@ Installed runtime requires neither Python nor Java/network access.
 Upstream pin: `d51ca813ae1b6b59519551a9be8c0b1ad74d862d`.
 Its [Human-Origin Source License v1.0](https://github.com/0xeb/libghidra/blob/d51ca813ae1b6b59519551a9be8c0b1ad74d862d/LICENSE)
 permits unchanged dependency use and conditionally restricts derivative wrappers.
-Applicability and binding licensing remain M0 decisions before implementation;
-see SPEC for the distinction and distribution obligations.
+This wrapper's original code and documentation are licensed under the
+[MIT License](LICENSE), as selected by the operator. This does not relicense
+libghidra or other third-party components. Upstream applicability remains an M0
+check; see SPEC for the distinction and distribution obligations.

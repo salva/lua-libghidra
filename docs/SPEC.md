@@ -282,7 +282,9 @@ is not enough. Unmodified dependency use is expressly allowed (§1.10, §2.1).
 Resolve applicability to this proposed integration and any required permission
 **before implementation**, not merely publication. This is an open factual
 determination, not a blanket prohibition or automatic wrapper exemption.
-Record intended use, binding license and determination at M0. Distribution must
+The operator selected MIT for this wrapper's original code and documentation;
+see [LICENSE](../LICENSE). Third-party components retain their own licenses.
+Record intended use and the upstream applicability determination at M0. Distribution must
 preserve notices, provide exact applicable license and corresponding source
 links, visible author/origin attribution and third-party notices (§§3–4, §8).
 Do not include operator credentials or runtime state in source or evidence.

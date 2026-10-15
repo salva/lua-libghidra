@@ -28,6 +28,13 @@ guest-local sudo as needed; preserve project-local credentials. Source/dependenc
 caches and temporary build outputs must be ignored by Git. Commit implemented
 changes promptly and do not push or publish without operator permission.
 
+## License decision
+
+The operator selected MIT for this wrapper's original code and documentation.
+The root LICENSE records this choice; use MIT in future wrapper package metadata.
+This settles the wrapper-license choice, not third-party license applicability or
+permission to publish. Preserve libghidra and other dependencies' own notices.
+
 Provider/model selection follows PM: planning uses `gpt-6-astra`; other roles and
 compaction use `gpt-6.1-sol`. The fresh typed workflow retains its initialized
 planner identity for both root and child planning. No PM gameplay workflows,

@@ -7,7 +7,8 @@ Deployment policy stays in [operations](../workflows/OPERATIONS.md).
 ## M0 — Decisions, dependencies and real fixture readiness
 
 Confirm baseline/platform/tier and license applicability before implementation.
-Record binding license, intended distribution, dependency sources/digests,
+The wrapper license is MIT (operator-selected; see [LICENSE](../LICENSE)).
+Record intended distribution, dependency sources/digests,
 spec compatibility, deterministic BFD profile and notices. Inventory every native
 and Python local operation and every request/response field in `api/coverage.*`.
 Mark HTTP-only stubs excluded; they are not local implementations.
@@ -133,6 +134,7 @@ dispositions in [the index](reviews/00-INDEX.md); never invent review results.
 This writer does not spawn reviewers.
 
 Remaining operator decisions: approve two-surface/default restrictions, confirm
-upstream/platform and first release tier, choose binding license/intended
-distribution and record applicability determination. Technical experiments are
+upstream/platform and first release tier, confirm intended distribution and record
+upstream applicability determination. MIT is already selected for the wrapper.
+Technical experiments are
 objective M0/M1 gates above, not substitute operator choices.
