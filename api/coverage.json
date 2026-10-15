@@ -3332,6 +3332,14 @@
       "lowlevel": "get_comments",
       "name": "GetComments",
       "native_literal_errors": [],
+      "page_wrapper_review": {
+        "body_sha256": "57c1871d2823ae29b9365ae5259fedbe8c0802a7318c9c10cfb5995e0b25c0dd",
+        "error_policy": "NO_PROGRAM guard; no wrapper catch; exceptions are not rewritten as empty page here; adapter catch behavior is separately inventoried",
+        "line": 1221,
+        "native_revision": "unchanged; native analysis side effects can still occur",
+        "path": "cpp/src/local_client.cpp",
+        "qualification": "source branch accounting only; runtime fixtures unqualified"
+      },
       "pagination": {
         "bounds": "limit>0; offset>=0; each <=INT_MAX; offset+limit<=INT_MAX; supported native collection size <INT_MAX",
         "comparator": "candidate lexicographic (exact UInt64 address, numeric native CommentKind); runtime order gate unqualified",
@@ -3359,7 +3367,7 @@
           "path": "cpp/src/local_arch_adapter.cpp"
         }
       },
-      "program_state": "requires loaded program",
+      "program_state": "loaded program and valid primary adapter required; otherwise NO_PROGRAM",
       "request": [
         {
           "binding_default": "0",
@@ -3414,7 +3422,7 @@
             "native_type": "std::uint64_t",
             "optional": false,
             "path": "comments.address",
-            "semantics": "native field preserved; no truthiness substitution"
+            "semantics": "adapter side-map key address; copied exactly after pagination"
           },
           {
             "lua": "CommentKind table/enum; resolve in types/enums",
@@ -3424,7 +3432,7 @@
             "native_type": "CommentKind",
             "optional": false,
             "path": "comments.kind",
-            "semantics": "native field preserved; no truthiness substitution"
+            "semantics": "adapter native int key cast to CommentKind after pagination; response preserves numeric unknowns"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -3434,13 +3442,14 @@
             "native_type": "std::string",
             "optional": false,
             "path": "comments.text",
-            "semantics": "native field preserved; no truthiness substitution"
+            "semantics": "adapter side-map text copied unchanged, including empty string"
           }
         ],
         "lua": "GetCommentsResponse table/enum; resolve in types/enums",
         "native_type": "GetCommentsResponse"
       },
       "semantic_review": "page adapter and LocalClient dispatch reviewed; runtime unqualified; remaining field/facade obligations still open",
+      "state_transitions": "loaded required; enumerate then paginate native adapter records BEFORE one-to-one response conversion; conversion preserves candidate count; no native revision change",
       "surface_contract": {
         "facade": {
           "disposition": "complete response convenience/page",
@@ -5956,6 +5965,14 @@
       "lowlevel": "list_basic_blocks",
       "name": "ListBasicBlocks",
       "native_literal_errors": [],
+      "page_wrapper_review": {
+        "body_sha256": "31818a2fbea14a44db7d14819525b181f50f2aca30ef12e43b01fdad83d70e68",
+        "error_policy": "NO_PROGRAM guard; no wrapper catch; exceptions are not rewritten as empty page here; adapter catch behavior is separately inventoried",
+        "line": 424,
+        "native_revision": "unchanged; native analysis side effects can still occur",
+        "path": "cpp/src/local_client.cpp",
+        "qualification": "source branch accounting only; runtime fixtures unqualified"
+      },
       "pagination": {
         "bounds": "limit>0; offset>=0; each <=INT_MAX; offset+limit<=INT_MAX; supported native collection size <INT_MAX",
         "comparator": "not approved: source traversal is not a proven total-order comparator",
@@ -5983,7 +6000,7 @@
           "path": "cpp/src/local_client.cpp"
         }
       },
-      "program_state": "requires loaded program",
+      "program_state": "loaded program and valid primary adapter required; otherwise NO_PROGRAM",
       "python_reconciliation": {
         "binding_body_sha256": "3b8100ae3f774bd000747a3a832ad42598edc19db85a81604e0ab1eb08d646d8",
         "binding_extraction": "blocks",
@@ -6107,6 +6124,7 @@
         "native_type": "ListBasicBlocksResponse"
       },
       "semantic_review": "aggregate cursor/filter/ordering branches reviewed; remaining conversion/field and runtime gates open",
+      "state_transitions": "loaded required; select function entries by range, aggregate per-function graph/reference output, then paginate aggregate; serial preserves traversal concatenation; parallel appends under mutex in completion order and propagates future errors; no wrapper revision increment",
       "surface_contract": {
         "facade": {
           "disposition": "complete response convenience/page",
@@ -6500,6 +6518,14 @@
       "lowlevel": "list_cfg_edges",
       "name": "ListCFGEdges",
       "native_literal_errors": [],
+      "page_wrapper_review": {
+        "body_sha256": "5bef21c866c597b1e6e0fb0a50a6f21207c58ede101704098eac2786c268c9a9",
+        "error_policy": "NO_PROGRAM guard; no wrapper catch; exceptions are not rewritten as empty page here; adapter catch behavior is separately inventoried",
+        "line": 465,
+        "native_revision": "unchanged; native analysis side effects can still occur",
+        "path": "cpp/src/local_client.cpp",
+        "qualification": "source branch accounting only; runtime fixtures unqualified"
+      },
       "pagination": {
         "bounds": "limit>0; offset>=0; each <=INT_MAX; offset+limit<=INT_MAX; supported native collection size <INT_MAX",
         "comparator": "not approved: source traversal is not a proven total-order comparator",
@@ -6528,7 +6554,7 @@
           "path": "cpp/src/local_client.cpp"
         }
       },
-      "program_state": "requires loaded program",
+      "program_state": "loaded program and valid primary adapter required; otherwise NO_PROGRAM",
       "python_reconciliation": {
         "binding_body_sha256": "354391623c1479c431675d471a84da47cd3b4fc01c30ea3e432d509254d5d768",
         "binding_extraction": "edges",
@@ -6642,6 +6668,7 @@
         "native_type": "ListCFGEdgesResponse"
       },
       "semantic_review": "aggregate cursor/filter/ordering branches reviewed; remaining conversion/field and runtime gates open",
+      "state_transitions": "loaded required; select function entries by range, aggregate per-function graph/reference output, then paginate aggregate; serial preserves traversal concatenation; parallel appends under mutex in completion order and propagates future errors; no wrapper revision increment",
       "surface_contract": {
         "facade": {
           "disposition": "complete response convenience/page",
@@ -6707,6 +6734,14 @@
       "lowlevel": "list_data_items",
       "name": "ListDataItems",
       "native_literal_errors": [],
+      "page_wrapper_review": {
+        "body_sha256": "38f359c3921083c7283522c7c184a3add82b88f137c24e0cac1458097f263627",
+        "error_policy": "NO_PROGRAM guard; no wrapper catch; exceptions are not rewritten as empty page here; adapter catch behavior is separately inventoried",
+        "line": 1273,
+        "native_revision": "unchanged; native analysis side effects can still occur",
+        "path": "cpp/src/local_client.cpp",
+        "qualification": "source branch accounting only; runtime fixtures unqualified"
+      },
       "pagination": {
         "bounds": "limit>0; offset>=0; each <=INT_MAX; offset+limit<=INT_MAX; supported native collection size <INT_MAX",
         "comparator": "not approved: source traversal order is not a proven public total-order comparator",
@@ -6733,7 +6768,7 @@
           "path": "cpp/src/local_arch_adapter.cpp"
         }
       },
-      "program_state": "requires loaded program",
+      "program_state": "loaded program and valid primary adapter required; otherwise NO_PROGRAM",
       "request": [
         {
           "binding_default": "0",
@@ -6788,7 +6823,7 @@
             "native_type": "std::uint64_t",
             "optional": false,
             "path": "data_items.address",
-            "semantics": "native field preserved; no truthiness substitution"
+            "semantics": "mapped non-function adapter symbol address copied exactly"
           },
           {
             "lua": "exact UInt64",
@@ -6798,7 +6833,7 @@
             "native_type": "std::uint64_t",
             "optional": false,
             "path": "data_items.end_address",
-            "semantics": "native field preserved; no truthiness substitution"
+            "semantics": "inclusive address+size-1 for positive size, else address; unsigned arithmetic can wrap, no wrapper saturation"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -6808,7 +6843,7 @@
             "native_type": "std::string",
             "optional": false,
             "path": "data_items.name",
-            "semantics": "native field preserved; no truthiness substitution"
+            "semantics": "adapter symbol name copied unchanged"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -6818,7 +6853,7 @@
             "native_type": "std::string",
             "optional": false,
             "path": "data_items.data_type",
-            "semantics": "native field preserved; no truthiness substitution"
+            "semantics": "adapter datatype name, undefined when absent; copied unchanged"
           },
           {
             "lua": "exact UInt64",
@@ -6828,7 +6863,7 @@
             "native_type": "std::uint64_t",
             "optional": false,
             "path": "data_items.size",
-            "semantics": "native field preserved; no truthiness substitution"
+            "semantics": "adapter datatype size or zero when missing; exact UInt64"
           },
           {
             "lua": "Lua string (no transcoding)",
@@ -6845,6 +6880,7 @@
         "native_type": "ListDataItemsResponse"
       },
       "semantic_review": "page adapter and LocalClient dispatch reviewed; runtime unqualified; remaining field/facade obligations still open",
+      "state_transitions": "loaded required; enumerate then paginate native adapter records BEFORE one-to-one response conversion; conversion preserves candidate count; no native revision change",
       "surface_contract": {
         "facade": {
           "disposition": "native escape hatch",
@@ -6911,6 +6947,14 @@
       "lowlevel": "list_decompilations",
       "name": "ListDecompilations",
       "native_literal_errors": [],
+      "page_wrapper_review": {
+        "body_sha256": "ea714eddbcde2e03d2794422a6438a62de1d780bc5d68e3eb5293cd85bf59996",
+        "error_policy": "NO_PROGRAM guard; no wrapper catch; exceptions are not rewritten as empty page here; adapter catch behavior is separately inventoried",
+        "line": 323,
+        "native_revision": "unchanged; native analysis side effects can still occur",
+        "path": "cpp/src/local_client.cpp",
+        "qualification": "source branch accounting only; runtime fixtures unqualified"
+      },
       "pagination": {
         "bounds": "limit>0; offset>=0; each <=INT_MAX; offset+limit<=INT_MAX; supported native collection size <INT_MAX",
         "comparator": "not approved: source traversal is not a proven total-order comparator",
@@ -6936,7 +6980,7 @@
           "path": "cpp/src/local_client.cpp"
         }
       },
-      "program_state": "requires loaded program",
+      "program_state": "loaded program and valid primary adapter required; otherwise NO_PROGRAM",
       "python_reconciliation": {
         "binding_body_sha256": "3ceaffe850787309ab7beb763fe708b93498a9c7b08ca63fafa54f52ad9c53b3",
         "binding_extraction": "decompilations",
@@ -7239,6 +7283,7 @@
         "native_type": "ListDecompilationsResponse"
       },
       "semantic_review": "aggregate cursor/filter/ordering branches reviewed; remaining conversion/field and runtime gates open",
+      "state_transitions": "loaded required; paginate candidate functions first, collect addresses/names in candidate order, dispatch one native decompileMany batch, move all returned records unchanged; failed candidate records retained, no wrapper revision increment",
       "surface_contract": {
         "facade": {
           "disposition": "native escape hatch",
@@ -7928,6 +7973,14 @@
       "lowlevel": "list_function_signatures",
       "name": "ListFunctionSignatures",
       "native_literal_errors": [],
+      "page_wrapper_review": {
+        "body_sha256": "0a86e81e93a10b030ae704eb5643d2416ba3ea7898a5d9d80331e4f4f81a966e",
+        "error_policy": "NO_PROGRAM guard; no wrapper catch; exceptions are not rewritten as empty page here; adapter catch behavior is separately inventoried",
+        "line": 1053,
+        "native_revision": "unchanged; native analysis side effects can still occur",
+        "path": "cpp/src/local_client.cpp",
+        "qualification": "source branch accounting only; runtime fixtures unqualified"
+      },
       "pagination": {
         "bounds": "limit>0; offset>=0; each <=INT_MAX; offset+limit<=INT_MAX; supported native collection size <INT_MAX",
         "comparator": "not approved: source traversal is not a proven total-order comparator",
@@ -7953,7 +8006,7 @@
           "path": "cpp/src/local_client.cpp"
         }
       },
-      "program_state": "requires loaded program",
+      "program_state": "loaded program and valid primary adapter required; otherwise NO_PROGRAM",
       "request": [
         {
           "binding_default": "0",
@@ -8135,6 +8188,7 @@
         "native_type": "ListFunctionSignaturesResponse"
       },
       "semantic_review": "aggregate cursor/filter/ordering branches reviewed; remaining conversion/field and runtime gates open",
+      "state_transitions": "loaded required; paginate candidate functions first; decompile/extract each, remove absent signatures AFTER pagination; serial traversal and parallel indexed output retain candidate relative order; empty results do not establish exhaustion; no wrapper revision increment",
       "surface_contract": {
         "facade": {
           "disposition": "complete response page; no iterator",
@@ -8368,6 +8422,14 @@
       "lowlevel": "list_functions",
       "name": "ListFunctions",
       "native_literal_errors": [],
+      "page_wrapper_review": {
+        "body_sha256": "cef53554d00cfcac680e5d4a11641613ac8f8fd046ccb9076e6a2fc6e0bb892f",
+        "error_policy": "NO_PROGRAM guard; no wrapper catch; exceptions are not rewritten as empty page here; adapter catch behavior is separately inventoried",
+        "line": 364,
+        "native_revision": "unchanged; native analysis side effects can still occur",
+        "path": "cpp/src/local_client.cpp",
+        "qualification": "source branch accounting only; runtime fixtures unqualified"
+      },
       "pagination": {
         "bounds": "limit>0; offset>=0; each <=INT_MAX; offset+limit<=INT_MAX; supported native collection size <INT_MAX",
         "comparator": "not approved: source traversal order is not a proven public total-order comparator",
@@ -8394,7 +8456,7 @@
           "path": "cpp/src/local_arch_adapter.cpp"
         }
       },
-      "program_state": "requires loaded program",
+      "program_state": "loaded program and valid primary adapter required; otherwise NO_PROGRAM",
       "python_reconciliation": {
         "binding_body_sha256": "2ee5c9f792c7bf59a7f8eab9fed9d39491935e6bfb8e4fa6181d7f983af2de88",
         "binding_extraction": "functions",
@@ -8558,6 +8620,7 @@
         "native_type": "ListFunctionsResponse"
       },
       "semantic_review": "page adapter and LocalClient dispatch reviewed; runtime unqualified; remaining field/facade obligations still open",
+      "state_transitions": "loaded required; primary adapter enumeration then paginate into functions; no post-page removal or native revision change; native empty enumeration is successful empty page",
       "surface_contract": {
         "facade": {
           "disposition": "complete response convenience/page",
@@ -8773,6 +8836,14 @@
       "lowlevel": "list_instructions",
       "name": "ListInstructions",
       "native_literal_errors": [],
+      "page_wrapper_review": {
+        "body_sha256": "9d7bf566570719f161d316f337184cca5524ef6921c4896514f44273c109cc67",
+        "error_policy": "NO_PROGRAM guard; no wrapper catch; exceptions are not rewritten as empty page here; adapter catch behavior is separately inventoried",
+        "line": 1200,
+        "native_revision": "unchanged; native analysis side effects can still occur",
+        "path": "cpp/src/local_client.cpp",
+        "qualification": "source branch accounting only; runtime fixtures unqualified"
+      },
       "pagination": {
         "bounds": "limit>0; offset>=0; each <=INT_MAX; offset+limit<=INT_MAX; supported native collection size <INT_MAX",
         "comparator": "not approved: source traversal order is not a proven public total-order comparator",
@@ -8800,7 +8871,7 @@
           "path": "cpp/src/local_arch_adapter.cpp"
         }
       },
-      "program_state": "requires loaded program",
+      "program_state": "loaded program and valid primary adapter required; otherwise NO_PROGRAM",
       "python_reconciliation": {
         "binding_body_sha256": "98dc4aaf607bdbc62b5eea6dc36544fd1f540493697c707f65134a41a38933e1",
         "binding_extraction": "instructions",
@@ -8924,6 +8995,7 @@
         "native_type": "ListInstructionsResponse"
       },
       "semantic_review": "page adapter and LocalClient dispatch reviewed; runtime unqualified; remaining field/facade obligations still open",
+      "state_transitions": "loaded required; primary adapter enumeration then paginate into instructions; no post-page removal or native revision change; native empty enumeration is successful empty page; request at most limit+offset decoded instructions before slicing; checked signed sum must fit INT_MAX",
       "surface_contract": {
         "facade": {
           "disposition": "complete response convenience/page",
@@ -8992,6 +9064,14 @@
       "native_literal_errors": [
         "NOT_SUPPORTED"
       ],
+      "page_wrapper_review": {
+        "body_sha256": "ff4d5c03da82921fa341a9b75ceb58aea7c70a74529a5319a950d68b1a501352",
+        "error_policy": "NO_PROGRAM guard; no wrapper catch; exceptions are not rewritten as empty page here; adapter catch behavior is separately inventoried",
+        "line": 382,
+        "native_revision": "unchanged; native analysis side effects can still occur",
+        "path": "cpp/src/local_client.cpp",
+        "qualification": "source branch accounting only; runtime fixtures unqualified"
+      },
       "pagination": {
         "bounds": "limit>0; offset>=0; each <=INT_MAX; offset+limit<=INT_MAX; supported native collection size <INT_MAX",
         "comparator": "not approved: source traversal is not a proven total-order comparator",
@@ -9017,7 +9097,7 @@
           "path": "cpp/src/local_client.cpp"
         }
       },
-      "program_state": "requires loaded program",
+      "program_state": "loaded program and valid primary adapter required; otherwise NO_PROGRAM",
       "python_reconciliation": {
         "binding_body_sha256": "f8c0128a6e60aed6dede51e40c728d0b36cb1d8680fba0bbb3f880a163dfaebf",
         "binding_extraction": "functions",
@@ -9181,6 +9261,7 @@
         "native_type": "ListFunctionsResponse"
       },
       "semantic_review": "aggregate cursor/filter/ordering branches reviewed; remaining conversion/field and runtime gates open",
+      "state_transitions": "loaded required; unavailable project leaf index -> NOT_SUPPORTED; select functions by range, binary-search leaf entries, then paginate matched functions; no graph fallback and no wrapper revision increment",
       "surface_contract": {
         "facade": {
           "disposition": "native escape hatch",
@@ -9405,6 +9486,14 @@
       "lowlevel": "list_memory_blocks",
       "name": "ListMemoryBlocks",
       "native_literal_errors": [],
+      "page_wrapper_review": {
+        "body_sha256": "5cd355fd78f8bcd0a57faf7123d000b84c08029b551ee8164b44e14a50bda3fb",
+        "error_policy": "NO_PROGRAM guard; no wrapper catch; exceptions are not rewritten as empty page here; adapter catch behavior is separately inventoried",
+        "line": 1177,
+        "native_revision": "unchanged; native analysis side effects can still occur",
+        "path": "cpp/src/local_client.cpp",
+        "qualification": "source branch accounting only; runtime fixtures unqualified"
+      },
       "pagination": {
         "bounds": "limit>0; offset>=0; each <=INT_MAX; offset+limit<=INT_MAX; supported native collection size <INT_MAX",
         "comparator": "not approved: source traversal order is not a proven public total-order comparator",
@@ -9432,7 +9521,7 @@
           "path": "cpp/src/local_arch_adapter.cpp"
         }
       },
-      "program_state": "requires loaded program",
+      "program_state": "loaded program and valid primary adapter required; otherwise NO_PROGRAM",
       "python_reconciliation": {
         "binding_body_sha256": "4964ff19ef8070572c9faf1dc72daac1fe3566d31012a309686a68096f446d25",
         "binding_extraction": "blocks",
@@ -9598,6 +9687,7 @@
         "native_type": "ListMemoryBlocksResponse"
       },
       "semantic_review": "page adapter and LocalClient dispatch reviewed; runtime unqualified; remaining field/facade obligations still open",
+      "state_transitions": "loaded required; primary adapter enumeration then paginate into blocks; no post-page removal or native revision change; native empty enumeration is successful empty page",
       "surface_contract": {
         "facade": {
           "disposition": "complete response convenience/page",
@@ -10487,6 +10577,14 @@
       "lowlevel": "list_symbols",
       "name": "ListSymbols",
       "native_literal_errors": [],
+      "page_wrapper_review": {
+        "body_sha256": "198083b9738310856f8ff8833e7dbad3a6f61054823054775aa3b3f13e83d416",
+        "error_policy": "NO_PROGRAM guard; no wrapper catch; exceptions are not rewritten as empty page here; adapter catch behavior is separately inventoried",
+        "line": 517,
+        "native_revision": "unchanged; native analysis side effects can still occur",
+        "path": "cpp/src/local_client.cpp",
+        "qualification": "source branch accounting only; runtime fixtures unqualified"
+      },
       "pagination": {
         "bounds": "limit>0; offset>=0; each <=INT_MAX; offset+limit<=INT_MAX; supported native collection size <INT_MAX",
         "comparator": "not approved: source traversal order is not a proven public total-order comparator",
@@ -10514,7 +10612,7 @@
           "path": "cpp/src/local_arch_adapter.cpp"
         }
       },
-      "program_state": "requires loaded program",
+      "program_state": "loaded program and valid primary adapter required; otherwise NO_PROGRAM",
       "python_reconciliation": {
         "binding_body_sha256": "2c4b8815f1d87d0a553b70dafaf892b1aa1c636372606cd31598362e70b29c3c",
         "binding_extraction": "symbols",
@@ -10698,6 +10796,7 @@
         "native_type": "ListSymbolsResponse"
       },
       "semantic_review": "page adapter and LocalClient dispatch reviewed; runtime unqualified; remaining field/facade obligations still open",
+      "state_transitions": "loaded required; primary adapter enumeration then paginate into symbols; no post-page removal or native revision change; native empty enumeration is successful empty page",
       "surface_contract": {
         "facade": {
           "disposition": "complete response convenience/page",
@@ -10863,6 +10962,14 @@
       "lowlevel": "list_type_aliases",
       "name": "ListTypeAliases",
       "native_literal_errors": [],
+      "page_wrapper_review": {
+        "body_sha256": "3be6b0a445935617a0e2463d97d49922e6f207acfcbf64386364d6ece31722e7",
+        "error_policy": "NO_PROGRAM guard; no wrapper catch; exceptions are not rewritten as empty page here; adapter catch behavior is separately inventoried",
+        "line": 643,
+        "native_revision": "unchanged; native analysis side effects can still occur",
+        "path": "cpp/src/local_client.cpp",
+        "qualification": "source branch accounting only; runtime fixtures unqualified"
+      },
       "pagination": {
         "bounds": "limit>0; offset>=0; each <=INT_MAX; offset+limit<=INT_MAX; supported native collection size <INT_MAX",
         "comparator": "not approved: source traversal order is not a proven public total-order comparator",
@@ -10889,7 +10996,7 @@
           "path": "cpp/src/local_arch_adapter.cpp"
         }
       },
-      "program_state": "requires loaded program",
+      "program_state": "loaded program and valid primary adapter required; otherwise NO_PROGRAM",
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
@@ -10983,6 +11090,7 @@
         "native_type": "ListTypeAliasesResponse"
       },
       "semantic_review": "page adapter and LocalClient dispatch reviewed; runtime unqualified; remaining field/facade obligations still open",
+      "state_transitions": "loaded required; primary adapter enumeration then paginate into aliases; no post-page removal or native revision change; native empty enumeration is successful empty page",
       "surface_contract": {
         "facade": {
           "disposition": "complete response convenience/page",
@@ -11048,6 +11156,14 @@
       "lowlevel": "list_type_enum_members",
       "name": "ListTypeEnumMembers",
       "native_literal_errors": [],
+      "page_wrapper_review": {
+        "body_sha256": "fc9482fa7172dd6acfbcb6e95b443c14e359f418bdc22c487fc5c75decbcad12",
+        "error_policy": "NO_PROGRAM guard; no wrapper catch; exceptions are not rewritten as empty page here; adapter catch behavior is separately inventoried",
+        "line": 604,
+        "native_revision": "unchanged; native analysis side effects can still occur",
+        "path": "cpp/src/local_client.cpp",
+        "qualification": "source branch accounting only; runtime fixtures unqualified"
+      },
       "pagination": {
         "bounds": "limit>0; offset>=0; each <=INT_MAX; offset+limit<=INT_MAX; supported native collection size <INT_MAX",
         "comparator": "not approved: source traversal order is not a proven public total-order comparator",
@@ -11075,7 +11191,7 @@
           "path": "cpp/src/local_arch_adapter.cpp"
         }
       },
-      "program_state": "requires loaded program",
+      "program_state": "loaded program and valid primary adapter required; otherwise NO_PROGRAM",
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
@@ -11189,6 +11305,7 @@
         "native_type": "ListTypeEnumMembersResponse"
       },
       "semantic_review": "page adapter and LocalClient dispatch reviewed; runtime unqualified; remaining field/facade obligations still open",
+      "state_transitions": "loaded required; primary adapter enumeration then paginate into members; no post-page removal or native revision change; native empty enumeration is successful empty page; normalize exactly one leading slash before member lookup",
       "surface_contract": {
         "facade": {
           "disposition": "complete response convenience/page",
@@ -11253,6 +11370,14 @@
       "lowlevel": "list_type_enums",
       "name": "ListTypeEnums",
       "native_literal_errors": [],
+      "page_wrapper_review": {
+        "body_sha256": "8f301391b48a33ce5206ad0eca3635d436fe6796017ec4e47c25fc238e22dbf1",
+        "error_policy": "NO_PROGRAM guard; no wrapper catch; exceptions are not rewritten as empty page here; adapter catch behavior is separately inventoried",
+        "line": 592,
+        "native_revision": "unchanged; native analysis side effects can still occur",
+        "path": "cpp/src/local_client.cpp",
+        "qualification": "source branch accounting only; runtime fixtures unqualified"
+      },
       "pagination": {
         "bounds": "limit>0; offset>=0; each <=INT_MAX; offset+limit<=INT_MAX; supported native collection size <INT_MAX",
         "comparator": "not approved: source traversal order is not a proven public total-order comparator",
@@ -11279,7 +11404,7 @@
           "path": "cpp/src/local_arch_adapter.cpp"
         }
       },
-      "program_state": "requires loaded program",
+      "program_state": "loaded program and valid primary adapter required; otherwise NO_PROGRAM",
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
@@ -11383,6 +11508,7 @@
         "native_type": "ListTypeEnumsResponse"
       },
       "semantic_review": "page adapter and LocalClient dispatch reviewed; runtime unqualified; remaining field/facade obligations still open",
+      "state_transitions": "loaded required; primary adapter enumeration then paginate into enums; no post-page removal or native revision change; native empty enumeration is successful empty page",
       "surface_contract": {
         "facade": {
           "disposition": "complete response convenience/page",
@@ -11448,6 +11574,14 @@
       "lowlevel": "list_type_members",
       "name": "ListTypeMembers",
       "native_literal_errors": [],
+      "page_wrapper_review": {
+        "body_sha256": "4965a8d05a423faaabf709f7b361e570e86f2002de6bf0eb08d5ff0d27d3bd25",
+        "error_policy": "NO_PROGRAM guard; no wrapper catch; exceptions are not rewritten as empty page here; adapter catch behavior is separately inventoried",
+        "line": 619,
+        "native_revision": "unchanged; native analysis side effects can still occur",
+        "path": "cpp/src/local_client.cpp",
+        "qualification": "source branch accounting only; runtime fixtures unqualified"
+      },
       "pagination": {
         "bounds": "limit>0; offset>=0; each <=INT_MAX; offset+limit<=INT_MAX; supported native collection size <INT_MAX",
         "comparator": "not approved: source traversal order is not a proven public total-order comparator",
@@ -11475,7 +11609,7 @@
           "path": "cpp/src/local_arch_adapter.cpp"
         }
       },
-      "program_state": "requires loaded program",
+      "program_state": "loaded program and valid primary adapter required; otherwise NO_PROGRAM",
       "python_reconciliation": {
         "binding_body_sha256": "9fb4ffb192508dc072d485e9e76f28f462cd73e360b7ea69522f4b40329dabc2",
         "binding_extraction": "members",
@@ -11629,6 +11763,7 @@
         "native_type": "ListTypeMembersResponse"
       },
       "semantic_review": "page adapter and LocalClient dispatch reviewed; runtime unqualified; remaining field/facade obligations still open",
+      "state_transitions": "loaded required; primary adapter enumeration then paginate into members; no post-page removal or native revision change; native empty enumeration is successful empty page; normalize exactly one leading slash before member lookup",
       "surface_contract": {
         "facade": {
           "disposition": "complete response convenience/page",
@@ -11693,6 +11828,14 @@
       "lowlevel": "list_type_unions",
       "name": "ListTypeUnions",
       "native_literal_errors": [],
+      "page_wrapper_review": {
+        "body_sha256": "2886430d2aeeb55b6c6cac89dd1f8708f06d4657178990179b6998ec3cda8f3e",
+        "error_policy": "NO_PROGRAM guard; no wrapper catch; exceptions are not rewritten as empty page here; adapter catch behavior is separately inventoried",
+        "line": 655,
+        "native_revision": "unchanged; native analysis side effects can still occur",
+        "path": "cpp/src/local_client.cpp",
+        "qualification": "source branch accounting only; runtime fixtures unqualified"
+      },
       "pagination": {
         "bounds": "limit>0; offset>=0; each <=INT_MAX; offset+limit<=INT_MAX; supported native collection size <INT_MAX",
         "comparator": "not approved: source traversal order is not a proven public total-order comparator",
@@ -11719,7 +11862,7 @@
           "path": "cpp/src/local_arch_adapter.cpp"
         }
       },
-      "program_state": "requires loaded program",
+      "program_state": "loaded program and valid primary adapter required; otherwise NO_PROGRAM",
       "request": [
         {
           "binding_default": "required (unless nested native default is recorded)",
@@ -11813,6 +11956,7 @@
         "native_type": "ListTypeUnionsResponse"
       },
       "semantic_review": "page adapter and LocalClient dispatch reviewed; runtime unqualified; remaining field/facade obligations still open",
+      "state_transitions": "loaded required; primary adapter enumeration then paginate into unions; no post-page removal or native revision change; native empty enumeration is successful empty page",
       "surface_contract": {
         "facade": {
           "disposition": "complete response convenience/page",
@@ -11877,6 +12021,14 @@
       "lowlevel": "list_types",
       "name": "ListTypes",
       "native_literal_errors": [],
+      "page_wrapper_review": {
+        "body_sha256": "1824871250eb86da88787b9fe0fbe0982c20eeaa84943f883726ec8dae3ad7f1",
+        "error_policy": "NO_PROGRAM guard; no wrapper catch; exceptions are not rewritten as empty page here; adapter catch behavior is separately inventoried",
+        "line": 580,
+        "native_revision": "unchanged; native analysis side effects can still occur",
+        "path": "cpp/src/local_client.cpp",
+        "qualification": "source branch accounting only; runtime fixtures unqualified"
+      },
       "pagination": {
         "bounds": "limit>0; offset>=0; each <=INT_MAX; offset+limit<=INT_MAX; supported native collection size <INT_MAX",
         "comparator": "not approved: source traversal order is not a proven public total-order comparator",
@@ -11903,7 +12055,7 @@
           "path": "cpp/src/local_arch_adapter.cpp"
         }
       },
-      "program_state": "requires loaded program",
+      "program_state": "loaded program and valid primary adapter required; otherwise NO_PROGRAM",
       "python_reconciliation": {
         "binding_body_sha256": "16b052e5a3f63b67f6d1cba6c9d6d649d1267b79ac65e1fbe323793a98b92511",
         "binding_extraction": "types",
@@ -12068,6 +12220,7 @@
         "native_type": "ListTypesResponse"
       },
       "semantic_review": "page adapter and LocalClient dispatch reviewed; runtime unqualified; remaining field/facade obligations still open",
+      "state_transitions": "loaded required; primary adapter enumeration then paginate into types; no post-page removal or native revision change; native empty enumeration is successful empty page",
       "surface_contract": {
         "facade": {
           "disposition": "complete response convenience/page",
@@ -12133,6 +12286,14 @@
       "lowlevel": "list_xrefs",
       "name": "ListXrefs",
       "native_literal_errors": [],
+      "page_wrapper_review": {
+        "body_sha256": "bdade759647d89869952e71a88ea069b13411f7a9741f81e835ecc17df09f5ea",
+        "error_policy": "NO_PROGRAM guard; no wrapper catch; exceptions are not rewritten as empty page here; adapter catch behavior is separately inventoried",
+        "line": 1110,
+        "native_revision": "unchanged; native analysis side effects can still occur",
+        "path": "cpp/src/local_client.cpp",
+        "qualification": "source branch accounting only; runtime fixtures unqualified"
+      },
       "pagination": {
         "bounds": "limit>0; offset>=0; each <=INT_MAX; offset+limit<=INT_MAX; supported native collection size <INT_MAX",
         "comparator": "not approved: source traversal is not a proven total-order comparator",
@@ -12160,7 +12321,7 @@
           "path": "cpp/src/local_client.cpp"
         }
       },
-      "program_state": "requires loaded program",
+      "program_state": "loaded program and valid primary adapter required; otherwise NO_PROGRAM",
       "python_reconciliation": {
         "binding_body_sha256": "11e219314532b5e4bf1a68294268dacc02cf5147aa3ce151e49e7cc71d5faa40",
         "binding_extraction": "xrefs",
@@ -12374,6 +12535,7 @@
         "native_type": "ListXrefsResponse"
       },
       "semantic_review": "aggregate cursor/filter/ordering branches reviewed; remaining conversion/field and runtime gates open",
+      "state_transitions": "loaded required; select function entries by range, aggregate per-function graph/reference output, then paginate aggregate; serial preserves traversal concatenation; parallel appends under mutex in completion order and propagates future errors; no wrapper revision increment; xref helper owns decompilation/extraction in same instance, no preceding decompileAt that would clear analysis",
       "surface_contract": {
         "facade": {
           "disposition": "complete response convenience/page",
@@ -26912,21 +27074,6 @@
         "path": "comments"
       },
       {
-        "native_type": "std::uint64_t",
-        "operation": "GetComments",
-        "path": "comments.address"
-      },
-      {
-        "native_type": "CommentKind",
-        "operation": "GetComments",
-        "path": "comments.kind"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "GetComments",
-        "path": "comments.text"
-      },
-      {
         "native_type": "std::optional<DecompilationRecord>",
         "operation": "GetDecompilation",
         "path": "decompilation"
@@ -27425,31 +27572,6 @@
         "native_type": "std::vector<DataItemRecord>",
         "operation": "ListDataItems",
         "path": "data_items"
-      },
-      {
-        "native_type": "std::uint64_t",
-        "operation": "ListDataItems",
-        "path": "data_items.address"
-      },
-      {
-        "native_type": "std::uint64_t",
-        "operation": "ListDataItems",
-        "path": "data_items.end_address"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "ListDataItems",
-        "path": "data_items.name"
-      },
-      {
-        "native_type": "std::string",
-        "operation": "ListDataItems",
-        "path": "data_items.data_type"
-      },
-      {
-        "native_type": "std::uint64_t",
-        "operation": "ListDataItems",
-        "path": "data_items.size"
       },
       {
         "native_type": "std::string",
@@ -28423,26 +28545,7 @@
       }
     ],
     "scope": "Explicit accounting audit only; empty wrapper list would not establish full nested/default/domain review or runtime qualification",
-    "wrapper_transition_review_missing": [
-      "GetComments",
-      "ListBasicBlocks",
-      "ListCFGEdges",
-      "ListDataItems",
-      "ListDecompilations",
-      "ListFunctionSignatures",
-      "ListFunctions",
-      "ListInstructions",
-      "ListLeafFunctions",
-      "ListMemoryBlocks",
-      "ListSymbols",
-      "ListTypeAliases",
-      "ListTypeEnumMembers",
-      "ListTypeEnums",
-      "ListTypeMembers",
-      "ListTypeUnions",
-      "ListTypes",
-      "ListXrefs"
-    ]
+    "wrapper_transition_review_missing": []
   },
   "sources": {
     "cpp/bindings/python_bindings.cpp": "f5b4b713b8183f9a88b27d2fca132a4c18ae4c5d43810ef8a20847c0ab461b1e",

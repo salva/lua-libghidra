@@ -357,3 +357,24 @@ not a claim that all required semantics are resolved. New independent drift
 probes change lookup normalization and decompile failure reason; both are rejected.
 Seventeen focused tests pass. Remaining field/helper/domain/final-grammar review
 still prevents exhaustive acceptance; runtime evidence slots stay unqualified.
+
+## Page wrapper state/error/conversion review (fourteenth increment)
+
+`inventory_page_wrappers.py` explicitly reviews the 18 previously listed wrapper
+transition gaps. It separates wrapper NO_PROGRAM/uncaught-exception policy from
+adapter caught-error behavior, and native revision from analysis side effects.
+Simple pages enumerate then slice; member pages normalize one slash; instructions
+scan limit+offset. Aggregate graph/xref pages slice after concatenation, unlike
+candidate-first batch decompilation and signature pages. Signature removal stays
+after candidate pagination and cannot supply an exhaustion signal. Leaf index
+failure precedes matching/pagination and has no graph fallback. Xrefs must not
+pre-decompile before their same-instance analysis/extraction helper.
+
+Comment/data response conversion is one-to-one after pagination. Exact nested
+field semantics now include numeric comment kind cast, empty text preservation,
+data undefined/zero defaults and inclusive data end arithmetic with unsigned wrap.
+The wrapper-transition gap list is now empty, but generic response-field paths
+remain in the audit; this does **not** close nested/default/domain/helper or final
+facade-grammar requirements. New independent probes alter inclusive data end and
+introduce a preceding xref decompile; both must fail. Eighteen tests pass; runtime
+positive/negative evidence and iterators remain unqualified.

@@ -13,6 +13,7 @@ from inventory_semantics import review_pages, review_aggregate_pages, review_ses
 from inventory_python import reconcile_python
 from inventory_surfaces import surfaces
 from inventory_lookups import review_lookups, semantic_audit
+from inventory_page_wrappers import review_page_wrappers
 
 PIN = 'd51ca813ae1b6b59519551a9be8c0b1ad74d862d'
 ROOT = Path(__file__).resolve().parents[1]
@@ -151,6 +152,7 @@ def inventory(u):
     review_local_and_data_edits(u, ops)
     review_alias_symbol_comments(u, ops)
     review_lookups(u, ops, types)
+    review_page_wrappers(u, ops)
     surfaces(ops)
     python=[]
     # Independent public operations and model fields, including HTTP/async/headless exclusions.

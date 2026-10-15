@@ -158,10 +158,29 @@ class InventoryTests(unittest.TestCase):
             with self.assertRaises(AssertionError):
                 module.inventory(root)
             local.write_text(local_original)
+            local.write_text(local_original.replace('d.size > 0 ? d.address + d.size - 1 : d.address', 'd.address + d.size'))
+            with self.assertRaises(AssertionError):
+                module.inventory(root)
+            local.write_text(local_original)
+            local.write_text(local_original.replace('auto func_xrefs =\n            pool_->primaryAdapter().listXrefsForFunction', 'pool_->primary().decompileAt(func.entry_address);\n        auto func_xrefs =\n            pool_->primaryAdapter().listXrefsForFunction'))
+            with self.assertRaises(AssertionError):
+                module.inventory(root)
+            local.write_text(local_original)
             header = root/'cpp/src/local_arch_adapter.hpp'
             header.write_text(header.read_text().replace('std::map<std::pair<std::uint64_t, int>, std::string> comments_', 'std::multimap<std::pair<std::uint64_t, int>, std::string> comments_'))
             with self.assertRaises(AssertionError):
                 module.inventory(root)
+
+    def test_page_wrapper_order_and_field_conversion(self):
+        reviewed=[o for o in self.ops.values() if 'page_wrapper_review' in o]
+        self.assertEqual(len(reviewed), 18)
+        for o in reviewed:
+            self.assertIn('NO_PROGRAM', o['page_wrapper_review']['error_policy'])
+        self.assertIn('BEFORE', self.ops['GetComments']['state_transitions'])
+        self.assertIn('AFTER', self.ops['ListFunctionSignatures']['state_transitions'])
+        self.assertIn('no preceding decompileAt', self.ops['ListXrefs']['state_transitions'])
+        end=next(f for f in self.ops['ListDataItems']['response']['fields'] if f['name']=='end_address')
+        self.assertIn('can wrap', end['semantics'])
 
     def test_lookup_failure_fidelity_and_semantic_gap_audit(self):
         self.assertIn('literal name unchanged', ' '.join(self.ops['GetType']['limitations']))
@@ -171,7 +190,7 @@ class InventoryTests(unittest.TestCase):
         self.assertIn('prototype', self.ops['GetFunction']['lookup_record_fields']['default_only'])
         audit=self.data['semantic_audit']
         self.assertEqual(audit['included_operations'], 70)
-        self.assertIn('ListFunctions', audit['wrapper_transition_review_missing'])
+        self.assertEqual(audit['wrapper_transition_review_missing'], [])
         self.assertTrue(audit['response_field_semantics_unreviewed'])
         self.assertTrue(all(row['path'] for row in audit['response_field_semantics_unreviewed']))
 
