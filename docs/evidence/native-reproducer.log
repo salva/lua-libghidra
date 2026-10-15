@@ -1,0 +1,43 @@
+-- The C compiler identification is GNU 13.3.0
+-- The CXX compiler identification is GNU 13.3.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Found Python3: /usr/bin/python3 (found suitable version "3.12.3", minimum required is "3.10") found components: Interpreter 
+-- Found PkgConfig: /usr/bin/pkg-config (found version "1.8.1") 
+-- Checking for module 'lua5.4'
+--   Found lua5.4, version 5.4.6
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
+-- Found Threads: TRUE  
+-- 
+-- 29.3.0
+-- Performing Test protobuf_HAVE_LD_VERSION_SCRIPT
+-- Performing Test protobuf_HAVE_LD_VERSION_SCRIPT - Success
+-- Performing Test protobuf_HAVE_BUILTIN_ATOMICS
+-- Performing Test protobuf_HAVE_BUILTIN_ATOMICS - Success
+-- Performing Test ABSL_INTERNAL_AT_LEAST_CXX17
+-- Performing Test ABSL_INTERNAL_AT_LEAST_CXX17 - Success
+-- Performing Test ABSL_INTERNAL_AT_LEAST_CXX20
+-- Performing Test ABSL_INTERNAL_AT_LEAST_CXX20 - Success
+-- libghidra: BFD-backed ELF loader enabled (lib=/usr/lib/x86_64-linux-gnu/libbfd.so)
+-- Found Python3: /usr/bin/python3 (found version "3.12.3") found components: Interpreter 
+-- Generated 385 embedded specs
+  Languages:  193
+  Original:   14,030,212 bytes
+  Compressed: 11,457,704 bytes (18.3% reduction)
+  /work/lua-libghidra/.saivage/work/cards/card-a-b/red-native-offline/build/upstream/cpp/generated/embedded_specs.cpp
+  /work/lua-libghidra/.saivage/work/cards/card-a-b/red-native-offline/build/upstream/cpp/generated/embedded_specs.h
+  /work/lua-libghidra/.saivage/work/cards/card-a-b/red-native-offline/build/upstream/cpp/generated/embedded_specs.fingerprint
+  /work/lua-libghidra/.cache/native-inputs/libghidra-d51ca813ae1b6b59519551a9be8c0b1ad74d862d/cpp/cmake/../../python/src/libghidra/known_languages.py
+
+-- Configuring done (5.1s)
+-- Generating done (0.1s)
+-- Build files have been written to: /work/lua-libghidra/.saivage/work/cards/card-a-b/red-native-offline/build

@@ -1,0 +1,2 @@
+constructed profile=external
+external-unreadable true probe exit=4 (previous loop masked with chmod)

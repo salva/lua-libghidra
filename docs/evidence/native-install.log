@@ -1,0 +1,58 @@
+constructed profile=external
+constructed profile=embedded
+constructed profile=embedded
+	linux-vdso.so.1 (0x0000776e677b2000)
+	libbfd-2.42-system.so => /lib/x86_64-linux-gnu/libbfd-2.42-system.so (0x0000776e66497000)
+	libstdc++.so.6 => /lib/x86_64-linux-gnu/libstdc++.so.6 (0x0000776e66200000)
+	libm.so.6 => /lib/x86_64-linux-gnu/libm.so.6 (0x0000776e66117000)
+	libgcc_s.so.1 => /lib/x86_64-linux-gnu/libgcc_s.so.1 (0x0000776e67777000)
+	libc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x0000776e65e00000)
+	/lib64/ld-linux-x86-64.so.2 (0x0000776e677b4000)
+	libz.so.1 => /lib/x86_64-linux-gnu/libz.so.1 (0x0000776e67759000)
+	libzstd.so.1 => /lib/x86_64-linux-gnu/libzstd.so.1 (0x0000776e6605d000)
+	libsframe.so.1 => /lib/x86_64-linux-gnu/libsframe.so.1 (0x0000776e67750000)
+-- Install configuration: "Release"
+-- Installing: /work/lua-libghidra/.cache/native-sdk/lib/liblibghidra_client.a
+-- Installing: /work/lua-libghidra/.cache/native-sdk/lib/liblibghidra_local.a
+-- Installing: /work/lua-libghidra/.cache/native-sdk/include/libghidra
+-- Installing: /work/lua-libghidra/.cache/native-sdk/include/libghidra/analysis.hpp
+-- Installing: /work/lua-libghidra/.cache/native-sdk/include/libghidra/api.hpp
+-- Installing: /work/lua-libghidra/.cache/native-sdk/include/libghidra/decompiler.hpp
+-- Installing: /work/lua-libghidra/.cache/native-sdk/include/libghidra/functions.hpp
+-- Installing: /work/lua-libghidra/.cache/native-sdk/include/libghidra/ghidra.hpp
+-- Installing: /work/lua-libghidra/.cache/native-sdk/include/libghidra/headless.hpp
+-- Installing: /work/lua-libghidra/.cache/native-sdk/include/libghidra/health.hpp
+-- Installing: /work/lua-libghidra/.cache/native-sdk/include/libghidra/http.hpp
+-- Installing: /work/lua-libghidra/.cache/native-sdk/include/libghidra/listing.hpp
+-- Installing: /work/lua-libghidra/.cache/native-sdk/include/libghidra/local.hpp
+-- Installing: /work/lua-libghidra/.cache/native-sdk/include/libghidra/memory.hpp
+-- Installing: /work/lua-libghidra/.cache/native-sdk/include/libghidra/models.hpp
+-- Installing: /work/lua-libghidra/.cache/native-sdk/include/libghidra/session.hpp
+-- Installing: /work/lua-libghidra/.cache/native-sdk/include/libghidra/status.hpp
+-- Installing: /work/lua-libghidra/.cache/native-sdk/include/libghidra/symbols.hpp
+-- Installing: /work/lua-libghidra/.cache/native-sdk/include/libghidra/types.hpp
+-- Installing: /work/lua-libghidra/.cache/native-sdk/include/libghidra/xrefs.hpp
+-- Up-to-date: /work/lua-libghidra/.cache/native-sdk/include/libghidra
+-- Installing: /work/lua-libghidra/.cache/native-sdk/include/libghidra/analysis.pb.h
+-- Installing: /work/lua-libghidra/.cache/native-sdk/include/libghidra/common.pb.h
+-- Installing: /work/lua-libghidra/.cache/native-sdk/include/libghidra/decompiler.pb.h
+-- Installing: /work/lua-libghidra/.cache/native-sdk/include/libghidra/functions.pb.h
+-- Installing: /work/lua-libghidra/.cache/native-sdk/include/libghidra/health.pb.h
+-- Installing: /work/lua-libghidra/.cache/native-sdk/include/libghidra/listing.pb.h
+-- Installing: /work/lua-libghidra/.cache/native-sdk/include/libghidra/memory.pb.h
+-- Installing: /work/lua-libghidra/.cache/native-sdk/include/libghidra/rpc.pb.h
+-- Installing: /work/lua-libghidra/.cache/native-sdk/include/libghidra/session.pb.h
+-- Installing: /work/lua-libghidra/.cache/native-sdk/include/libghidra/symbols.pb.h
+-- Installing: /work/lua-libghidra/.cache/native-sdk/include/libghidra/types.pb.h
+-- Installing: /work/lua-libghidra/.cache/native-sdk/include/libghidra/xrefs.pb.h
+-- Installing: /work/lua-libghidra/.cache/native-sdk/lib/cmake/libghidra/libghidraTargets.cmake
+-- Installing: /work/lua-libghidra/.cache/native-sdk/lib/cmake/libghidra/libghidraTargets-release.cmake
+-- Installing: /work/lua-libghidra/.cache/native-sdk/lib/cmake/libghidra/libghidraConfig.cmake
+-- Installing: /work/lua-libghidra/.cache/native-sdk/lib/cmake/libghidra/libghidraConfigVersion.cmake
+libghidra bdec124301f9ebb9660306f324180e1e948307ba3174019be504f6a65693c76f
+engine 671444e1fe6005d3714a923e15ba19175fd7e6cc2c43481d81a5a54421c5d04e
+protobuf 008a11cc56f9b96679b4c285fd05f46d317d685be3ab524b2a310be0fbad987e
+abseil f50e5ac311a81382da7fa75b97310e4b9006474f9560ac46f54a9967f07d4ae3
+httplib c1742fc7179aaae2a67ad9bba0740b7e9ffaf4f5e62feef53101ecdef1478716
+specs 93a5d11a9ad510622acaaf908c556a7b9b764d338e78a7567f3689bf5081fd54
+Prepared /work/lua-libghidra/.saivage/work/cards/card-a-b/offline-inputs

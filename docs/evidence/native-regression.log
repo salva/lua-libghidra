@@ -1,0 +1,32 @@
+-- Found Python3: /usr/bin/python3 (found suitable version "3.12.3", minimum required is "3.10") found components: Interpreter 
+-- 
+-- 29.3.0
+-- libghidra: BFD-backed ELF loader enabled (lib=/usr/lib/x86_64-linux-gnu/libbfd.so)
+-- Found Python3: /usr/bin/python3 (found version "3.12.3") found components: Interpreter 
+-- Embedded specs up-to-date (385 files), skipping generation.
+
+-- Configuring done (0.5s)
+-- Generating done (0.1s)
+-- Build files have been written to: /work/lua-libghidra/.saivage/work/cards/card-a-b/offline-build
+[1/4] Building C object CMakeFiles/native_smoke.dir/tests/native_smoke.c.o
+[2/4] Linking C executable native_smoke
+[3/4] Building CXX object CMakeFiles/native_probe.dir/tests/native_probe.cpp.o
+[4/4] Linking CXX executable native_probe
+Internal ctest changing into directory: /work/lua-libghidra/.saivage/work/cards/card-a-b/offline-build
+Test project /work/lua-libghidra/.saivage/work/cards/card-a-b/offline-build
+    Start 1: native_external_constructor
+1/1 Test #1: native_external_constructor ......   Passed    0.01 sec
+
+100% tests passed, 0 tests failed out of 1
+
+Total Test time (real) =   0.01 sec
+constructed profile=external
+completed=1 fallback=0 error=
+
+int4 func_0x00401106(int4 param_1)
+
+{
+  return param_1 * 3 + 7;
+}
+completed=1 fallback=0 error=
+  return param_1 * 3 + 7;

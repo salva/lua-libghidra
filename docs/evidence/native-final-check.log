@@ -1,0 +1,21 @@
+-- Found Python3: /usr/bin/python3 (found suitable version "3.12.3", minimum required is "3.10") found components: Interpreter 
+-- Performing Test NATIVE_LUA_ABI_OK
+-- Performing Test NATIVE_LUA_ABI_OK - Success
+-- 
+-- 29.3.0
+-- libghidra: BFD-backed ELF loader enabled (lib=/usr/lib/x86_64-linux-gnu/libbfd.so)
+-- Found Python3: /usr/bin/python3 (found version "3.12.3") found components: Interpreter 
+-- Embedded specs up-to-date (385 files), skipping generation.
+
+-- Configuring done (0.6s)
+-- Generating done (0.1s)
+-- Build files have been written to: /work/lua-libghidra/.saivage/work/cards/card-a-b/offline-build
+ninja: no work to do.
+Internal ctest changing into directory: /work/lua-libghidra/.saivage/work/cards/card-a-b/offline-build
+Test project /work/lua-libghidra/.saivage/work/cards/card-a-b/offline-build
+    Start 1: native_external_constructor
+1/1 Test #1: native_external_constructor ......   Passed    0.01 sec
+
+100% tests passed, 0 tests failed out of 1
+
+Total Test time (real) =   0.01 sec

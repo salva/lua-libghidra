@@ -1,0 +1,25 @@
+-- The C compiler identification is GNU 13.3.0
+-- The CXX compiler identification is GNU 13.3.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Found Python3: /usr/bin/python3 (found suitable version "3.12.3", minimum required is "3.10") found components: Interpreter 
+-- Found PkgConfig: /usr/bin/pkg-config (found version "1.8.1") 
+-- Checking for module 'lua5.4'
+--   Found lua5.4, version 5.4.6
+-- Performing Test NATIVE_LUA_ABI_OK
+-- Performing Test NATIVE_LUA_ABI_OK - Success
+CMake Error at CMakeLists.txt:31 (message):
+  Missing libghidra input:
+  /definitely-absent-native-inputs/libghidra-d51ca813ae1b6b59519551a9be8c0b1ad74d862d;
+  run scripts/prepare-native.py or supply NATIVE_LIBGHIDRA_SOURCE
+
+
+-- Configuring incomplete, errors occurred!

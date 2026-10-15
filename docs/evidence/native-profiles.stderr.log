@@ -1,0 +1,6 @@
+LOAD_FAILED: No sleigh specification for x86:LE:64:default
+ghidra_cpp: failed to create cache dir /proc/.ghidracpp/cache/sleigh/e96baec8337e3053
+ghidra_cpp: failed to create directory for Ghidra/Processors/6502/data/languages/6502.cspec
+ghidra_cpp: failed to extract specs to /proc/.ghidracpp/cache/sleigh/e96baec8337e3053
+LOAD_FAILED: No sleigh specification for x86:LE:64:default
+LOAD_FAILED: No sleigh specification for x86:LE:64:default

@@ -1,0 +1,54 @@
+{
+  "format": 1,
+  "wrapper_license": "MIT",
+  "inputs": [
+    {
+      "name": "libghidra",
+      "url": "https://codeload.github.com/0xeb/libghidra/tar.gz/d51ca813ae1b6b59519551a9be8c0b1ad74d862d",
+      "revision": "d51ca813ae1b6b59519551a9be8c0b1ad74d862d",
+      "sha256": "bdec124301f9ebb9660306f324180e1e948307ba3174019be504f6a65693c76f",
+      "license": "LicenseRef-Human-Origin-Source-1.0",
+      "directory": "libghidra-d51ca813ae1b6b59519551a9be8c0b1ad74d862d"
+    },
+    {
+      "name": "engine",
+      "url": "https://codeload.github.com/NationalSecurityAgency/ghidra/tar.gz/2035b8153afaf7ce2edde24a2c80b62bbcf5127f",
+      "revision": "2035b8153afaf7ce2edde24a2c80b62bbcf5127f",
+      "sha256": "671444e1fe6005d3714a923e15ba19175fd7e6cc2c43481d81a5a54421c5d04e",
+      "license": "Apache-2.0 and bundled notices",
+      "directory": "engine"
+    },
+    {
+      "name": "protobuf",
+      "url": "https://codeload.github.com/protocolbuffers/protobuf/tar.gz/v29.3",
+      "revision": "v29.3",
+      "sha256": "008a11cc56f9b96679b4c285fd05f46d317d685be3ab524b2a310be0fbad987e",
+      "license": "BSD-3-Clause and utf8_range MIT",
+      "directory": "protobuf"
+    },
+    {
+      "name": "abseil",
+      "url": "https://codeload.github.com/abseil/abseil-cpp/tar.gz/20240722.0",
+      "revision": "20240722.0",
+      "sha256": "f50e5ac311a81382da7fa75b97310e4b9006474f9560ac46f54a9967f07d4ae3",
+      "license": "Apache-2.0",
+      "directory": "abseil"
+    },
+    {
+      "name": "httplib",
+      "url": "https://codeload.github.com/yhirose/cpp-httplib/tar.gz/v0.16.3",
+      "revision": "v0.16.3",
+      "sha256": "c1742fc7179aaae2a67ad9bba0740b7e9ffaf4f5e62feef53101ecdef1478716",
+      "license": "MIT",
+      "directory": "httplib"
+    },
+    {
+      "name": "specs",
+      "url": "https://github.com/NationalSecurityAgency/ghidra/releases/download/Ghidra_12.1.3_build/ghidra_12.1.3_PUBLIC_20260817.zip",
+      "revision": "Ghidra_12.1.3_build",
+      "sha256": "93a5d11a9ad510622acaaf908c556a7b9b764d338e78a7567f3689bf5081fd54",
+      "license": "Apache-2.0 and Ghidra third-party notices",
+      "directory": "engine"
+    }
+  ]
+}

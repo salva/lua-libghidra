@@ -1,0 +1,27 @@
+constructed profile=external
+PROFILE=external-missing EXIT=4
+constructed profile=embedded
+completed=1 fallback=0 error=
+
+int4 func_0x00401106(int4 param_1)
+
+{
+  return param_1 * 3 + 7;
+}
+
+PROFILE=embedded-cold EXIT=0
+constructed profile=embedded
+completed=1 fallback=0 error=
+
+int4 func_0x00401106(int4 param_1)
+
+{
+  return param_1 * 3 + 7;
+}
+
+PROFILE=embedded-warm EXIT=0
+constructed profile=embedded
+PROFILE=embedded-unwritable EXIT=4
+constructed profile=external
+PROFILE=external-unreadable EXIT=0
+/work/lua-libghidra/.saivage/work/cards/card-a-b/profile-embedded-home/.ghidracpp/cache/sleigh/e96baec8337e3053/.complete
