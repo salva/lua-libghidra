@@ -10,8 +10,8 @@ All files here are working documents, excluded from main docs/package/site.
 - [x] Astra author: current-state analysis, design alternatives and selected design.
 - [x] Separate Astra analyst: bounded example-origin assessment for the designer.
 - [x] Fresh independent Astra design/analysis review and bounded corrections.
-- [ ] Astra author: self-contained sequenced replacement plan and planner handoff.
-- [ ] Fresh independent Astra plan/handoff review and bounded corrections.
+- [x] Astra author: self-contained sequenced replacement plan and planner handoff.
+- [x] Fresh independent Astra plan/handoff review and bounded corrections.
 - [ ] Commit accepted artifacts and notify the main planner through Analyst.
 - [ ] After accepted design/plan and planner notice, use operator-authorized Run.
 - [ ] Verify fresh owning-chain execution and report adoption/resume receipts.
@@ -41,8 +41,11 @@ implementations of overlapping document trees.
 ## Current artifacts
 
 - [Analysis](01-ANALYSIS.md) and [design](02-DESIGN.md): independently approved;
-  [final design review](reviews/DESIGN-REVIEW-r2.md). Plan authoring is underway;
-  no readiness or execution claim follows from design approval alone.
+  [final design review](reviews/DESIGN-REVIEW-r2.md).
+- [Plan](04-PLAN.md) and [owning-planner handoff](05-PLANNER-HANDOFF.md): independently
+  approved; [final plan review](reviews/PLAN-REVIEW-r2.md). The readiness gate is
+  satisfied; notification, adoption and resume receipts are pending. Approval of
+  future tests is not a claim they have been implemented or passed.
 - [Example assessment](03-EXAMPLE-ASSESSMENT.md): no distinctive upstream adaptation
   established, composition origin unknown; public fixture-demo selection must be
   addressed separately from correctness of ordinary API syntax.
