@@ -70,28 +70,35 @@ covers initialization, publication, errors, validators and nested output.
 ASan/UBSan test covers the original C++ boundary/owner test, not instrumented Lua
 or the full native dependency closure. No broad/native adapters shipped.
 
-## Remaining gates
+## M1 gate matrix (current wrapper; supersedes foundation-only gaps)
 
-Both public modules currently export only shared u64/check; no local_client/open
-claim. Following owner work must add process serialization/slot, shared aliases,
-close/__close/__gc, publication marker, cross-state reuse, native exception and
-reentrant-finalizer tests, ownership OOM sweeps and full sanitizer qualification.
-Repeat all-frame audit for every new path. Full M1, M2 engine reads/examples,
-LuaRocks installation, release tooling migration/generator exception approval,
-packaging/notices/distribution and all-architecture support remain unqualified.
+This matrix maps PLAN M1 and SPEC/DESIGN ownership/value/build requirements to
+current evidence. **Not final M1 or independent-review acceptance.** Foundation
+logs under docs/evidence/m1-* predate owner/guard work and alone cannot establish
+current qualification. M2+ operation inventory in COVERAGE.md is not claimed here.
 
-Fault sweeps also retry the entire initialization/conversion script in the same
-state after restoring allocations, demonstrating recovery from partial module
-publication, not just successful cleanup at state close. Persistent denial is
-stronger than one-shot failure for Lua's retry path but does not replace tests
-of arbitrary finalizer reentrancy or native-owner publication in the next slice.
+| M1 outcome | Current evidence and qualification meaning |
+| --- | --- |
+| Source whole-archive/PIC closure | CMake source local_whole plus native_link_closure with -z defs; current source qualification build below. Historical four-test foundation source run is insufficient for current owner code. |
+| Installed SDK whole-archive/PIC | build uses installed local wrapped in WHOLE_ARCHIVE; module built PIC. Installed qualification script checks guard NEEDED/$ORIGIN and host Lua borrowing, then eager binding loads actual installed paths. |
+| Existing standalone/static/shared C VM | tests/installed-qualification.sh runs installed_owner.lua with lua5.4 and both C hosts; no liblua NEEDED or exported Lua implementation in module/guard. Native-only success is not this gate. |
+| UInt64 and checked requests | boundary.lua on standalone/static/shared; exact finite boundary/comparison/helper/error matrix; owner invalid arguments/entrypoints; six request-copy faults before dispatch. Not arbitrary 2^64 enumeration. |
+| ReadBytes four boundaries/order | read_order_host validates 0/INT32_MAX vs INT32_MAX+1/UINT32_MAX with dispatch/allocation observers and bounded allocation backstop; no huge successful read claim. Installed analyzed Session exercises small real bytes. |
+| Detached values/errors | boundary_host false/zero/NUL/nested optionals and matched fixture destructors; real response Lua-OOM and same-owner retry; reentry detached snapshots, operation/backend/message/nil/error preservation. |
+| All C-Lua frames/longjmp | Current grouped frame audit below, helper15-path116-refusal and combined108-boundary sweeps, factory/request wrapper allocations and protected result/error conversion. Static/source plus runtime evidence, not engine destructor accounting. |
+| Shared owner and teardown | ownership fixtures/installed_owner: lowlevel/Session alias lifetime, active-error __close, double close/GC, fallible native logical close retains owner, detached values and reuse. |
+| Process guard/native ordering | ownership_threads, native_phases, guard_contention, loaded_copy: independent states, B after A/reversed teardown/repeats, counted construction/dispatch/reset overlap exclusion and destruction-to-construction transitions; ordinary loader namespace only. |
+| Actual finalizer revalidation | reentry_host: natural valid/invalid request parsing with storage-debt trigger, result/generation, default factory prepublication; real close/replacement completion and CLOSED/generation/slot/result oracles. Window attribution, not every possible finalizer action or allocation PC. |
+| Wrapper fault/sanitizer safety | tests/wrapper-sanitize.sh full17-test ASan/LSan/UBSan suite; wrapper-owned option/request/Handle/Lua failures, no skipped fixture owners; precompiled dependencies/system Lua not instrumented. |
+| Dependency OOM/defects | SPEC operator dispositions: document practical limitation/evidence then continue wrapper delivery; historical global specpaths mutation not repaired or retroactively passed, no required deep engine fault campaign. |
+| Release tooling/distribution | OPEN: project Python preparation/release tooling migration or explicit accepted exception, upstream spec-embedding exception assessment, LuaRocks installation and distribution/notices clearance remain tracked. Not runtime Python or permission to publish. |
+| Independent qualification review | OPEN: documentation reviews are not independent review of current M1 implementation/evidence. Required workflow review still applies. |
 
-The native observer directly calls `read_size` around Lua allocator counters at
-INT32_MAX acceptance and UINT32_MAX rejection. Both make zero Lua allocation
-calls; the primitive has no native allocation or SDK reference. Lua regression
-also covers 0/INT32_MAX/INT32_MAX+1/UINT32_MAX. Once operations exist, their caller
-must demonstrate this same check precedes dispatch/request-buffer allocation;
-these foundation tests do not assert an unimplemented read operation is safe.
+Reproduce installed closure with `bash tests/installed-qualification.sh [build]`.
+It stages under that build directory and forces LD_BIND_NOW during all VM loads;
+no /opt writes. The SDK and source build modes share the same wrapper/fixtures.
+Raw FileBytes unsupported-load limitation and approved separate locked engine
+patch remain unchanged. No HTTP/SWIG/Python-binding oracle or M2 adapter claim.
 
 ## Expanded UInt64 comparison/helper regression matrix
 
@@ -188,3 +195,41 @@ not whole-dependency internal UBSan coverage or exhaustive schedule proof. No
 internal OOM issues were reinvestigated or declared repaired. Actual
 allocation-triggered per-edge finalizer revalidation remains a separate gap;
 explicit-GC success under sanitizers does not close it.
+
+### Integrated current-source build/install qualification
+
+At wrapper source ab03d37 (no runtime edits in this consolidation), fresh source
+Debug build completed all523 compile/link steps, including whole-archive
+`libnative_link_closure.so` with `-z defs` and current owner/guard. Commands:
+
+```sh
+cmake -S . -B build/source-qualification -G Ninja \
+  -DNATIVE_INPUT_ROOT="$PWD/.cache/native-inputs-patched" -DCMAKE_BUILD_TYPE=Debug
+cmake --build build/source-qualification -j4
+ctest --test-dir build/source-qualification --output-on-failure
+bash tests/installed-qualification.sh "$PWD/build/source-qualification"
+bash tests/installed-qualification.sh
+ctest --test-dir build --output-on-failure
+```
+
+Source suite **18/18,5.37s** (extra native_external_constructor plus all current
+Lua/owner tests), installed-SDK suite **17/17,9.21s** while source build ran.
+Both source-built and SDK-built installations passed installed-only standalone,
+static/exported and shared C-VM Session/alias/native-error/reuse fixtures, with
+LD_BIND_NOW. Static host has no liblua NEEDED; shared host has liblua5.4. Module
+has no liblua NEEDED, borrows undefined lua_newuserdatauv, exports no Lua VM
+implementation, and resolves shared guard by $ORIGIN. Generated source and SDK
+link lines contain whole-archive and compile flags include PIC. Eager installed
+loads and analyzed Session cases establish usable closure, not symbol listings
+alone. No second VM observed in ordinary loader namespace; dlmopen remains out.
+
+Primary captures for this card batch: source build
+`work:///cards/card-b-c/processes/proc-fbc8d456c348/stdout.log`, source suite plus
+installed profile `work:///cards/card-b-c/processes/proc-fd355be85de9/stdout.log`,
+final SDK installed profile `work:///cards/card-b-c/processes/proc-322131555edc/stdout.log`,
+SDK full suite `work:///cards/card-b-c/processes/proc-c320660fead6/stdout.log`.
+Compiler emitted pinned protobuf concept-id warnings, not build failures. No
+runtime/SDK/engine source edits or new patches were made. Source generator still
+uses Python as documented development build input; this is not acceptance of a
+permanent exception, runtime dependency or Python-binding oracle. Release tooling,
+LuaRocks and independent review rows above stay OPEN.
