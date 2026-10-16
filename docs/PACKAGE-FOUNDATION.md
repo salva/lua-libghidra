@@ -150,3 +150,16 @@ uses only the committed lock, local archives and dpkg, not current remote apt
 metadata. Source-control hashes/checksums do **not** prove that source archives
 were downloaded, built or that distribution obligations are discharged. The
 current closure is the locked Ubuntu 24.04 amd64 profile, not portable packaging.
+
+## Inventory migration in progress
+
+`lua5.4 tests/test_inventory_api.lua [PINNED_LIBGHIDRA_SOURCE]` now independently
+extracts native model fields/defaults/conversions/citations, enums, service
+declarations and local overrides, and validates cross-ledger recursive expansions
+and accounting. It tests lexer definition boundaries and corrupt ledgers without
+reading upstream Python-binding source. This is **not yet a replacement** for the
+complete semantic inventory generator/research helpers. The old all-unqualified
+M0 evidence invariant is no longer valid for the M3-updated ledger: the Lua
+validator preserves the exact scoped M3 evidence labels, including the special
+success-empty union limitation, rather than erasing runtime evidence or claiming
+unobserved populated producers. Generator/semantic-helper migration remains open.
