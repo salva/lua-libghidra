@@ -284,6 +284,17 @@ NULs, nested optionals, ordinals, compound pagination limits, stale iterators,
 serial order, allocator failures and repeated independent-state lifecycles.
 Standalone and shared/static embedded Lua hosts must use the existing VM.
 
+Operator scope clarification: allocation-failure qualification covers wrapper-owned
+storage, ownership transfer, Lua allocation/longjmp safety, conversion/publication,
+and wrapper handling of exceptions returned across the native boundary. Allocation
+failures inside libghidra, Ghidra or other dependencies are upstream limitations:
+document observed behavior and evidence, then exclude their internal cleanup,
+retention, global-state recovery and exhaustive fault sweeps from M1/release gates.
+Do not investigate or repair those internals further merely to qualify this wrapper.
+Do not claim upstream OOM recovery is guaranteed. This exclusion does not excuse
+wrapper-caused leaks, invalid lifetimes, double destruction, escaping exceptions or
+unsafe Lua frames; ordinary real-backend functional/lifecycle tests remain required.
+
 Upstream's Human-Origin Source License v1.0 explicitly includes bindings/wrappers
 in its derivative definition **when** copied, materially derived or substantially
 informed by protected expression (§§1.14–1.15); mere compatibility/public behavior

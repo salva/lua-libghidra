@@ -60,9 +60,15 @@ container, lock guard, exception object or other live RAII owner may be skipped.
    Audit module initialization, metatable creation, request validation, nested
    responses, errors, UInt64 construction and finalizers, not just dispatch.
 
-M1 records an all-frame audit and allocator-failure sweeps at each allocation
-boundary using ordinary C-built Lua. Prove no leaks, double destruction or skipped
-destructors under ASan/UBSan. If sol2 hides unsafe frames, use direct C API there
+M1 records an audit of wrapper-controlled frames and allocator-failure sweeps at
+wrapper/Lua allocation boundaries using ordinary C-built Lua. Prove no
+wrapper-caused leaks, double destruction or skipped destructors under ASan/UBSan.
+Dependency-internal OOM cleanup, global retention and recovery are documented
+upstream limitations, not qualification gates; no exhaustive upstream allocation
+sweep or engine-internal destructor accounting is required. Preserve discovered
+failures without claiming them repaired or guaranteeing upstream recovery. Native
+boundary exception handling and wrapper-owned cleanup remain required.
+If sol2 hides unsafe frames, use direct C API there
 or throughout; never waive the gate based on pcall. check and iterator raising
 live in Lua after native return.
 Include protected-call setup/exit and allocation-triggered finalizer reentrancy

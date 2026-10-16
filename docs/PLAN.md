@@ -66,6 +66,17 @@ oversized rejection must precede native dispatch/requested-buffer allocation.
 Upper accepted-bound validation needs no multi-gigabyte read; real small reads
 are M2's positive integration cases.
 
+Allocation-failure scope is wrapper-owned storage, Lua/C++ boundary frames,
+publication/conversion, exception containment and wrapper lifetime/cleanup only.
+Per operator decision, document observed libghidra/Ghidra/dependency-internal OOM
+issues and exclude them from required qualification. Stop deep upstream factory
+fault sweeps, global-path retention/recovery instrumentation and engine-internal
+destructor accounting; no new dependency patch is needed for those findings.
+Keep relevant reproducer/evidence as a documented upstream limitation, not a
+mandatory failing release test or a claimed pass. Continue normal real-backend
+tests and wrapper-only fault/sanitizer gates; distinguish fault origin rather than
+disabling wrapper safety checks or masking ordinary functional failures.
+
 Exit: reproducible local-enabled installed load, no second VM, exact numeric
 conversion and safe failure/teardown; no broad adapters before this gate passes.
 

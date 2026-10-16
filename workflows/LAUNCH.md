@@ -29,6 +29,25 @@ guest-local sudo as needed; preserve project-local credentials. Source/dependenc
 caches and temporary build outputs must be ignored by Git. Commit implemented
 changes promptly and do not push or publish without operator permission.
 
+## Operator update — allocation failures limited to wrapper qualification
+
+The operator explicitly narrowed allocation-failure work to wrapper issues.
+Failures inside libghidra/Ghidra/dependencies must be documented and then ignored
+for this project's qualification: no continued internal OOM investigation, repair,
+global-state recovery proof or exhaustive dependency allocation/destructor sweep.
+This supersedes earlier delegated requirements for those upstream-internal gates,
+not wrapper-owned cleanup, Lua longjmp safety, boundary exception handling,
+ordinary native functional tests or other unrelated accepted criteria.
+
+For card-b-c, preserve the existing native factory/specpaths finding and evidence
+as an upstream limitation; stop its current attributable-global-accounting detour.
+Reconcile uncommitted test instrumentation carefully without overwriting other
+work. Exclude upstream-only fault reproducers from required passing suites; do not
+report their historical failures as passes or silently drop wrapper assertions.
+Owners must reconcile obsolete acceptance through supported lifecycle/activation
+mechanisms, preserving history; notifications do not rewrite immutable briefs.
+Do not reset/restart, create new upstream-fix work or change unrelated scope.
+
 ## Operator update — Lua-based deliverable, no Python-binding dependency
 
 Python is allowed during initial development. The finished project must not
