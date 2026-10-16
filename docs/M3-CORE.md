@@ -265,3 +265,33 @@ that later analysis cannot recover inferred parameter types. Attempts using
 `unsigned int` and `uint` both returned native SET_PROTOTYPE_FAILED parse errors;
 the existing supported `int` grammar plus unique parameter name was sufficient
 to observe loss, without extending/repairing the native prototype parser.
+
+## Seed-disabled real Lua persistence reconciliation
+
+The same native-seeded real Lua host now saves configured disposable state, closes
+and releases its owner, explicitly disables the seeding callback, and reopens a
+new real owner with the saved path on ELF and project. Alias/enum/type-member/
+enum-member/comment pages change from one to zero despite saved=true. Signature
+changes from one named parameter to no parameters/void, asserted after actual
+Lua GetFunctionSignature (which asks native decompilation before extraction).
+State files are removed on normal completion. A host-global switch is test-only,
+not production API or altered response; disabling it is crucial to avoid false
+restoration positives by reseeding after reload. The function-symbol/overlay tests
+remain the positive-restoration and nonpersistent-overlay evidence respectively.
+Native-only data/benchmark category observations are not claimed as Lua core rows:
+those operations are full-tier outside delivered core adapters.
+
+### Signature candidate filter disposition
+
+Locked local_client.cpp ListFunctionSignatures first paginates listFunctions,
+then decompiles each candidate and pushes a signature only when optional lookup
+succeeds. listFunctions enumerates native function symbols; signature lookup
+queries that same global scope for Funcdata. On all exercised real candidates
+(including conditional fixture and seeded/reloaded routes), signatures exist;
+no honest empty-filtered-output-before-later-candidates case has been produced.
+Candidate offset tests therefore establish actual candidate indexing, not a
+populated missing-signature branch. That branch remains a native-producer
+coverage limitation, not a requirement to inject an impossible mock into the
+real operation or repair upstream. The wrapper forwards offset/limit unchanged,
+never treats output length/empty page as candidate exhaustion, and exposes no
+signature iterator. This preserves filter semantics without a fake positive.
