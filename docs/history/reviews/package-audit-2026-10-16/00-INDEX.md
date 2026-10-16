@@ -22,8 +22,8 @@ repair campaign. Prior milestone approval does not replace fresh inspection.
 - [x] Confirm operator scope: audit including docs; no implementation/reorganization.
 - [x] Verify baseline, clean tree and idle autonomous runtime; resolve Astra model.
 - [x] Map subsystems and assign independent review dimensions.
-- [ ] Native boundary, ownership, GC/reentrancy, process lifetime.
-- [ ] API semantics, Lua ergonomics, conversions, iteration and persistence.
+- [x] Native boundary, ownership, GC/reentrancy, process lifetime.
+- [x] API semantics, Lua ergonomics, conversions, iteration and persistence.
 - [ ] Build/install/package reproducibility and dependency/VM closure.
 - [ ] User documentation, navigation and historical separation.
 - [ ] Test quality, blind spots and reproducibility of qualification claims.
@@ -48,3 +48,13 @@ under this audit directory. Design/planning authorization is not implementation
 or submission authorization.
 
 Dimension reports and consolidated findings are added as they complete.
+
+## Completed dimension reports
+
+- [Native safety](01-NATIVE-SAFETY.md): no actionable defect established by bounded
+  static review; not an assertion of absolute safety.
+- [API semantics](02-API-SEMANTICS.md): reproduced medium Session reopen validation
+  bypass and low Shutdown facade/documentation inconsistency. Findings await
+  stable consolidated issue IDs and independently reviewed design proposals.
+- [Baseline execution](07-BASELINE-VALIDATION.md): existing configured build and
+  registered tests passed 18/18; broader qualification was not rerun.
