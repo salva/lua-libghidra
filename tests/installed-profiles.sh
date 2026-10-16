@@ -8,7 +8,9 @@ work=${2:?fresh work directory}
 [[ $(id -u) != 0 && ! -e $work ]]
 mkdir -p "$work"
 work=$(realpath "$work")
-external="$root/.cache/native-inputs-patched/engine"
+mkdir "$work/cwd"
+cd "$work/cwd"
+external=$(realpath "${3:?external specs tree}")
 [[ -d $external/Ghidra/Processors ]]
 trap 'chmod -R u+rwX "$work"' EXIT
 run() {

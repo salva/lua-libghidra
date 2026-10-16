@@ -5,13 +5,15 @@ set -euo pipefail
 root=$(cd "$(dirname "$0")/.." && pwd)
 prefix=$(realpath "${1:?installed prefix}")
 work=${2:?fresh work directory}
+build=$(realpath "${3:?configured testing build}")
+[[ -x $build/boundary_static_host && -x $build/boundary_shared_host ]]
 [[ ! -e $work ]]
 mkdir -p "$work/home"
 work=$(realpath "$work")
 export HOME="$work/home"
-unshare -Urnm -- bash -s -- "$root" "$prefix" "$work" <<'ISOLATED'
+unshare -Urnm -- bash -s -- "$root" "$prefix" "$work" "$build" <<'ISOLATED'
 set -euo pipefail
-root=$1 prefix=$2 work=$3
+root=$1 prefix=$2 work=$3 build=$4
 mount --make-rprivate /
 # Remove interpreters and their runtime trees, not merely PATH entries.
 shopt -s nullglob
@@ -34,7 +36,7 @@ printf 'isolated network and unusable Python/Java executables + masked runtime t
 # No current-directory module fallback: every Lua suite selects installed paths.
 mkdir "$work/run"
 cd "$work/run"
-for host in /usr/bin/lua5.4 "$root/build/boundary_static_host" "$root/build/boundary_shared_host"; do
+for host in /usr/bin/lua5.4 "$build/boundary_static_host" "$build/boundary_shared_host"; do
  printf 'installed runtime host=%s prefix=%s\n' "$host" "$prefix"
  for test in installed_owner m2_slice m3_core m3_iterators m4_full_reproducer m4_services m4_contract; do
   "$host" "$root/tests/$test.lua" "$prefix" "$root"

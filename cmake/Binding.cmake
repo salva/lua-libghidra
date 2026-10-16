@@ -23,6 +23,16 @@ target_link_libraries(binding_local_whole INTERFACE llg_process_guard)
 install(DIRECTORY "${PROJECT_SOURCE_DIR}/lua/libghidra" DESTINATION "${LUA_SOURCE_DIR}")
 include(CTest)
 if(BUILD_TESTING)
+  set(LLG_INTEGRATION_PREFIX "" CACHE PATH "Fresh integration install destination")
+  set(LLG_INTEGRATION_WORK_ROOT "" CACHE PATH "Existing writable integration work root")
+  set(LLG_INTEGRATION_EXTERNAL_SPECS "" CACHE PATH "Prepared external engine specs")
+  add_custom_target(integration
+    COMMAND bash "${PROJECT_SOURCE_DIR}/tests/installed-qualification.sh"
+      --build "${CMAKE_BINARY_DIR}" --prefix "${LLG_INTEGRATION_PREFIX}"
+      --work-root "${LLG_INTEGRATION_WORK_ROOT}"
+      --external-specs "${LLG_INTEGRATION_EXTERNAL_SPECS}" --mode full
+    USES_TERMINAL VERBATIM)
+
   llg_header_directory(system_include ${LUA_INCLUDE_DIRS})
   set(LLG_SYSTEM_LUA_INCLUDE_DIR "${system_include}" CACHE PATH "System embedded Lua headers" FORCE)
   llg_check_headers("${system_include}" SYSTEM_LUA_ABI_OK)
