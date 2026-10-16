@@ -1,6 +1,7 @@
 // MIT Copyright 2026 Salvador Fandiño.
 #include "boundary.hpp"
 #include "process_guard.hpp"
+#include "native_phase_test.hpp"
 #include <libghidra/local.hpp>
 #include <mutex>
 #include <memory>
@@ -48,7 +49,7 @@ Slot* slot(lua_State* L) { return static_cast<Slot*>(luaL_testudata(L,1,mt)); }
 void release(Slot* s) noexcept {
  if (!s || !s->p) return;
  std::lock_guard<std::mutex> guard(process_guard().engine);
- if (s->p->client) { s->p->client.reset(); process_guard().occupied = false; ++s->p->generation; }
+ if (s->p->client) { LLG_NATIVE_PHASE(2); s->p->client.reset(); process_guard().occupied = false; ++s->p->generation; }
 }
 int close(lua_State* L) { release(slot(L)); lua_pushboolean(L,1); return 1; }
 int gc(lua_State* L) {
@@ -130,7 +131,7 @@ int construct(lua_State* L) {
    auto h = std::make_unique<Handle>();
    std::lock_guard<std::mutex> guard(process_guard().engine);
    if(process_guard().occupied) { seterror(p,"CLIENT_IN_USE","one binding-owned client per process"); }
-   else { h->client=c::CreateLocalClient(std::move(opts)); if(!h->client) throw std::runtime_error("native factory returned null"); process_guard().occupied=true; s->p=h.release(); }
+   else { LLG_NATIVE_PHASE(0); h->client=c::CreateLocalClient(std::move(opts)); if(!h->client) throw std::runtime_error("native factory returned null"); process_guard().occupied=true; s->p=h.release(); }
   } catch(const std::exception& e) { exception(p,e.what()); }
     catch(...) { exception(p,"unknown native exception"); }
   if(s->p) return 1; // No allocating Lua API after transfer.
@@ -177,6 +178,7 @@ int dispatch(lua_State* L) {
    std::lock_guard<std::mutex> guard(process_guard().engine);
    if(!s || !s->p || !s->p->client) { seterror(p,"CLOSED","owner closed"); p.backend="binding"; }
    else {
+    LLG_NATIVE_PHASE(1);
     c::IClient* client=s->p->client.get();
     if(kind==1 || kind==2 || kind==3) ++s->p->generation;
     switch(kind) {

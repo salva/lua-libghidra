@@ -405,3 +405,30 @@ or SDK code. It is bounded: a worker could be descheduled during the observation
 window, and no SDK phase entry/exit counters are present. It therefore does not
 replace native phase-overlap/destruction-vs-construction instrumentation or prove
 all lock coverage or absence of locks across arbitrary Lua callbacks.
+
+### Attributed native lifecycle phases (not a timing oracle)
+
+`ownership_native_phases` compiles the real boundary/owner with a test-only
+`LLG_NATIVE_PHASE_OBSERVER`. Nonallocating noexcept entry/exit callbacks bracket
+CreateLocalClient through publication, native dispatch and client.reset through
+slot release, INSIDE the shared lock. An atomic active counter asserts no overlap;
+thread-local phase identity and per-kind counts assert matched exits. The scoped
+observer destructor runs during native exception unwinding too, before the lock
+is released; there are no Lua calls in these scopes. Production builds expand
+the markers to no-ops and export no observer or scope symbols.
+
+Two independent ordinary C-built Lua states race factories and native calls,
+alternate explicit and GC-only release, reverse ownership, and race retained
+owner destruction against the other state's fresh factory retry. The retry loop
+accepts only CLIENT_IN_USE until a real owner succeeds. No barrier separates
+reset from competing factory calls. Three focused repetitions each observed
+121 constructions, 880 dispatches, 121 resets and 120 destroy-to-construct
+transitions, balanced with zero overlap; the broader 17-test suite passed too.
+Reproduce with `cmake --build build -j4 && ctest --test-dir build -R '^ownership_native_phases$' --repeat until-fail:3 -V`.
+
+This is attributable binding-level native critical-phase evidence, replacing
+reliance on worker pending time for those exercised paths. It is NOT internal
+engine subobject destructor accounting, exhaustive factory exception injection,
+all-operation lock proof or universal scheduler/loader qualification. It uses
+instrumented real owner code linked to the unchanged SDK in an existing Lua VM;
+production DSO loading remains covered separately by contention/copy tests.
