@@ -12,9 +12,17 @@ for _, path in ipairs{
   'LICENSE', 'README.md', 'native-inputs.lock.json', 'native-patched.lock.json',
   'native-system.lock.json', 'docs/API.md', 'docs/NOTICES.md',
   'docs/INSTALLED-CORE.md', 'docs/SPEC.md', 'docs/M3-CORE.md',
+  'docs/M4-FULL.md', 'docs/COVERAGE.md', 'docs/EXAMPLES.md',
+  'docs/DESIGN.md', 'docs/PLAN.md', 'docs/PACKAGE-HANDOFF.md',
+  'docs/PACKAGE-FOUNDATION.md', 'api/README.md',
   'api/FIELDS.md', 'api/coverage.json', 'api/runtime-evidence-m3.json',
   'api/history/coverage-m3.json', 'docs/evidence/native-toolchain.txt',
-} do read(root .. path) end
+} do
+  local text = read(root .. path)
+  if arg[3] then
+    assert(text == read(arg[3] .. '/' .. path), 'stale installed artifact: ' .. path)
+  end
+end
 for _, name in ipairs{'libghidra','engine','protobuf','abseil','utf8-range',
   'httplib','binutils','zlib1g','libzstd1','libc6','libstdc++6','lua'} do
   read(root .. 'docs/evidence/native-notices/' .. name .. '.txt')
