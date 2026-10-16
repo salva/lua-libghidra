@@ -183,6 +183,7 @@ static void function(lua_State* L, const char* key, lua_CFunction f) {
 void owner_module(lua_State*);
 #endif
 int module(lua_State* L) {
+    luaL_checkversion(L);
     luaL_newmetatable(L, mt);
     function(L, "__tostring", hex); function(L, "__eq", eq);
     function(L, "__lt", lt); function(L, "__le", le);

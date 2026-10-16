@@ -8,11 +8,18 @@ work=$2
 mkdir -p "$work"
 work=$(realpath "$work")
 cd "$root"
+host=$(realpath "$(command -v lua5.4)")
+include=
+for flag in $(pkg-config --cflags-only-I lua5.4); do
+ case "$flag" in -I*) candidate=${flag#-I}
+  if test -f "$candidate/lua.h" && test -f "$candidate/lauxlib.h" && test -f "$candidate/luaconf.h"; then include=$candidate; break; fi;; esac
+done
+: "${include:?missing Lua headers}"
 # Driver must fail before configuring when input selection is absent/ambiguous.
 if env -u LLG_SDK_PREFIX -u LLG_INPUT_ROOT LLG_BUILD_DIR="$work/rejected" \
-  lua5.4 scripts/luarocks-build.lua build /unused /unused/lib /unused/lua; then exit 1; fi
+  lua5.4 scripts/luarocks-build.lua build /unused /unused/lib /unused/lua "$host" "$include"; then exit 1; fi
 if LLG_BUILD_DIR="$work/rejected" LLG_SDK_PREFIX="$sdk" LLG_INPUT_ROOT="$sdk" \
-  lua5.4 scripts/luarocks-build.lua build /unused /unused/lib /unused/lua; then exit 1; fi
+  lua5.4 scripts/luarocks-build.lua build /unused /unused/lib /unused/lua "$host" "$include"; then exit 1; fi
 test ! -e "$work/rejected"
 LLG_BUILD_DIR="$work/build" LLG_SDK_PREFIX="$sdk" \
   luarocks --lua-version=5.4 --tree="$work/rocks" make --deps-mode=none --no-manifest

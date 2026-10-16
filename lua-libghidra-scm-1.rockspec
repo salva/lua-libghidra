@@ -12,7 +12,7 @@ supported_platforms = { 'linux' }
 dependencies = { 'lua >= 5.4, < 5.5' }
 build = {
   type = 'command',
-  build_command = '$(LUA) scripts/luarocks-build.lua build "$(PREFIX)" "$(LIBDIR)" "$(LUADIR)"',
+  build_command = '$(LUA) scripts/luarocks-build.lua build "$(PREFIX)" "$(LIBDIR)" "$(LUADIR)" "$(LUA)" "$(LUA_INCDIR)"',
   install_command = '$(LUA) scripts/luarocks-build.lua install "$(PREFIX)" "$(LIBDIR)" "$(LUADIR)"',
   copy_directories = {},
 }

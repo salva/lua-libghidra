@@ -15,12 +15,18 @@ if phase=='install' then
   run{'cmake','--install',build,'--prefix',prefix}
 else
   local prefix,libdir,luadir=assert(arg[2]),assert(arg[3]),assert(arg[4])
+  local host,include=assert(arg[5],'selected Lua executable required'),assert(arg[6],'selected Lua headers required')
+  for _,path in ipairs{host,include} do
+    assert(path:sub(1,1)=='/' and not path:find('$',1,true),'selected Lua paths must be expanded absolute paths')
+  end
+  print('Selected Lua driver: host='..host..'; headers='..include)
   local sdk=os.getenv('LLG_SDK_PREFIX')
   local inputs=os.getenv('LLG_INPUT_ROOT')
   assert((sdk and sdk~='') ~= (inputs and inputs~=''),
     'set exactly one of LLG_SDK_PREFIX or LLG_INPUT_ROOT (prepared authorized inputs)')
   local args={'cmake','-S','.','-B',build,'-G','Ninja','-DBUILD_TESTING=OFF',
-    '-DCMAKE_BUILD_TYPE=Release','-DCMAKE_INSTALL_PREFIX='..prefix,
+    '-DLUA_EXECUTABLE='..host,'-DLLG_LUA_INCLUDE_DIR='..include,
+    '-DCMAKE_EXPORT_COMPILE_COMMANDS=ON','-DCMAKE_BUILD_TYPE=Release','-DCMAKE_INSTALL_PREFIX='..prefix,
     '-DLUA_MODULE_DIR='..libdir,'-DLUA_SOURCE_DIR='..luadir,
     '-DFETCHCONTENT_FULLY_DISCONNECTED=ON'}
   if sdk and sdk~='' then
