@@ -29,7 +29,7 @@ if(BUILD_TESTING)
     ${PROJECT_SOURCE_DIR}/src/boundary.cpp)
   target_include_directories(boundary_host PRIVATE ${LUA_INCLUDE_DIRS} ${PROJECT_SOURCE_DIR}/src)
   target_compile_options(boundary_host PRIVATE -UNDEBUG)
-  target_link_libraries(boundary_host PRIVATE ${LUA_LIBRARIES})
+  target_link_libraries(boundary_host PRIVATE ${LUA_LIBRARIES} binding_local_whole)
   add_test(NAME boundary_host COMMAND boundary_host)
   find_library(LUA_STATIC_ARCHIVE NAMES liblua5.4.a REQUIRED)
   add_executable(boundary_static_host ${PROJECT_SOURCE_DIR}/tests/embedded.c)
@@ -111,3 +111,7 @@ if(BUILD_TESTING)
     ${PROJECT_SOURCE_DIR}/tests/ownership_loaded_copy.lua ${CMAKE_BINARY_DIR})
   set_tests_properties(ownership_loaded_copy PROPERTIES TIMEOUT 30)
 endif()
+# Runnable first-slice example plus explicit fixture test data, not module APIs.
+install(FILES ${PROJECT_SOURCE_DIR}/examples/first_slice.lua
+              ${PROJECT_SOURCE_DIR}/examples/fixture_manifest.lua
+        DESTINATION share/libghidra/examples)

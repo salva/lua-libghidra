@@ -1,5 +1,6 @@
 // MIT Copyright 2026 Salvador Fandiño.
 #include "boundary.hpp"
+#include "slice_convert.hpp"
 #include <cstdlib>
 #include <cstdio>
 #include <cassert>
@@ -43,6 +44,40 @@ static int detached(lua_State* L) {
     if (rc) return lua_error(L);
     return 1;
 }
+// Full new nested converters, including synthetic fields ordinary fixtures omit.
+// The owner lives below the protected conversion, never in a jumped frame.
+struct SliceOwned {
+ static inline int live=0;
+ libghidra::client::DecompilationRecord dec;
+ libghidra::client::FunctionRecord fn;
+ libghidra::client::InstructionRecord ins;
+ SliceOwned() {
+  ++live; fn.entry_address=UINT64_MAX; fn.is_thunk=false; fn.parameter_count=0;
+  dec.function_entry_address=UINT64_MAX; dec.completed=false; dec.is_fallback=true;
+  dec.pseudocode=std::string("a\0b",3); dec.error_message="diagnostic";
+  libghidra::client::DecompileLocalRecord local;
+  local.ordinal=0; local.kind=libghidra::client::DecompileLocalKind::kParam;
+  dec.locals.push_back(local);
+  libghidra::client::DecompileTokenRecord token;
+  token.kind=static_cast<libghidra::client::DecompileTokenKind>(99);
+  token.line_number=-1; token.column_offset=0; dec.tokens.push_back(token);
+ }
+ ~SliceOwned() { --live; }
+};
+static int slice_convert(lua_State* L) {
+ const auto* p=static_cast<SliceOwned*>(lua_touserdata(L,1));
+ lua_createtable(L,0,3);
+ llg::slice::value(L,p->dec); lua_setfield(L,-2,"dec");
+ llg::slice::value(L,p->fn); lua_setfield(L,-2,"fn");
+ llg::slice::value(L,p->ins); lua_setfield(L,-2,"ins");
+ return 1;
+}
+static int slice_detached(lua_State* L) {
+ int rc; luaL_checkstack(L,32,"slice stack");
+ { SliceOwned p; rc=llg::protected_convert(L,slice_convert,&p); }
+ if(rc) return lua_error(L);
+ return 1;
+}
 static int exercise(lua_State* L) {
     luaL_requiref(L, "libghidra._native", luaopen_libghidra__native, 0); lua_pop(L, 1);
     lua_pushcfunction(L, detached); lua_setglobal(L, "detached");
@@ -79,7 +114,13 @@ static void edge_sweeps() {
   "local x,e=n._validate_page{limit=0}; assert(x==nil and e.operation=='page')",
   "return n._validate_page{range_start='0xffffffffffffffff',range_end=0,limit=1,offset=0}",
   "local x,e=n._validate_read_size(-1); assert(x==nil and e.operation=='read_bytes')",
-  "return detached()"
+  "return detached()",
+  "local v=slice_detached(); assert(v.dec.completed==false and v.dec.is_fallback==true); "
+  "assert(v.dec.pseudocode=='a\\0b' and v.dec.error_message=='diagnostic'); "
+  "assert(v.fn.entry_address:decimal()=='18446744073709551615' and v.fn.is_thunk==false and v.fn.parameter_count==0); "
+  "assert(v.dec.locals[1].ordinal==0 and v.dec.locals[1].kind=='param'); "
+  "assert(v.dec.tokens[1].kind==99 and v.dec.tokens[1].line_number==-1 and v.dec.tokens[1].column_offset==0); "
+  "assert(v.ins.address:decimal()=='0' and v.ins.length==0)"
  };
  size_t denials=0;
  for(const char* source:cases) {
@@ -88,16 +129,17 @@ static void edge_sweeps() {
    Allocator a; lua_State* L=lua_newstate(allocate,&a); assert(L);
    luaL_openlibs(L); luaL_requiref(L,"libghidra._native",luaopen_libghidra__native,0); lua_setglobal(L,"n");
    lua_pushcfunction(L,detached); lua_setglobal(L,"detached");
+   lua_pushcfunction(L,slice_detached); lua_setglobal(L,"slice_detached");
    assert(luaL_dostring(L,"u=assert(n.u64('18446744073709551615')); z=assert(n.u64(0))")==LUA_OK);
    assert(luaL_loadstring(L,source)==LUA_OK);
    a.calls=a.refused=0; a.fail=point;
    int rc=lua_pcall(L,0,LUA_MULTRET,0); a.fail=SIZE_MAX;
    if(a.refused) { ++hits; assert(rc==LUA_ERRMEM); }
    else { assert(rc==LUA_OK && a.calls<point); tail=true; }
-   assert(Owned::live==0);
+   assert(Owned::live==0 && SliceOwned::live==0);
    lua_settop(L,0);
    // Retry on SAME ordinary Lua VM after every actual error.
-   assert(luaL_dostring(L,source)==LUA_OK); assert(Owned::live==0);
+   assert(luaL_dostring(L,source)==LUA_OK); assert(Owned::live==0 && SliceOwned::live==0);
    lua_close(L); assert(a.bytes==0);
    if(tail) break;
   }

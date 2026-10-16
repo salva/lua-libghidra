@@ -14,6 +14,56 @@ function Session:read_bytes(...)
   if not response then return nil, err end
   return response.data, nil, response
 end
+-- All reads use the owning native dispatch and detached converter.
+for _, name in ipairs{'list_functions','list_instructions'} do
+  Session[name] = function(self, ...) return self._owner[name](self._owner, ...) end
+end
+local function unwrap(self, name, key, ...)
+  local response, err = self._owner[name](self._owner, ...)
+  if not response then return nil, err end
+  if response[key] == nil then
+    return nil, {code='NOT_FOUND',message='optional result absent',operation=name,backend='binding'}, response
+  end
+  return response[key], nil, response
+end
+function Session:get_function(address) return unwrap(self,'get_function','function',address) end
+function Session:get_instruction(address) return unwrap(self,'get_instruction','instruction',address) end
+function Session:get_decompilation(address, options)
+  if options ~= nil and (type(options) ~= 'table' or next(options) ~= nil) then
+    return nil, {code='INVALID_ARGUMENT',message='facade decompilation options must be empty',operation='get_decompilation',backend='binding'}
+  end
+  return unwrap(self,'get_decompilation','decompilation',address)
+end
+function Session:iter_functions(options)
+  local function raise(code, message)
+    error({code=code,message=message,operation='iter_functions',backend='binding'},0)
+  end
+  local page, err = require('libghidra._native')._validate_page(options,true)
+  if not page then error(err,0) end
+  local owner, generation = self._owner, self._owner:_generation()
+  local records, index, last, done = {}, 1, nil, false
+  return function()
+    if owner:_generation() ~= generation then raise('ITERATOR_INVALIDATED','owner generation changed') end
+    if done then return nil end
+    if index > #records then
+      local response, failure = owner:list_functions(page)
+      if not response then error(failure,0) end
+      records, index = response.functions, 1
+      if #records > page.limit then raise('PAGINATION_STALLED','oversized page') end
+      for _, record in ipairs(records) do
+        local key = record.entry_address
+        if last and key <= last then raise('PAGINATION_STALLED','non-advancing function order') end
+        last = key
+      end
+      if #records == 0 then done=true; return nil end
+      if page.offset > 2147483647 - page.limit - #records then
+        raise('PAGINATION_STALLED','pagination offset exhausted')
+      end
+      page.offset = page.offset + #records
+    end
+    local record=records[index]; index=index+1; return record
+  end
+end
 local function invalid(message)
   return nil, {code='INVALID_ARGUMENT', operation='open', backend='binding', message=message}
 end

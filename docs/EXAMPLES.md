@@ -1,6 +1,6 @@
 # Proposed Lua usage
 
-These are acceptance examples, not runnable bindings today. M2 executes the
+These are contract examples. The installed executable below exercises the
 first example using a generated `fixture_manifest` Lua table from M0's authored
 fixture (paths, explicit architecture/compiler, known function address and a
 known absent address). That table is test data, not another SDK API. M3 executes
@@ -100,3 +100,23 @@ assert(not ok and err.code == "ITERATOR_INVALIDATED") -- even if page buffered
 The outcome is preserved; failed dispatched mutations also invalidate iterators.
 Native batches are not replaced by repeated convenience calls. The original open
 metadata describes its initial open even after mutations or native close/reopen.
+
+## Installed M2 executable
+
+`examples/first_slice.lua` and `fixture_manifest.lua` are now installed to
+`share/libghidra/examples`. Execute with installed module paths only:
+
+```sh
+LIBGHIDRA_FIXTURE_ROOT="$PWD" \
+LUA_PATH="$prefix/share/lua/5.4/?.lua;$prefix/share/lua/5.4/?/init.lua;$prefix/share/libghidra/examples/?.lua" \
+LUA_CPATH="$prefix/lib/lua/5.4/?.so" \
+lua5.4 "$prefix/share/libghidra/examples/first_slice.lua"
+```
+
+This runnable version uses the analyzed project and explicitly decompiles before
+function lookup/iteration. Native binary loading does not eagerly discover
+functions; lookup/pages can be absent/empty until decompilation materializes them.
+The wrapper preserves that behavior rather than inventing an analysis pass.
+`tests/installed-qualification.sh` executes it and the both-surface regression in
+standalone Lua and (for the regression) static/shared C-built existing-VM hosts.
+See [M2 evidence and remaining qualification](M2-SLICE.md).

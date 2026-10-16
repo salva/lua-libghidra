@@ -1,5 +1,7 @@
 // MIT Copyright 2026 Salvador Fandiño.
 #include "boundary.hpp"
+#include "slice_convert.hpp"
+#include <climits>
 #include "process_guard.hpp"
 #include "native_phase_test.hpp"
 #include <libghidra/local.hpp>
@@ -29,6 +31,9 @@ struct Packet {
  const char* exception_code = nullptr; char exception_message[2048] = {};
  c::HealthStatus health; c::OpenProgramResponse opened; c::RevisionResponse revision;
  std::vector<c::Capability> capabilities; c::ReadBytesResponse bytes;
+ c::GetFunctionResponse function; c::ListFunctionsResponse functions;
+ c::GetInstructionResponse instruction; c::ListInstructionsResponse instructions;
+ c::GetDecompilationResponse decompilation;
  bool flag = false; int kind = 0;
 };
 void seterror(Packet& p, const char* code, const char* message) {
@@ -89,6 +94,11 @@ int convert(lua_State* L) {
    field(L,"status",p->capabilities[i].status); field(L,"note",p->capabilities[i].note);
    lua_rawseti(L,-2,i+1);
   } break;
+ case 7: slice::optional(L,"function",p->function.function); break;
+ case 8: slice::array(L,"functions",p->functions.functions); break;
+ case 9: slice::optional(L,"instruction",p->instruction.instruction); break;
+ case 10: slice::array(L,"instructions",p->instructions.instructions); break;
+ case 11: slice::optional(L,"decompilation",p->decompilation.decompilation); break;
  case 6:
   lua_pushlstring(L,reinterpret_cast<const char*>(p->bytes.data.data()),p->bytes.data.size());
   lua_setfield(L,-2,"data"); break;
@@ -144,8 +154,9 @@ int construct(lua_State* L) {
 // native phase, protected detached conversion, destroy packet, trivial rethrow.
 int dispatch(lua_State* L) {
  int kind = static_cast<int>(lua_tointeger(L,lua_upvalueindex(1)));
- const char* names[]={"get_status","open_program","close_program","shutdown","get_revision","get_capabilities","read_bytes"};
+ const char* names[]={"get_status","open_program","close_program","shutdown","get_revision","get_capabilities","read_bytes","get_function","list_functions","get_instruction","list_instructions","get_decompilation"};
  const char* op=names[kind]; Text path,project,name,lang,compiler,format; uint64_t base=0,address=0; uint32_t size=0;
+ Page page; lua_Integer timeout=30000;
  bool readonly=false,ok=true; c::ShutdownPolicy policy=c::ShutdownPolicy::kDiscard;
  if(kind==1) {
   const char* const keys[]={"program_path","project_path","project_name","language_id","compiler_spec_id","format","base_address","read_only",nullptr};
@@ -160,6 +171,14 @@ int dispatch(lua_State* L) {
   if(ok && t.n==4 && !memcmp(t.s,"save",4)) policy=c::ShutdownPolicy::kSave;
   else if(!(ok && t.n==7 && !memcmp(t.s,"discard",7))) ok=false;
  } else if(kind==6) ok=read_u64(L,2,&address) && read_size(L,3,&size);
+ if(kind==7 || kind==9 || kind==11) ok=read_u64(L,2,&address);
+ if(kind==8 || kind==10) ok=read_page(L,2,&page);
+ if(kind==11 && ok && !lua_isnoneornil(L,3)) {
+  const char* const keys[]={"timeout_ms",nullptr};
+  ok=known_keys(L,3,keys);
+  if(ok) { lua_pushliteral(L,"timeout_ms"); lua_rawget(L,3);
+   ok=lua_isnil(L,-1)||read_integer(L,-1,0,INT_MAX,&timeout); lua_pop(L,1); }
+ }
  if(!ok) return error(L,op,"invalid operation arguments");
 #ifdef LLG_READ_OBSERVER
  if(kind==6) observe_read_phase(0,size); // validated, before native request/lock
@@ -182,6 +201,11 @@ int dispatch(lua_State* L) {
     c::IClient* client=s->p->client.get();
     if(kind==1 || kind==2 || kind==3) ++s->p->generation;
     switch(kind) {
+     case 7: take(p,client->GetFunction(address),p.function); break;
+     case 8: take(p,client->ListFunctions(page.start,page.end,page.limit,page.offset),p.functions); break;
+     case 9: take(p,client->GetInstruction(address),p.instruction); break;
+     case 10: take(p,client->ListInstructions(page.start,page.end,page.limit,page.offset),p.instructions); break;
+     case 11: take(p,client->GetDecompilation(address,static_cast<int>(timeout)),p.decompilation); break;
      case 0: take(p,client->GetStatus(),p.health); break;
      case 1: take(p,client->OpenProgram(request),p.opened); break;
      case 2: { c::CloseProgramResponse r; if(take(p,client->CloseProgram(policy),r)) p.flag=r.closed; break; }
@@ -207,8 +231,8 @@ void fn(lua_State* L,const char* name,lua_CFunction f) { lua_pushcfunction(L,f);
 void owner_module(lua_State* L) {
  luaL_newmetatable(L,mt);
  fn(L,"__gc",gc); fn(L,"__close",close); fn(L,"close",close); fn(L,"_generation",generation);
- const char* names[]={"get_status","open_program","close_program","shutdown","get_revision","get_capabilities","read_bytes"};
- for(int i=0;i<7;++i) { lua_pushinteger(L,i); lua_pushcclosure(L,dispatch,1); lua_setfield(L,-2,names[i]); }
+ const char* names[]={"get_status","open_program","close_program","shutdown","get_revision","get_capabilities","read_bytes","get_function","list_functions","get_instruction","list_instructions","get_decompilation"};
+ for(int i=0;i<12;++i) { lua_pushinteger(L,i); lua_pushcclosure(L,dispatch,1); lua_setfield(L,-2,names[i]); }
  lua_pushvalue(L,-1); lua_setfield(L,-2,"__index");
  lua_pushliteral(L,"native owner"); lua_setfield(L,-2,"__metatable"); lua_pop(L,1);
  fn(L,"local_client",construct);
