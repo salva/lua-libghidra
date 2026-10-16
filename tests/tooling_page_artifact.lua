@@ -33,5 +33,15 @@ end
 assert(mutation_count==32,'mutation artifact coverage incomplete')
 local req=artifact.request_reviews
 assert(req.reviewed.SetFunctionLocalType.data_type and req.reviewed.CloseProgram.policy and req.reviewed.Shutdown.policy)
-assert(#req.unreviewed==43,'remaining request ledger changed')
-print('32 mutation fingerprints and reconciled 43 outstanding direct-input ledger PASS')
+assert(#req.unreviewed==0,'remaining request ledger changed')
+print('32 mutation fingerprints and reconciled zero outstanding direct-input ledger PASS')
+local reconstructed=0
+for name,r in pairs(req.type_reconstruction_reviews) do
+ reconstructed=reconstructed+1
+ if ops[name].reconstruction_source_review then
+  local old=ops[name].reconstruction_source_review
+  assert(r.body_sha256==old.body_sha256 and r.line==old.line,'member reconstruction fingerprint changed '..name)
+ end
+end
+assert(reconstructed==20)
+print('Type-family source fingerprints and complete direct request ledger PASS (not runtime approval)')

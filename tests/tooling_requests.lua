@@ -6,7 +6,7 @@ local raw=U.read(root..'/cpp/src/local_client.cpp'); local adapter=U.read(root..
 local data=require('inventory_native').inventory(root)
 local reviews=R.review(raw,adapter,data); local nested=0
 for _,fields in pairs(reviews.reviewed) do for _,r in pairs(fields) do if r.kind=='nested' then nested=nested+1 end end end
-assert(nested==20); assert(#reviews.unreviewed>0,'must not claim remaining direct arguments reviewed')
+assert(nested==20); assert(#reviews.unreviewed==0,'direct request reviews incomplete')
 local function changed(source,signature,needle,replacement)
  local _,text,opening,ending=S.body(source,signature); local i,j=assert(text:find(needle,1,true))
  return source:sub(1,opening-1)..text:sub(1,i-1)..replacement..text:sub(j+1)..source:sub(ending+1)

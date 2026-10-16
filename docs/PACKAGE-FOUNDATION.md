@@ -228,3 +228,14 @@ Remaining direct arguments are now **43** (superseding earlier progress counts),
 primarily type/member/enum and benchmark consumers. This is not full migration or
 runtime approval: request echoes/side-map flags are not readback or persistence,
 failed all-slot mutations can be partial, and signature function_name stays default.
+
+The type/member/enum and benchmark-delete input batch closes the remaining **43
+direct input reviews**, including service/native argument origin mapping. Run
+`lua5.4 tests/tooling_type_inputs.lua [PINNED_SOURCE]`. Real source mutations
+cover loaded guards, exact one-slash normalization, parent forwarding, ordinal
+reconstruction, signed offset casts/sums, enum value bit-pattern casts, unchecked
+comment side-maps and conditional benchmark revision. New artifacts now require
+**zero outstanding direct arguments**. This is source-accounting closure only:
+records/graph/decompilation/performance/container/session semantic migration and
+complete coverage output still remain. No inferred union producer, durable member
+identity, comment persistence or mutation rollback guarantee is added.
