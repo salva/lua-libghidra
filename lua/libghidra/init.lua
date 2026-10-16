@@ -5,24 +5,41 @@ Session.__index = Session
 function Session:native() return self._owner end
 function Session:close() return self._owner:close() end
 Session.__close = Session.close
-for _, name in ipairs{'get_status','get_capabilities','get_revision','open_program',
-                       'shutdown'} do
+for _, name in ipairs{'get_status','get_capabilities','get_revision'} do
   Session[name] = function(self, ...) return self._owner[name](self._owner, ...) end
 end
--- Stricter convenience policy; native() remains faithful to CloseProgram.
-function Session:close_program(options)
+local function invalid(operation, message)
+  return nil, {code='INVALID_ARGUMENT',operation=operation,backend='binding',message=message}
+end
+local program_keys={program_path=true,project_path=true,language_id=true,
+  compiler_spec_id=true,format=true,base_address=true}
+-- Policy only: native parsing remains authoritative for values and defaults.
+local function validate_program(program, operation)
+  if type(program)~='table' then return invalid(operation,'program table required') end
+  for key in next, program do
+    if not program_keys[key] then return invalid(operation,'unknown program option') end
+  end
+  return true
+end
+function Session:open_program(program)
+  local valid, err=validate_program(program,'open_program')
+  if not valid then return nil, err end
+  return self._owner:open_program(program)
+end
+-- Stricter save policy for exactly these two facade lifecycle methods.
+-- _has_state_path defers closed owners to native CLOSED precedence.
+local function close_with_policy(self, options, operation)
   if type(options)=='table' and rawget(options,'policy')=='save' and
      not self._owner:_has_state_path() then
-    -- Validate all other arguments through native only on allowed dispatches.
-    for k in next, options do
-      if k~='policy' then
-        return nil, {code='INVALID_ARGUMENT',message='unknown close option',operation='close_program',backend='binding'}
-      end
+    for key in next, options do
+      if key~='policy' then return invalid(operation,'unknown close option') end
     end
-    return nil, {code='NO_STATE_PATH',message='save-close requires state_path',operation='close_program',backend='binding'}
+    return nil, {code='NO_STATE_PATH',message='save requires state_path',operation=operation,backend='binding'}
   end
-  return self._owner:close_program(options)
+  return self._owner[operation](self._owner,options)
 end
+function Session:close_program(options) return close_with_policy(self,options,'close_program') end
+function Session:shutdown(options) return close_with_policy(self,options,'shutdown') end
 function Session:read_bytes(...)
   local response, err = self._owner:read_bytes(...)
   if not response then return nil, err end
@@ -87,9 +104,6 @@ for family,descriptor in pairs(families) do
     end,descriptor.id,descriptor.order,options,descriptor.counts)
   end
 end
-local function invalid(message)
-  return nil, {code='INVALID_ARGUMENT', operation='open', backend='binding', message=message}
-end
 local function publish(owner, program)
   local response, err = owner:open_program(program)
   if not response then return nil, err end
@@ -98,14 +112,13 @@ end
 -- Keep validation separate from construction, and use pcall for publication.
 local function open(options)
   -- Validate with the same rules without constructing any resource.
-  if type(options) ~= 'table' then return invalid('options table required') end
+  if type(options) ~= 'table' then return invalid('open','options table required') end
   for k in next, options do
-    if k ~= 'client' and k ~= 'program' then return invalid('unknown open option') end
+    if k ~= 'client' and k ~= 'program' then return invalid('open','unknown open option') end
   end
   local program = rawget(options,'program')
-  if type(program) ~= 'table' then return invalid('program table required') end
-  local allowed = {program_path=true,project_path=true,language_id=true,compiler_spec_id=true,format=true,base_address=true}
-  for k in next, program do if not allowed[k] then return invalid('unknown program option') end end
+  local valid, failure=validate_program(program,'open')
+  if not valid then return nil, failure end
   local owner, err = low.local_client(rawget(options,'client'))
   if not owner then return nil, err end
   local ok, session, failure, response = pcall(publish, owner, program)
