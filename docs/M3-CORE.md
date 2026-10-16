@@ -16,7 +16,7 @@ including NUL; bytes are binary strings. No replacement backend results.
 
 ## Grammar and field manifest
 
-`api/coverage.json` remains the exact native field/type/default ledger. Every
+`api/coverage.json` (generated source facts; original M3 runtime/manual annotations retained in `api/history/coverage-m3.json`, runtime index in `api/runtime-evidence-m3.json`) remains the exact native field/type/default ledger. Every
 response field of the following native models is converted explicitly by
 `src/core_convert.hpp`, including all booleans, empty strings, nested parameters,
 UInt64 identifiers/ordinals and signed offsets/enum values. Response envelopes in

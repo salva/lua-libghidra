@@ -36,3 +36,24 @@ end
 assert(require('tool_json_encode')(J.null)=='null')
 assert(J.decode(require('tool_json_encode')({absent=J.null})).absent==J.null)
 print('Conversion-source/order/default and actual JSON null regressions PASS')
+assert(data.surface_audit.grammar_accounted==70 and #data.surface_audit.proposed_grammar==60)
+assert(ops.GetType.surface_contract.lowlevel.grammar.approved_call==J.null)
+assert(ops.ReadBytes.surface_contract.lowlevel.grammar.approved_call=='read_bytes(address, size)')
+assert(ops.ReadBytes.surface_contract.lowlevel.argument_alias:find('INT32_MAX',1,true))
+assert(ops.CloseProgram.surface_contract.facade.save_policy:find('before dispatch',1,true))
+assert(ops.ListFunctionSignatures.surface_contract.facade.disposition:find('no iterator',1,true))
+assert(ops.ListDefinedStrings.surface_contract.facade.disposition:find('no discovery iterator',1,true))
+assert(ops.GetDecompilation.surface_contract.facade.timeout_policy:find('reject explicit timeout',1,true))
+local ignored=false; for _,a in ipairs(ops.DeleteSymbol.request) do if a.name=='name_filter' then ignored=a.ignored end end; assert(ignored)
+for _,a in ipairs(ops.OpenProgram.request[1].nested_fields) do if a.name=='read_only' then assert(a.ignored) end end
+print('Full 70-surface/10-approved/60-proposed grammar, extraction and rejection policies PASS')
+for _,name in ipairs{'GetType','ReadBytes','ListFunctionSignatures','ListDefinedStrings'} do
+ local op=ops[name]; assert(op.surface_contract.lowlevel.grammar.native_argument_order)
+end
+local T=require('inventory_surfaces')
+local included=data.operations[1]
+-- Normative tier joins must never turn an excluded stub into a new public adapter.
+local old=ops.ListBookmarks.tier; ops.ListBookmarks.tier='core'
+rejects(function() T.apply(data) end); ops.ListBookmarks.tier=old
+T.apply(data)
+print('Surface corruption/count and excluded-adapter regression PASS')

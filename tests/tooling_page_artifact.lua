@@ -2,7 +2,7 @@
 package.path='scripts/?.lua;'..package.path
 local U,J,S=require('tool_util'),require('tool_json'),require('inventory_source')
 local artifact=J.decode(U.read(assert(arg[1])))
-local ledger=J.decode(U.read('api/coverage.json'))
+local ledger=J.decode(U.read('api/history/coverage-m3.json'))
 local ops={}; for _,op in ipairs(ledger.operations) do ops[op.name]=op end
 local count=0
 for name,r in pairs(artifact.page_wrapper_reviews) do

@@ -288,3 +288,20 @@ it does not reproduce every former surface annotation or authorize new syntax.
 Do not run the retired Python generator over accepted M3 evidence to achieve a
 textual match. Remaining work is that schema/evidence/surface cutover and integrated
 owned-tool entry-point audit, not more isolated producer-helper migrations.
+
+### Native Lua inventory cutover
+
+The current entry point is `scripts/inventory-api.lua SOURCE FRESH_JSON --coverage`;
+`api/coverage.json` now uses its integrated native-only format. Run the complete
+inventory regression via `lua5.4 scripts/check-tooling.lua SOURCE FRESH_WORK_DIR`.
+Project-owned Python scripts/tests have been retired (full history retained in
+Git); existing Lua preparation/cache/profile/loader/system equivalents remain.
+The original ledger is preserved byte-for-byte at `api/history/coverage-m3.json`,
+with provenance-pinned `api/runtime-evidence-m3.json`. Neither is a generation
+input; historical fingerprint regressions remain separate from real runtime gates.
+See `api/README.md` for regeneration and manual evidence policy. This supersedes
+above chronological candidate-only notes: all 70 surface rows are assembled with
+extraction, ignored/default inputs, explicit rejection policies and original
+approved-vs-proposed syntax distinction. It adds no new grammar/iterator approval.
+Source-ledger cutover does not discharge the upstream embedding decision request,
+final runtime matrix or shipping/compliance gates.

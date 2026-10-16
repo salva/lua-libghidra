@@ -13,7 +13,7 @@ offsets and rejects non-advancing address order and oversized pages. Upstream
 ArchAdapter symbol-map address order and post-collection paginate define this
 iterator's cursor domain; serial real fixture scans are compared to a full page.
 
-The exact source field ledger remains `api/coverage.json` (native field types,
+The exact source field ledger remains `api/coverage.json` (generated source facts; original evidence retained in `api/history/coverage-m3.json`) (native field types,
 request defaults and ignored timeout). New converters preserve every field of
 FunctionRecord, InstructionRecord, DecompilationRecord, DecompileLocalRecord and
 DecompileTokenRecord. Addresses/sizes are UInt64, narrow counts/lengths/ordinals

@@ -2,7 +2,7 @@
 package.path='scripts/?.lua;'..package.path
 local U,J,S=require('tool_util'),require('tool_json'),require('inventory_source')
 local source=arg[1] or '.cache/native-inputs-patched/libghidra-d51ca813ae1b6b59519551a9be8c0b1ad74d862d'
-local ledger=J.decode(U.read('api/coverage.json'))
+local ledger=J.decode(U.read('api/history/coverage-m3.json'))
 local function reject(f,needle) local ok,e=pcall(f); assert(not ok and tostring(e):find(needle,1,true),tostring(e)) end
 local raw='void caller() { helper(x); if(x) { wrong(); } }\n// helper(int x) {decoy}\nvoid helper(int x) { const char* s="}"; /* } */ const char* r=R"tag({ } })tag"; if(x) { run(); } }'
 local _,body=S.body(raw,'helper('); assert(body:match('if%(x%) { run%(%)%; } }$'))

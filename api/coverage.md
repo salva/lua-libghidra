@@ -1,3 +1,5 @@
+> **Historical research ledger.** Current Lua generation and separate retained M3 evidence are documented in [README.md](README.md). Old Python commands below are historical, not current prerequisites.
+
 # M0 native operation/field inventory — source accounting complete
 
 `coverage.json` inventories pinned public headers, LocalClient and owning native

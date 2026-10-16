@@ -75,7 +75,7 @@ function M.assemble(native,coverage_table)
  end
  local names={}; for name in pairs(native.declarations) do names[#names+1]=name end; table.sort(names)
  local data={format=2,qualification='native-only source semantic accounting; no generated runtime qualification',sources=copy(native.sources),types=copy(native.types),enums=copy(native.enums),operations={},native_reviews=native,
-  acceptance_basis={authority='SPEC/DESIGN/COVERAGE and real Lua/native acceptance, not Python parity',runtime='not inferred or regenerated; historical api/coverage.json remains retained evidence until separately reconciled'},
+  acceptance_basis={authority='SPEC/DESIGN/COVERAGE and real Lua/native acceptance, not Python parity',runtime='not inferred or regenerated; api/history/coverage-m3.json and api/runtime-evidence-m3.json retain historical evidence separately'},
   request_audit={direct_argument_review_missing={}},semantic_audit={response_field_semantics_unreviewed={},wrapper_transition_review_missing={}},
   lifecycle={factory_fields={},factory='CreateLocalClient(LocalClientOptions), unique native owner; process slot/binding lifetime independent of logical program access',owner_close='binding close/__close/GC releases owner; aliases CLOSED; no autosave',native_close='CloseProgram/Shutdown logical access closure retains engines; no binding CLOSED'},
   error_envelope={native='StatusOr status.ok and value present',lua='response or nil,error; unknown codes/messages retained; native and binding domains separate; allocation remains Lua error',facade='lookup extraction plus complete third response; absent optional synthetic NOT_FOUND distinct from native error'}}
@@ -109,6 +109,7 @@ function M.assemble(native,coverage_table)
   else op.surface_contract={lowlevel=null,facade=null,disposition='excluded inherited NOT_SUPPORTED; no local adapter promised'} end
   data.operations[#data.operations+1]=op
  end
+ require("inventory_surfaces").apply(data)
  data.completeness_audit=require('inventory_completeness').validate(data)
  return data
 end
