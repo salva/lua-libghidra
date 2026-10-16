@@ -42,11 +42,17 @@ function Session:iter_functions(options)
   if not page then error(err,0) end
   local owner, generation = self._owner, self._owner:_generation()
   local records, index, last, done = {}, 1, nil, false
+  local function validate_generation()
+    if not owner:_generation_matches(generation) then
+      raise('ITERATOR_INVALIDATED','owner generation changed')
+    end
+  end
   return function()
-    if owner:_generation() ~= generation then raise('ITERATOR_INVALIDATED','owner generation changed') end
+    validate_generation()
     if done then return nil end
     if index > #records then
       local response, failure = owner:list_functions(page)
+      validate_generation() -- publication may have run owner-closing finalizers
       if not response then error(failure,0) end
       records, index = response.functions, 1
       if #records > page.limit then raise('PAGINATION_STALLED','oversized page') end
@@ -61,6 +67,7 @@ function Session:iter_functions(options)
       end
       page.offset = page.offset + #records
     end
+    validate_generation() -- also guards buffered yields; no allocating token publication
     local record=records[index]; index=index+1; return record
   end
 end

@@ -969,3 +969,14 @@ are the executable owners.
 This overlay does not qualify M3/M4 operations, mark all field slots green or
 satisfy independent review. It does not promise recovery from dependency faults,
 internal OOM or SIGSEGV. No Python binding is an oracle or dependency.
+
+M2 original review R1 correction: Session function iterator now revalidates
+shared live-owner generation after page publication and before every record
+return, including buffered yields; exhausted entry and empty fetch are guarded.
+A private nonallocating owner generation-match predicate avoids allocation of a
+fresh UInt64 token during validation. Real ELF/project page-publication finalizer
+regressions cover populated and empty successful pages and require same-call
+ITERATOR_INVALIDATED; installed serial buffered/exhausted/empty reopen checks
+remain permanently invalid. Detached lowlevel success evidence is preserved.
+See M2-SLICE and [[card:card-c-a]] for original red and current primary captures;
+this evidence is a request for original-review re-review, not self-approval.

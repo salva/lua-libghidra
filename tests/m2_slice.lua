@@ -83,13 +83,24 @@ for _,project in ipairs{false,true} do
  local iter=session:iter_functions{page_size=2}
  for _,f in ipairs(all) do assert(iter().entry_address==f.entry_address) end
  assert(iter()==nil and iter()==nil)
- local stale=session:iter_functions{page_size=2}; assert(stale())
+ -- Buffered, exhausted and empty iterators all remain permanently invalid
+ -- after logical close/reopen, not merely the next page-fetch invocation.
+ local stale=session:iter_functions{page_size=100}; assert(stale())
+ local exhausted=session:iter_functions{range_start=address,range_end=address,page_size=2}
+ assert(exhausted()); assert(exhausted()==nil)
+ local empty=session:iter_functions{range_start=0x700000,range_end=0x700000}
+ assert(empty()==nil)
  assert(check(owner:close_program{policy='discard'}).closed)
  local v,e=session:get_function(address); rejects(v,e,'NO_PROGRAM')
  assert(check(session:get_status()).ok)
  local second,e=low.local_client(); rejects(second,e,'CLIENT_IN_USE')
  check(owner:open_program(program)); check(session:get_decompilation(address)); assert(check(session:get_function(address)))
- local ok,e=pcall(stale); assert(not ok and e.code=='ITERATOR_INVALIDATED')
+ for _,iterator in ipairs{stale,iter,exhausted,empty} do
+  for repeat_call=1,2 do
+   local ok,e=pcall(iterator)
+   assert(not ok and e.code=='ITERATOR_INVALIDATED' and e.operation=='iter_functions' and e.backend=='binding')
+  end
+ end
  assert(opened.program_name==historical)
  check(session:close_program{policy='discard'})
  local v,e=owner:get_instruction(address); rejects(v,e,'NO_PROGRAM')

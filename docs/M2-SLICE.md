@@ -165,3 +165,44 @@ fallback producer, partial-function state after failure). Primary invocation
 captures and exact results are in [[card:card-c-a]] status. Prior document reviews
 are not M2 implementation approval. No review result, acceptance waiver, new
 upstream patch or authority to begin M3 is claimed.
+
+### R1 iterator publication-window repair (original review re-review requested)
+
+Original independent M2 review R1 (`record:///review.md?card=card-c&v=3`)
+identified a real facade bug despite correct detached lowlevel publication:
+Session checked generation only on entry, then fetched a page whose conversion
+could run an owner-closing finalizer, and yielded it before the next-call check.
+The existing reentry host now reproduces that exact same-invocation window on
+both ELF and analyzed project, for populated **and empty** successful pages.
+
+Session now validates on entry (including exhausted calls), after page fetch
+before interpreting its response/error, and immediately before any buffered or
+fresh record return. This prevents page mutation/progress updates from hiding
+invalidation and gives ITERATOR_INVALIDATED precedence over a fetched result
+from an invalidated owner. Empty fetches are checked before becoming exhausted.
+Lowlevel detached results and already-returned records remain usable.
+
+The shared native owner adds private `_generation_matches(token)` returning a
+boolean without allocating a UInt64 output. Reusing `_generation()` for the new
+checks would leave another window: it reads the generation *before* allocating
+the token, and that allocation can run a finalizer. The matching helper parses a
+rooted existing token, then checks live owner and generation with only trivial
+locals and nonallocating boolean publication; no Lua-running phase follows the
+owner read. It neither dispatches nor increments generation. Missing/destroyed
+or closed owners fail the predicate; reopening cannot revive an old iterator.
+Existing `_generation()` remains unchanged for snapshot/test use.
+
+Regression scheduling stops GC through the iterator entry check, then restarts
+it at the existing page observer (no step/collection). Actual page publication
+allocations run the pending finalizer; phase 3 plus completed close/reconstruction
+is required. The initial ordinary restart trial missed this window, then the
+refined unchanged-runtime reproducer showed a record returned after owner close
+(exit 134). Both captures remain in card status. Fixed tests require the **same
+invocation** to raise structured ITERATOR_INVALIDATED and repeated calls to stay
+invalid. Existing ten loaded lowlevel detached-success tests are retained.
+Installed both-surface regression additionally exercises buffered, exhausted and
+empty iterators across close/reopen with repeated structured invalidation.
+
+This is a scoped wrapper R1 correction, not a native limitation workaround or
+new M3 operation. Re-review of R1 and affected evidence is requested; this writer
+does not approve its own changes or replace the original independent review.

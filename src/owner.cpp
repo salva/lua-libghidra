@@ -69,6 +69,17 @@ int generation(lua_State* L) {
  if (!s || !s->p) return failure(L,"generation","CLOSED","owner released","binding");
  push_u64(L,s->p->generation); return 1;
 }
+// Iterator guard must not allocate: publishing a UInt64 generation snapshot can
+// itself run a finalizer after reading the old value. Compare the rooted token
+// directly and return only a nonallocating boolean, with no Lua-running phase
+// between checking the live owner and observing its generation.
+int generation_matches(lua_State* L) {
+ uint64_t expected=0;
+ if(!read_u64(L,2,&expected)) { lua_pushboolean(L,0); return 1; }
+ Slot* s=slot(L);
+ lua_pushboolean(L,s && s->p && s->p->client && s->p->generation==expected);
+ return 1;
+}
 int convert(lua_State* L) {
  const Packet* p = static_cast<Packet*>(lua_touserdata(L,1));
  if(p->exception_code) return failure(L,p->op,p->exception_code,p->exception_message,p->backend);
@@ -236,7 +247,7 @@ void fn(lua_State* L,const char* name,lua_CFunction f) { lua_pushcfunction(L,f);
 }
 void owner_module(lua_State* L) {
  luaL_newmetatable(L,mt);
- fn(L,"__gc",gc); fn(L,"__close",close); fn(L,"close",close); fn(L,"_generation",generation);
+ fn(L,"__gc",gc); fn(L,"__close",close); fn(L,"close",close); fn(L,"_generation",generation); fn(L,"_generation_matches",generation_matches);
  const char* names[]={"get_status","open_program","close_program","shutdown","get_revision","get_capabilities","read_bytes","get_function","list_functions","get_instruction","list_instructions","get_decompilation"};
  for(int i=0;i<12;++i) { lua_pushinteger(L,i); lua_pushcclosure(L,dispatch,1); lua_setfield(L,-2,names[i]); }
  lua_pushvalue(L,-1); lua_setfield(L,-2,"__index");

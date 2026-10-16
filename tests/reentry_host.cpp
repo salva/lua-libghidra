@@ -11,9 +11,11 @@ static int mark_finalizer(lua_State* L) {
  lua_pushinteger(L,natural_phase); return 1;
 }
 static bool armed=false;
+static bool restart_at_page=false;
 static unsigned edges=0;
 namespace llg {
 void before_owner_recheck(lua_State* L) {
+ if(restart_at_page) lua_gc(L,LUA_GCRESTART); // no collection/step; allocations schedule GC
  if(!armed) { if(natural && natural_phase==1) natural_phase=3; return; }
  armed=false; ++edges;
  // Actual Lua finalization at the last Lua-running edge before validity check.
@@ -30,7 +32,7 @@ static int natural_call(lua_State* L) {
  // Function/receiver already rooted before starting collector. No explicit
  // collection/step or allocator callback calls Lua; Lua's allocation GC checks
  // alone schedule pending finalizers while the real method executes.
- lua_gc(L,LUA_GCRESTART);
+ if(!restart_at_page) lua_gc(L,LUA_GCRESTART);
  if(prime_debt) assert(lua_checkstack(L,65536)); // storage-only growth, no GC step
  natural_phase=1;
  lua_call(L,lua_gettop(L)-1,2);
@@ -165,6 +167,53 @@ int main() {
   }
   assert(observed);
   std::printf("allocation-driven loaded %s %s: detached success after close/reconstruct PASS\n",project?"project":"ELF",method);
+ }
+ }
+ // R1: real Session iterator page publication must not yield a detached page
+ // after its shared owner closes in an allocation-triggered finalizer.
+ run(L,"package.path='" LLG_FIXTURE_ROOT "/lua/?.lua;" LLG_FIXTURE_ROOT "/lua/?/init.lua'; g=require('libghidra')");
+ for(int project=0;project<2;++project) {
+ for(int empty=0;empty<2;++empty) {
+  bool observed=false;
+  for(int debt=1;debt<=8192 && !observed;debt*=2) {
+   natural_phase=0;
+   lua_pushboolean(L,project); lua_setglobal(L,"project_profile");
+   lua_pushboolean(L,empty); lua_setglobal(L,"empty_page");
+   run(L,"result=nil; result_error=nil; iterator=nil; session=nil; c=nil; collectgarbage('collect'); "
+         "collectgarbage('incremental',100,1000,0); "
+         "local p={program_path='" LLG_FIXTURE_ROOT "/tests/fixtures/inputs/authored.elf',language_id='x86:LE:64:default',compiler_spec_id='gcc'}; "
+         "if project_profile then p.project_path='" LLG_FIXTURE_ROOT "/tests/fixtures/project/authored.gpr' end; "
+         "session=assert(g.open{program=p}); c=session:native(); "
+         "assert(c:get_decompilation(0x401106).decompilation.completed); "
+         "local start=empty_page and 0x700000 or 0x401106; "
+         "iterator=session:iter_functions{range_start=start,range_end=start,page_size=2}; "
+         "collectgarbage('stop'); hits=0; completed=0; finalizer_phase=0; "
+         "do local owner=c; local f=setmetatable({}, {__gc=function() "
+         "finalizer_phase=mark_finalizer(); hits=hits+1; "
+         "finalizer_ok,finalizer_error=pcall(function() assert(owner:close()); "
+         "local r=assert(n.local_client()); assert(r:close()); completed=completed+1 end) end}) end");
+   for(int i=0;i<debt;++i) { lua_newtable(L); lua_pop(L,1); }
+   lua_pushcfunction(L,natural_call); lua_getglobal(L,"iterator");
+   restart_at_page=true;
+   int rc=lua_pcall(L,1,2,0); restart_at_page=false; natural_phase=2;
+   lua_getglobal(L,"finalizer_phase"); observed=lua_tointeger(L,-1)==3; lua_pop(L,1);
+   if(observed) {
+    run(L,"assert(hits==1 and completed==1); assert(finalizer_ok,finalizer_error); "
+          "local v,e=c:get_status(); assert(v==nil and e.code=='CLOSED')");
+    if(rc==LUA_OK) {
+     lua_getfield(L,-2,"entry_address");
+     std::fprintf(stderr,"R1 RED %s: SAME invocation yielded record after phase-3 owner close/reconstruct (address userdata=%d)\n",project?"project":"ELF",lua_isuserdata(L,-1));
+     lua_pop(L,1);
+    }
+    assert(rc!=LUA_OK && lua_istable(L,-1));
+    lua_getfield(L,-1,"code"); assert(!std::strcmp(lua_tostring(L,-1),"ITERATOR_INVALIDATED")); lua_pop(L,1);
+   }
+   lua_settop(L,0);
+   if(observed) run(L,"local ok,e=pcall(iterator); assert(not ok and e.code=='ITERATOR_INVALIDATED')");
+   run(L,"c:close(); c=nil; session=nil; iterator=nil; collectgarbage('collect'); local r=assert(n.local_client()); assert(r:close())");
+  }
+  assert(observed);
+  std::printf("R1 %s %s iterator same-invocation invalidation PASS\n",project?"project":"ELF",empty?"empty-page":"populated-page");
  }
  }
  // Invalid option paths allocate structured errors before receiver lookup.
