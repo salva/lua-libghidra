@@ -6,9 +6,8 @@ Original Lua/C++ wrapper and documentation: Copyright 2026 Salvador Fandiño,
 `d51ca813ae1b6b59519551a9be8c0b1ad74d862d` (reports 0.0.9, not tag equivalence).
 No endorsement is implied. Upstream's Human-Origin Source License v1.0 is retained
 verbatim in [libghidra notice](evidence/native-notices/libghidra.txt).
-The operator accepted that license for planning only: no legal clearance,
-combined-license compatibility finding, additional rights or publication approval.
-See [bounded disposition](M0-LICENSE.md).
+This is not legal clearance, a combined-license compatibility finding or an
+exemption from applicable upstream wrapper conditions.
 
 ## Exact selected inputs, provenance and linked closure
 
@@ -35,25 +34,23 @@ claim that all corresponding-source archives have been obtained or delivered.
 | C++ / GCC runtime | GCC 14 libstdc++6 and libgcc-s1 14.2.0-4ubuntu2~24.04.1 (source gcc-14) | libstdc++6.txt, GPL/LGPL plus applicable exceptions |
 | Lua host | PUC Lua 5.4.6, Ubuntu 5.4.6-3build2 | MIT, lua.txt; borrowed from host, not linked as a second VM |
 
-All notice filenames above are in [evidence/native-notices](evidence/native-notices/).
+Direct retained notices:
+
+[libghidra.txt](evidence/native-notices/libghidra.txt), [engine.txt](evidence/native-notices/engine.txt), [protobuf.txt](evidence/native-notices/protobuf.txt), [abseil.txt](evidence/native-notices/abseil.txt), [utf8-range.txt](evidence/native-notices/utf8-range.txt), [httplib.txt](evidence/native-notices/httplib.txt), [binutils.txt](evidence/native-notices/binutils.txt), [libiberty-dev.txt](evidence/native-notices/libiberty-dev.txt), [zlib1g.txt](evidence/native-notices/zlib1g.txt), [libzstd1.txt](evidence/native-notices/libzstd1.txt), [libc6.txt](evidence/native-notices/libc6.txt), [libstdc++6.txt](evidence/native-notices/libstdc++6.txt), [lua.txt](evidence/native-notices/lua.txt).
+
+
 `libiberty-dev.txt` is retained as input accounting; the selected shared BFD
 profile does **not** link libiberty.a. No claim that every input is a DT_NEEDED
 library: Protobuf/Abseil/engine/local archives are incorporated into the module;
-BFD/zlib/zstd/sframe and C/C++ runtimes form its shared closure. Compiler GCC
-13.3.0, CMake 3.28.3, C++20 and build interpreter identities are retained in
-[evidence/native-toolchain.txt](evidence/native-toolchain.txt).
+BFD/zlib/zstd/sframe and C/C++ runtimes form its shared closure. The retained build compiler is GCC 13.3.0, CMake 3.28.3, C++20.
 
-Only authorized engine patch `bfd-sleigh-target-autodetect`, SHA256
+The selected engine patch `bfd-sleigh-target-autodetect`, SHA256
 `488eda3edc8c26cc93155240663f20d0512318428c4b69e2fbb3b409989ac82d`, is in use.
-No authored libghidra modification or new dependency patch. Actual patch and source
-integrity are described by [native readiness](NATIVE-READINESS.md) and patch lock.
-Source profile uses local_whole; installed SDK uses a WHOLE_ARCHIVE consumer
-interface, not bare local archive linkage. PIC applies to incorporated archives;
-installed shared `-z defs` closure qualification is in [handoff](PACKAGE-HANDOFF.md).
-Do not substitute arbitrary system static BFD archives. Exact standalone PIC
-Protobuf/Abseil SDK closure and offline-input overrides are in
-[foundation](PACKAGE-FOUNDATION.md). A dependency download in one SDK qualification
-was not isolated; do not label all builds offline.
+The [patch lock](../native-patched.lock.json) records the approved profile.
+Source uses local_whole; SDK consumption uses WHOLE_ARCHIVE rather than a bare
+local archive. Incorporated archives require PIC. Do not substitute arbitrary
+static system BFD archives. See [installation](EXAMPLES.md) for input selection,
+SDK requirements and the distinction between preparation and disconnected builds.
 
 ## Bundled zlib notice provenance
 
@@ -104,10 +101,8 @@ binaries or source are included when they are not. The local install deliberatel
 ships retained notices and accounting rather than fetching source or publishing.
 No new permission to distribute linked dependencies is granted.
 
-Operator YES/19d0945 approves ONLY unchanged pinned `cpp/embed_specs.py` via
+Native source builds use only the approved unchanged pinned `cpp/embed_specs.py` via
 `cpp/cmake/EmbedSpecs.cmake`, Python >=3.10 stdlib zlib/XML during native
 SOURCE builds only. This excludes upstream Python bindings, owned Python tools/tests/parity,
 SDK consumers and Lua runtime. No replacement, patch or new distribution rights.
-Interpreter/module identities and pinned generator hashes are recorded in
-[evidence/source-generator-qualification.txt](evidence/source-generator-qualification.txt).
-No push or publication authorized; pre-conveyance obligations above remain.
+Pre-conveyance obligations above remain; source URLs are not source delivery.

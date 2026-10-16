@@ -1,41 +1,39 @@
 # lua-libghidra
 
-Native local Lua bindings for [libghidra by Elias Bachaalany](https://github.com/0xeb/libghidra).
-This original wrapper and its AI-assisted documentation are informed by upstream
-API, documentation and source review. Both Lua surfaces and full native-local
-adapters are implemented. Local installed qualification and artifact applicability
-are in [full qualification](docs/INSTALLED-FULL.md) and the
-[operation/field crosswalk](docs/FULL-CROSSWALK.md); historical core evidence is
-retained separately. M5 independent acceptance and publication are not approved.
-Upstream is not represented as endorsing this project.
+Native-local Lua/C++ bindings for [libghidra by Elias Bachaalany](https://github.com/0xeb/libghidra).
+The faithful `libghidra.lowlevel` client and small `libghidra` Session facade
+share one native owner; neither starts a second Lua VM. No upstream endorsement
+is implied. Both native-local adapter surfaces are implemented; availability is
+not a guarantee that the pinned engine supports every input or persists every edit.
 
-- [Core API reference](docs/API.md), [field manifest](api/FIELDS.md), and
-  [local notices/source obligations](docs/NOTICES.md).
-- [Specification](docs/SPEC.md): two public surfaces, values and behavior.
-- [Design](docs/DESIGN.md): ownership, pagination and reproducible native build.
-- [Coverage](docs/COVERAGE.md): named native operations and release tiers.
-- [Installed examples](docs/EXAMPLES.md): first-slice calls and shared ownership.
-- [Plan](docs/PLAN.md): readiness and release qualification gates.
-- [Review index](docs/reviews/00-INDEX.md): dispositions and pending review.
-- [Operations](workflows/OPERATIONS.md): automation policy.
+## Start here
 
-Baseline: Linux x86-64, Lua 5.4, C++20, native local engine, CMake/LuaRocks.
-The adapter uses the protected direct Lua C API (no sol2). HTTP is deferred; SWIG excluded.
-The SDK provides faithful `libghidra.lowlevel` responses and a small `libghidra`
-Session facade sharing one owner. Source builds require Python >=3.10 with zlib
-for upstream spec embedding in the current dependency profile. Python is allowed
-during development, but upstream Python bindings are not a build/runtime/test
-dependency. Release tooling/tests should be Lua-based; retained Python requires
-a documented compelling reason and operator acceptance. Installed runtime requires
-neither Python nor Java/network access.
+- [Install and decompile your own input](docs/EXAMPLES.md)
+- [Current API, exact values and limitations](docs/API.md)
+- [Generated native field reference](api/FIELDS.md)
+- [Dependency notices and conveyance obligations](docs/NOTICES.md)
 
-Upstream pin: `d51ca813ae1b6b59519551a9be8c0b1ad74d862d`.
-Its [Human-Origin Source License v1.0](https://github.com/0xeb/libghidra/blob/d51ca813ae1b6b59519551a9be8c0b1ad74d862d/LICENSE)
-permits unchanged dependency use and conditionally restricts derivative wrappers.
-This wrapper's original code and documentation are licensed under the
-[MIT License](LICENSE), as selected by the operator. This does not relicense
-libghidra or other third-party components. The operator accepted the existing
-upstream license for project planning and closed licensing research on that
-basis; this is not legal clearance or publication authorization. See
-[the disposition and retained research](docs/M0-LICENSE.md) for qualifications
-and third-party distribution obligations.
+Supported profile: Ubuntu 24.04/Linux x86-64, ordinary PUC Lua 5.4 with signed
+64-bit integers and eight-byte double numbers (qualified runtime 5.4.6), C++20,
+CMake or LuaRocks. Lua 5.3 and custom numeric hosts are not qualified.
+Native-local only: no HTTP, SWIG or upstream Python-binding dependency.
+Installed execution requires no Python, Java, Ghidra application or network.
+An embedded-spec cold cache needs writable HOME; external specs are an alternative.
+
+Pins: libghidra `d51ca813ae1b6b59519551a9be8c0b1ad74d862d`, engine
+`2035b8153afaf7ce2edde24a2c80b62bbcf5127f`, approved
+`bfd-sleigh-target-autodetect` profile. Native SOURCE builds alone use unchanged
+upstream `cpp/embed_specs.py` via `cpp/cmake/EmbedSpecs.cmake`, Python >=3.10
+standard-library zlib/XML. This narrow build exception does not permit Python
+bindings, project-owned Python tooling/tests, SDK-consumer or runtime Python.
+
+Original wrapper and documentation: Copyright 2026 Salvador Fandiño,
+[MIT License](LICENSE). This wrapper was informed by upstream API, documentation
+and source review. MIT does not relicense dependencies or exempt wrappers from
+applicable upstream conditions. Upstream uses Human-Origin Source License v1.0;
+see [notices](docs/NOTICES.md) before conveying linked artifacts. No legal,
+combined-license, corresponding-source completeness or distribution clearance is
+implied by a successful local build.
+
+Source contributors: `docs/development/README.md` is the source-only developer
+index, not part of the installed manual.

@@ -103,15 +103,15 @@ existing comparisons as development evidence without depending on Python binding
 
 ## Implemented M3 adapter batch (not complete qualification)
 
-All core lowlevel adapters now exist. See [M3 core grammar/complete-field mapping,
-real evidence and remaining gates](M3-CORE.md). Existing source-accounting and
+All core lowlevel adapters now exist. Current grammar is in [API](API.md); [M3](M3-CORE.md) preserves dated
+implementation/field evidence and remaining gates at that revision. Existing source-accounting and
 unqualified runtime slots above are not retroactively marked passed: populated
 subtype, iterator/persistence and independent-review gates remain open.
 
 ## M4 writer implementation
 
 All full-tier adapters are now implemented at the shared dispatch primitive;
-[full grammar/field/disposition supplement](M4-FULL.md) records exact mappings,
+[dated M4 field/disposition report](M4-FULL.md) records revision-scoped mappings,
 real installed service coverage, limitations and remaining qualification. Existing
 generated runtime slots are not rewritten as passes. Surface availability is not
 by itself full runtime acceptance or independent review.
@@ -125,3 +125,10 @@ semantics include mixed completed/incomplete decompilation; no safe ordinary
 mid-patch status-error branch exists after ensure_loaded at this pin. Independent
 review does not replace these completed writer checks, and release approval is
 not inferred. Generated runtime slots intentionally remain source-only.
+
+## Current authority
+
+[API](API.md) owns all current call signatures and effective support limits.
+The operation inventory and dated implementation notes here are developer
+accounting, not a competing current call reference. See the
+[developer index](development/README.md) for revision-scoped evidence and corrections.

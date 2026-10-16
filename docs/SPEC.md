@@ -16,7 +16,7 @@ Installed operation requires no Python, Java, Ghidra application or network.
 Development fixture generation may use Java/Ghidra.
 The pinned upstream source build currently uses Python >=3.10 with zlib for spec
 embedding; consuming the installed native SDK need not run that generator.
-Python is permitted for initial development, not a required qualification oracle.
+Project-owned deliverable tooling and qualification are Lua-based.
 The finished Lua/C++ binding must not depend on upstream Python bindings for
 execution, building or required tests. Project-owned scripts, generators and
 acceptance tests should be Lua-based by release. Any retained Python use needs a
@@ -79,46 +79,11 @@ exceptions. No SDK exception escapes C++. Allocation/runtime errors remain Lua
 errors. Iterators raise structured errors: generic `for` cannot convey a second
 error result reliably.
 
-### First-slice call grammar
+### Current call grammar
 
-Both modules export the same `check` and `u64` helpers (no globals).
-`ghidra.open{client={...}, program={...}}` requires `program`; omitted `client`
-means `{}`. Client keys: `ghidra_root`, `state_path`, `default_arch` (default
-empty strings), `pool_size` (default 1, only 1 accepted). Program keys:
-`program_path`, `project_path`, `language_id`, `compiler_spec_id`, `format`
-(default empty strings), `base_address` (default UInt64 zero). At least one path
-is required; a nonempty project_path selects native project-backed loading.
-Low-level `local_client(client_options)` and `client:open_program(program_options)`
-use those separate tables; only low-level open additionally accepts ignored
-`project_name` (default empty) and `read_only` (default false).
-
-| Call | Return shape / options |
-| --- | --- |
-| Both: `get_status()`, `get_capabilities()` | Complete native value (health table / capability array), or nil,error |
-| Both: `get_function(address)`, `get_instruction(address)` | Low-level envelope; facade record,nil,envelope or missing-result tuple |
-| Both: `read_bytes(address, size)` | Public native size is uint32; binding accepts only 0..INT32_MAX before dispatch/allocation; low-level envelope; facade binary string,nil,envelope |
-| Both: `get_decompilation(address, options)` | options defaults {}; low-level timeout_ms defaults 30000 (ignored); facade permits no timeout key; return as above |
-| Both: `list_functions(options)`, `list_instructions(options)` | Complete page envelope; options defaults {} |
-| Facade: `iter_functions(options)` | Lazy zero-argument iterator function yielding one record, then nil; raises structured errors |
-| Both: `close_program{policy="discard"}` | Complete outcome; policy required (save/discard), no implicit save |
-| Both: `close()`; facade: `native()` | true or shared low-level view respectively |
-
-Page options are `range_start` (default UInt64 zero), `range_end` (default UInt64
-maximum), `limit` (100), `offset` (0). Iterator options replace `limit` with
-`page_size` (100); same range/offset defaults. Native inclusive ranges and compound
-integer checks apply. There is no instruction iterator in the first slice.
-For ListFunctions and ListInstructions, explicit `range_end=0` is the native
-sentinel for UINT64_MAX, not a literal upper address of zero. Thus (0,0) requests
-the full range and (positive_start,0) requests that start through the maximum;
-these list requests cannot express a singleton upper bound at address zero.
-Preserve this behavior on both surfaces, including with UInt64 zero.
-ListInstructions is a contiguous linear decode starting exactly at range_start,
-stopping at the first undecodable/zero-length instruction or range/count limit.
-It does not find mapped executable regions: default start zero can produce an
-empty page despite code elsewhere. Supply a known mapped instruction start;
-an empty page does not prove the program has no instructions beyond a gap.
-Other families require their recorded per-operation contract before expansion.
-See [proposed examples](EXAMPLES.md); M2 executes them with fixture-manifest inputs.
+[API](API.md) is the single current signature/default/envelope authority for both
+surfaces, including guarded Session reopen/shutdown and native escape-hatch calls.
+The requirements below constrain safety and semantics, not a second signature list.
 
 ## 3. Values and validation
 
@@ -128,7 +93,7 @@ member or parameter ordinal. Optional absence is nil; preserve false and zero.
 Bytes are length-preserving Lua strings (including NUL); text is not transcoded.
 Enums use documented lowercase names; unknown response values retain their
 numeric native value. Ranges retain native inclusive end semantics.
-The zero-end sentinel above is an explicit exception; it also applies to native
+The zero-end sentinel documented in API is an explicit exception; it also applies to native
 symbol, comment and data-item range queries. The manifest records applicability
 per operation rather than inferring it for every method with range fields.
 
@@ -199,7 +164,7 @@ The two public views share owner-closed state and dispatch generation; they do
 not maintain independent facade program state. After successful close_program
 or shutdown through either view, program-dependent reads through either return
 native `NO_PROGRAM` (backend local), not `CLOSED`. Owner-level status/capabilities
-remain usable. `session:native():open_program(...)` may reopen the same owner;
+remain usable. `session:open_program(...)` and `session:native():open_program(...)` may reopen the same owner;
 the existing Session then reads that new program. Previously created iterators
 stay invalidated and prior open-response tables remain historical. After binding
 owner close, SDK calls through both views return binding `CLOSED`; reopening that
@@ -215,7 +180,7 @@ The following are pinned source observations, not experimental acceptance:
 | `discard_program` | Returns discarded=true without reverting anything | Available through native(); no rollback convenience |
 | `close_program(save)` | With empty state_path can close without saving | Reject missing state_path with binding `NO_STATE_PATH` before dispatch |
 | `close_program(discard)` | Logically closes context; engines retained; no transactional restore | Access closure only; preserve outcome |
-| `shutdown` | Local program close policy, not remote host termination | Native escape hatch; same empty-path save caveat |
+| `shutdown` | Local program close policy, not remote host termination | Session supports it with the same NO_STATE_PATH guard as close_program; native keeps the caveat |
 | Open with state_path | Best-effort reload into slot 0, types/symbols only | Same limited reload; pool_size=1; no complete restoration promise |
 | `write_bytes` / patch batch | Copy-on-write overlay, not persisted patches | Preserve per-call outcomes; no invented atomicity |
 | Client destructor | No save | No autosave or rollback promise |

@@ -2,18 +2,20 @@
 
 Architecture for [SPEC.md](SPEC.md). The implemented minimal C++20 adapter and
 small Lua facade use protected direct Lua C API frames; sol2 was not retained.
-See [current qualification](INSTALLED-CORE.md) for evidence, separate from design. No SWIG,
+[API](API.md) owns current grammar; [developer index](development/README.md)
+classifies bounded evidence separately from architecture. No SWIG,
 HTTP abstraction, Python bridge or record-object hierarchy.
 
 ## 1. Layers and ownership
 
 `lua/libghidra/lowlevel.lua` exposes faithful envelopes;
 `lua/libghidra/init.lua` supplies Session/open, direct reads, check and iterators.
-Both call private `libghidra._native`. `src/client.*` owns a unique IClient,
-generation and closed state. `src/convert/` contains explicit field converters;
-`src/bindings/` groups operations. No borrowed storage, JSON/protobuf round-trip
+Both call private `libghidra._native`. `src/owner.cpp` owns the unique IClient, dispatch generation and closed state.
+`src/boundary.cpp` and `src/boundary.hpp` own protected boundary/UInt64 primitives;
+`src/slice_convert.hpp`, `src/core_convert.hpp`, `src/full_convert.hpp` convert
+detached native records. `lua/libghidra/iterator.lua` owns bounded traversal. No borrowed storage, JSON/protobuf round-trip
 or second conversion implementation. Handwritten adapters first; `api/coverage.*`
-will track native operation, public mappings, field types, defaults, tier,
+tracks native operation, public mappings, field types, defaults, tier,
 limitations and positive/negative evidence.
 
 Userdata contains a live handle until GC. close and __close reset its unique
@@ -174,9 +176,9 @@ LuaRocks version/module check. Record interpreter version in the build lock.
 Consuming a prebuilt local SDK need not run this generator. This current upstream
 build dependency is independent of Python bindings and is explicitly approved
 under SPEC's narrow pinned upstream source-build exception. There is no required
-Python qualification oracle. Prefer Lua for project-owned generation and tests;
+Python qualification oracle. Project-owned generation and tests are Lua-based;
 preserve native probes where needed to isolate binding behavior. Do not replace
-or modify upstream generators without a justified, separately qualified approach.
+or modify upstream generators under this delivery scope.
 
 M0 dependency lock records URLs, revisions, archive SHA-256, options and licenses
 independently for:

@@ -4,8 +4,7 @@
 Its 110 operation rows include 70 local implementations and 40 excluded defaults.
 All generated runtime slots are unqualified. Surface calls distinguish the ten
 original approved first-slice grammars from sixty historical inventory proposals;
-this classification grants no new syntax and does not revoke subsequent SPEC or
-COVERAGE acceptance. Iterator qualification is not generated from source order.
+this classification grants no new syntax and does not revoke the [current API](../docs/API.md). Iterator qualification is not generated from source order.
 
 Reproduce, without Python or upstream Python research sources:
 
@@ -45,3 +44,8 @@ reachability follows implemented request/response models recursively (plus facto
 options); excluded-only schemas retain native facts without supported Lua
 conversion claims. Explicit enum spellings follow the actual C++ converters,
 with numeric fallback for unknown response values.
+
+Current call signatures, lifecycle and support limits are owned by
+[API](../docs/API.md), not historical surface proposals in source accounting.
+The [source-only developer index](../docs/development/README.md) classifies retained
+reports; FIELDS remains generated via the commands above, never hand-edited.
