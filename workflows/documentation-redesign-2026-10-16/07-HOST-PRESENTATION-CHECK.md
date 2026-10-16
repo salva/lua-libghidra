@@ -111,3 +111,18 @@ publication coordination may be needed if the container lacks GitHub credentials
 Publication is not needed to perform local acceptance and is not an acceptance
 waiver. Resume uses supported Analyst reopen/notifications and ordinary Run, not
 service restart or saved-runtime file edits.
+
+## Supported recovery receipt
+
+At 15:17:30 UTC on 2026-10-16 the Analyst's global `reopen_card` successfully
+changed existing `card-h-d-b` from blocked to changed. Normal propagation reopened
+`card-h-d`, `card-h` and `project`; all four statuses were verified changed before
+Run. Four normal, noninterrupting notifications supplied this evidence and the
+publication authorization to the same chain. No brief, history or runtime JSON
+was rewritten. A separate ordinary `start_project` succeeded at 15:18:42 UTC.
+
+Fresh root execution returned successful `get_card` at 15:18:49 and `read` at
+15:18:53 UTC, with runtime running. These controls and actual new tool returns
+establish restart, not final reviewer acceptance. Full control receipts are retained
+mode 0600 as `reopen-notify-receipt.json` and `run-receipt.json` beside the host
+browser evidence. No push or publication has occurred in this intervention.
