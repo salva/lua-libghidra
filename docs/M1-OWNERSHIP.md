@@ -510,3 +510,26 @@ removed by test cleanup. Its green results were not production rollback evidence
 A raw mode still reproduced threshold 602. Neither result repairs upstream state;
 no additional global accounting/investigation is required or continued. Source,
 SDK and approved engine patch remain unchanged.
+
+### Wrapper option/request copy fault batch
+
+`read_order_host` now roots non-SSO strings for all three factory string options
+and refuses each of those wrapper copies and the subsequent Handle allocation
+(four known ordinary C++ sites only). For EACH site it also sweeps Lua refusal
+through protected error conversion, counting only actual combined refusals;
+setup-only Lua refusal is not counted. Every returned structured tail checks
+NATIVE_EXCEPTION/local_client/binding. All popped/collected outcomes restore the
+per-attempt ordinary C++ block/byte baseline; restored ordinary factory/close
+checks show no stranded process slot. Observed: 40 actual dual refusal points.
+
+All six OpenProgram request string copies are likewise individually refused
+before engine dispatch. Each returns NATIVE_EXCEPTION/open_program/binding,
+restores ordinary block/byte balance and leaves the same owner able to call
+get_revision. This does not assert revision value or generation stability, nor
+successful opening of the deliberately synthetic paths. It does not sweep into
+upstream allocations or attempt to validate upstream OOM recovery. Inputs are
+rooted before refusal, while fault-result conversion uses the real ordinary
+C-built Lua runtime. This batch closes the previously untested nonempty option/
+request-copy branches, not the exhaustive Lua-frame/reentrancy/sanitizer gates.
+
+Reproduce: `cmake --build build -j4 && ctest --test-dir build -R '^read_bytes_dispatch_order$' --repeat until-fail:3 -V && ctest --test-dir build --output-on-failure`.

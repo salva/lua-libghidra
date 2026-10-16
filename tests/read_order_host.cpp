@@ -50,8 +50,16 @@ static int call(lua_State* L) {
  lua_getfield(L,1,"read_bytes"); lua_pushvalue(L,1);
  lua_pushinteger(L,0); lua_pushvalue(L,2); lua_call(L,3,2); return 2;
 }
+static int open_request(lua_State* L) {
+ lua_getfield(L,1,"open_program"); lua_pushvalue(L,1); lua_pushvalue(L,2);
+ lua_call(L,2,2); return 2;
+}
 static int capabilities(lua_State* L) {
  lua_getfield(L,1,"get_capabilities"); lua_pushvalue(L,1);
+ lua_call(L,1,2); return 2;
+}
+static int factory_options(lua_State* L) {
+ lua_getfield(L,1,"local_client"); lua_pushvalue(L,2);
  lua_call(L,1,2); return 2;
 }
 static int factory(lua_State* L) {
@@ -82,6 +90,55 @@ int main() {
  lua_gc(L,LUA_GCCOLLECT);
  assert(live_blocks==wrapper_blocks && live_bytes==wrapper_bytes);
  std::puts("Wrapper Handle allocation refusal: exception conversion and balance PASS");
+ // Three non-SSO option copies followed by Handle are wrapper-owned. Refuse
+ // ONLY those four sites: never sweep into CreateLocalClient/dependencies.
+ lua_createtable(L,0,3);
+ const char* option_keys[]={"ghidra_root","state_path","default_arch"};
+ for(const char* key:option_keys) {
+  lua_pushliteral(L,"wrapper-owned-copy-longer-than-small-string-optimization-storage");
+  lua_setfield(L,-2,key);
+ }
+ const int options=lua_gettop(L);
+ unsigned option_dual=0;
+ for(unsigned cpp_point=1;cpp_point<=4;++cpp_point) {
+  unsigned reached=0,tail=0;
+  // point zero isolates native exception conversion without Lua refusal.
+  for(size_t lua_point=0;lua_point<=512;++lua_point) {
+   lua_pushcfunction(L,factory_options); lua_pushvalue(L,1); lua_pushvalue(L,options);
+   const size_t blocks=live_blocks,bytes=live_bytes;
+   allocator.calls=allocator.refused=0;
+   allocator.fail=lua_point?lua_point:SIZE_MAX;
+   attempts=denied=0; deny_after=cpp_point; watching=deny=true;
+   int result=lua_pcall(L,2,2,0);
+   watching=deny=false; allocator.fail=SIZE_MAX;
+   if(allocator.refused) {
+    assert(result==LUA_ERRMEM); lua_pop(L,1);
+    if(denied) { ++reached; ++option_dual; }
+   } else {
+    assert(denied==1 && attempts==cpp_point && result==LUA_OK);
+    assert(lua_isnil(L,-2) && lua_istable(L,-1));
+    lua_getfield(L,-1,"code");
+    assert(std::string_view(lua_tostring(L,-1))=="NATIVE_EXCEPTION"); lua_pop(L,1);
+    lua_getfield(L,-1,"operation");
+    assert(std::string_view(lua_tostring(L,-1))=="local_client"); lua_pop(L,1);
+    lua_getfield(L,-1,"backend");
+    assert(std::string_view(lua_tostring(L,-1))=="binding"); lua_pop(L,3);
+    if(lua_point) ++tail;
+   }
+   lua_gc(L,LUA_GCCOLLECT);
+   assert(live_blocks==blocks && live_bytes==bytes);
+   // Restored ordinary factory proves no wrapper lock/slot was stranded.
+   lua_pushcfunction(L,factory); lua_pushvalue(L,1);
+   assert(lua_pcall(L,1,2,0)==LUA_OK && lua_isuserdata(L,-2));
+   lua_getfield(L,-2,"close"); lua_pushvalue(L,-3);
+   assert(lua_pcall(L,1,1,0)==LUA_OK && lua_toboolean(L,-1)); lua_pop(L,3);
+   lua_gc(L,LUA_GCCOLLECT);
+   if(tail) break;
+  }
+  assert(reached>1 && tail==1);
+ }
+ lua_pop(L,1); // rooted options
+ std::printf("Wrapper option copies + Handle: four C++ sites, %u actual dual Lua refusals, balance/recovery PASS\n",option_dual);
  // Sweep Lua setup/publication/error exits of the real factory. An owner may
  // already have been published when pcall's result adjustment allocates.
  unsigned factory_oom=0,factory_tail=0;
@@ -139,6 +196,34 @@ int main() {
  std::printf("Factory dual fault: %u actual native+Lua refusals, structured tail and fresh-owner recovery PASS\n",dual_reached);
  assert(lua_pcall(L,0,1,0)==LUA_OK && lua_isuserdata(L,-1));
  int owner=lua_gettop(L);
+ // All six OpenProgram request copies occur in the wrapper before native
+ // dispatch/generation advance. Refuse only these known sites.
+ lua_createtable(L,0,6);
+ const char* request_keys[]={"program_path","project_path","project_name","language_id","compiler_spec_id","format"};
+ for(const char* key:request_keys) {
+  lua_pushliteral(L,"wrapper-request-copy-longer-than-small-string-optimization-storage");
+  lua_setfield(L,-2,key);
+ }
+ int request=lua_gettop(L);
+ for(unsigned point=1;point<=6;++point) {
+  lua_pushcfunction(L,open_request); lua_pushvalue(L,owner); lua_pushvalue(L,request);
+  const size_t blocks=live_blocks,bytes=live_bytes;
+  attempts=denied=0; deny_after=point; watching=deny=true;
+  int result=lua_pcall(L,2,2,0); watching=deny=false;
+  assert(denied==1 && attempts==point && result==LUA_OK && lua_isnil(L,-2));
+  lua_getfield(L,-1,"code");
+  assert(std::string_view(lua_tostring(L,-1))=="NATIVE_EXCEPTION"); lua_pop(L,1);
+  lua_getfield(L,-1,"operation");
+  assert(std::string_view(lua_tostring(L,-1))=="open_program"); lua_pop(L,1);
+  lua_getfield(L,-1,"backend");
+  assert(std::string_view(lua_tostring(L,-1))=="binding"); lua_pop(L,3);
+  lua_gc(L,LUA_GCCOLLECT);
+  assert(live_blocks==blocks && live_bytes==bytes);
+  lua_getfield(L,owner,"get_revision"); lua_pushvalue(L,owner);
+  assert(lua_pcall(L,1,2,0)==LUA_OK && lua_istable(L,-2)); lua_pop(L,2);
+ }
+ lua_pop(L,1);
+ std::puts("Wrapper OpenProgram six request-copy refusals: structured errors, balance and same-owner retry PASS");
  const lua_Integer sizes[]={0,INT32_MAX,lua_Integer(INT32_MAX)+1,UINT32_MAX};
  for(lua_Integer size:sizes) {
   phases[0]=phases[1]=0; largest=0;
