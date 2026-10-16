@@ -8,6 +8,7 @@ local cases={
  {name='complete',exit=0,result='complete'},
  {name='short instruction page',count='2',exit=0,result='complete'},
  {name='empty page',empty=true,exit=1,result='unavailable'},
+ {name='malformed page',malformed=true,exit=1,result='error'},
  {name='optional function absent',absent=true,exit=1,result='unavailable'},
  {name='native read failure',failure=true,exit=1,result='error'},
  {name='short bytes',short=true,exit=1,result='error'},
@@ -57,6 +58,7 @@ for _,case in ipairs(cases) do
  function session:list_instructions(page)
   record('instructions')
   assert(page.range_start==u(base[2]) and page.range_end==u(base[8]) and page.offset==0 and page.limit==tonumber(args[9]))
+  if case.malformed then return {} end
   return {instructions=case.empty and {} or {{address=u(case.outside and '0x40110a' or base[2]),length=case.long and 5 or case.zero_length and 0 or 4}}}
  end
  local api={u64=u64,open=function(options)

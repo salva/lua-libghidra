@@ -177,6 +177,7 @@ for _,mutation in ipairs{
  function(t) return t:gsub('Result fields: blocks array%.','Result fields: blocks / edges array.',1) end,
  function(t) return t:gsub('Requires live owner; no open program prerequisite%.', 'Requires live owner and open program.') end,
  function(t) return t:gsub('discarded=true','discarded=false') end,
+ function(t) return t:gsub('%]%(%../api/FIELDS%.md#functionrecord%)','](../api/FIELDS.md#absent)') end,
  function(t) return t:gsub('%]%(%../api/FIELDS%.md#healthstatus%)','](../api/FIELDS.md#absent)',1) end,
  function(t) return t:gsub('%]%(%../api/FIELDS%.md#bytepatch%)','](../api/FIELDS.md#absent)',1) end,
 } do assert(not pcall(api_contract,mutation(api)),'API contract corruption accepted') end

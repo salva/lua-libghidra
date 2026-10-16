@@ -23,7 +23,7 @@ Installed execution requires no Python, Java, Ghidra application or network.
 An embedded-spec cold cache needs writable HOME; external specs are an alternative.
 
 Pins: libghidra `d51ca813ae1b6b59519551a9be8c0b1ad74d862d`, engine
-`2035b8153afaf7ce2edde24a2c80b62bbcf5127f`, approved
+`2035b8153afaf7ce2edde24a2c80b62bbcf5127f`, selected
 `bfd-sleigh-target-autodetect` profile. Native SOURCE builds alone use unchanged
 upstream `cpp/embed_specs.py` via `cpp/cmake/EmbedSpecs.cmake`, Python >=3.10
 standard-library zlib/XML. This narrow build exception does not permit Python

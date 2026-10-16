@@ -71,6 +71,7 @@ local function run(args)
   end
   if bytes and #bytes~=byte_count then result='error'; diagnostic('returned byte length differs from request') end
   local instructions=page and page.instructions
+  if page and type(instructions)~='table' then result='error'; diagnostic('returned instruction page has no instructions array') end
   if instructions then
     if #instructions==0 and result~='error' then result='unavailable' end
     local previous

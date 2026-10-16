@@ -1,7 +1,7 @@
 # Contributor guide
 
 The maintained user manual starts at [README](../../README.md), with
-[installation and use](../EXAMPLES.md), [API](../API.md), generated
+[installation](../INSTALL.md) and [tutorial](../TUTORIAL.md), [API](../API.md), generated
 [fields](../../api/FIELDS.md) and [notices](../NOTICES.md).
 
 - [SPEC](SPEC.md): binding invariants and supported platform/scope.

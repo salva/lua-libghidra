@@ -13,7 +13,7 @@ lua.h, luaconf.h and lauxlib.h explicitly if not using the system defaults.
 Native builds require shared BFD/sframe/zstd/zlib development closure consistent
 with the [system lock](../native-system.lock.json), GNU tar, unzip, sha256sum,
 patch, realpath and core utilities; curl is used only for explicit online
-preparation. Historical locked package versions may not be available from today's
+preparation. Locked package versions may not be available from today's
 package-manager repositories. Do not substitute static system BFD archives.
 Native SOURCE builds additionally run unchanged upstream cpp/embed_specs.py via
 cpp/cmake/EmbedSpecs.cmake with Python >=3.10 standard-library zlib/XML. This is
@@ -54,7 +54,7 @@ cd "$SOURCE"
 ```
 
 Explicit **online** preparation downloads six locked archives, verifies hashes,
-extracts and applies only the approved bfd-sleigh-target-autodetect patch:
+extracts and applies only the bfd-sleigh-target-autodetect patch:
 
 ```sh
 "$GOOD_LUA" scripts/prepare-native.lua --archives "$ARCHIVES" --output "$INPUTS" \
@@ -66,7 +66,7 @@ locked archives, retain a fresh INPUTS path, and run the same command with
 `--offline`. An empty newly-created archive directory cannot satisfy that option.
 Online preparation is not offline evidence. Disconnected CMake below means no
 configure download, not that preparation was offline. Specs and all native inputs
-must already be present; do not override pins or replace the approved profile.
+must already be present; do not override pins or replace the selected profile.
 
 ## Source CMake
 
