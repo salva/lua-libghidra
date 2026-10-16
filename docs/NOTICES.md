@@ -4,7 +4,7 @@ Original Lua/C++ wrapper and documentation: Copyright 2026 Salvador Fandiño,
 [MIT](../LICENSE). Native integration uses libghidra by Elias Bachaalany,
 [upstream](https://github.com/0xeb/libghidra), pinned at
 `d51ca813ae1b6b59519551a9be8c0b1ad74d862d`. This revision reports version 0.0.9;
-that does not establish equivalence to a release tag. No endorsement is implied.
+that does not establish equivalence to a release tag.
 Upstream's Human-Origin Source License v1.0 is retained
 verbatim in [libghidra notice](notices/libghidra.txt).
 Use this page to find the exact dependency notices and the obligations to consider
