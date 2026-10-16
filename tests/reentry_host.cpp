@@ -112,7 +112,11 @@ int main() {
  // Loaded nested results: collector runs only from real conversion allocation,
  // after dispatch, while Packet owns a detached native snapshot. Cover both
  // input profiles without repeating the already-qualified unloaded paths.
- const char* loaded_methods[]={"get_function","list_functions","get_instruction","list_instructions","get_decompilation"};
+ const char* loaded_methods[]={"get_function","list_functions","get_instruction","list_instructions","get_decompilation",
+ "get_symbol","list_symbols","list_memory_blocks","get_type","list_types","list_type_aliases",
+ "list_type_unions","list_type_enums","list_type_enum_members","list_type_members",
+ "get_function_signature","list_function_signatures","list_basic_blocks","list_cfg_edges",
+ "list_xrefs","get_comments","list_defined_strings","rename_function","rename_symbol","write_bytes","discard_program"};
  for(int project=0;project<2;++project) {
  for(const char* method:loaded_methods) {
   bool observed=false;
@@ -131,22 +135,33 @@ int main() {
          "local replacement=assert(n.local_client()); assert(replacement:close()); completed=completed+1 end) end}) end");
    // Requests are constructed/rooted before restarting GC. No pcall result or
    // Lua chunk compilation allocation is misattributed to native conversion.
-   const bool page=method[0]=='l';
-   if(page) run(L,"request={range_start=0x401106,range_end=0x401106,limit=2}");
+   const bool page=method[0]=='l' || !std::strcmp(method,"get_comments");
+   const bool text=!std::strcmp(method,"get_type") || !std::strncmp(method,"list_type",9);
+   const bool no_range=!std::strcmp(method,"list_memory_blocks");
+   const bool mutation=!std::strcmp(method,"rename_function") || !std::strcmp(method,"rename_symbol") || !std::strcmp(method,"write_bytes") || !std::strcmp(method,"discard_program");
+   if(text) run(L,"request='int'; request2={limit=2}");
+   else if(no_range) run(L,"request={limit=2}");
+   else if(page) run(L,"request={range_start=0x401106,range_end=0x401106,limit=2}");
    else run(L,"request=0x401106");
    for(int i=0;i<debt;++i) { lua_newtable(L); lua_pop(L,1); }
    lua_pushcfunction(L,natural_call); lua_getglobal(L,"c");
    lua_getfield(L,-1,method); lua_insert(L,-2); lua_getglobal(L,"request");
-   int rc=lua_pcall(L,3,2,0); natural_phase=2;
+   int args=3;
+   if(text && page) { lua_getglobal(L,"request2"); ++args; }
+   if(mutation && std::strcmp(method,"discard_program")) {
+    lua_pushstring(L,!std::strcmp(method,"write_bytes")?"abc":"loaded_m3_finalizer"); ++args;
+   }
+   int rc=lua_pcall(L,args,2,0); natural_phase=2;
    assert(rc==LUA_OK);
    lua_pushvalue(L,-2); lua_setglobal(L,"result");
    lua_pushvalue(L,-1); lua_setglobal(L,"result_error"); lua_pop(L,2);
    lua_getglobal(L,"finalizer_phase"); observed=lua_tointeger(L,-1)==3; lua_pop(L,1);
    if(observed) {
+    lua_pushinteger(L,mutation?3:2); lua_setglobal(L,"expected_generation");
     run(L,"assert(hits==1 and completed==1); assert(finalizer_ok,finalizer_error); "
           "assert(result_error==nil and type(result)=='table'); "
           "local v,e=c:get_status(); assert(v==nil and e.code=='CLOSED'); "
-          "assert(c:_generation():decimal()=='2'); collectgarbage('collect')");
+          "assert(c:_generation():to_integer()==expected_generation); collectgarbage('collect')");
     if(!std::strcmp(method,"get_function") || !std::strcmp(method,"list_functions")) {
      run(L,"local f=result['function'] or result.functions[1]; "
            "assert(f.entry_address:hex()=='0x0000000000401106'); "
@@ -155,7 +170,7 @@ int main() {
      run(L,"local i=result.instruction or result.instructions[1]; "
            "assert(i.address:hex()=='0x0000000000401106' and i.length==4); "
            "assert(i.mnemonic:lower()=='endbr64' and type(i.disassembly)=='string')");
-    } else {
+    } else if(!std::strcmp(method,"get_decompilation")) {
      run(L,"local d=result.decompilation; assert(d.completed and not d.is_fallback); "
            "assert(d.function_entry_address:hex()=='0x0000000000401106'); "
            "assert(d.pseudocode:find('* 3 + 7',1,true)); "

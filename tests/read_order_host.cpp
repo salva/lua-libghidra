@@ -41,6 +41,7 @@ void operator delete[](void* p) noexcept { free_allocation(p); }
 void operator delete(void* p,size_t) noexcept { free_allocation(p); }
 void operator delete[](void* p,size_t) noexcept { free_allocation(p); }
 static int boundary_fault=0;
+static unsigned adapter_calls=0;
 // Dependency uses nothrow new too: pair it with this host's header allocator.
 // Otherwise ASan's nothrow allocator and our ordinary delete disagree.
 void* operator new(size_t n,const std::nothrow_t&) noexcept { try { return ::operator new(n); } catch(...) { return nullptr; } }
@@ -49,6 +50,7 @@ void operator delete(void* p,const std::nothrow_t&) noexcept { free_allocation(p
 void operator delete[](void* p,const std::nothrow_t&) noexcept { free_allocation(p); }
 namespace llg {
 void before_adapter_dispatch(int kind) {
+ ++adapter_calls;
  if(kind<7 || !boundary_fault) return;
  if(boundary_fault==1) throw std::bad_alloc();
  if(boundary_fault==2) throw std::runtime_error("adapter boundary test");
@@ -334,6 +336,43 @@ int main() {
    assert(luaL_dostring(L,source)==LUA_OK); lua_settop(L,owner);
   }
   std::printf("M2/M3 adapter Lua result refusal (%u points), three boundary exceptions and retry PASS: %s\n",refused,source);
+ }
+ // Refuse only the first, non-SSO wrapper copy. No dependency dispatch/OOM.
+ // All strings/chunks are rooted before enabling operator-new refusal.
+ const char* copy_paths[]={
+  "return c:rename_function(0x401106,payload)",
+  "return c:rename_symbol(0x401106,payload)",
+  "return c:write_bytes(0x404010,payload)", "return c:get_type(payload)",
+  "return c:list_types(payload,{limit=1})", "return c:list_type_aliases(payload,{limit=1})",
+  "return c:list_type_unions(payload,{limit=1})", "return c:list_type_enums(payload,{limit=1})",
+  "return c:list_type_enum_members(payload,{limit=1})", "return c:list_type_members(payload,{limit=1})"};
+ assert(luaL_dostring(L,"payload=string.rep('wrapper_owned_',16)")==LUA_OK);
+ for(const char* source:copy_paths) {
+  unsigned hits=0; bool tail=false;
+  for(size_t point=0;point<=128;++point) {
+   assert(luaL_loadstring(L,source)==LUA_OK);
+   const size_t blocks=live_blocks, bytes=live_bytes;
+   allocator.calls=allocator.refused=0; allocator.fail=point?point:SIZE_MAX;
+   attempts=denied=adapter_calls=0; deny_after=1; watching=deny=true;
+   int rc=lua_pcall(L,0,2,0); watching=deny=false; allocator.fail=SIZE_MAX;
+   assert(adapter_calls==0);
+   if(denied==0) { assert(rc==LUA_ERRMEM && allocator.refused>0 && attempts==0); }
+   else assert(denied==1 && attempts==1);
+   assert(live_blocks==blocks && live_bytes==bytes);
+   if(allocator.refused) { assert(rc==LUA_ERRMEM); ++hits; lua_pop(L,1); }
+   else {
+    assert(rc==LUA_OK && lua_isnil(L,-2));
+    lua_getfield(L,-1,"code"); assert(std::string_view(lua_tostring(L,-1))=="NATIVE_EXCEPTION"); lua_pop(L,3);
+    if(point) tail=true;
+   }
+   lua_settop(L,owner);
+   // Same owner remains usable, without dispatching arbitrary long mutation data.
+   phases[0]=phases[1]=0;
+   assert(luaL_dostring(L,"assert(c:get_status().ok); assert(c:read_bytes(0x401106,4).data=='\\xf3\\x0f\\x1e\\xfa')")==LUA_OK);
+   if(tail) break;
+  }
+  assert(tail && hits>0);
+  std::printf("M3 wrapper request-copy refusal + %u Lua error-publication denials, no SDK dispatch/balance PASS: %s\n",hits,source);
  }
  lua_close(L); assert(allocator.bytes==0);
 }

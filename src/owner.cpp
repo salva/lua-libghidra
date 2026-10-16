@@ -322,6 +322,8 @@ int dispatch(lua_State* L) {
   try {
    c::OpenProgramRequest request;
    std::vector<uint8_t> write_data;
+   std::string request_text;
+   if(kind==14 || kind==19 || (kind>=23 && kind<=29)) request_text=copy(text_arg);
    if(kind==22) write_data.assign(reinterpret_cast<const uint8_t*>(text_arg.s),reinterpret_cast<const uint8_t*>(text_arg.s)+text_arg.n);
    if(kind==1) { request.program_path=copy(path); request.project_path=copy(project); request.project_name=copy(name); request.language_id=copy(lang); request.compiler_spec_id=copy(compiler); request.format=copy(format); request.base_address=base; request.read_only=readonly; }
    std::lock_guard<std::mutex> guard(process_guard().engine);
@@ -336,22 +338,22 @@ int dispatch(lua_State* L) {
     switch(kind) {
      case 12: take(p,client->SaveProgram(),p.core_12); break;
      case 13: take(p,client->DiscardProgram(),p.core_13); break;
-     case 14: take(p,client->RenameFunction(address,copy(text_arg)),p.core_14); break;
+     case 14: take(p,client->RenameFunction(address,request_text),p.core_14); break;
      case 15: take(p,client->ListBasicBlocks(page.start,page.end,page.limit,page.offset),p.core_15); break;
      case 16: take(p,client->ListCFGEdges(page.start,page.end,page.limit,page.offset),p.core_16); break;
      case 17: take(p,client->GetSymbol(address),p.core_17); break;
      case 18: take(p,client->ListSymbols(page.start,page.end,page.limit,page.offset),p.core_18); break;
-     case 19: take(p,client->RenameSymbol(address,copy(text_arg)),p.core_19); break;
+     case 19: take(p,client->RenameSymbol(address,request_text),p.core_19); break;
      case 20: take(p,client->ListXrefs(page.start,page.end,page.limit,page.offset),p.core_20); break;
      case 21: take(p,client->ListMemoryBlocks(page.limit,page.offset),p.core_21); break;
      case 22: take(p,client->WriteBytes(address,write_data),p.core_22); break;
-     case 23: take(p,client->GetType(copy(text_arg)),p.core_23); break;
-     case 24: take(p,client->ListTypes(copy(text_arg),page.limit,page.offset),p.core_24); break;
-     case 25: take(p,client->ListTypeAliases(copy(text_arg),page.limit,page.offset),p.core_25); break;
-     case 26: take(p,client->ListTypeUnions(copy(text_arg),page.limit,page.offset),p.core_26); break;
-     case 27: take(p,client->ListTypeEnums(copy(text_arg),page.limit,page.offset),p.core_27); break;
-     case 28: take(p,client->ListTypeEnumMembers(copy(text_arg),page.limit,page.offset),p.core_28); break;
-     case 29: take(p,client->ListTypeMembers(copy(text_arg),page.limit,page.offset),p.core_29); break;
+     case 23: take(p,client->GetType(request_text),p.core_23); break;
+     case 24: take(p,client->ListTypes(request_text,page.limit,page.offset),p.core_24); break;
+     case 25: take(p,client->ListTypeAliases(request_text,page.limit,page.offset),p.core_25); break;
+     case 26: take(p,client->ListTypeUnions(request_text,page.limit,page.offset),p.core_26); break;
+     case 27: take(p,client->ListTypeEnums(request_text,page.limit,page.offset),p.core_27); break;
+     case 28: take(p,client->ListTypeEnumMembers(request_text,page.limit,page.offset),p.core_28); break;
+     case 29: take(p,client->ListTypeMembers(request_text,page.limit,page.offset),p.core_29); break;
      case 30: take(p,client->GetFunctionSignature(address),p.core_30); break;
      case 31: take(p,client->ListFunctionSignatures(page.start,page.end,page.limit,page.offset),p.core_31); break;
      case 32: take(p,client->GetComments(page.start,page.end,page.limit,page.offset),p.core_32); break;

@@ -153,3 +153,34 @@ DefinedStrings empty success. This is a known loaded string, no discovery claim.
 Signature singleton pages are compared with candidate-function offsets, including
 past-end emptiness. Missing-signature filter cases remain unqualified; all exercised
 candidates produce signatures, not evidence the producer never filters.
+
+## Wrapper request-copy and loaded finalizer batch
+
+All allocating M3 text requests now copy to owned request_text before taking the
+engine lock/incrementing generation, just as WriteBytes already owns its vector.
+No Lua calls occur in that phase; copy exceptions return NATIVE_EXCEPTION before
+SDK dispatch. This settles the request-allocation edge at its owning primitive,
+not in per-method symptom handlers. Request strings remain Lua-rooted during
+parsing, and owned text/vector storage is destroyed before protected publication.
+
+`read_order_host` refuses the first non-SSO wrapper copy for rename function/symbol,
+write bytes, GetType and every type page family. For each it asserts no adapter
+boundary was reached, exact outstanding C++ block/byte balance, structured native
+exception or actual Lua refusal, then normal known-byte/status use on the same
+owner. Persistent Lua error-publication refusal is swept too; early Lua table
+allocation refusal before the copy is distinguished, not miscounted as a copy
+fault. No dependency allocation is faulted. Initial host attempts exposed two
+fixture errors: stale ReadBytes observer counters in recovery calls, and assuming
+the C++ copy is reached despite earlier Lua page-table OOM. Corrected assertions
+preserve both distinct paths rather than disabling balance/no-dispatch gates.
+
+`reentry_host` adds all newly allocating M3 request families and core loaded
+reads/pages/mutations (except save) on ELF and project. Actual allocation-driven
+finalizers must run in post-dispatch protected-publication phase 3, close the owner
+and construct/destroy a replacement. Detached response tables remain rooted;
+read generation=2 and mutation generation=3 prove open/dispatch/release ordering.
+Existing M2 nested-content assertions still run. Empty subtype responses prove
+publication/lifetime safety only, not populated subtype acceptance. Initial
+GetComments trial incorrectly supplied address scalar instead of range options,
+so never reached native conversion; corrected grammar then observed phase 3.
+Save success/finalizer publication with configured state still needs extension.
