@@ -1,7 +1,7 @@
 # lua-libghidra
 
 Decompile functions and inspect binaries from Lua with
-[libghidra by Elias Bachaalany](https://github.com/0xeb/libghidra).
+[libghidra](https://github.com/0xeb/libghidra).
 lua-libghidra runs the native library in your Lua process, without starting the
 Ghidra application or a separate service.
 
