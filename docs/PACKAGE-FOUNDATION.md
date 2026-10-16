@@ -210,8 +210,8 @@ request presence/defaults must not be inferred from native initializer defaults.
 
 `tests/tooling_direct.lua` and `tests/tooling_lookup.lua` qualify direct exact-address
 consumers with related parameter mutation/write acknowledgement and lookup absence
-branches. Native artifact now reports 58 remaining direct arguments (down from 83;
-26 emitted reviews include an address name differing from one service declaration).
+branches. Native artifact now reports 57 remaining direct arguments (down from 83;
+26 reviewed inputs include explicit service data_type to implementation new_type mapping).
 ReadBytes length remains bounded by INT32_MAX **before** allocation/dispatch;
 uint32 representation alone is insufficient. Lookup assigned/default field audit
 matches the exact `rec` identifier, not nested `prec` parameter records. Successful
