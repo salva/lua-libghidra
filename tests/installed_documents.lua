@@ -66,6 +66,10 @@ for _,path in ipairs{'docs/INSTALLED-CORE.md','docs/NOTICES.md'} do
  end
 end
 local current=read(root..'docs/INSTALLED-CORE.md')
+for _,phrase in ipairs{'Full installed matrix/absence gates below remain open.',
+ 'remaining upstream embedding exception is external'} do
+ assert(not current:gsub('%s+',' '):find(phrase,1,true), 'R1 stale matrix/exception summary: '..phrase)
+end
 for _,phrase in ipairs{'04eb4e2','595b77c','proc-1abfafa389c2','385','not fresh regeneration','changed M4 adapters'} do
  assert(current:find(phrase,1,true), 'R1 missing applicability: '..phrase)
 end

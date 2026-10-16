@@ -26,7 +26,7 @@ current exercised evidence, not an assertion that old adapters remained unchange
 | Wrapper safety | M1-BOUNDARY all-frame audit and M1-OWNERSHIP wrapper fault/reentry/exception evidence, M3-CORE request/conversion/iterator follow-through. Dependency-internal allocation recovery excluded by operator a0289f5, not wrapper safety. No claim of instrumented dependency internals. Historical pre-M4 broader rerun (not sufficient alone for current adapters): `ctest --test-dir build --output-on-failure` 18/18 (10.67s); `bash tests/wrapper-sanitize.sh "$PWD/.cache/native-sdk-patched"` 18/18 (27.93s), ASan/LSan/UBSan wrapper/host instrumentation with unchanged precompiled dependencies and system Lua. |
 | Native roots/cache profiles | NATIVE-READINESS and native-patched-qualification.log retain actual external valid/missing/unreadable and embedded cold/warm/unwritable outcomes. Native-only success does not qualify all installed Lua constructor paths: installed Lua qualification is now recorded below. |
 | Package foundation | PACKAGE-FOUNDATION/HANDOFF record source/SDK/LuaRocks local installs, offline source-input overrides, installed closure and tooling cutover provenance. These remain distinct from final runtime-absence qualification. |
-| Tooling migration | 2abb88c retires owned Python tools/tests, replacing them with Lua source-driven inventory/completeness/semantic regressions. api/README documents the current entry points and immutable history separation. The remaining upstream embedding exception is external, not permission to reintroduce a Python oracle. |
+| Tooling migration | 2abb88c retires owned Python tools/tests, replacing them with Lua source-driven inventory/completeness/semantic regressions. api/README documents the current entry points and immutable history separation. The upstream embedding exception is approved only for unchanged pinned SOURCE-build generation (YES/19d0945; exact exclusions below), not permission to reintroduce a Python oracle. |
 | Shipping documentation gap | Current CMake install includes API, all native field facts, retained grammar/limits/runtime evidence, locks, original license and third-party notices. `lua5.4 tests/installed_documents.lua PREFIX` checks presence and current claims; `lua5.4 scripts/render-fields.lua --check` detects stale generated field prose. Installation does not claim redistribution compliance is complete. |
 
 Fresh SDK-backed CMake Release configure/build/install also passed document and
@@ -42,7 +42,9 @@ lua5.4 tests/installed_owner.lua "$tree" "$PWD"
 Both passed after explicitly selecting the correct prefix. An initial assertion
 at `$tree/share/doc/...` failed; it was a test-path hypothesis error, not missing
 LuaRocks packaging. These local builds did not run source embedding and were not
-network-isolated. Full installed matrix/absence gates below remain open.
+network-isolated. Those initial install checks alone did not qualify the full
+installed matrix/absence gates; the subsequent completed profile and absence
+qualification, including current rebuilt-wrapper applicability, is recorded below.
 
 Primary existing-install output for this card:
 `work:///cards/card-e-b/processes/proc-2fa0fbad51b0/stdout.log` and
@@ -55,7 +57,7 @@ replace manual/runtime qualification. Immutable M3 history and its SHA256-pinned
 runtime index remain included. A full field table says what is converted, not
 that every field has a native producer or every operation supports all inputs.
 
-## Remaining acceptance and decisions
+## Completed installed runtime gates and remaining acceptance
 
 Installed Lua constructor and runtime-absence gates now pass for the retained
 fresh SDK-backed CMake and LuaRocks installations. Run from the project root:
@@ -100,7 +102,8 @@ invoked the unchanged generator with 385 files up-to-date, not fresh regeneratio
 Fresh SDK-backed package qualification
 plus both installed host matrices close independent runtime engineering evidence;
 they do not claim all dependency builds were offline or every native producer works.
-Independent review and the explicitly separated external decisions remain.
+Independent acceptance review and pre-conveyance obligations remain; the
+source-generator authority decision is closed as stated below.
 
 Preserve M2 extreme-address crash/raw FileBytes/producer limits and M3 pages-only
 blocks/CFG/xrefs/types, union/signature practical producers and saved=true category
