@@ -101,3 +101,9 @@ Each group's design and plan receive a separate fresh Astra reviewer. The combin
 metaplan/handoff then receives another fresh independent Astra review. Maximum
 two correction rounds; unresolved objections are reported, not called approved.
 No implementation or submission is authorized by completion of these documents.
+
+The operator explicitly requested a master plan pointing to the smaller plans.
+Its stable location is
+[99-MASTER-PLAN.md](../../../development/plans/package-fixes-2026-10-16/99-MASTER-PLAN.md).
+It is currently a draft index and will carry the final sequence and handoff;
+historical `docs/PLAN.md` is not being repurposed as the new execution contract.
