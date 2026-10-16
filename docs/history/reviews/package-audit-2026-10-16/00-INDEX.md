@@ -112,14 +112,17 @@ historical `docs/PLAN.md` is not being repurposed as the new execution contract.
 
 ### Current independent review status
 
-- A boundaries: drafts complete; fresh independent Astra review underway.
-- B documentation: drafts complete; fresh independent Astra review underway.
+- A boundaries: independent review requested corrections to header discovery and
+  executable selected-host/negative-ABI validation. Author revision underway;
+  [review](A-DESIGN-PLAN-REVIEW-r1.md).
+- B documentation: independent review requested precise manifest propagation and
+  document-probe caller integration with C. Author revision underway;
+  [review](B-DESIGN-PLAN-REVIEW-r1.md).
 - C regressions: analysis, design and plan independently approved with no required
   changes; [review](C-DESIGN-PLAN-REVIEW-r1.md). Approval is of the plan, not results
   from unimplemented tests or permission to implement.
-- Master plan: separate Astra synthesis underway; final fresh independent review
-  follows reconciliation of component reviews.
-- D website: operator added a static GitHub Pages site subplan; separate Astra
-  design author and fresh independent reviewer required. Incorporate it into the
-  master dependency graph and handoff before final review. No publication or
-  repository settings changes are authorized.
+- Master plan: initial draft complete; author integrating the website track.
+  Final fresh independent review follows reconciliation of component reviews.
+- D website: draft complete; fresh independent Astra reviewer assessing the
+  architecture and Pandoc/Lua versus Jekyll/LDoc fit. No publication or repository
+  settings changes are authorized.
