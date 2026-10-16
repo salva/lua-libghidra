@@ -1,30 +1,79 @@
 #!/usr/bin/env bash
 # MIT Copyright 2026 Salvador Fandiño.
-# Preserve the stale-full-handoff reproducer, without touching the real install.
 set -euo pipefail
-root=$(cd "$(dirname "$0")/.." && pwd)
-prefix=$(realpath "${1:?module prefix}")
-data=$(realpath "${2:?documentation prefix}")
-work=${3:?fresh disposable work directory}
-[[ ! -e $work ]]
-mkdir -p "$work/share/doc"
-work=$(realpath "$work")
-cp -a "$data/share/doc/lua-libghidra" "$work/share/doc/"
-copy="$work/share/doc/lua-libghidra"
-lua5.4 "$root/tests/installed_documents.lua" "$prefix" "$work" "$root"
-for path in docs/API.md docs/M4-FULL.md api/FIELDS.md api/coverage.json; do
- for fault in stale missing; do
-  if [[ $fault == stale ]]; then
-   printf '\nSTALE FULL HANDOFF RED PROBE\n' >> "$copy/$path"
-  else
-   rm "$copy/$path"
-  fi
-  if lua5.4 "$root/tests/installed_documents.lua" "$prefix" "$work" "$root" >"$work/probe.log" 2>&1; then
-   echo "false green for $fault $path"; exit 1
-  fi
-  grep -F "$path" "$work/probe.log"
-  cp "$root/$path" "$copy/$path"
- done
+[[ $# == 4 ]] || { echo 'usage: DOCUMENT_ROOT SOURCE_ROOT MANIFEST FRESH_WORK' >&2; exit 1; }
+documents=$1 source=$2 manifest=$3 work=$4
+for path in "$documents" "$source" "$manifest" "$work"; do
+ [[ $path == /* ]] || { echo "absolute path required: $path" >&2; exit 1; }
 done
-lua5.4 "$root/tests/installed_documents.lua" "$prefix" "$work" "$root"
-printf 'installed full handoff pristine/stale/missing regression PASS\n'
+[[ ! -e $work && ! -L $work ]]
+mkdir -p "$work"
+cp -a "$documents" "$work/snapshot"
+cp -a "$work/snapshot" "$work/documents"
+check() {
+ lua5.4 "$source/tests/installed_documents.lua" installed "$work/documents" "$source" "$manifest"
+}
+restore() {
+ rm -rf -- "$work/documents"
+ cp -a "$work/snapshot" "$work/documents"
+ check
+}
+reject() {
+ local category=$1 path=$2
+ if check >"$work/$category.log" 2>&1; then
+  echo "false green: $category $path" >&2; exit 1
+ fi
+ grep -F "$category:" "$work/$category.log"
+ grep -F -- "$path" "$work/$category.log"
+ restore
+}
+# These are probe cases, not a second shipping inventory.
+for path in README.md docs/API.md; do grep -Fx "$path" "$manifest"; done
+check
+rm "$work/documents/docs/API.md"
+reject missing-member docs/API.md
+printf '\nHarmless freshness probe.\n' >> "$work/documents/README.md"
+reject stale-bytes README.md
+printf '\n[bad](missing-document.md)\n' >> "$work/documents/README.md"
+reject missing-link-target missing-document.md
+printf '\n![bad image](missing-image.png)\n' >> "$work/documents/README.md"
+reject missing-link-target missing-image.png
+printf '\n[bad reference][probe]\n\n[probe]: missing-reference.md\n' >> "$work/documents/README.md"
+reject missing-link-target missing-reference.md
+printf '\n<a href="docs/API.md">unsupported local HTML</a>\n' >> "$work/documents/README.md"
+reject unsupported-markup README.md
+printf '\n[bad](docs/API.md#absent-probe-anchor)\n' >> "$work/documents/README.md"
+reject missing-fragment absent-probe-anchor
+for marker in Saivage 'record:///probe' 'card:///probe' 'work:///probe' '[[card:card-probe]]'; do
+ check
+ printf '\n<!-- %s -->\n' "$marker" >> "$work/documents/docs/API.md"
+ reject forbidden-content docs/API.md
+done
+printf '\nSaivage was used in creating this project.\n' >> "$work/documents/docs/API.md"
+reject invalid-credit docs/API.md
+printf '\nSaivage was used in creating this project.\nSaivage was used in creating this project.\n' >> "$work/documents/README.md"
+reject invalid-credit README.md
+printf 'unlisted\n' > "$work/documents/UNLISTED-PLAN.md"
+reject unlisted-document UNLISTED-PLAN.md
+printf '\nWORK:///notice-probe\n' >> "$work/documents/docs/evidence/native-notices/engine.txt"
+reject forbidden-content docs/evidence/native-notices/engine.txt
+original_manifest=$manifest
+for fault in duplicate escaping absolute blank unterminated; do
+ manifest="$work/$fault.manifest"
+ cp "$original_manifest" "$manifest"
+ case $fault in
+  duplicate) head -n1 "$original_manifest" >> "$manifest";;
+  escaping) printf '../escape.md\n' >> "$manifest";;
+  absolute) printf '/escape.md\n' >> "$manifest";;
+  blank) printf '\n' >> "$manifest";;
+  unterminated) printf 'incomplete' >> "$manifest";;
+ esac
+ if check >"$work/manifest-$fault.log" 2>&1; then echo "false green: $fault manifest" >&2; exit 1; fi
+ grep -F 'invalid-manifest:' "$work/manifest-$fault.log"
+ grep -F "$manifest" "$work/manifest-$fault.log"
+ manifest=$original_manifest
+ check
+done
+check
+diff -r "$work/snapshot" "$work/documents"
+echo 'isolated document probes PASS; snapshot restored'

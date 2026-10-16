@@ -15,3 +15,4 @@ local historical=J.decode(U.read('api/runtime-evidence-m3.json'))
 assert(historical.provenance.sha256==U.hash('api/history/coverage-m3.json'),'historical evidence provenance changed')
 for _,op in ipairs(d.operations) do assert(historical.operations[op.name],'lost historical evidence row'); assert(op.evidence.positive.status=='unqualified','runtime evidence inferred by generator') end
 print('All native Lua inventory suites, fresh CLI modes, JSON consumer and separate historical evidence provenance PASS')
+U.run{'lua5.4','tests/package_documents.lua',assert(os.getenv('PWD')),work..'/package-documents'}
