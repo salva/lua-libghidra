@@ -9,7 +9,7 @@ All files here are working documents, excluded from main docs/package/site.
 - [x] Record owner conditions and subsystem/issue map.
 - [x] Astra author: current-state analysis, design alternatives and selected design.
 - [x] Separate Astra analyst: bounded example-origin assessment for the designer.
-- [ ] Fresh independent Astra design/analysis review and bounded corrections.
+- [x] Fresh independent Astra design/analysis review and bounded corrections.
 - [ ] Astra author: self-contained sequenced replacement plan and planner handoff.
 - [ ] Fresh independent Astra plan/handoff review and bounded corrections.
 - [ ] Commit accepted artifacts and notify the main planner through Analyst.
@@ -40,7 +40,9 @@ implementations of overlapping document trees.
 
 ## Current artifacts
 
-- [Analysis](01-ANALYSIS.md) and [design](02-DESIGN.md): independent review underway.
+- [Analysis](01-ANALYSIS.md) and [design](02-DESIGN.md): independently approved;
+  [final design review](reviews/DESIGN-REVIEW-r2.md). Plan authoring is underway;
+  no readiness or execution claim follows from design approval alone.
 - [Example assessment](03-EXAMPLE-ASSESSMENT.md): no distinctive upstream adaptation
   established, composition origin unknown; public fixture-demo selection must be
   addressed separately from correctness of ordinary API syntax.
