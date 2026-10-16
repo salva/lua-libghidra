@@ -25,11 +25,13 @@ static void run(lua_State* L,const char* s) {
  if(rc) std::fprintf(stderr,"%s\n",lua_tostring(L,-1));
  assert(rc==LUA_OK);
 }
+static bool prime_debt=false;
 static int natural_call(lua_State* L) {
  // Function/receiver already rooted before starting collector. No explicit
  // collection/step or allocator callback calls Lua; Lua's allocation GC checks
  // alone schedule pending finalizers while the real method executes.
  lua_gc(L,LUA_GCRESTART);
+ if(prime_debt) assert(lua_checkstack(L,65536)); // storage-only growth, no GC step
  natural_phase=1;
  lua_call(L,lua_gettop(L)-1,2);
  natural_phase=2;
@@ -100,12 +102,18 @@ int main() {
   "return {policy=false}",
   "return {policy=false}"};
  const char* parse_methods[]={"open_program","close_program","shutdown"};
+ const char* valid_parsing[]={
+  "return {program_path='absent',project_name='rooted',language_id='x86:LE:64:default'}",
+  "return {policy='discard'}", "return {policy='discard'}"};
  int parse_index=0;
- for(const char* source:parsing) {
+ for(int parse_mode=0;parse_mode<2;++parse_mode) {
+ parse_index=0;
+ for(int request=0;request<3;++request) {
+  const char* source=parse_mode?valid_parsing[request]:parsing[request];
   bool observed=false;
   for(int debt=1;debt<=8192 && !observed;debt*=2) {
    natural_phase=0;
-   run(L,"collectgarbage('collect'); c=assert(n.local_client()); collectgarbage('stop'); "
+   run(L,"collectgarbage('collect'); collectgarbage('incremental',0,10000,0); c=assert(n.local_client()); collectgarbage('stop'); "
          "hits=0; completed=0; finalizer_phase=0; do local owner=c; "
          "local f=setmetatable({}, {__gc=function() finalizer_phase=mark_finalizer(); hits=hits+1; "
          "finalizer_ok,finalizer_error=pcall(function() assert(owner:close()); "
@@ -118,17 +126,31 @@ int main() {
    lua_getglobal(L,"c"); lua_getfield(L,-1,parse_methods[parse_index]);
    lua_insert(L,-2); // table, method, receiver -> method, receiver, table
    lua_rotate(L,-3,-1);
-   assert(lua_pcall(L,3,2,0)==LUA_OK); natural_phase=2;
+   // Fresh thread gives deterministic storage-growth debt without advancing
+   // collector or calling Lua finalizers before the actual request.
+
+   lua_State* T=lua_newthread(L); lua_pop(L,1); // root via registry until done
+   lua_pushthread(T); int thread_ref=luaL_ref(T,LUA_REGISTRYINDEX);
+   lua_xmove(L,T,4); prime_debt=true;
+   assert(lua_pcall(T,3,2,0)==LUA_OK); prime_debt=false; natural_phase=2;
+   lua_xmove(T,L,2); luaL_unref(L,LUA_REGISTRYINDEX,thread_ref);
+   assert(lua_isnil(L,-2));
+   lua_pushstring(L,parse_methods[parse_index]); lua_setglobal(L,"expected_operation");
    lua_pushvalue(L,-1); lua_setglobal(L,"parse_error"); lua_pop(L,2);
    lua_getglobal(L,"finalizer_phase"); observed=lua_tointeger(L,-1)==1; lua_pop(L,1);
-   if(observed) run(L,"assert(hits==1 and completed==1); assert(finalizer_ok,finalizer_error); "
-       "assert(parse_error.code=='INVALID_ARGUMENT' and parse_error.backend=='binding'); "
+   if(observed) {
+    lua_pushstring(L,parse_mode?"CLOSED":"INVALID_ARGUMENT"); lua_setglobal(L,"expected_code");
+    run(L,"assert(hits==1 and completed==1); assert(finalizer_ok,finalizer_error); "
+       "assert(parse_error.code==expected_code and parse_error.backend=='binding'); "
+       "assert(parse_error.operation==expected_operation and type(parse_error.message)=='string' and #parse_error.message>0); "
        "assert(c:_generation():decimal()=='1')");
+   }
    run(L,"c:close(); c=nil; collectgarbage('collect')");
   }
   assert(observed); ++parse_index;
  }
- std::puts("allocation-driven validation errors: open/close_program/shutdown error preservation PASS");
+ }
+ std::puts("allocation-driven valid parsing and invalid requests: CLOSED/INVALID_ARGUMENT preservation PASS");
  // Factory userdata allocation is before native ownership publication. A
  // pending finalizer may construct/close another owner there; the outer owner
  // must publish normally afterwards without inheriting the competitor's slot.

@@ -614,3 +614,27 @@ from error conversion. Applicable successful parsing scheduling remains to be
 settled; failed observation is neither proof of nonapplicability nor a wrapper
 failure. Existing successful conversion/factory paths and deterministic precheck
 revalidation remain established independently.
+
+### Valid request parsing: controlled storage debt, ordinary GC scheduling
+
+The formerly unresolved successful-parsing scenario now has a different trigger:
+run rooted requests on a registry-rooted fresh Lua thread, grow that thread's
+stack with lua_checkstack(65536) AFTER collector restart but BEFORE phase1. Stack
+growth creates allocation debt without running an incremental collector step.
+Actual unmodified wrapper key-push GC checks then schedule the pending finalizer.
+No explicit collector step/collect or custom allocator callback runs inside the
+call; no product allocation is inserted. Collector pause/step settings alone
+still failed to schedule this window (retained as a failed fixture attempt).
+
+For each valid OpenProgram, CloseProgram and Shutdown request, finalizer phase1
+must be observed before pre-recheck observer, real owner close/replacement must
+complete once, and actual call must return nil plus CLOSED/binding with correct
+operation/nonempty message and generation one (binding close only). Invalid
+typed requests retain INVALID_ARGUMENT with the same full error-shape oracle.
+Request table and receiver are rooted before call. The valid request contains
+ordinary string/policy fields; CLOSED shows no native operation proceeded after
+closure. This is pre-recheck window attribution, not proof of which key push or
+borrowed-string position ran the finalizer; arbitrary mutation of the request
+by finalizer is not exercised. Existing frame audit/rooting and copy-fault checks
+remain complementary. The successful parsing scheduling gap is no longer absent;
+independent verify must assess coverage meaning and residual matrix obligations.
