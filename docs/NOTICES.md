@@ -1,21 +1,25 @@
-# Local artifact notices and source obligations
+# Licenses, notices and distribution requirements
 
 Original Lua/C++ wrapper and documentation: Copyright 2026 Salvador Fandiño,
 [MIT](../LICENSE). Native integration uses **libghidra by Elias Bachaalany**,
 [upstream](https://github.com/0xeb/libghidra), pinned at
-`d51ca813ae1b6b59519551a9be8c0b1ad74d862d` (reports 0.0.9, not tag equivalence).
-No endorsement is implied. Upstream's Human-Origin Source License v1.0 is retained
+`d51ca813ae1b6b59519551a9be8c0b1ad74d862d`. This revision reports version 0.0.9;
+that does not establish equivalence to a release tag. No endorsement is implied.
+Upstream's Human-Origin Source License v1.0 is retained
 verbatim in [libghidra notice](notices/libghidra.txt).
-This is not legal clearance, a combined-license compatibility finding or an
-exemption from applicable upstream wrapper conditions.
+Use this page to find the exact dependency notices and the obligations to consider
+before distributing artifacts. The wrapper's MIT license does not replace
+dependency terms or applicable upstream conditions for wrappers. This page is not
+legal clearance or a finding that the combined licenses are compatible.
 
-## Exact selected inputs, provenance and linked closure
+## Dependency versions and notices
 
-The three installed root locks are authoritative machine-readable URL/revision/
-SHA256 records: [native-inputs.lock.json](../native-inputs.lock.json),
+The three installed lock files record exact URLs, revisions and SHA256 hashes:
+[native-inputs.lock.json](../native-inputs.lock.json),
 [native-patched.lock.json](../native-patched.lock.json), and
-[native-system.lock.json](../native-system.lock.json). They are separate from a
-claim that all corresponding-source archives have been obtained or delivered.
+[native-system.lock.json](../native-system.lock.json). They identify the selected
+inputs; they do not show that all required corresponding-source archives have been
+obtained or delivered.
 
 | Component | Selected identity | Retained license/notice |
 | --- | --- | --- |
@@ -39,18 +43,21 @@ Direct retained notices:
 [libghidra.txt](notices/libghidra.txt), [engine.txt](notices/engine.txt), [protobuf.txt](notices/protobuf.txt), [abseil.txt](notices/abseil.txt), [utf8-range.txt](notices/utf8-range.txt), [httplib.txt](notices/httplib.txt), [binutils.txt](notices/binutils.txt), [libiberty-dev.txt](notices/libiberty-dev.txt), [zlib1g.txt](notices/zlib1g.txt), [libzstd1.txt](notices/libzstd1.txt), [libc6.txt](notices/libc6.txt), [libstdc++6.txt](notices/libstdc++6.txt), [lua.txt](notices/lua.txt).
 
 
-`libiberty-dev.txt` is retained as input accounting; the selected shared BFD
-profile does **not** link libiberty.a. No claim that every input is a DT_NEEDED
-library: Protobuf/Abseil/engine/local archives are incorporated into the module;
-BFD/zlib/zstd/sframe and C/C++ runtimes form its shared closure. The retained build compiler is GCC 13.3.0, CMake 3.28.3, C++20.
+The `libiberty-dev.txt` notice is retained because the package is a build input;
+the selected shared BFD profile does **not** link `libiberty.a`. Not every input
+appears as a dynamically loaded library (`DT_NEEDED`). Protobuf, Abseil, the engine
+and local archives are incorporated into the module. BFD, zlib, zstd, sframe and
+the C and C++ runtimes are shared-library dependencies. The build uses GCC 13.3.0,
+CMake 3.28.3 and C++20.
 
 The selected engine patch `bfd-sleigh-target-autodetect`, SHA256
 `488eda3edc8c26cc93155240663f20d0512318428c4b69e2fbb3b409989ac82d`, is in use.
 The [patch lock](../native-patched.lock.json) records the selected profile.
-Source uses local_whole; SDK consumption uses WHOLE_ARCHIVE rather than a bare
-local archive. Incorporated archives require PIC. Do not substitute arbitrary
-static system BFD archives. See [installation](INSTALL.md) for input selection,
-SDK requirements and the distinction between preparation and disconnected builds.
+Source builds use `local_whole`; SDK builds use `WHOLE_ARCHIVE` rather than linking
+the local archive alone. Incorporated archives must contain position-independent
+code (PIC). Arbitrary static system BFD archives are not substitutes for the
+selected libraries. See [installation](INSTALL.md) for dependency preparation and
+SDK requirements.
 
 ## Bundled zlib source
 
@@ -61,9 +68,9 @@ disclaimer and contact information from the
 The notice is not a complete corresponding-source bundle. GCC 13.3.0 is the
 build compiler; the separately locked GCC 14 packages supply runtime libraries.
 
-## Obligations before conveying artifacts
+## Before distributing artifacts
 
-This installed collection is a **local source documentation artifact**, not a
+The installed manual includes notices and dependency records. It is not
 redistribution clearance or a complete corresponding-source bundle. Preserve
 original notices and exact applicable license texts, author/origin attribution,
 source links and any required change notices. MIT covers original wrapper work
@@ -82,17 +89,22 @@ automatically waive GPL obligations. For LGPL system libraries, preserve notices
 license/source access and the applicable relinking/reverse-engineering conditions;
 consider each runtime exception on its actual terms, not a blanket compiler waiver.
 
-System lock source-control metadata/archive hashes are provenance, not proof of
-complete source delivery. Eventual binary conveyance must account for the exact
+The system lock's source metadata and archive hashes identify inputs; they do not
+prove complete source delivery. Binary distribution must account for the exact
 linked version and selected system source patches, not a generic upstream URL.
-A source-only wrapper handoff must still retain its notices, locks, dependency
+A source-only wrapper distribution must still retain its notices, locks, dependency
 source/license references and build instructions; it must not suggest dependency
-binaries or source are included when they are not. The local install deliberately
-ships retained notices and accounting rather than fetching source or publishing.
+binaries or source are included when they are not. The local installation includes
+notices and dependency records; it does not fetch corresponding source or publish
+artifacts.
 No new permission to distribute linked dependencies is granted.
 
-Native source builds use only the unchanged pinned `cpp/embed_specs.py` via
-`cpp/cmake/EmbedSpecs.cmake`, Python >=3.10 stdlib zlib/XML during native
-SOURCE builds only. This excludes upstream Python bindings, owned Python tools/tests/parity,
-SDK consumers and Lua runtime. No replacement, patch or new distribution rights.
-Pre-conveyance obligations above remain; source URLs are not source delivery.
+## Build-time specification generator
+
+Native SOURCE builds only run the unchanged pinned `cpp/embed_specs.py` through
+`cpp/cmake/EmbedSpecs.cmake`, using Python >=3.10 with standard-library zlib/XML
+support. This use is limited to the upstream generator: it excludes upstream
+Python bindings and project-owned Python tools, tests or comparison oracles.
+SDK consumers and Lua runtime do not need Python. The generator is neither
+replaced nor patched, and its use grants no new distribution rights. The
+obligations above still apply; a source URL is not source delivery.

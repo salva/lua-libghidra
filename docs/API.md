@@ -1,20 +1,39 @@
 # Lua API reference
 
-Native-local libghidra at `d51ca813ae1b6b59519551a9be8c0b1ad74d862d`.
-Original wrapper Copyright 2026 Salvador Fandiño, MIT. Supported host: ordinary
-PUC Lua 5.4, signed int64 integers/eight-byte double numbers, Linux x86-64;
-qualified runtime 5.4.6. No second VM or independent-engine mixing in-process.
-See the [guide](EXAMPLES.md) and [notices](NOTICES.md).
+Use this reference to find a method's arguments, return values and limits. For a
+first working script, start with the [tutorial](TUTORIAL.md) or
+[examples](EXAMPLES.md). Links to the field reference describe each result table
+in detail.
+
+`libghidra` provides the Session interface. `libghidra.lowlevel` exposes the
+native client's complete responses and additional operations. You can access
+that same client with `session:native()`; this does not create another engine.
+Only one client may be live in a process.
+
+This reference describes libghidra at
+`d51ca813ae1b6b59519551a9be8c0b1ad74d862d` on Linux x86-64 with ordinary PUC
+Lua 5.4: signed 64-bit integers and eight-byte double numbers, tested with 5.4.6.
+The module uses the existing Lua VM. Do not mix independently managed engines
+in the same process. Original wrapper Copyright 2026 Salvador Fandiño, MIT;
+dependency terms are in [NOTICES](NOTICES.md).
 
 ## Method index
 
-Surface legend: **both** means Session and lowlevel owner; **lowlevel** also means
-`session:native()` access. Module helpers are labeled separately. Native calls
-return full detached envelopes or nil,error; Session differences are adjacent.
-Arguments shown without defaults are required. `s` means exact string, `u` exact
-uint64, `i` signed int64 Lua integer, `n` integer 0..INT_MAX; bool is boolean.
-Calls use colon syntax except module functions. String/u64/integer bounds and
-[shared pagination](#values-and-validation) apply to every entry.
+Entries marked **both** are available on Session and the lowlevel client.
+**lowlevel** methods are also accessible through `session:native()`. Module
+functions are labeled separately; all other calls use Lua's colon syntax.
+The **read** and **change** labels refer to the shared
+[state and iterator rules](#lifecycle-status-and-capabilities).
+
+Arguments without a default are required. Signatures use these abbreviations:
+`s` for a string, `u` for an exact unsigned 64-bit value, `i` for a signed 64-bit
+Lua integer, `n` for an integer from 0 to INT_MAX, and `bool` for a boolean.
+The [value and pagination rules](#values-and-validation) apply throughout.
+
+A response **envelope** is the complete table returned by the native API. Its
+records are detached copies, not handles into the engine. Lowlevel calls return
+that complete response or `nil,error`. Session unwraps a few common reads, as
+described below and beside each method.
 
 - Module helpers: [open](#open), [local_client](#local_client), [check](#check), [u64](#u64), [native](#native), [close](#close), [iter_functions](#iter_functions), [iter_symbols](#iter_symbols), [iter_memory_blocks](#iter_memory_blocks)
 - Lifecycle status and capabilities: [get_status](#get_status), [get_capabilities](#get_capabilities), [get_revision](#get_revision), [open_program](#open_program), [close_program](#close_program), [shutdown](#shutdown), [save_program](#save_program), [discard_program](#discard_program)
@@ -27,27 +46,39 @@ Calls use colon syntax except module functions. String/u64/integer bounds and
 
 ## Construction and return shapes
 
-`require('libghidra.lowlevel').local_client(client_options)` returns owner or
-`nil,error`. Omitted/nil options means `{}`. Client keys: `ghidra_root`,
-`state_path`, `default_arch` (strings default empty), `pool_size` (integer, only
-1 accepted, default 1). Configuration strings reject embedded NULs.
+`require('libghidra.lowlevel').local_client(client_options)` creates the client
+that owns the native engine. It returns that owner or `nil,error`. Omit the
+options, pass nil, or use `{}` for defaults:
+
+| Client option | Type and default |
+| --- | --- |
+| `ghidra_root` | String, default empty. Supply an external specification root, or leave empty to use embedded specifications. |
+| `state_path` | String, default empty. The path used for saved state. |
+| `default_arch` | String, default empty. Default architecture selection. |
+| `pool_size` | Integer, default 1. Only 1 is accepted. |
+
+Configuration strings cannot contain embedded NUL bytes.
 
 `require('libghidra').open{client=client_options,program=program_options}` returns
-`session,nil,open_response` or `nil,error`; a newly created owner is released on
-open failure, including Lua publication errors. Only client/program outer keys
-are accepted. Program is required. The six Session program keys are
-`program_path`, `project_path`, `language_id`, `compiler_spec_id`, `format`
-(strings default empty), `base_address` (exact uint64 default zero).
-At least one path must be nonempty; nonempty project_path selects project loading.
-Lowlevel `owner:open_program(program_options)` additionally accepts `project_name`
-(string default empty) and `read_only` (boolean default false), both **ignored**.
-Session factory and retained `session:open_program` reject these extra keys.
-Native open metadata echoes language/compiler request/defaults, not authoritative
-detection. Supply explicit supported hints.
+`session,nil,open_response` or `nil,error`. If opening fails, it releases the new
+owner, including when an error occurs while returning values to Lua. The outer
+table accepts only `client` and `program`; `program` is required.
 
-All calls use colon syntax. Lowlevel returns complete detached native values or
-`nil,error`. Session forwards complete page/mutation/lifecycle envelopes, except
-these reads unwrap a field as `value,nil,response`:
+The Session program options are `program_path`, `project_path`, `language_id`,
+`compiler_spec_id` and `format` (strings, default empty), and `base_address`
+(exact uint64, default zero). At least one path must be nonempty. A nonempty
+`project_path` selects project loading.
+
+Supply explicit supported language and compiler hints. The open response echoes
+the requested or default values; it does not confirm automatic detection.
+Lowlevel `owner:open_program(program_options)` also accepts `project_name`
+(string, default empty) and `read_only` (boolean, default false), but the engine
+**ignores both**. Neither Session construction nor `session:open_program` accepts
+these two extra keys.
+
+Session returns complete responses for page queries, edits and lifecycle calls.
+The following reads instead return `value,nil,response`, giving you the useful
+field first while preserving the full response as the third return value:
 
 | Session read | Field |
 | --- | --- |
@@ -59,800 +90,1059 @@ these reads unwrap a field as `value,nil,response`:
 | get_decompilation | decompilation |
 | read_bytes | data |
 
-Optional absence yields `nil,NOT_FOUND,response`; native failure has no invented
-third response. False, zero, empty strings and empty tables are not absence.
-Both modules export `check(value,err,response)`: returns value,response or raises
-err only if value is nil. **It checks presence, not outcome flags.** A present
-`completed=false` or `is_fallback=true` decompilation is inspectable, not success;
-inspect error_message and pseudocode separately. Mutation booleans/counters are
-acknowledgements, not independently verified effects.
+If an optional field is absent, Session returns `nil,error,response` with error
+code `NOT_FOUND`. A native failure returns `nil,error` without a third response.
+False, zero, empty strings and empty tables all count as present values.
 
-Errors have code/message/operation/backend and optional upstream_code; backend
-is `local` for SDK failures, `binding` for boundary errors. Preserve native codes;
-notably CLOSED, NO_PROGRAM, NOT_FOUND, INVALID_ARGUMENT, NOT_SUPPORTED,
-NO_STATE_PATH and native resource failures differ. C++ exceptions are contained;
-Lua allocation/runtime errors still raise. Iterators raise structured errors.
+Both modules export `check(value,err,response)`. It returns `value,response`
+when value is not nil, and otherwise raises `err`. **It checks presence, not
+success flags.** A decompilation with `completed=false` or `is_fallback=true`
+can still be inspected, but is not complete. Also inspect `error_message` and
+`pseudocode`. Likewise, a mutation's boolean or counter acknowledges the request;
+it does not independently verify the effect.
+
+Error tables contain `code`, `message`, `operation`, `backend` and sometimes
+`upstream_code`. The backend is `local` for SDK failures and `binding` for errors
+in argument or value handling. Check the code rather than treating all failures
+alike: `CLOSED`, `NO_PROGRAM`, `NOT_FOUND`, `INVALID_ARGUMENT`, `NOT_SUPPORTED`
+and `NO_STATE_PATH` describe different conditions, as do native resource errors.
+C++ exceptions are caught at the binding boundary. Lua allocation and runtime
+errors still raise normally; iterators raise structured errors.
 
 ## Values and validation
 
-Every native uint64 output is immutable UInt64, even small IDs, addresses,
-revision numbers, sizes and ordinals. `u64(nonnegative_integer_or_strict_string)`
-returns exact value or nil,error; uint64 arguments also accept UInt64. Strings
-are decimal or `0x` hexadecimal, without sign/whitespace/trailing bytes. Floats
-and overflow are rejected. `nm`'s unprefixed hex must be prefixed with `0x`.
-Methods: `hex()` (0x plus 16 lowercase digits), `decimal()`, checked
-`to_integer()`, `add(nonnegative_integer)`, `sub(nonnegative_integer)`.
-`tostring` equals hex. Equality compares UInt64 values; unrelated types compare
-false. Ordered comparisons require UInt64 operands and raise on wrong types.
-No arithmetic metamethods. Use string keys, not distinct value-equal userdata keys.
-Signed/narrow integers are checked Lua integers; finite double fields are Lua
-numbers. Arrays are dense 1-based tables; native offsets/ordinals stay zero-based.
-Bytes are binary strings (NUL preserved); text is not transcoded. Known enums use
-documented names, unknown **response** enums retain numeric values. Request
-comment kinds accept only the documented names. Optional absence is nil.
+**Addresses and other unsigned 64-bit values.** Every native uint64 output is an
+immutable `UInt64`, even for small IDs, sizes, revision numbers and ordinals.
+This preserves the full range without rounding. Use
+`u64(nonnegative_integer_or_strict_string)` to construct one; it returns the exact
+value or `nil,error`. A uint64 argument also accepts an existing UInt64.
 
-Unknown request keys, sparse arrays, wrong types and out-of-range values fail
-before dispatch. Defaults use omission, never truthiness. Required positional
-arguments stay required despite native model defaults. [FIELDS](../api/FIELDS.md)
-is generated native field/type/default and conversion authority; excluded-only
-schemas are not Lua support claims. Source reachability is not producer evidence.
+Strings must contain decimal digits or hexadecimal digits prefixed with `0x`,
+with no sign, whitespace or trailing bytes. Floating-point values and overflow
+are rejected. Prefix `nm`'s hexadecimal output with `0x` before passing it in.
 
-`range_page` defaults to `{range_start=0,range_end=UINT64_MAX,limit=100,offset=0}`;
-`count_page` accepts only limit/offset with the same defaults. Omitted/nil pages
-use defaults. Limit/page_size is positive, offset nonnegative, each <= INT_MAX
-and offset+limit <= INT_MAX. Ranges are inclusive. Explicit range_end=0 means
-UINT64_MAX for function/instruction/symbol/comment/data families and function
-candidates used by batch decompilation, not a singleton zero upper bound. Do not
-infer this sentinel for every range-bearing native operation.
+| UInt64 method | Result |
+| --- | --- |
+| `hex()` | `0x` followed by 16 lowercase hexadecimal digits. `tostring` uses the same form. |
+| `decimal()` | The exact decimal string. |
+| `to_integer()` | A Lua integer, or `nil,error` if the value does not fit. |
+| `add(n)`, `sub(n)` | A new UInt64, or `nil,error` on overflow. `n` must be a nonnegative Lua integer. |
+
+Equality compares UInt64 values; comparison with an unrelated type is false.
+Ordered comparisons require two UInt64 operands and raise on other types.
+Arithmetic operators are not provided. For table keys, use `hex()` or `decimal()`:
+distinct UInt64 objects do not become the same key merely because their values
+are equal.
+
+**Other values.** Signed and narrower integers are range-checked Lua integers;
+finite double fields are Lua numbers. Arrays are dense tables indexed from 1,
+while native offsets and ordinals still start at 0. Bytes are binary strings
+that preserve NUL bytes. Text is not transcoded. Known enum values use documented
+names; unknown enum values in **responses** remain numeric. Comment-kind inputs
+accept only the documented names. Absent optional values are nil.
+
+Unknown keys, sparse arrays, wrong types and out-of-range values fail before a
+request reaches the engine. Omit an option to use its default; false and zero do
+not trigger defaults. Required positional arguments remain required even when
+the underlying native model has defaults. The generated [field reference](../api/FIELDS.md)
+lists native types, defaults and conversions. A listed field may remain empty in
+practice, and models in its native-only appendix are not supported Lua operations.
+
+**Pages.** `range_page` defaults to
+`{range_start=0,range_end=UINT64_MAX,limit=100,offset=0}`. `count_page` accepts
+only `limit` and `offset`, with the same defaults. Omit a page or pass nil to use
+these defaults. Ranges include both endpoints. `limit` (or iterator `page_size`)
+must be positive; `offset` must be nonnegative. Each value and their sum must be
+at most INT_MAX.
+
+For function, instruction, symbol, comment and data queries, and for the function
+candidates in batch decompilation, an explicit `range_end=0` means UINT64_MAX.
+It does **not** restrict the query to address zero. Other operations with ranges
+do not necessarily interpret zero this way.
 
 ## Module helpers and owner views
 
 ### open
 
 Session module function `open{client=client_options, program=program_options}`.
-No existing owner required; creates one process owner and opens the required
-program. Returns `session,nil,response` with [OpenProgramResponse](../api/FIELDS.md#openprogramresponse)
-or `nil,error`; failure releases a newly constructed owner, including publication
-errors. See [construction keys](#construction-and-return-shapes). Client omitted/nil
-means defaults. Program must be a table with at least one nonempty input path.
+Creates an owner and opens a program, returning `session,nil,response` with an
+[OpenProgramResponse](../api/FIELDS.md#openprogramresponse), or `nil,error`.
+On failure it releases the newly created owner, including errors while returning
+values to Lua. Omit `client` or pass nil for defaults. `program` must be a table
+with at least one nonempty input path. See [construction options](#construction-and-return-shapes).
 
 ### local_client
 
-Lowlevel module function `local_client(client_options)`; omitted/nil means `{}`.
-No program needed. Creates unique owner or returns `nil,error`; CLIENT_IN_USE for
-a second live owner. Keys/defaults are in [construction](#construction-and-return-shapes)
-and [LocalClientOptions](../api/FIELDS.md#localclientoptions). Returns owner userdata, not a model envelope.
+Lowlevel module function `local_client(client_options)`. Creates the native owner
+without opening a program. Returns owner userdata or `nil,error`; a second live
+owner fails with `CLIENT_IN_USE`. Omit the options or pass nil for `{}`. See
+[construction options](#construction-and-return-shapes) and
+[LocalClientOptions](../api/FIELDS.md#localclientoptions) for keys and defaults.
 
 ### check
 
-Both module functions `check(value,err,response)` return `value,response` when
-value is not nil, otherwise raise err. Pure Lua presence helper: no dispatch,
-owner/state requirement or outcome validation. False/zero are present.
+Both modules provide `check(value,err,response)`. It returns `value,response`
+when value is not nil and otherwise raises `err`. It needs no owner and makes no
+native call. False and zero count as present values. This helper does not validate
+success flags such as a decompilation's `completed` field.
 
 ### u64
 
-Both modules export `u64(nonnegative_integer_or_strict_string)`: exact UInt64 or
-`nil,error`, no owner/state/dispatch. See [values](#values-and-validation).
-No model envelope. UInt64 methods `hex()`, `decimal()` return strings;
-`to_integer()` returns a checked Lua integer or nil,error; `add(n)`, `sub(n)`
-require nonnegative Lua integer and return exact UInt64 or nil,error on overflow.
-No mutation of the immutable value, no float arithmetic.
+Both modules provide `u64(nonnegative_integer_or_strict_string)`. It returns an
+exact UInt64 or `nil,error`, without needing an owner or calling the engine.
+See [values and validation](#values-and-validation) for accepted text and the
+`hex()`, `decimal()`, `to_integer()`, `add(n)` and `sub(n)` methods. These values
+are immutable and never use floating-point arithmetic.
 
 ### native
 
-Session-only `native()` returns the same lowlevel owner alias (even when closed),
-not another engine or model envelope. No dispatch/mutation; shares lifetime/state.
+Session-only `native()` returns the underlying lowlevel owner, even if it has
+already closed. This is an alias, not a new engine. Both views share the same
+state and lifetime; obtaining the alias makes no native call and changes nothing.
 
 ### close
 
-Both owner views `close()` return scalar true idempotently; release native owner
-and process slot, permanently mark aliases CLOSED and invalidate iterators.
-No save. Lua 5.4 __close preserves an active scope error. Detached values survive.
+Both views provide `close()`, which releases the native owner and the process's
+client slot, permanently closes all aliases and invalidates iterators. It returns
+true, including on repeated calls. It does not save. Lua 5.4 `__close` preserves
+an error already being raised from the scope. Detached results remain usable.
 
 ### iter_functions
 
-Session-only `iter_functions(options)` returns a lazy zero-argument iterator yielding [FunctionRecord](../api/FIELDS.md#functionrecord). Requires an open program at fetch time; closed/generation changes raise structured errors. Omitted/nil options use page_size=100, offset=0, range_start=0, range_end=UINT64_MAX. Uses shared [pagination](#values-and-validation); no mutation or eager snapshot.
+Session-only `iter_functions(options)` yields
+[FunctionRecord](../api/FIELDS.md#functionrecord) values. Call the returned
+iterator with no arguments to get the next record. It fetches pages as needed,
+so the program must remain open and its generation must remain unchanged.
+Otherwise it raises a structured error.
+
+Omitted or nil options use `page_size=100`, `offset=0`, `range_start=0` and
+`range_end=UINT64_MAX`. Shared [pagination limits](#values-and-validation) apply.
+The iterator does not mutate the program or take an eager snapshot.
 
 ### iter_symbols
 
-Session-only `iter_symbols(options)` returns a lazy zero-argument iterator yielding [SymbolRecord](../api/FIELDS.md#symbolrecord). Requires an open program at fetch time; closed/generation changes raise structured errors. Omitted/nil options use page_size=100, offset=0, range_start=0, range_end=UINT64_MAX. Uses shared [pagination](#values-and-validation); no mutation or eager snapshot.
+Session-only `iter_symbols(options)` yields
+[SymbolRecord](../api/FIELDS.md#symbolrecord) values through a zero-argument
+iterator. It uses the same lazy fetching, state checks and options as
+`iter_functions`: `page_size=100`, `offset=0`, `range_start=0` and
+`range_end=UINT64_MAX` when options are omitted or nil. Shared
+[pagination limits](#values-and-validation) apply. It does not mutate the program
+or take an eager snapshot.
 
 ### iter_memory_blocks
 
-Session-only `iter_memory_blocks(options)` returns a lazy zero-argument iterator yielding [MemoryBlockRecord](../api/FIELDS.md#memoryblockrecord). Requires an open program at fetch time; closed/generation changes raise structured errors. Omitted/nil options use page_size=100, offset=0; counts only. Uses shared [pagination](#values-and-validation); no mutation or eager snapshot.
+Session-only `iter_memory_blocks(options)` yields
+[MemoryBlockRecord](../api/FIELDS.md#memoryblockrecord) values through a
+zero-argument iterator. It uses the same lazy fetching and state checks as
+`iter_functions`, but accepts only count options: `page_size=100` and `offset=0`
+when omitted or nil. It has no address range options. Shared
+[pagination limits](#values-and-validation) apply; there is no mutation or eager
+snapshot.
 
 ### Iteration guarantees
 
-`iter_functions(options)`, `iter_symbols(options)`, `iter_memory_blocks(options)`
-return lazy zero-argument record iterators; options replace limit with page_size
-(default 100), preserve offset/range defaults, except memory accepts counts only.
-They retain one page, advance by actual returned count, and check shared generation
-before every yield, including buffered records. Short pages need not end traversal;
-duplicate, reversed, oversized or nonadvancing pages fail rather than sort/dedup.
-Functions order by entry address; symbols by native traversal symbol_id with
-address/name/namespace identity; memory blocks by start/name. These bounded serial
-orders are not arbitrary-engine snapshots. No other iterator exists. Signature
-offsets count candidates **before filtering**;
-empty signature pages do not prove exhaustion. Types have anonymous identity
-collisions; block order is structural, xrefs concatenate phases: these remain
-pages-only, as do CFG/subtypes/comments and specialist families.
-ListInstructions linearly decodes exactly from range_start and stops at a decode
-gap; default zero can return empty despite code elsewhere.
+These are the only three iterators. Each keeps one page in memory and advances
+by the number of records actually returned. Before every yield, including a
+buffered record, it checks the owner's shared generation. A short page does not
+necessarily end traversal. Duplicate, reversed, oversized or nonadvancing pages
+raise an error rather than being silently sorted or deduplicated.
+
+Functions are ordered by entry address. Symbols follow the native `symbol_id`
+order and are identified by address, name and namespace. Memory blocks are ordered
+by start address and name. These traversal rules do not provide a snapshot of
+arbitrary engine changes.
+
+Other collections are **pages-only**. Signature offsets count candidate functions
+before missing signatures are filtered, so an empty page does not prove exhaustion.
+Types can have colliding anonymous identities; basic blocks follow structural
+order; cross-reference results combine multiple phases. There are no iterators
+for these, control-flow edges, subtypes, comments or specialist collections.
+Instruction pages decode sequentially from `range_start` and stop at a decode
+gap. A default start of zero can therefore produce an empty page despite code
+elsewhere.
 
 ## Lifecycle status and capabilities
 
+The entries below identify **read** and **change** operations. Both require a live
+owner. Reads leave iterators valid. Changes invalidate iterators once sent to the
+engine, even if they fail or only partly succeed; argument validation failures
+do not. Unless an entry says otherwise, a program must be open. See
+[ownership and persistence](#ownership-persistence-and-effective-limits) for how
+closing, saving and reopening affect the owner and edits.
+
 ### get_status
 
-**both** — `get_status()`. Requires live owner; no open program prerequisite. Read-only dispatch; no iterator invalidation.
+**both** · read — `get_status()`. No open program required.
 
-Lowlevel result: [HealthStatus](../api/FIELDS.md#healthstatus). Session retains the complete result unchanged. Result fields: health table.
-
-Direct status result, not a response envelope; available without a program. See [ownership/persistence limits](#ownership-persistence-and-effective-limits).
+Returns the [HealthStatus](../api/FIELDS.md#healthstatus) table directly on both
+interfaces. Use it to check the client even when no program is open.
 
 ### get_capabilities
 
-**both** — `get_capabilities()`. Requires live owner; no open program prerequisite. Read-only dispatch; no iterator invalidation.
+**both** · read — `get_capabilities()`. No open program required.
 
-Lowlevel result: dense array of [Capability](../api/FIELDS.md#capability). Session retains the complete result unchanged. Result fields: capability array (coarse advertisement, not support oracle).
-
-Dense array of Capability elements, not an invented response envelope. Coarse native advertisement is not an operation support oracle. See [ownership/persistence limits](#ownership-persistence-and-effective-limits).
+Returns a dense array of [Capability](../api/FIELDS.md#capability) records directly
+on both interfaces. These are broad native capability labels, not a guarantee
+that a particular operation works with your input. Consult the method's limits.
 
 ### get_revision
 
-**both** — `get_revision()`. Requires live owner; no open program prerequisite. Read-only dispatch; no iterator invalidation.
+**both** · read — `get_revision()`. No open program required.
 
-Lowlevel result: [RevisionResponse](../api/FIELDS.md#revisionresponse). Session retains the complete result unchanged. Result fields: program_id/modification_number: UInt64; program_path/file_id: strings; file_version:int32 and file_last_modified_time:int64: Lua integers.
+Both interfaces return [RevisionResponse](../api/FIELDS.md#revisionresponse).
+`program_id` and `modification_number` are UInt64 values; `program_path` and
+`file_id` are strings. `file_version` is a signed 32-bit Lua integer and
+`file_last_modified_time` is a signed 64-bit Lua integer.
 
-Owner-level revision snapshot; file_version is checked int32, not UInt64. Zero/default metadata is not a populated durable producer. See [ownership/persistence limits](#ownership-persistence-and-effective-limits).
+Returns the owner's current revision metadata. `file_version` is a checked
+32-bit Lua integer, not UInt64. Fields can be zero or default-valued; do not use
+them as proof that a file version was detected or saved persistently.
 
 ### open_program
 
-**both** — `open_program(program_options)`. Requires live owner; no open program prerequisite. Dispatched mutation/lifecycle invalidates iterators even on failure/partial effect; validation-only failure does not.
+**both** · change — `open_program(program_options)`. No open program required.
 
-Lowlevel result: [OpenProgramResponse](../api/FIELDS.md#openprogramresponse). Session retains the complete result unchanged. Result fields: full OpenProgramResponse; same owner on reopen.
+Both interfaces return the complete [OpenProgramResponse](../api/FIELDS.md#openprogramresponse).
 
-Required program_options table; [construction keys](#construction-and-return-shapes) apply. Successful reopen replaces logical program context on the same owner; request metadata is echoed, not authoritative detection. See [ownership/persistence limits](#ownership-persistence-and-effective-limits).
+Pass the required `program_options` table using the
+[construction keys](#construction-and-return-shapes). A successful reopen
+replaces the program on the same owner. The response echoes requested language
+and compiler settings; it does not confirm automatic detection.
 
 ### close_program
 
-**both** — `close_program({policy='save' or 'discard'})`. Requires live owner; no open program prerequisite. Dispatched mutation/lifecycle invalidates iterators even on failure/partial effect; validation-only failure does not.
+**both** · change — `close_program({policy='save' or 'discard'})`. Callable without an open program.
 
-Lowlevel result: [CloseProgramResponse](../api/FIELDS.md#closeprogramresponse). Session retains the complete result unchanged. Result fields: closed:boolean.
+Both interfaces return [CloseProgramResponse](../api/FIELDS.md#closeprogramresponse),
+with the boolean acknowledgment `closed`.
 
-Required options table with explicit policy save/discard; unloaded native program returns NO_PROGRAM. response.closed does not prove engine unloading. Session rejects save without state_path as NO_STATE_PATH before dispatch; lowlevel retains the empty-path save caveat. See [ownership/persistence limits](#ownership-persistence-and-effective-limits).
+The options table and its `policy` are required. Without a loaded program, the
+native call returns `NO_PROGRAM`. A true `response.closed` means program access
+has closed, not that the engine has unloaded or the owner has been released.
+Session rejects `policy='save'` without a construction `state_path`, returning
+`NO_STATE_PATH` before calling the engine. The lowlevel interface can close
+without saving when that path is empty. See the
+[lifecycle and persistence limits](#ownership-persistence-and-effective-limits).
 
 ### shutdown
 
-**both** — `shutdown({policy='save' or 'discard'})`. Requires live owner; no open program prerequisite. Dispatched mutation/lifecycle invalidates iterators even on failure/partial effect; validation-only failure does not.
+**both** · change — `shutdown({policy='save' or 'discard'})`. Callable without an open program.
 
-Lowlevel result: [ShutdownResponse](../api/FIELDS.md#shutdownresponse). Session retains the complete result unchanged. Result fields: accepted:boolean, **not closed**.
+Both interfaces return [ShutdownResponse](../api/FIELDS.md#shutdownresponse),
+with the boolean acknowledgment `accepted`.
 
-Required policy table as for close_program; response.accepted is not response.closed. Session applies the same NO_STATE_PATH guard. Logical local program closure, not remote host termination or owner release. See [ownership/persistence limits](#ownership-persistence-and-effective-limits).
+Requires the same policy table as `close_program`, and Session applies the same
+`NO_STATE_PATH` check. This closes access to the local program; it does not release
+the owner or terminate a remote host. The acknowledgment is `response.accepted`,
+not `response.closed`.
 
 ### save_program
 
-**both** — `save_program()`. Requires live owner and open program. Dispatched mutation/lifecycle invalidates iterators even on failure/partial effect; validation-only failure does not.
+**both** · change — `save_program()`.
 
-Lowlevel result: [SaveProgramResponse](../api/FIELDS.md#saveprogramresponse). Session retains the complete result unchanged. Result fields: saved:boolean.
+Both interfaces return [SaveProgramResponse](../api/FIELDS.md#saveprogramresponse),
+with the boolean acknowledgment `saved`.
 
-Requires construction state_path; saved=true is not complete category persistence. No binary patch persistence guarantee. See [ownership/persistence limits](#ownership-persistence-and-effective-limits).
+Set `state_path` when constructing the client. `saved=true` acknowledges the
+request, but does not mean every edit was preserved. In particular, binary byte
+patches are not guaranteed to survive. Read the
+[category-specific persistence limits](#ownership-persistence-and-effective-limits).
 
 ### discard_program
 
-**lowlevel** — `discard_program()`. Requires live owner; no open program prerequisite. Dispatched mutation/lifecycle invalidates iterators even on failure/partial effect; validation-only failure does not.
+**lowlevel** · change — `discard_program()`.
 
-Lowlevel result: [DiscardProgramResponse](../api/FIELDS.md#discardprogramresponse). Result fields: discarded:boolean.
+Requires live owner; no open program prerequisite.
 
-Owner-only discarded=true acknowledgment, usable before opening a program and
-after logical program closure. Does not revert mutations or byte overlay. No rollback. See [ownership/persistence limits](#ownership-persistence-and-effective-limits).
+Returns [DiscardProgramResponse](../api/FIELDS.md#discardprogramresponse),
+with the boolean acknowledgment `discarded`.
+
+You can use this call before opening a program or after logical program closure.
+It invalidates iterators when sent to the engine. `discarded=true` is only an
+acknowledgment: it does not undo edits or byte overlays. **No rollback is provided.**
 
 
 ## Functions and decompilation
 
 ### get_function
 
-**both** — `get_function(address)`. Requires live owner and open program. Read-only dispatch; no iterator invalidation.
+**both** · read — `get_function(address)`.
 
-Lowlevel result: [GetFunctionResponse](../api/FIELDS.md#getfunctionresponse). Session returns `response['function']`, nil, complete response; optional absence is nil,NOT_FOUND,response. Nested values: [FunctionRecord](../api/FIELDS.md#functionrecord). Result fields: optional function.
+Result fields: optional function.
 
-Session returns response['function']; `function` is a Lua keyword. Discovery is lazy; absence does not imply no code. See [ownership/persistence limits](#ownership-persistence-and-effective-limits).
+Looks up a function at `address`. Lowlevel returns
+[GetFunctionResponse](../api/FIELDS.md#getfunctionresponse), whose optional
+`function` field is a [FunctionRecord](../api/FIELDS.md#functionrecord).
+Session returns that record as `value,nil,response`, or `nil,error,response`
+with code `NOT_FOUND` when it is absent.
+
+Use `response['function']` to access the field yourself: `function` is a Lua
+keyword. Discovery happens lazily, so decompile a known mapped function first.
+An absent record does not mean there is no code at the address.
 
 ### list_functions
 
-**both** — `list_functions(range_page)`. Requires live owner and open program. Read-only dispatch; no iterator invalidation.
+**both** · read — `list_functions(range_page)`.
 
-Lowlevel result: [ListFunctionsResponse](../api/FIELDS.md#listfunctionsresponse). Session retains the complete result unchanged. Nested values: [FunctionRecord](../api/FIELDS.md#functionrecord). Result fields: functions array.
+Result fields: functions array.
 
-Omitted/nil page uses [range/count defaults and compound bounds](#values-and-validation). See [ownership/persistence limits](#ownership-persistence-and-effective-limits).
+Returns [ListFunctionsResponse](../api/FIELDS.md#listfunctionsresponse) on both
+interfaces. Its `functions` array contains [FunctionRecord](../api/FIELDS.md#functionrecord)
+values.
+
+Omit the page or pass nil for the shared [page defaults](#values-and-validation).
 
 ### rename_function
 
-**both** — `rename_function(address, new_name:string)`. Requires live owner and open program. Dispatched mutation/lifecycle invalidates iterators even on failure/partial effect; validation-only failure does not.
+**both** · change — `rename_function(address, new_name:string)`.
 
-Lowlevel result: [RenameFunctionResponse](../api/FIELDS.md#renamefunctionresponse). Session retains the complete result unchanged. Result fields: renamed:boolean, name:string.
+Renames the function at `address`. Both interfaces return
+[RenameFunctionResponse](../api/FIELDS.md#renamefunctionresponse), with the boolean
+acknowledgment `renamed` and string `name`.
 
-See [ownership/persistence limits](#ownership-persistence-and-effective-limits).
 
 ### list_basic_blocks
 
-**both** — `list_basic_blocks(range_page)`. Requires live owner and open program. Read-only dispatch; no iterator invalidation.
+**both** · read — `list_basic_blocks(range_page)`.
 
-Lowlevel result: [ListBasicBlocksResponse](../api/FIELDS.md#listbasicblocksresponse). Session retains the complete result unchanged. Nested values: [BasicBlockRecord](../api/FIELDS.md#basicblockrecord). Result fields: blocks array.
+Result fields: blocks array.
 
-Omitted/nil page uses [range/count defaults and compound bounds](#values-and-validation). See [ownership/persistence limits](#ownership-persistence-and-effective-limits).
+Returns [ListBasicBlocksResponse](../api/FIELDS.md#listbasicblocksresponse) on both
+interfaces. Its `blocks` array contains [BasicBlockRecord](../api/FIELDS.md#basicblockrecord)
+values describing basic blocks: instruction sequences without internal branches.
+
+Omit the page or pass nil for the shared [page defaults](#values-and-validation).
 
 ### list_cfg_edges
 
-**both** — `list_cfg_edges(range_page)`. Requires live owner and open program. Read-only dispatch; no iterator invalidation.
+**both** · read — `list_cfg_edges(range_page)`.
 
-Lowlevel result: [ListCFGEdgesResponse](../api/FIELDS.md#listcfgedgesresponse). Session retains the complete result unchanged. Nested values: [CFGEdgeRecord](../api/FIELDS.md#cfgedgerecord). Result fields: edges array.
+Result fields: edges array.
 
-Omitted/nil page uses [range/count defaults and compound bounds](#values-and-validation). See [ownership/persistence limits](#ownership-persistence-and-effective-limits).
+Returns [ListCFGEdgesResponse](../api/FIELDS.md#listcfgedgesresponse) on both
+interfaces. Its `edges` array contains [CFGEdgeRecord](../api/FIELDS.md#cfgedgerecord)
+values describing connections in the control-flow graph (CFG).
+
+Omit the page or pass nil for the shared [page defaults](#values-and-validation).
 
 ### get_decompilation
 
-**both** — `get_decompilation(address, options={})`. Requires live owner and open program. Read-only dispatch; no iterator invalidation.
+**both** · read — `get_decompilation(address, options={})`.
 
-Lowlevel result: [GetDecompilationResponse](../api/FIELDS.md#getdecompilationresponse). Session returns `response.decompilation`, nil, complete response; optional absence is nil,NOT_FOUND,response. Nested values: [DecompilationRecord](../api/FIELDS.md#decompilationrecord), [DecompileLocalRecord](../api/FIELDS.md#decompilelocalrecord), [DecompileTokenRecord](../api/FIELDS.md#decompiletokenrecord). Result fields: optional decompilation.
+Decompiles the function at `address`. Lowlevel returns
+[GetDecompilationResponse](../api/FIELDS.md#getdecompilationresponse), containing
+an optional [DecompilationRecord](../api/FIELDS.md#decompilationrecord). Session
+returns that record as `value,nil,response`, or `nil,error,response` with code
+`NOT_FOUND` when absent. Nested record types are
+[DecompileLocalRecord](../api/FIELDS.md#decompilelocalrecord) and
+[DecompileTokenRecord](../api/FIELDS.md#decompiletokenrecord).
 
-Lowlevel options only timeout_ms integer 0..INT_MAX, default 30000, ignored by native engine. Session only omitted/nil/empty options. Present incomplete/fallback/error_message output must be inspected, not treated as success. See [ownership/persistence limits](#ownership-persistence-and-effective-limits).
+On Session, omit `options`, pass nil, or pass an empty table. Lowlevel accepts
+only `timeout_ms`, an integer from 0 to INT_MAX with default 30000. The native
+engine **ignores this timeout**; it does not impose a deadline.
+
+Inspect `completed`, `is_fallback` and `error_message` before using the pseudocode
+as a complete result. An incomplete or fallback record can still contain text.
+The [decompile example](EXAMPLES.md#decompile-a-known-function) shows how to
+classify these outcomes.
 
 ### list_decompilations
 
-**lowlevel** — `list_decompilations(page={}, options={timeout_ms=30000})`. Requires live owner and open program. Read-only dispatch; no iterator invalidation.
+**lowlevel** · read — `list_decompilations(page={}, options={timeout_ms=30000})`.
 
-Lowlevel result: [ListDecompilationsResponse](../api/FIELDS.md#listdecompilationsresponse). Nested values: [DecompilationRecord](../api/FIELDS.md#decompilationrecord), [DecompileLocalRecord](../api/FIELDS.md#decompilelocalrecord), [DecompileTokenRecord](../api/FIELDS.md#decompiletokenrecord). Result fields: decompilations:DecompilationRecord[].
+Returns [ListDecompilationsResponse](../api/FIELDS.md#listdecompilationsresponse).
+Its `decompilations` array contains [DecompilationRecord](../api/FIELDS.md#decompilationrecord)
+values, which can include [DecompileLocalRecord](../api/FIELDS.md#decompilelocalrecord)
+and [DecompileTokenRecord](../api/FIELDS.md#decompiletokenrecord) values.
 
-Omitted/nil page uses [range/count defaults and compound bounds](#values-and-validation). Native batch, not a Lua loop. options only timeout_ms integer 0..INT_MAX default 30000, ignored. Inspect every completed/is_fallback/error_message record; mixed outcomes are possible. See [ownership/persistence limits](#ownership-persistence-and-effective-limits).
+Decompiles a page of function candidates in one native batch. An omitted or nil
+page uses the [range defaults](#values-and-validation). The only option is
+`timeout_ms`, an integer from 0 to INT_MAX, default 30000; the engine ignores it.
+Inspect `completed`, `is_fallback` and `error_message` in **every** returned record.
+A single batch can contain complete, fallback and incomplete results.
 
 ### list_leaf_functions
 
-**lowlevel** — `list_leaf_functions(page={})`. Requires live owner and open program. Read-only dispatch; no iterator invalidation.
+**lowlevel** · read — `list_leaf_functions(page={})`.
 
-Lowlevel result: [ListFunctionsResponse](../api/FIELDS.md#listfunctionsresponse). Nested values: [FunctionRecord](../api/FIELDS.md#functionrecord). Result fields: functions:FunctionRecord[].
+Returns [ListFunctionsResponse](../api/FIELDS.md#listfunctionsresponse), with a
+`functions` array of [FunctionRecord](../api/FIELDS.md#functionrecord) values.
 
-Omitted/nil page uses [range/count defaults and compound bounds](#values-and-validation). Analyzed-project reference index required. Raw ELF returns NOT_SUPPORTED. See [ownership/persistence limits](#ownership-persistence-and-effective-limits).
+Requires an analyzed project's reference index. Raw ELF input returns
+`NOT_SUPPORTED`. Omit the page or pass nil for the
+[range defaults](#values-and-validation).
 
 ### get_function_signature
 
-**both** — `get_function_signature(address)`. Requires live owner and open program. Read-only dispatch; no iterator invalidation.
+**both** · read — `get_function_signature(address)`.
 
-Lowlevel result: [GetFunctionSignatureResponse](../api/FIELDS.md#getfunctionsignatureresponse). Session returns `response.signature`, nil, complete response; optional absence is nil,NOT_FOUND,response. Nested values: [FunctionSignatureRecord](../api/FIELDS.md#functionsignaturerecord), [ParameterRecord](../api/FIELDS.md#parameterrecord). Result fields: optional signature.
+Lowlevel returns [GetFunctionSignatureResponse](../api/FIELDS.md#getfunctionsignatureresponse).
+Its optional `signature` is a [FunctionSignatureRecord](../api/FIELDS.md#functionsignaturerecord),
+with nested [ParameterRecord](../api/FIELDS.md#parameterrecord) values. Session
+returns `response.signature,nil,response`, or `nil,error,response` with code
+`NOT_FOUND` when the signature is absent.
 
-See [ownership/persistence limits](#ownership-persistence-and-effective-limits).
 
 ### list_function_signatures
 
-**both** — `list_function_signatures(range_page)`. Requires live owner and open program. Read-only dispatch; no iterator invalidation.
+**both** · read — `list_function_signatures(range_page)`.
 
-Lowlevel result: [ListFunctionSignaturesResponse](../api/FIELDS.md#listfunctionsignaturesresponse). Session retains the complete result unchanged. Nested values: [FunctionSignatureRecord](../api/FIELDS.md#functionsignaturerecord), [ParameterRecord](../api/FIELDS.md#parameterrecord). Result fields: signatures array.
+Both interfaces return [ListFunctionSignaturesResponse](../api/FIELDS.md#listfunctionsignaturesresponse).
+Its `signatures` array contains [FunctionSignatureRecord](../api/FIELDS.md#functionsignaturerecord)
+values with nested [ParameterRecord](../api/FIELDS.md#parameterrecord) values.
 
-Omitted/nil page uses [range/count defaults and compound bounds](#values-and-validation). Pages-only: offset/limit select candidate functions before missing signatures are filtered; empty pages and returned count do not establish exhaustion. See [ownership/persistence limits](#ownership-persistence-and-effective-limits).
+Omit the page or pass nil for the [range defaults](#values-and-validation).
+This query is pages-only: `offset` and `limit` select candidate functions
+**before** functions with missing signatures are filtered out. An empty or short
+result therefore does not tell you that you have reached the last candidate.
 
 ### set_function_signature
 
-**lowlevel** — `set_function_signature(address:u, prototype:s)`. Requires live owner and open program. Dispatched mutation/lifecycle invalidates iterators even on failure/partial effect; validation-only failure does not.
+**lowlevel** · change — `set_function_signature(address:u, prototype:s)`.
 
-Lowlevel result: [SetFunctionSignatureResponse](../api/FIELDS.md#setfunctionsignatureresponse). Result fields: updated:bool, function_name:s, prototype:s.
+Sets the function's prototype. Returns [SetFunctionSignatureResponse](../api/FIELDS.md#setfunctionsignatureresponse),
+with boolean `updated` and strings `function_name` and `prototype`.
 
-See [ownership/persistence limits](#ownership-persistence-and-effective-limits).
 
 ### rename_function_parameter
 
-**lowlevel** — `rename_function_parameter(address:u, ordinal:n, new_name:s)`. Requires live owner and open program. Dispatched mutation/lifecycle invalidates iterators even on failure/partial effect; validation-only failure does not.
+**lowlevel** · change — `rename_function_parameter(address:u, ordinal:n, new_name:s)`.
 
-Lowlevel result: [RenameFunctionParameterResponse](../api/FIELDS.md#renamefunctionparameterresponse). Result fields: updated:bool, name:s.
+Renames the parameter selected by its zero-based `ordinal`. Returns
+[RenameFunctionParameterResponse](../api/FIELDS.md#renamefunctionparameterresponse),
+with boolean `updated` and string `name`.
 
-See [ownership/persistence limits](#ownership-persistence-and-effective-limits).
 
 ### set_function_parameter_type
 
-**lowlevel** — `set_function_parameter_type(address:u, ordinal:n, data_type:s)`. Requires live owner and open program. Dispatched mutation/lifecycle invalidates iterators even on failure/partial effect; validation-only failure does not.
+**lowlevel** · change — `set_function_parameter_type(address:u, ordinal:n, data_type:s)`.
 
-Lowlevel result: [SetFunctionParameterTypeResponse](../api/FIELDS.md#setfunctionparametertyperesponse). Result fields: updated:bool, data_type:s.
+Changes the type of the parameter selected by its zero-based `ordinal`. Returns
+[SetFunctionParameterTypeResponse](../api/FIELDS.md#setfunctionparametertyperesponse),
+with boolean `updated` and string `data_type`.
 
-See [ownership/persistence limits](#ownership-persistence-and-effective-limits).
 
 ### rename_function_local
 
-**lowlevel** — `rename_function_local(address:u, local_id:s, new_name:s)`. Requires live owner and open program. Dispatched mutation/lifecycle invalidates iterators even on failure/partial effect; validation-only failure does not.
+**lowlevel** · change — `rename_function_local(address:u, local_id:s, new_name:s)`.
 
-Lowlevel result: [RenameFunctionLocalResponse](../api/FIELDS.md#renamefunctionlocalresponse). Result fields: updated:bool, local_id:s, name:s.
+Returns [RenameFunctionLocalResponse](../api/FIELDS.md#renamefunctionlocalresponse),
+with boolean `updated` and strings `local_id` and `name`.
 
-local_id is the stable decompiled id/kind, not an array index; rename can reset on reload. See [ownership/persistence limits](#ownership-persistence-and-effective-limits).
+Use the stable `local_id` from decompilation to identify the local variable, not
+its position in the array. A rename can reset when the program is reloaded; see
+[persistence limits](#ownership-persistence-and-effective-limits).
 
 ### set_function_local_type
 
-**lowlevel** — `set_function_local_type(address:u, local_id:s, data_type:s)`. Requires live owner and open program. Dispatched mutation/lifecycle invalidates iterators even on failure/partial effect; validation-only failure does not.
+**lowlevel** · change — `set_function_local_type(address:u, local_id:s, data_type:s)`.
 
-Lowlevel result: [SetFunctionLocalTypeResponse](../api/FIELDS.md#setfunctionlocaltyperesponse). Result fields: updated:bool, local_id:s, data_type:s.
+Returns [SetFunctionLocalTypeResponse](../api/FIELDS.md#setfunctionlocaltyperesponse),
+with boolean `updated` and strings `local_id` and `data_type`.
 
-local_id is stable id from decompilation, not an array index. True-local char retyping returns DECOMPILE_FAILED on exercised profile and leaves type unchanged; parameter-only evidence does not qualify it. See [ownership/persistence limits](#ownership-persistence-and-effective-limits).
+Use the stable `local_id` from decompilation, not an array index. Changing a true
+local variable's type to `char` returns `DECOMPILE_FAILED` on the tested profile
+and leaves the type unchanged. Successful parameter edits do not establish
+support for retyping local variables.
 
 
 ## Instructions comments and defined data
 
 ### get_instruction
 
-**both** — `get_instruction(address)`. Requires live owner and open program. Read-only dispatch; no iterator invalidation.
+**both** · read — `get_instruction(address)`.
 
-Lowlevel result: [GetInstructionResponse](../api/FIELDS.md#getinstructionresponse). Session returns `response.instruction`, nil, complete response; optional absence is nil,NOT_FOUND,response. Nested values: [InstructionRecord](../api/FIELDS.md#instructionrecord). Result fields: optional instruction.
+Result fields: optional instruction.
 
-Use a caller-confirmed mapped instruction entry with complete bytes; exact UInt64 alone does not prove safety. See [ownership/persistence limits](#ownership-persistence-and-effective-limits).
+Lowlevel returns [GetInstructionResponse](../api/FIELDS.md#getinstructionresponse),
+with an optional [InstructionRecord](../api/FIELDS.md#instructionrecord) in
+`instruction`. Session returns `response.instruction,nil,response`, or
+`nil,error,response` with code `NOT_FOUND` when absent.
+
+Supply a verified mapped instruction address and confirm that all its bytes are
+mapped. An exact UInt64 value alone cannot make an address safe to read.
 
 ### list_instructions
 
-**both** — `list_instructions(range_page)`. Requires live owner and open program. Read-only dispatch; no iterator invalidation.
+**both** · read — `list_instructions(range_page)`.
 
-Lowlevel result: [ListInstructionsResponse](../api/FIELDS.md#listinstructionsresponse). Session retains the complete result unchanged. Nested values: [InstructionRecord](../api/FIELDS.md#instructionrecord). Result fields: instructions array.
+Result fields: instructions array.
 
-Omitted/nil page uses [range/count defaults and compound bounds](#values-and-validation). Decodes linearly from range_start until first gap, not mapped-region enumeration; default zero start can return empty despite code elsewhere. See [ownership/persistence limits](#ownership-persistence-and-effective-limits).
+Both interfaces return [ListInstructionsResponse](../api/FIELDS.md#listinstructionsresponse),
+with an `instructions` array of [InstructionRecord](../api/FIELDS.md#instructionrecord)
+values.
+
+Decodes instructions sequentially from `range_start` until the first decode gap.
+It does not search across mapped regions. Set a known instruction start: the
+default start of zero can return an empty page even when there is code elsewhere.
+An omitted or nil page uses the [range defaults](#values-and-validation).
 
 ### get_comments
 
-**both** — `get_comments(range_page)`. Requires live owner and open program. Read-only dispatch; no iterator invalidation.
+**both** · read — `get_comments(range_page)`.
 
-Lowlevel result: [GetCommentsResponse](../api/FIELDS.md#getcommentsresponse). Session retains the complete result unchanged. Nested values: [CommentRecord](../api/FIELDS.md#commentrecord). Result fields: comments array.
+Both interfaces return [GetCommentsResponse](../api/FIELDS.md#getcommentsresponse),
+with a `comments` array of [CommentRecord](../api/FIELDS.md#commentrecord) values.
 
-Omitted/nil page uses [range/count defaults and compound bounds](#values-and-validation). See [ownership/persistence limits](#ownership-persistence-and-effective-limits).
+Omit the page or pass nil for the shared [page defaults](#values-and-validation).
 
 ### set_comment
 
-**lowlevel** — `set_comment(address:u, kind:comment-kind, text:s)`. Requires live owner and open program. Dispatched mutation/lifecycle invalidates iterators even on failure/partial effect; validation-only failure does not.
+**lowlevel** · change — `set_comment(address:u, kind:comment-kind, text:s)`.
 
-Lowlevel result: [SetCommentResponse](../api/FIELDS.md#setcommentresponse). Result fields: updated:bool.
+Sets the text for the given address and [comment kind](../api/FIELDS.md#commentkind).
+Returns [SetCommentResponse](../api/FIELDS.md#setcommentresponse) with boolean `updated`.
 
-See [ownership/persistence limits](#ownership-persistence-and-effective-limits).
 
 ### delete_comment
 
-**lowlevel** — `delete_comment(address:u, kind:comment-kind)`. Requires live owner and open program. Dispatched mutation/lifecycle invalidates iterators even on failure/partial effect; validation-only failure does not.
+**lowlevel** · change — `delete_comment(address:u, kind:comment-kind)`.
 
-Lowlevel result: [DeleteCommentResponse](../api/FIELDS.md#deletecommentresponse). Result fields: deleted:bool.
+Deletes the comment of the given [kind](../api/FIELDS.md#commentkind) at `address`.
+Returns [DeleteCommentResponse](../api/FIELDS.md#deletecommentresponse) with boolean `deleted`.
 
-See [ownership/persistence limits](#ownership-persistence-and-effective-limits).
 
 ### list_defined_strings
 
-**lowlevel** — `list_defined_strings(range_page)`. Requires live owner and open program. Read-only dispatch; no iterator invalidation.
+**lowlevel** · read — `list_defined_strings(range_page)`.
 
-Lowlevel result: [ListDefinedStringsResponse](../api/FIELDS.md#listdefinedstringsresponse). Nested values: [DefinedStringRecord](../api/FIELDS.md#definedstringrecord). Result fields: strings array, constant-empty stub.
+Returns [ListDefinedStringsResponse](../api/FIELDS.md#listdefinedstringsresponse).
+The `strings` field is an array of [DefinedStringRecord](../api/FIELDS.md#definedstringrecord)
+values in the schema, but is always empty in this implementation.
 
-Omitted/nil page uses [range/count defaults and compound bounds](#values-and-validation). Constant-empty compatibility stub: ignores ranges/counts on a loaded program. No string database, scanner or iterator. See [ownership/persistence limits](#ownership-persistence-and-effective-limits).
+This is a compatibility stub: with a loaded program it always returns an empty
+`strings` array and ignores the requested range and count. It does not discover
+strings, maintain a string database or provide an iterator. An empty result is
+not evidence that the binary has no strings. Omitted or nil pages still use the
+shared [page defaults](#values-and-validation).
 
 ### list_data_items
 
-**lowlevel** — `list_data_items(page={})`. Requires live owner and open program. Read-only dispatch; no iterator invalidation.
+**lowlevel** · read — `list_data_items(page={})`.
 
-Lowlevel result: [ListDataItemsResponse](../api/FIELDS.md#listdataitemsresponse). Nested values: [DataItemRecord](../api/FIELDS.md#dataitemrecord). Result fields: data_items:DataItemRecord[].
+Returns [ListDataItemsResponse](../api/FIELDS.md#listdataitemsresponse), with a
+`data_items` array of [DataItemRecord](../api/FIELDS.md#dataitemrecord) values.
 
-Omitted/nil page uses [range/count defaults and compound bounds](#values-and-validation). See [ownership/persistence limits](#ownership-persistence-and-effective-limits).
+Omit the page or pass nil for the shared [page defaults](#values-and-validation).
 
 ### apply_data_type
 
-**lowlevel** — `apply_data_type(address:u, data_type:s)`. Requires live owner and open program. Dispatched mutation/lifecycle invalidates iterators even on failure/partial effect; validation-only failure does not.
+**lowlevel** · change — `apply_data_type(address:u, data_type:s)`.
 
-Lowlevel result: [ApplyDataTypeResponse](../api/FIELDS.md#applydatatyperesponse). Result fields: updated:bool, data_type:s.
+Applies the named data type at `address`. Returns
+[ApplyDataTypeResponse](../api/FIELDS.md#applydatatyperesponse), with boolean
+`updated` and string `data_type`.
 
-See [ownership/persistence limits](#ownership-persistence-and-effective-limits).
 
 ### rename_data_item
 
-**lowlevel** — `rename_data_item(address:u, new_name:s)`. Requires live owner and open program. Dispatched mutation/lifecycle invalidates iterators even on failure/partial effect; validation-only failure does not.
+**lowlevel** · change — `rename_data_item(address:u, new_name:s)`.
 
-Lowlevel result: [RenameDataItemResponse](../api/FIELDS.md#renamedataitemresponse). Result fields: updated:bool, name:s.
+Renames the data item at `address`. Returns
+[RenameDataItemResponse](../api/FIELDS.md#renamedataitemresponse), with boolean
+`updated` and string `name`.
 
-See [ownership/persistence limits](#ownership-persistence-and-effective-limits).
 
 ### delete_data_item
 
-**lowlevel** — `delete_data_item(address:u)`. Requires live owner and open program. Dispatched mutation/lifecycle invalidates iterators even on failure/partial effect; validation-only failure does not.
+**lowlevel** · change — `delete_data_item(address:u)`.
 
-Lowlevel result: [DeleteDataItemResponse](../api/FIELDS.md#deletedataitemresponse). Result fields: deleted:bool.
+Deletes the data item at `address`. Returns
+[DeleteDataItemResponse](../api/FIELDS.md#deletedataitemresponse) with boolean `deleted`.
 
-See [ownership/persistence limits](#ownership-persistence-and-effective-limits).
 
 
 ## Symbols and cross references
 
 ### get_symbol
 
-**both** — `get_symbol(address)`. Requires live owner and open program. Read-only dispatch; no iterator invalidation.
+**both** · read — `get_symbol(address)`.
 
-Lowlevel result: [GetSymbolResponse](../api/FIELDS.md#getsymbolresponse). Session returns `response.symbol`, nil, complete response; optional absence is nil,NOT_FOUND,response. Nested values: [SymbolRecord](../api/FIELDS.md#symbolrecord). Result fields: optional symbol.
+Result fields: optional symbol.
 
-See [ownership/persistence limits](#ownership-persistence-and-effective-limits).
+Lowlevel returns [GetSymbolResponse](../api/FIELDS.md#getsymbolresponse), with an
+optional [SymbolRecord](../api/FIELDS.md#symbolrecord) in `symbol`. Session returns
+`response.symbol,nil,response`, or `nil,error,response` with code `NOT_FOUND`
+when absent.
+
 
 ### list_symbols
 
-**both** — `list_symbols(range_page)`. Requires live owner and open program. Read-only dispatch; no iterator invalidation.
+**both** · read — `list_symbols(range_page)`.
 
-Lowlevel result: [ListSymbolsResponse](../api/FIELDS.md#listsymbolsresponse). Session retains the complete result unchanged. Nested values: [SymbolRecord](../api/FIELDS.md#symbolrecord). Result fields: symbols array.
+Result fields: symbols array.
 
-Omitted/nil page uses [range/count defaults and compound bounds](#values-and-validation). See [ownership/persistence limits](#ownership-persistence-and-effective-limits).
+Both interfaces return [ListSymbolsResponse](../api/FIELDS.md#listsymbolsresponse),
+with a `symbols` array of [SymbolRecord](../api/FIELDS.md#symbolrecord) values.
+
+Omit the page or pass nil for the shared [page defaults](#values-and-validation).
 
 ### rename_symbol
 
-**both** — `rename_symbol(address, new_name:string)`. Requires live owner and open program. Dispatched mutation/lifecycle invalidates iterators even on failure/partial effect; validation-only failure does not.
+**both** · change — `rename_symbol(address, new_name:string)`.
 
-Lowlevel result: [RenameSymbolResponse](../api/FIELDS.md#renamesymbolresponse). Session retains the complete result unchanged. Result fields: renamed:boolean, name:string.
+Renames the symbol at `address`. Both interfaces return
+[RenameSymbolResponse](../api/FIELDS.md#renamesymbolresponse), with boolean
+`renamed` and string `name`.
 
-See [ownership/persistence limits](#ownership-persistence-and-effective-limits).
 
 ### delete_symbol
 
-**lowlevel** — `delete_symbol(address:u, name_filter:s)`. Requires live owner and open program. Dispatched mutation/lifecycle invalidates iterators even on failure/partial effect; validation-only failure does not.
+**lowlevel** · change — `delete_symbol(address:u, name_filter:s)`.
 
-Lowlevel result: [DeleteSymbolResponse](../api/FIELDS.md#deletesymbolresponse). Result fields: deleted:bool, deleted_count:uint32.
+Returns [DeleteSymbolResponse](../api/FIELDS.md#deletesymbolresponse), with boolean
+`deleted` and unsigned 32-bit integer `deleted_count`.
 
-name_filter is required but ignored upstream; address selects deletion. Named data deletion can reveal inferred data at the same address/size. See [ownership/persistence limits](#ownership-persistence-and-effective-limits).
+`name_filter` is required, but the engine ignores it and selects by `address`
+alone. Deleting named data can reveal inferred data at the same address and size;
+it does not guarantee that the location disappears from later queries.
 
 ### list_xrefs
 
-**both** — `list_xrefs(range_page)`. Requires live owner and open program. Read-only dispatch; no iterator invalidation.
+**both** · read — `list_xrefs(range_page)`.
 
-Lowlevel result: [ListXrefsResponse](../api/FIELDS.md#listxrefsresponse). Session retains the complete result unchanged. Nested values: [XrefRecord](../api/FIELDS.md#xrefrecord). Result fields: xrefs array.
+Result fields: xrefs array.
 
-Omitted/nil page uses [range/count defaults and compound bounds](#values-and-validation). See [ownership/persistence limits](#ownership-persistence-and-effective-limits).
+Both interfaces return [ListXrefsResponse](../api/FIELDS.md#listxrefsresponse),
+with an `xrefs` array of [XrefRecord](../api/FIELDS.md#xrefrecord) values describing
+cross references.
+
+Omit the page or pass nil for the shared [page defaults](#values-and-validation).
 
 
 ## Memory and byte patches
 
 ### read_bytes
 
-**both** — `read_bytes(address, size:integer)`. Requires live owner and open program. Read-only dispatch; no iterator invalidation.
+**both** · read — `read_bytes(address, size:integer)`.
 
-Lowlevel result: [ReadBytesResponse](../api/FIELDS.md#readbytesresponse). Session returns `response.data`, nil, complete response; optional absence is nil,NOT_FOUND,response. Result fields: data:binary string.
+Reads `size` bytes starting at `address`. Lowlevel returns
+[ReadBytesResponse](../api/FIELDS.md#readbytesresponse), with the bytes in `data`.
+Session returns `response.data,nil,response`. The data is a binary string that
+preserves NUL bytes, not a record.
 
-Required size integer 0..INT32_MAX before requested-buffer allocation/dispatch; zero allowed. Session returns binary string, not a record. Upper bound is not a memory-availability promise. See [ownership/persistence limits](#ownership-persistence-and-effective-limits).
+`size` is required and must be an integer from 0 to INT32_MAX; zero is allowed.
+This bound is checked before allocating the requested buffer or calling the
+engine. It is a numeric limit, not a promise that enough memory is available.
+Use a mapped region you have verified.
 
 ### write_bytes
 
-**both** — `write_bytes(address, binary_string)`. Requires live owner and open program. Dispatched mutation/lifecycle invalidates iterators even on failure/partial effect; validation-only failure does not.
+**both** · change — `write_bytes(address, binary_string)`.
 
-Lowlevel result: [WriteBytesResponse](../api/FIELDS.md#writebytesresponse). Session retains the complete result unchanged. Result fields: bytes_written:uint32 integer.
+Both interfaces return [WriteBytesResponse](../api/FIELDS.md#writebytesresponse),
+with unsigned 32-bit integer `bytes_written`.
 
-Required length-preserving binary string, length <= INT_MAX. Copy-on-write overlay, not durable binary editing. See [ownership/persistence limits](#ownership-persistence-and-effective-limits).
+Supply a binary string no longer than INT_MAX bytes; embedded NUL bytes are
+preserved. Writes create a copy-on-write overlay rather than editing the original
+binary on disk. See [persistence limits](#ownership-persistence-and-effective-limits)
+before relying on a saved patch.
 
 ### list_memory_blocks
 
-**both** — `list_memory_blocks(count_page)`. Requires live owner and open program. Read-only dispatch; no iterator invalidation.
+**both** · read — `list_memory_blocks(count_page)`.
 
-Lowlevel result: [ListMemoryBlocksResponse](../api/FIELDS.md#listmemoryblocksresponse). Session retains the complete result unchanged. Nested values: [MemoryBlockRecord](../api/FIELDS.md#memoryblockrecord). Result fields: blocks array.
+Both interfaces return [ListMemoryBlocksResponse](../api/FIELDS.md#listmemoryblocksresponse),
+with a `blocks` array of [MemoryBlockRecord](../api/FIELDS.md#memoryblockrecord) values.
 
-Omitted/nil page uses [range/count defaults and compound bounds](#values-and-validation). See [ownership/persistence limits](#ownership-persistence-and-effective-limits).
+Omit the page or pass nil for the shared [page defaults](#values-and-validation).
 
 ### patch_bytes_batch
 
-**lowlevel** — `patch_bytes_batch(patches)`. Requires live owner and open program. Dispatched mutation/lifecycle invalidates iterators even on failure/partial effect; validation-only failure does not.
+**lowlevel** · change — `patch_bytes_batch(patches)`.
 
-Lowlevel result: [PatchBytesBatchResponse](../api/FIELDS.md#patchbytesbatchresponse). Result fields: patch_count:uint32, bytes_written:uint32.
+Returns [PatchBytesBatchResponse](../api/FIELDS.md#patchbytesbatchresponse),
+with unsigned 32-bit integers `patch_count` and `bytes_written`.
 
-Required dense array of [BytePatch](../api/FIELDS.md#bytepatch) inputs with required address and binary data. Count and total bytes <= UINT32_MAX; each data length <= INT_MAX. Empty arrays still dispatch. Applies in order, not atomic; counters total requested bytes without confirming writes. See [ownership/persistence limits](#ownership-persistence-and-effective-limits).
+Pass a dense array of [BytePatch](../api/FIELDS.md#bytepatch) tables. Each must
+contain `address` and binary `data`. The number of patches and total bytes must
+each be at most UINT32_MAX; each data string must be at most INT_MAX bytes.
+Even an empty array calls the engine.
+
+Patches apply in order, **not atomically**. A later failure does not roll back
+earlier changes. The counters total requested bytes without confirming native
+writes. See [persistence limits](#ownership-persistence-and-effective-limits).
 
 
 ## Types aliases enums and members
 
 ### add_type_enum_member
 
-**lowlevel** — `add_type_enum_member(type_id_or_path:s, name:s, value:i)`. Requires live owner and open program. Dispatched mutation/lifecycle invalidates iterators even on failure/partial effect; validation-only failure does not.
+**lowlevel** · change — `add_type_enum_member(type_id_or_path:s, name:s, value:i)`.
 
-Lowlevel result: [AddTypeEnumMemberResponse](../api/FIELDS.md#addtypeenummemberresponse). Result fields: updated:bool.
+Adds a named value to the selected enum. Returns
+[AddTypeEnumMemberResponse](../api/FIELDS.md#addtypeenummemberresponse) with boolean `updated`.
 
-See [ownership/persistence limits](#ownership-persistence-and-effective-limits).
 
 ### add_type_member
 
-**lowlevel** — `add_type_member(parent_type_id_or_path:s, member_name:s, member_type:s, size:u)`. Requires live owner and open program. Dispatched mutation/lifecycle invalidates iterators even on failure/partial effect; validation-only failure does not.
+**lowlevel** · change — `add_type_member(parent_type_id_or_path:s, member_name:s, member_type:s, size:u)`.
 
-Lowlevel result: [AddTypeMemberResponse](../api/FIELDS.md#addtypememberresponse). Result fields: updated:bool.
+Appends a member to the selected parent type. Returns
+[AddTypeMemberResponse](../api/FIELDS.md#addtypememberresponse) with boolean `updated`.
 
-size required but ignored; native appends using referenced type. Query members for actual sizes; generic struct length can be zero. See [ownership/persistence limits](#ownership-persistence-and-effective-limits).
+`size` is required but ignored. The engine appends a member using the referenced
+type's size. Query members for their actual sizes: the enclosing struct's generic
+length can be zero even when it has members.
 
 ### create_type
 
-**lowlevel** — `create_type(name:s, kind:s, size:u)`. Requires live owner and open program. Dispatched mutation/lifecycle invalidates iterators even on failure/partial effect; validation-only failure does not.
+**lowlevel** · change — `create_type(name:s, kind:s, size:u)`.
 
-Lowlevel result: [CreateTypeResponse](../api/FIELDS.md#createtyperesponse). Result fields: updated:bool.
+Returns [CreateTypeResponse](../api/FIELDS.md#createtyperesponse) with boolean `updated`.
 
-All positional arguments required, including ignored size. Only kind="struct" supported; other kinds return NOT_SUPPORTED. See [ownership/persistence limits](#ownership-persistence-and-effective-limits).
+All three arguments are required, although `size` is ignored. Only
+`kind="struct"` is supported; other kinds return `NOT_SUPPORTED`.
 
 ### create_type_alias
 
-**lowlevel** — `create_type_alias(name:s, target_type:s)`. Requires live owner and open program. Dispatched mutation/lifecycle invalidates iterators even on failure/partial effect; validation-only failure does not.
+**lowlevel** · change — `create_type_alias(name:s, target_type:s)`.
 
-Lowlevel result: [CreateTypeAliasResponse](../api/FIELDS.md#createtypealiasresponse). Result fields: updated:bool.
+Creates an alias named `name` for `target_type`. Returns
+[CreateTypeAliasResponse](../api/FIELDS.md#createtypealiasresponse) with boolean `updated`.
 
-See [ownership/persistence limits](#ownership-persistence-and-effective-limits).
 
 ### create_type_enum
 
-**lowlevel** — `create_type_enum(name:s, width:u, is_signed:bool)`. Requires live owner and open program. Dispatched mutation/lifecycle invalidates iterators even on failure/partial effect; validation-only failure does not.
+**lowlevel** · change — `create_type_enum(name:s, width:u, is_signed:bool)`.
 
-Lowlevel result: [CreateTypeEnumResponse](../api/FIELDS.md#createtypeenumresponse). Result fields: updated:bool.
+Creates an enum named `name`. Returns
+[CreateTypeEnumResponse](../api/FIELDS.md#createtypeenumresponse) with boolean `updated`.
 
-width and is_signed are required but not passed into native defineEnum. Observed width eight is distinct from unqualified experimental signedness claims. See [ownership/persistence limits](#ownership-persistence-and-effective-limits).
+`width` and `is_signed` are required, but neither is passed to the engine's
+`defineEnum` call. Tested results have width eight regardless of the requested
+width. Do not rely on the requested signedness controlling the result.
 
 ### delete_type
 
-**lowlevel** — `delete_type(type_id_or_path:s)`. Requires live owner and open program. Dispatched mutation/lifecycle invalidates iterators even on failure/partial effect; validation-only failure does not.
+**lowlevel** · change — `delete_type(type_id_or_path:s)`.
 
-Lowlevel result: [DeleteTypeResponse](../api/FIELDS.md#deletetyperesponse). Result fields: deleted:bool.
+Deletes the selected type. Returns
+[DeleteTypeResponse](../api/FIELDS.md#deletetyperesponse) with boolean `deleted`.
 
-See [ownership/persistence limits](#ownership-persistence-and-effective-limits).
 
 ### delete_type_alias
 
-**lowlevel** — `delete_type_alias(type_id_or_path:s)`. Requires live owner and open program. Dispatched mutation/lifecycle invalidates iterators even on failure/partial effect; validation-only failure does not.
+**lowlevel** · change — `delete_type_alias(type_id_or_path:s)`.
 
-Lowlevel result: [DeleteTypeAliasResponse](../api/FIELDS.md#deletetypealiasresponse). Result fields: deleted:bool.
+Deletes the selected alias. Returns
+[DeleteTypeAliasResponse](../api/FIELDS.md#deletetypealiasresponse) with boolean `deleted`.
 
-See [ownership/persistence limits](#ownership-persistence-and-effective-limits).
 
 ### delete_type_enum_member
 
-**lowlevel** — `delete_type_enum_member(type_id_or_path:s, ordinal:u)`. Requires live owner and open program. Dispatched mutation/lifecycle invalidates iterators even on failure/partial effect; validation-only failure does not.
+**lowlevel** · change — `delete_type_enum_member(type_id_or_path:s, ordinal:u)`.
 
-Lowlevel result: [DeleteTypeEnumMemberResponse](../api/FIELDS.md#deletetypeenummemberresponse). Result fields: deleted:bool.
+Deletes the enum member at the zero-based `ordinal`. Returns
+[DeleteTypeEnumMemberResponse](../api/FIELDS.md#deletetypeenummemberresponse) with boolean `deleted`.
 
-See [ownership/persistence limits](#ownership-persistence-and-effective-limits).
 
 ### delete_type_member
 
-**lowlevel** — `delete_type_member(parent_type_id_or_path:s, ordinal:u)`. Requires live owner and open program. Dispatched mutation/lifecycle invalidates iterators even on failure/partial effect; validation-only failure does not.
+**lowlevel** · change — `delete_type_member(parent_type_id_or_path:s, ordinal:u)`.
 
-Lowlevel result: [DeleteTypeMemberResponse](../api/FIELDS.md#deletetypememberresponse). Result fields: deleted:bool.
+Deletes the parent type's member at the zero-based `ordinal`. Returns
+[DeleteTypeMemberResponse](../api/FIELDS.md#deletetypememberresponse) with boolean `deleted`.
 
-See [ownership/persistence limits](#ownership-persistence-and-effective-limits).
 
 ### get_type
 
-**both** — `get_type(path:string)`. Requires live owner and open program. Read-only dispatch; no iterator invalidation.
+**both** · read — `get_type(path:string)`.
 
-Lowlevel result: [GetTypeResponse](../api/FIELDS.md#gettyperesponse). Session returns `response.type`, nil, complete response; optional absence is nil,NOT_FOUND,response. Nested values: [TypeRecord](../api/FIELDS.md#typerecord). Result fields: optional type.
+Lowlevel returns [GetTypeResponse](../api/FIELDS.md#gettyperesponse), with an optional
+[TypeRecord](../api/FIELDS.md#typerecord) in `type`. Session returns
+`response.type,nil,response`, or `nil,error,response` with code `NOT_FOUND`
+when absent.
 
-findByName input: returned name works; leading-slash path_name is not normalized for this lookup. See [ownership/persistence limits](#ownership-persistence-and-effective-limits).
+The engine looks up the supplied string by name (`findByName`). Use a returned
+type's `name`; a leading-slash `path_name` is not normalized for this lookup.
 
 ### list_type_aliases
 
-**both** — `list_type_aliases(query:string, count_page)`. Requires live owner and open program. Read-only dispatch; no iterator invalidation.
+**both** · read — `list_type_aliases(query:string, count_page)`.
 
-Lowlevel result: [ListTypeAliasesResponse](../api/FIELDS.md#listtypealiasesresponse). Session retains the complete result unchanged. Nested values: [TypeAliasRecord](../api/FIELDS.md#typealiasrecord). Result fields: aliases array.
+Result fields: aliases array.
 
-Omitted/nil page uses [range/count defaults and compound bounds](#values-and-validation). See [ownership/persistence limits](#ownership-persistence-and-effective-limits).
+Both interfaces return [ListTypeAliasesResponse](../api/FIELDS.md#listtypealiasesresponse),
+with an `aliases` array of [TypeAliasRecord](../api/FIELDS.md#typealiasrecord) values.
+
+Omit the page or pass nil for the shared [page defaults](#values-and-validation).
 
 ### list_type_enum_members
 
-**both** — `list_type_enum_members(type_id_or_path:string, count_page)`. Requires live owner and open program. Read-only dispatch; no iterator invalidation.
+**both** · read — `list_type_enum_members(type_id_or_path:string, count_page)`.
 
-Lowlevel result: [ListTypeEnumMembersResponse](../api/FIELDS.md#listtypeenummembersresponse). Session retains the complete result unchanged. Nested values: [TypeEnumMemberRecord](../api/FIELDS.md#typeenummemberrecord). Result fields: members array.
+Both interfaces return [ListTypeEnumMembersResponse](../api/FIELDS.md#listtypeenummembersresponse),
+with a `members` array of [TypeEnumMemberRecord](../api/FIELDS.md#typeenummemberrecord)
+values for the selected enum.
 
-Omitted/nil page uses [range/count defaults and compound bounds](#values-and-validation). See [ownership/persistence limits](#ownership-persistence-and-effective-limits).
+Omit the page or pass nil for the shared [page defaults](#values-and-validation).
 
 ### list_type_enums
 
-**both** — `list_type_enums(query:string, count_page)`. Requires live owner and open program. Read-only dispatch; no iterator invalidation.
+**both** · read — `list_type_enums(query:string, count_page)`.
 
-Lowlevel result: [ListTypeEnumsResponse](../api/FIELDS.md#listtypeenumsresponse). Session retains the complete result unchanged. Nested values: [TypeEnumRecord](../api/FIELDS.md#typeenumrecord). Result fields: enums array.
+Result fields: enums array.
 
-Omitted/nil page uses [range/count defaults and compound bounds](#values-and-validation). See [ownership/persistence limits](#ownership-persistence-and-effective-limits).
+Both interfaces return [ListTypeEnumsResponse](../api/FIELDS.md#listtypeenumsresponse),
+with an `enums` array of [TypeEnumRecord](../api/FIELDS.md#typeenumrecord) values.
+
+Omit the page or pass nil for the shared [page defaults](#values-and-validation).
 
 ### list_type_members
 
-**both** — `list_type_members(type_id_or_path:string, count_page)`. Requires live owner and open program. Read-only dispatch; no iterator invalidation.
+**both** · read — `list_type_members(type_id_or_path:string, count_page)`.
 
-Lowlevel result: [ListTypeMembersResponse](../api/FIELDS.md#listtypemembersresponse). Session retains the complete result unchanged. Nested values: [TypeMemberRecord](../api/FIELDS.md#typememberrecord). Result fields: members array.
+Both interfaces return [ListTypeMembersResponse](../api/FIELDS.md#listtypemembersresponse),
+with a `members` array of [TypeMemberRecord](../api/FIELDS.md#typememberrecord)
+values for the selected type.
 
-Omitted/nil page uses [range/count defaults and compound bounds](#values-and-validation). See [ownership/persistence limits](#ownership-persistence-and-effective-limits).
+Omit the page or pass nil for the shared [page defaults](#values-and-validation).
 
 ### list_type_unions
 
-**both** — `list_type_unions(query:string, count_page)`. Requires live owner and open program. Read-only dispatch; no iterator invalidation.
+**both** · read — `list_type_unions(query:string, count_page)`.
 
-Lowlevel result: [ListTypeUnionsResponse](../api/FIELDS.md#listtypeunionsresponse). Session retains the complete result unchanged. Nested values: [TypeUnionRecord](../api/FIELDS.md#typeunionrecord). Result fields: unions array.
+Result fields: unions array.
 
-Omitted/nil page uses [range/count defaults and compound bounds](#values-and-validation). See [ownership/persistence limits](#ownership-persistence-and-effective-limits).
+Both interfaces return [ListTypeUnionsResponse](../api/FIELDS.md#listtypeunionsresponse),
+with a `unions` array of [TypeUnionRecord](../api/FIELDS.md#typeunionrecord) values.
+
+Omit the page or pass nil for the shared [page defaults](#values-and-validation).
 
 ### list_types
 
-**both** — `list_types(query:string, count_page)`. Requires live owner and open program. Read-only dispatch; no iterator invalidation.
+**both** · read — `list_types(query:string, count_page)`.
 
-Lowlevel result: [ListTypesResponse](../api/FIELDS.md#listtypesresponse). Session retains the complete result unchanged. Nested values: [TypeRecord](../api/FIELDS.md#typerecord). Result fields: types array.
+Result fields: types array.
 
-Omitted/nil page uses [range/count defaults and compound bounds](#values-and-validation). See [ownership/persistence limits](#ownership-persistence-and-effective-limits).
+Both interfaces return [ListTypesResponse](../api/FIELDS.md#listtypesresponse),
+with a `types` array of [TypeRecord](../api/FIELDS.md#typerecord) values.
+
+Omit the page or pass nil for the shared [page defaults](#values-and-validation).
 
 ### rename_type
 
-**lowlevel** — `rename_type(type_id_or_path:s, new_name:s)`. Requires live owner and open program. Dispatched mutation/lifecycle invalidates iterators even on failure/partial effect; validation-only failure does not.
+**lowlevel** · change — `rename_type(type_id_or_path:s, new_name:s)`.
 
-Lowlevel result: [RenameTypeResponse](../api/FIELDS.md#renametyperesponse). Result fields: updated:bool, name:s.
+Renames the selected type. Returns [RenameTypeResponse](../api/FIELDS.md#renametyperesponse),
+with boolean `updated` and string `name`.
 
-See [ownership/persistence limits](#ownership-persistence-and-effective-limits).
 
 ### rename_type_enum_member
 
-**lowlevel** — `rename_type_enum_member(type_id_or_path:s, ordinal:u, new_name:s)`. Requires live owner and open program. Dispatched mutation/lifecycle invalidates iterators even on failure/partial effect; validation-only failure does not.
+**lowlevel** · change — `rename_type_enum_member(type_id_or_path:s, ordinal:u, new_name:s)`.
 
-Lowlevel result: [RenameTypeEnumMemberResponse](../api/FIELDS.md#renametypeenummemberresponse). Result fields: updated:bool.
+Renames the enum member at the zero-based `ordinal`. Returns
+[RenameTypeEnumMemberResponse](../api/FIELDS.md#renametypeenummemberresponse) with boolean `updated`.
 
-See [ownership/persistence limits](#ownership-persistence-and-effective-limits).
 
 ### rename_type_member
 
-**lowlevel** — `rename_type_member(parent_type_id_or_path:s, ordinal:u, new_name:s)`. Requires live owner and open program. Dispatched mutation/lifecycle invalidates iterators even on failure/partial effect; validation-only failure does not.
+**lowlevel** · change — `rename_type_member(parent_type_id_or_path:s, ordinal:u, new_name:s)`.
 
-Lowlevel result: [RenameTypeMemberResponse](../api/FIELDS.md#renametypememberresponse). Result fields: updated:bool.
+Renames the parent type's member at the zero-based `ordinal`. Returns
+[RenameTypeMemberResponse](../api/FIELDS.md#renametypememberresponse) with boolean `updated`.
 
-See [ownership/persistence limits](#ownership-persistence-and-effective-limits).
 
 ### set_type_alias_target
 
-**lowlevel** — `set_type_alias_target(type_id_or_path:s, target_type:s)`. Requires live owner and open program. Dispatched mutation/lifecycle invalidates iterators even on failure/partial effect; validation-only failure does not.
+**lowlevel** · change — `set_type_alias_target(type_id_or_path:s, target_type:s)`.
 
-Lowlevel result: [SetTypeAliasTargetResponse](../api/FIELDS.md#settypealiastargetresponse). Result fields: updated:bool.
+Changes the type referred to by the selected alias. Returns
+[SetTypeAliasTargetResponse](../api/FIELDS.md#settypealiastargetresponse) with boolean `updated`.
 
-See [ownership/persistence limits](#ownership-persistence-and-effective-limits).
 
 ### set_type_enum_member_comment
 
-**lowlevel** — `set_type_enum_member_comment(type_id_or_path:s, ordinal:u, comment:s)`. Requires live owner and open program. Dispatched mutation/lifecycle invalidates iterators even on failure/partial effect; validation-only failure does not.
+**lowlevel** · change — `set_type_enum_member_comment(type_id_or_path:s, ordinal:u, comment:s)`.
 
-Lowlevel result: [SetTypeEnumMemberCommentResponse](../api/FIELDS.md#settypeenummembercommentresponse). Result fields: updated:bool.
+Sets the comment on the enum member at the zero-based `ordinal`. Returns
+[SetTypeEnumMemberCommentResponse](../api/FIELDS.md#settypeenummembercommentresponse) with boolean `updated`.
 
-See [ownership/persistence limits](#ownership-persistence-and-effective-limits).
 
 ### set_type_enum_member_value
 
-**lowlevel** — `set_type_enum_member_value(type_id_or_path:s, ordinal:u, value:i)`. Requires live owner and open program. Dispatched mutation/lifecycle invalidates iterators even on failure/partial effect; validation-only failure does not.
+**lowlevel** · change — `set_type_enum_member_value(type_id_or_path:s, ordinal:u, value:i)`.
 
-Lowlevel result: [SetTypeEnumMemberValueResponse](../api/FIELDS.md#settypeenummembervalueresponse). Result fields: updated:bool.
+Sets the signed 64-bit value of the enum member at the zero-based `ordinal`.
+Returns [SetTypeEnumMemberValueResponse](../api/FIELDS.md#settypeenummembervalueresponse)
+with boolean `updated`.
 
-See [ownership/persistence limits](#ownership-persistence-and-effective-limits).
 
 ### set_type_member_comment
 
-**lowlevel** — `set_type_member_comment(parent_type_id_or_path:s, ordinal:u, comment:s)`. Requires live owner and open program. Dispatched mutation/lifecycle invalidates iterators even on failure/partial effect; validation-only failure does not.
+**lowlevel** · change — `set_type_member_comment(parent_type_id_or_path:s, ordinal:u, comment:s)`.
 
-Lowlevel result: [SetTypeMemberCommentResponse](../api/FIELDS.md#settypemembercommentresponse). Result fields: updated:bool.
+Sets the comment on the parent type's member at the zero-based `ordinal`. Returns
+[SetTypeMemberCommentResponse](../api/FIELDS.md#settypemembercommentresponse) with boolean `updated`.
 
-See [ownership/persistence limits](#ownership-persistence-and-effective-limits).
 
 ### set_type_member_type
 
-**lowlevel** — `set_type_member_type(parent_type_id_or_path:s, ordinal:u, member_type:s)`. Requires live owner and open program. Dispatched mutation/lifecycle invalidates iterators even on failure/partial effect; validation-only failure does not.
+**lowlevel** · change — `set_type_member_type(parent_type_id_or_path:s, ordinal:u, member_type:s)`.
 
-Lowlevel result: [SetTypeMemberTypeResponse](../api/FIELDS.md#settypemembertyperesponse). Result fields: updated:bool.
+Changes the type of the parent type's member at the zero-based `ordinal`. Returns
+[SetTypeMemberTypeResponse](../api/FIELDS.md#settypemembertyperesponse) with boolean `updated`.
 
-See [ownership/persistence limits](#ownership-persistence-and-effective-limits).
 
 
 ## Performance records
 
 ### add_perf_benchmark
 
-**lowlevel** — `add_perf_benchmark(record)`. Requires live owner and open program. Dispatched mutation/lifecycle invalidates iterators even on failure/partial effect; validation-only failure does not.
+**lowlevel** · change — `add_perf_benchmark(record)`.
 
-Lowlevel result: [AddPerfBenchmarkResponse](../api/FIELDS.md#addperfbenchmarkresponse). Result fields: added:bool.
+Returns [AddPerfBenchmarkResponse](../api/FIELDS.md#addperfbenchmarkresponse) with
+boolean `added`.
 
-Required [PerfBenchmarkRecord](../api/FIELDS.md#perfbenchmarkrecord) table; omitted known fields use generated defaults. Native rejects empty bench_id. No durable benchmark-storage promise. See [ownership/persistence limits](#ownership-persistence-and-effective-limits).
+Pass a [PerfBenchmarkRecord](../api/FIELDS.md#perfbenchmarkrecord) table. Omitted
+known fields use the defaults in that reference. `bench_id` cannot be empty.
+Benchmark records are not guaranteed to survive saving and reloading.
 
 ### clear_perf_benchmarks
 
-**lowlevel** — `clear_perf_benchmarks()`. Requires live owner and open program. Dispatched mutation/lifecycle invalidates iterators even on failure/partial effect; validation-only failure does not.
+**lowlevel** · change — `clear_perf_benchmarks()`.
 
-Lowlevel result: [ClearPerfBenchmarksResponse](../api/FIELDS.md#clearperfbenchmarksresponse). Result fields: cleared:bool, removed_count:uint32.
+Clears benchmark records. Returns [ClearPerfBenchmarksResponse](../api/FIELDS.md#clearperfbenchmarksresponse),
+with boolean `cleared` and unsigned 32-bit integer `removed_count`.
 
-See [ownership/persistence limits](#ownership-persistence-and-effective-limits).
 
 ### delete_perf_benchmark
 
-**lowlevel** — `delete_perf_benchmark(bench_id:s)`. Requires live owner and open program. Dispatched mutation/lifecycle invalidates iterators even on failure/partial effect; validation-only failure does not.
+**lowlevel** · change — `delete_perf_benchmark(bench_id:s)`.
 
-Lowlevel result: [DeletePerfBenchmarkResponse](../api/FIELDS.md#deleteperfbenchmarkresponse). Result fields: deleted:bool.
+Deletes the record identified by `bench_id`. Returns
+[DeletePerfBenchmarkResponse](../api/FIELDS.md#deleteperfbenchmarkresponse) with boolean `deleted`.
 
-See [ownership/persistence limits](#ownership-persistence-and-effective-limits).
 
 ### list_perf_benchmarks
 
-**lowlevel** — `list_perf_benchmarks()`. Requires live owner and open program. Read-only dispatch; no iterator invalidation.
+**lowlevel** · read — `list_perf_benchmarks()`.
 
-Lowlevel result: [ListPerfBenchmarksResponse](../api/FIELDS.md#listperfbenchmarksresponse). Nested values: [PerfBenchmarkRecord](../api/FIELDS.md#perfbenchmarkrecord). Result fields: records:PerfBenchmarkRecord[].
+Returns [ListPerfBenchmarksResponse](../api/FIELDS.md#listperfbenchmarksresponse),
+with a `records` array of [PerfBenchmarkRecord](../api/FIELDS.md#perfbenchmarkrecord)
+values.
 
-See [ownership/persistence limits](#ownership-persistence-and-effective-limits).
 
 
 ## Shared operation caveats
 
-Lowlevel get_decompilation options accepts only timeout_ms integer 0..INT_MAX,
-default 30000, **ignored** by the pinned engine. Session permits only omitted/nil
-or empty options, rejects a timeout key, and promises no deadline/cancellation.
-ReadBytes size is 0..INT32_MAX before buffer allocation/dispatch (native uint32
-width does not override downstream signed int4). WriteBytes length <= INT_MAX.
-Bounds are not promises of memory availability; never probe multi-GB allocations
-just to check a limit. GetType forwards findByName input: returned name works;
-leading-slash path_name is not normalized into a successful lookup.
+All method entries use the shared [value and page rules](#values-and-validation).
+Collections larger than INT_MAX are unsupported. Numeric size bounds do not
+promise that an allocation will succeed; do not attempt multi-gigabyte allocations
+just to test a limit.
 
-Page fields match core range grammar: range_start=UInt64 zero,
-range_end=UInt64 max, limit=100, offset=0. Zero end is native maximum sentinel for
-functions/data items and the function candidates used by decompilation. Strict
-positive limit and nonnegative offset, sum <= INT_MAX. Collections above INT_MAX
-unsupported. timeout_ms is integer 0..INT_MAX and **ignored** by native batch.
-Comment kinds ([CommentKind](../api/FIELDS.md#commentkind)): unspecified/eol/pre/post/plate/repeatable (native zero through five).
-Unknown keys, sparse patch arrays, wrong types and numeric overflows are rejected.
-Patch count and summed bytes <= UINT32_MAX; each patch <= INT_MAX bytes. These are
-bounds, not memory availability guarantees. Empty patch arrays remain native calls.
+For comments, [CommentKind](../api/FIELDS.md#commentkind) accepts `unspecified`,
+`eol`, `pre`, `post`, `plate` and `repeatable` (native values zero through five).
+DataItemRecord end addresses are inclusive.
 
-Benchmark input field defaults and conversion types are defined by
-[PerfBenchmarkRecord](../api/FIELDS.md#perfbenchmarkrecord). Native rejects empty
-bench_id. DataItemRecord ends are inclusive. All ten benchmark fields are
-returned, including zero and negative numbers; no truthiness defaults.
+The [benchmark record](../api/FIELDS.md#perfbenchmarkrecord) defines all input
+defaults and conversion types. All ten fields are returned, including zero and
+negative values; these values are not replaced by defaults.
 
 ## Ownership, persistence and effective limits
 
-One live binding-owned client per process across states/module copies; second
-construction returns CLIENT_IN_USE. Do not mix independent engines. `native()`
-aliases the same owner. `close()`/Lua 5.4 __close release it permanently, invalidate
-iterators and release the process slot; GC destroys it once and never saves.
-__close preserves an active scope error. Detached tables remain valid.
+### Client and program lifetime
 
-Logical close_program/shutdown reset program access, not slot engines: reads
-return NO_PROGRAM, status stays usable and the process slot remains occupied.
-Session reopen returns the complete native open envelope on the same owner;
-old open metadata stays historical. A closed owner returns CLOSED and cannot
-reopen. Both Session close_program and shutdown reject policy=save without a
-construction state_path as NO_STATE_PATH before dispatch; lowlevel faithfully
-retains the native caveat that empty-path save-close may close without saving.
-No automatic save, rollback or unloading guarantee. Dispatched mutations/lifecycle
-calls increment shared generation **even on failure/partial effect**; validation-
-only failures do not. Iteration is not a universal snapshot of external changes.
+Only one binding-owned client may be live per process, across all Lua states and
+module copies. A second construction returns `CLIENT_IN_USE`. Do not mix
+independent engines. `session:native()` is an alias for the existing owner.
 
-Function-symbol rename/save/reopen is observed on the supported profile; do not
-generalize to all categories. On exercised binary/project state reload, struct
-name/kind survives only as an empty shell; members, aliases, enums, comments,
-named data and benchmark records disappear; signature/parameter edits reset and
-original bytes return. Project true-local rename is observed before save and
-resets after reload; binary int-signature evidence is parameter-only, not local
-persistence. Member/enum comment persistence cannot be isolated from their lost
-containers. Save flags acknowledge requests, not durable category completeness.
-Byte overlays survive no-op discard but not save/reopen. No transactional batch
-or partial-failure recovery: patch batches apply in order and counters total
-requested bytes without confirming native writes. Decompilation batches may
-contain complete, fallback and incomplete entries; inspect each, not just array.
+Closing a **program** and closing its **owner** have different effects:
 
-Important pinned engine limitations:
+- `close_program` and `shutdown` close program access but retain the engines and
+  the process's client slot. Reads return `NO_PROGRAM`; status calls still work.
+  You can reopen a program on that same owner. The new open response describes
+  the new request; previously returned metadata does not change.
+- `close()` or Lua 5.4 `__close` permanently releases the owner and client slot,
+  and invalidates iterators. All aliases then return `CLOSED`; the owner cannot
+  reopen. Garbage collection destroys the handle once and never saves it.
+  `__close` preserves an error already being raised from the scope.
 
-- Discovery is lazy. Decompile a known mapped function before assuming lookup or
-  pages are populated; NOT_FOUND does not imply no code. Many fields/tokens remain
-  default/empty. Revision observation confirms representation (file_version zero),
-  not a populated file-version producer or persistence contract.
-- Extreme/unmapped addresses can crash native code; UInt64 validation establishes
-  exactness, not safe mapping. Do not scan arbitrary/extreme addresses in-process.
-  Lua cleanup cannot recover from a native process crash.
-- Ordinary raw/FileBytes project loading is incomplete. The supported analyzed
-  project fixture is a special no-FileBytes project referring to external ELF;
-  its success is not general project-loader qualification. Leaf-functions query
-  works on that analyzed project; raw ELF returns NOT_SUPPORTED.
-- CreateType supports only struct; size is ignored. AddTypeMember ignores size,
-  appends using referenced type. Generic struct length may be zero even with a
-  four-byte member: query members for actual member sizes. Public union creation
-  is unsupported; empty union pages are not populated producer evidence.
-- CreateTypeEnum width/is_signed are not passed into native defineEnum. Observed
-  width is eight despite requested 123/1. A false request/output alone does **not**
-  establish ignored signedness experimentally; keep source and measured claims
-  distinct. Enum get_type can report kind int, length eight.
-- True-local rename is observed by stable id/kind after decompilation. Char retype
-  of those true locals returns native DECOMPILE_FAILED and leaves type unchanged;
-  true-local retyping is unqualified, not successful because a parameter changed.
-- DeleteSymbol ignores name_filter, selects by address. Deleting a named data
-  definition can reveal reconstructed inferred data at the same address/size;
-  it does not promise permanent disappearance from discovery.
-- ListDefinedStrings ignores ranges/counts on a loaded program and always returns
-  empty success, even with known loaded strings; it is not a scanner.
-- Ignored read_only/project_name/timeouts do not protect writes or impose deadlines.
-  Text conversion preserves NUL, but native text consumers need not roundtrip it.
-- Wrapper allocation/lifetime safety does not guarantee dependency-internal OOM
-  cleanup, retention, global-state recovery or exhaustive fault recovery.
+Detached result tables remain valid after either kind of closure. They are
+snapshots: changing them does not edit the native program.
 
-See [guide](EXAMPLES.md) for a checked own-input sequence. Adapter availability,
-source field accounting and native success on one fixture do not establish all
-input support or release/distribution clearance.
+For Session `close_program` and `shutdown`, `policy='save'` requires a `state_path`
+set at construction. Otherwise Session returns `NO_STATE_PATH` before calling the
+engine. Lowlevel preserves the native behavior: an empty-path save-close can
+close without saving. Closing does not imply automatic save, rollback or engine
+unloading.
+
+Any mutation or lifecycle call that reaches the engine changes the shared
+generation used to validate iterators, **even if the call fails or has only a
+partial effect**. Argument validation failures do not. Iterators cannot provide
+a universal snapshot or detect every change made outside the binding.
+
+### What survives saving and reloading
+
+Saving is not general project persistence. Function-symbol renames survive
+save and reopen on the supported profile, but this does not extend to every edit.
+The tested binary and project reload behavior is:
+
+| Edit or record | After reload |
+| --- | --- |
+| Struct name and kind | Survive as an empty struct shell. |
+| Struct members, aliases and enums | Disappear. |
+| Comments, named data and benchmark records | Disappear. |
+| Function signatures and parameter edits | Reset. |
+| Renames of true local variables in projects | Reset, despite being visible before save. |
+| Byte overlays | Original bytes return. |
+
+Member and enum comments cannot survive independently of their missing
+containers. Successful integer signature edits affect parameters; they do not
+demonstrate persistence for true local variables. Save flags acknowledge requests,
+not complete restoration of all categories.
+
+`discard_program` is not rollback: byte overlays survive this no-op discard,
+but not save and reopen. Patch batches are not transactions and provide no
+partial-failure recovery. They apply in order, and their counters total requested
+bytes without confirming writes. Decompilation batches likewise require checking
+each entry's complete, fallback or incomplete outcome.
+
+### Input and engine limits
+
+- **Discovery is lazy.** Decompile a known mapped function before expecting
+  lookups or pages to contain it. `NOT_FOUND` does not mean “no code”. Many fields,
+  including tokens, remain empty or default-valued. Revision fields such as
+  `file_version` can be zero and do not establish durable file-version tracking.
+- **Address validity is your responsibility.** Extreme or unmapped addresses can
+  cause a native process crash. UInt64 validation preserves the number exactly;
+  it does not verify the mapping. Do not scan arbitrary addresses in-process.
+  Lua cleanup cannot recover from such a crash.
+- **Project loading is limited.** Ordinary raw/FileBytes project loading is
+  incomplete. The working analyzed-project route uses a project without FileBytes
+  that refers to an external ELF; it does not establish general project support.
+  Leaf-function queries work with that analyzed project's reference index, while
+  raw ELF returns `NOT_SUPPORTED`.
+- **Type creation has restrictions.** Only structs can be created through
+  `create_type`; public union creation is unsupported. Empty union pages do not
+  demonstrate populated union results. `create_type` and `add_type_member` ignore
+  size arguments. The latter appends using the referenced type. Query members for
+  actual sizes: a struct's generic length can be zero even with a four-byte member.
+- **Enum settings are not forwarded.** `create_type_enum` does not pass `width`
+  or `is_signed` to native `defineEnum`. Tested widths are eight, even for requests
+  of 123 or 1. A false signedness request and response alone do not establish the
+  full signedness behavior. `get_type` can report an enum as kind `int`, length eight.
+- **True-local retyping is not established.** Local renames work using the stable
+  ID and kind from decompilation, but changing those locals to `char` returns
+  `DECOMPILE_FAILED` and leaves their types unchanged. Parameter retyping does not
+  prove that local retyping works.
+- **Deletion may expose inferred data.** `delete_symbol` ignores `name_filter`
+  and selects by address. Deleting named data can reveal inferred data at the
+  same address and size rather than permanently removing the location from queries.
+- **String discovery is a stub.** `list_defined_strings` always returns empty
+  success for a loaded program, ignoring range and count, even if strings are
+  present. It is not a scanner.
+- **Protection and deadlines are ineffective.** The engine ignores `read_only`,
+  `project_name` and timeouts; they neither protect against writes nor set a
+  deadline. The binding preserves NUL bytes in text, but native text consumers
+  may not return them unchanged.
+- **Dependency allocation failures can be unrecoverable.** The wrapper's
+  allocation and lifetime handling does not guarantee cleanup, retention of
+  state, global-state recovery or recovery from every out-of-memory failure inside
+  libghidra or its dependencies.
+
+For a bounded reading sequence, use the [examples](EXAMPLES.md). A method's
+availability does not guarantee support for every input. Distribution requirements
+are separate and described in [NOTICES](NOTICES.md).
