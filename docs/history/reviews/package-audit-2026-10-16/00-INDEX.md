@@ -84,6 +84,7 @@ Dimension reports and consolidated findings are added as they complete.
 | [F11](F11-runtime-identity.md) | Compiler/runtime identity wording | Low | Notices |
 | [F12](F12-bundled-zlib-notice.md) | Exact bundled-zlib notice reference | Low | Notices/install |
 | [F13](F13-harness-independent-deliverable.md) | No Saivage references in final package docs except creation credit | Owner requirement | Package docs |
+| [F14](F14-github-pages-website.md) | Static GitHub Pages project website | Owner feature request | Docs/site |
 
 F06 consolidates related documentation symptoms rather than treating each page
 as a separate repair project. These are provisional dispositions for design;
@@ -91,6 +92,7 @@ static gaps are not reproduced product failures. Dependency DEP-01 overlaps F06;
 it is not counted again. F13 records the operator's additional delivery condition,
 not an independently discovered defect. There are twelve consolidated findings
 (eight medium, four low) plus that owner requirement.
+F14 is a subsequent requested feature and is not counted as an audit defect.
 
 ## Design/planning batches
 
@@ -117,3 +119,7 @@ historical `docs/PLAN.md` is not being repurposed as the new execution contract.
   from unimplemented tests or permission to implement.
 - Master plan: separate Astra synthesis underway; final fresh independent review
   follows reconciliation of component reviews.
+- D website: operator added a static GitHub Pages site subplan; separate Astra
+  design author and fresh independent reviewer required. Incorporate it into the
+  master dependency graph and handoff before final review. No publication or
+  repository settings changes are authorized.
