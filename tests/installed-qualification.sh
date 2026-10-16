@@ -53,3 +53,10 @@ if [[ -n "${SAIVAGE_CARD_WORK_ROOT:-}" ]]; then
   cc -O0 -g -fno-pie -no-pie -fcf-protection=branch "$root/tests/fixtures/branch.c" -o "$branch/branch.elf"
   lua5.4 "$root/tests/m3_branch.lua" "$prefix" "$branch/branch.elf"
 fi
+
+# Independent M5 runtime profiles and absence gates; fresh per invocation.
+if [[ -n "${SAIVAGE_CARD_WORK_ROOT:-}" ]]; then
+  matrix=$(mktemp -d "$SAIVAGE_CARD_WORK_ROOT/installed-runtime-XXXXXX")
+  bash "$root/tests/installed-profiles.sh" "$prefix" "$matrix/profiles"
+  bash "$root/tests/installed-absence.sh" "$prefix" "$matrix/absence"
+fi
