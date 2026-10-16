@@ -338,3 +338,18 @@ must report invalidation. The new test failed on prior installed source, passes
 with the owning primitive fix, and runs in installed standalone/static/shared
 qualification. This does not upgrade synthetic descriptor cases to new native
 operation positives; existing actual native publication coverage remains.
+
+## Terminal compound-bound page repair
+
+A valid request at offset=INT_MAX-2, limit=2 could return records, but the iterator
+checked whether its *next* request would fit before yielding this already-valid
+page. This discarded legitimate terminal-bound data. The primitive now checks
+the actual pending request at refill entry, advances by actual count (bounded by
+the validated current limit), and yields the complete valid page. If another
+refill would exceed offset+limit<=INT_MAX, it raises PAGINATION_STALLED without
+fetching; no wraparound, fabricated exhaustion, or loss of buffered records.
+Regression covers full terminal page, capped singleton progression to the bound,
+empty terminal page and no retry/dispatch after overflow. Prior installed source
+failed before first yield; repaired source passes in all three installed Lua hosts.
+Synthetic near-INT_MAX cursor cases test arithmetic without claiming a native
+collection of that size, which remains outside the supported profile.

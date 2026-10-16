@@ -100,3 +100,34 @@ for _,phase in ipairs{'identity','order'} do
  local ok,e=pcall(it)
  assert(not ok and e.code=='ITERATOR_INVALIDATED','descriptor finalizer must precede stale-page diagnosis')
 end
+-- A valid terminal-bound request may return data even when another compound
+-- request would overflow. Deliver that page, then reject before further fetch.
+owner.generation=1
+do
+ local calls=0
+ local it=iterate(owner,'test',function(p)
+  calls=calls+1; assert(p.offset==2147483645 and p.limit==2)
+  return {{id=1},{id=2}}
+ end,id,key,{offset=2147483645,page_size=2})
+ assert(it().id==1 and it().id==2 and calls==1,'valid last page must not be discarded')
+ local ok,e=pcall(it);assert(not ok and e.code=='PAGINATION_STALLED' and calls==1)
+ assert(it()==nil and calls==1)
+end
+
+-- Capped pages advance by actual count up to the same boundary, without an
+-- out-of-domain fetch; an empty terminal page ends normally.
+for _,empty in ipairs{false,true} do
+ local calls=0
+ local it=iterate(owner,'test',function(p)
+  calls=calls+1; assert(p.offset==2147483644+calls-1 and p.limit==2)
+  if empty and calls==2 then return {} end
+  return {{id=calls}}
+ end,id,key,{offset=2147483644,page_size=2})
+ assert(it().id==1)
+ if empty then assert(it()==nil and calls==2)
+ else
+  assert(it().id==2)
+  local ok,e=pcall(it);assert(not ok and e.code=='PAGINATION_STALLED' and calls==2)
+ end
+end
+print('M3 terminal compound-bound page delivery/capped progress/no overflow dispatch PASS')

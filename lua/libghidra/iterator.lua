@@ -31,6 +31,11 @@ return function(owner, operation, fetch, identity, order, options, counts_only)
     if index>#records then
       -- One offending page ends this iterator, including errors. No retries.
       done=true
+      -- Validate the request being made, not its hypothetical successor. A
+      -- valid final page must remain yieldable at the end of the int domain.
+      if page.offset>2147483647-page.limit then
+        raise('PAGINATION_STALLED','pagination offset exhausted')
+      end
       local response,failure=fetch(page)
       valid()
       if not response then error(failure,0) end
@@ -49,9 +54,6 @@ return function(owner, operation, fetch, identity, order, options, counts_only)
       end
       previous=seen -- bounded to one page, not an unbounded history cache
       if #records==0 then return nil end
-      if page.offset>2147483647-page.limit-#records then
-        raise('PAGINATION_STALLED','pagination offset exhausted')
-      end
       page.offset=page.offset+#records
       done=false
     end
