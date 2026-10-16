@@ -95,7 +95,8 @@ endif()
 if(BUILD_TESTING)
   add_executable(reentry_host ${PROJECT_SOURCE_DIR}/tests/reentry_host.cpp
     ${PROJECT_SOURCE_DIR}/src/boundary.cpp ${PROJECT_SOURCE_DIR}/src/owner.cpp)
-  target_compile_definitions(reentry_host PRIVATE LLG_OWNER LLG_REENTRY_OBSERVER)
+  target_compile_definitions(reentry_host PRIVATE LLG_OWNER LLG_REENTRY_OBSERVER
+    LLG_FIXTURE_ROOT="${PROJECT_SOURCE_DIR}")
   target_include_directories(reentry_host PRIVATE ${LUA_INCLUDE_DIRS})
   target_compile_options(reentry_host PRIVATE -UNDEBUG)
   target_link_libraries(reentry_host PRIVATE ${LUA_LIBRARIES} binding_local_whole)

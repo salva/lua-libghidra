@@ -56,8 +56,8 @@ No Python/Java/network runtime or binding oracle is used.
   comparison below now attributes the reproduced crash to the upstream engine
   in the exercised profile/order. Original failures remain retained, not passed.
 - Real incomplete diagnostics and decode-gap evidence now exist below. Local
-  fallback=true is not produced by the pin. Successful nested-result natural
-  reentry and independent review remain open; no full M2 acceptance is claimed.
+  fallback=true is not produced by the pin. Loaded successful-result reentry is qualified below; independent review
+  remains open and no full M2 acceptance is claimed.
 
 ## Remaining-gap qualification batch
 
@@ -126,11 +126,42 @@ triggered finalizers during each unloaded native error's conversion, requiring
 NO_PROGRAM to remain detached after the source owner closes/reconstructs.
 Successful nested conversion refusal is real-backend coverage; synthetic nested
 fixture covers values not emitted by this local producer. Successful-result
-allocation-triggered reentry for the new nested adapter results is still a
-qualification gap; existing status/capabilities reentry alone does not fill it.
+allocation-triggered reentry was a separate gap; the loaded-result batch below
+now covers it rather than extrapolating from status/capabilities.
 
 An initial sanitizer run found a **test allocator mismatch**, not ignored as an
 upstream OOM: dependency MapState uses nothrow new, intercepted by ASan, while this
 host replaced ordinary delete with header-based freeing. Added matching nothrow
 new/delete overloads using the host's same header allocator. Preserve the failed
 capture in card status; ordinary green runs alone did not expose it.
+
+
+### Loaded successful-result finalizer reentry (review handoff)
+
+`reentry_host` now covers all five new adapters on **both ELF and analyzed
+project**. Each debt trial normally opens/warms the locked real fixture before
+stopping GC, then queues an unreachable finalizer. Method/receiver/request are
+rooted before restarting the collector; only actual method allocations schedule
+the finalizer. The existing phase observer marks the end of parsing/recheck, not
+an explicit collection point. Every case requires observed phase 3 (after
+recheck/native dispatch, during protected publication), exactly one completed
+finalizer close plus independent replacement construction/destruction, original
+owner CLOSED and generation 2 (open + owner release). Detached nested function,
+instruction or semantic decompilation values remain readable after collection
+and owner destruction. Cleanup and a fresh owner are asserted before the next
+trial. No Lua finalizer runs from the allocator or while a native lock is held.
+
+All ten loaded paths pass. No production runtime changes, dependency edits or new
+mock were needed. This complements precheck/error-conversion reentry and real
+Lua refusal/exception evidence from the previous batch. Instrumented wrapper
+regressions and ordinary configured-build checks were rerun for the changed host;
+unchanged installed semantic/example evidence remains applicable.
+
+**Independent review requested via the card workflow handoff**, not performed by
+this writer. Review the cumulative M2 implementation and field/runtime overlay,
+including shared ownership/longjmp frames, pagination/generation, both-surface
+installed semantics and limitations (extreme-address native SIGSEGV, no real
+fallback producer, partial-function state after failure). Primary invocation
+captures and exact results are in [[card:card-c-a]] status. Prior document reviews
+are not M2 implementation approval. No review result, acceptance waiver, new
+upstream patch or authority to begin M3 is claimed.

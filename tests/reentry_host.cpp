@@ -107,6 +107,66 @@ int main() {
   }
   assert(observed);
  }
+ // Loaded nested results: collector runs only from real conversion allocation,
+ // after dispatch, while Packet owns a detached native snapshot. Cover both
+ // input profiles without repeating the already-qualified unloaded paths.
+ const char* loaded_methods[]={"get_function","list_functions","get_instruction","list_instructions","get_decompilation"};
+ for(int project=0;project<2;++project) {
+ for(const char* method:loaded_methods) {
+  bool observed=false;
+  for(int debt=1;debt<=8192 && !observed;debt*=2) {
+   natural_phase=0;
+   lua_pushboolean(L,project); lua_setglobal(L,"project_profile");
+   run(L,"result=nil; result_error=nil; c=nil; collectgarbage('collect'); "
+         "collectgarbage('incremental',100,1000,0); c=assert(n.local_client()); "
+         "local p={program_path='" LLG_FIXTURE_ROOT "/tests/fixtures/inputs/authored.elf',language_id='x86:LE:64:default',compiler_spec_id='gcc'}; "
+         "if project_profile then p.project_path='" LLG_FIXTURE_ROOT "/tests/fixtures/project/authored.gpr' end; "
+         "assert(c:open_program(p)); assert(c:get_decompilation(0x401106).decompilation.completed); "
+         "collectgarbage('stop'); hits=0; completed=0; finalizer_phase=0; "
+         "do local owner=c; local f=setmetatable({}, {__gc=function() "
+         "finalizer_phase=mark_finalizer(); hits=hits+1; "
+         "finalizer_ok,finalizer_error=pcall(function() assert(owner:close()); "
+         "local replacement=assert(n.local_client()); assert(replacement:close()); completed=completed+1 end) end}) end");
+   // Requests are constructed/rooted before restarting GC. No pcall result or
+   // Lua chunk compilation allocation is misattributed to native conversion.
+   const bool page=method[0]=='l';
+   if(page) run(L,"request={range_start=0x401106,range_end=0x401106,limit=2}");
+   else run(L,"request=0x401106");
+   for(int i=0;i<debt;++i) { lua_newtable(L); lua_pop(L,1); }
+   lua_pushcfunction(L,natural_call); lua_getglobal(L,"c");
+   lua_getfield(L,-1,method); lua_insert(L,-2); lua_getglobal(L,"request");
+   int rc=lua_pcall(L,3,2,0); natural_phase=2;
+   assert(rc==LUA_OK);
+   lua_pushvalue(L,-2); lua_setglobal(L,"result");
+   lua_pushvalue(L,-1); lua_setglobal(L,"result_error"); lua_pop(L,2);
+   lua_getglobal(L,"finalizer_phase"); observed=lua_tointeger(L,-1)==3; lua_pop(L,1);
+   if(observed) {
+    run(L,"assert(hits==1 and completed==1); assert(finalizer_ok,finalizer_error); "
+          "assert(result_error==nil and type(result)=='table'); "
+          "local v,e=c:get_status(); assert(v==nil and e.code=='CLOSED'); "
+          "assert(c:_generation():decimal()=='2'); collectgarbage('collect')");
+    if(!std::strcmp(method,"get_function") || !std::strcmp(method,"list_functions")) {
+     run(L,"local f=result['function'] or result.functions[1]; "
+           "assert(f.entry_address:hex()=='0x0000000000401106'); "
+           "assert(type(f.name)=='string' and type(f.is_thunk)=='boolean' and math.type(f.parameter_count)=='integer')");
+    } else if(!std::strcmp(method,"get_instruction") || !std::strcmp(method,"list_instructions")) {
+     run(L,"local i=result.instruction or result.instructions[1]; "
+           "assert(i.address:hex()=='0x0000000000401106' and i.length==4); "
+           "assert(i.mnemonic:lower()=='endbr64' and type(i.disassembly)=='string')");
+    } else {
+     run(L,"local d=result.decompilation; assert(d.completed and not d.is_fallback); "
+           "assert(d.function_entry_address:hex()=='0x0000000000401106'); "
+           "assert(d.pseudocode:find('* 3 + 7',1,true)); "
+           "assert(type(d.locals)=='table' and type(d.tokens)=='table')");
+    }
+   }
+   run(L,"assert(c:close()); c=nil; result=nil; result_error=nil; collectgarbage('collect'); "
+         "local fresh=assert(n.local_client()); assert(fresh:close())");
+  }
+  assert(observed);
+  std::printf("allocation-driven loaded %s %s: detached success after close/reconstruct PASS\n",project?"project":"ELF",method);
+ }
+ }
  // Invalid option paths allocate structured errors before receiver lookup.
  // Require natural finalization in that window and preserve INVALID_ARGUMENT.
  const char* parsing[]={
