@@ -56,7 +56,7 @@ Native model field facts remain in [FIELDS](../api/FIELDS.md).
 | PatchBytesBatch / patch_bytes_batch | dense array of {address:u,data:binary string} | patch_count:uint32, bytes_written:uint32 |
 | Shutdown / shutdown (existing) | {policy='save' or 'discard'} | accepted:bool |
 
-All rows except the four List* reads and ListPerfBenchmarks are mutations/lifecycle:
+All rows except the three paged List* reads and ListPerfBenchmarks are mutations/lifecycle:
 shared generation increments immediately before dispatch, including native failure.
 Request construction failures do not dispatch or invalidate. Shutdown is logical
 program access closure, not owner destruction; lowlevel save policy retains the
@@ -129,3 +129,10 @@ native-failure and persistence qualification remain separate from passing the
 surface reproducer. Do not infer full release acceptance from method availability.
 Preserve M2 extreme-address/raw FileBytes and M3 producer/category limitations.
 No upstream patch, generator authority decision or new distribution right.
+
+Additional affected-path checks cover failed native CreateType invalidation,
+validation-only rejection without invalidation, patch buffered-iterator
+invalidation, exact max uint64 ordinal failure, overlapping native patch order
+(later writes win) and ignored enum width through actual resulting type length.
+Deterministic finalizer closure/reconstruction recheck includes type, patch and
+benchmark adapters. Installed qualification script includes M4 in all three hosts.

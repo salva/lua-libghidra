@@ -329,7 +329,7 @@ int main() {
    allocator.calls=allocator.refused=0; allocator.fail=point;
    int rc=lua_pcall(L,0,2,0); allocator.fail=SIZE_MAX;
    if(allocator.refused) { assert(rc==LUA_ERRMEM); ++refused; lua_pop(L,1); }
-   else { assert(rc==LUA_OK && (lua_istable(L,-2) || (lua_isnil(L,-2) && lua_istable(L,-1)))); lua_pop(L,2); tail=true; }
+   else { assert(rc==LUA_OK && (lua_istable(L,-2) || (std::string_view(source).find("list_leaf_functions")!=std::string_view::npos && lua_isnil(L,-2) && lua_istable(L,-1)))); lua_pop(L,2); tail=true; }
    assert(luaL_dostring(L,source)==LUA_OK); lua_settop(L,owner);
    if(tail) break;
   }
