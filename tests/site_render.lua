@@ -5,6 +5,7 @@ package.path='site/?.lua;scripts/?.lua;'..package.path
 local c=require('content'); local json=require('tool_json'); local encode=require('tool_json_encode')
 local o=require('cli').options(arg,{'--work','--pandoc'})
 local work=c.safe_path(o['--work'],'fresh'); c.command('mkdir '..c.quote(work))
+assert(os.getenv('LLG_SITE_PANDOC'),'set LLG_SITE_PANDOC to the verified converter for offline checking')
 local source=c.capture('pwd -P'):gsub('\n$','')
 local function build(base,name)
   c.command('lua5.4 scripts/build-site.lua --pandoc '..c.quote(o['--pandoc'])
@@ -42,6 +43,11 @@ filter('# `UInt64` *values*\n\nstd::optional<FunctionRecord> <std::string> std::
 local types=c.read(work..'/types.html')
 assert(types:find('id="uint64-values"',1,true))
 assert(types:find('&lt;FunctionRecord&gt;',1,true) and types:find('&lt;std::string&gt;',1,true))
+filter('# Repeat\n\n# Repeat\n\nSetext title\n------------\n\n[ref][r] ![asset](../docs/notices/engine.txt) [query](../README.md?x=1#lua-libghidra) [encoded](../api/%46IELDS.md#functionrecord)\n\n[r]: ../docs/API.md#method-index\n', 'api/FIELDS.md','semantics',false)
+local semantics=c.read(work..'/semantics.html')
+for _,literal in ipairs{'id="repeat"','id="repeat-1"','id="setext-title"','href="../docs/API.html#method-index"','src="../docs/notices/engine.txt"','href="../index.html?x=1#lua-libghidra"','href="FIELDS.html#functionrecord"'} do
+  assert(semantics:find(literal,1,true),'missing rendered semantics: '..literal)
+end
 for i,text in ipairs{'x <UnknownRecord>','x <FunctionRecord title="bad">','x </FunctionRecord>',
   '<script>bad</script>','<div>bad</div>'} do filter(text,'api/FIELDS.md','raw-reject-'..i,true) end
 filter('x <FunctionRecord>','README.md','wrong-page',true)

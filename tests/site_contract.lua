@@ -1,5 +1,5 @@
 -- MIT Copyright 2026 Salvador Fandiño.
-package.path='site/?.lua;scripts/?.lua;'..package.path
+package.path='tests/?.lua;site/?.lua;scripts/?.lua;'..package.path
 local c=require('content'); local cli=require('cli'); local html=require('html')
 local policy=dofile('scripts/package-documents.lua')
 local o=cli.options(arg,{'--work','--pandoc'})
@@ -84,10 +84,4 @@ for _,url in ipairs(actual_urls) do if url.value=='README.md?x=1&y=2#target' the
 assert(actual_link); html.policy('fixture.html',actual_decoded)
 print('actual Pandoc/template HTML fixture PASS')
 print('site foundation PASS: export/routes/URLs/HTML/policy/path probes; '..count..' rejection cases')
-if type(policy.heading_ids)~='function' then
-  io.stderr:write('SITE INTEGRATION NOT QUALIFIED: shared heading_ids API unavailable; rendering/mutation/browser checks remain required\n')
-  os.exit(1)
-end
--- Integration probes are intentionally required separately until implemented;
--- a future shared helper must not turn these foundation checks into a full pass.
-error('SITE INTEGRATION NOT QUALIFIED: complete rendered artifact probes are not implemented',0)
+require('site_artifacts').run(work,o['--pandoc'])

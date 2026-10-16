@@ -26,6 +26,7 @@ jobs:
       - name: Offline build and qualification
         run: |
           PANDOC="$RUNNER_TEMP/pandoc/pandoc-3.6.4/bin/pandoc"
+          export LLG_SITE_PANDOC="$PANDOC"
           lua5.4 scripts/build-site.lua --pandoc "$PANDOC" --baseurl /lua-libghidra --origin https://salva.github.io --output "$RUNNER_TEMP/site" --report "$RUNNER_TEMP/site.json"
           lua5.4 scripts/check-site.lua --root "$RUNNER_TEMP/site" --baseurl /lua-libghidra --report "$RUNNER_TEMP/site.json" --source .
           lua5.4 tests/site_contract.lua --work "$RUNNER_TEMP/probes" --pandoc "$PANDOC"

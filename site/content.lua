@@ -170,7 +170,7 @@ end
 -- Inputs whose identity affects generation or verification. This is tooling
 -- provenance, not a second document inventory. Builder/checker share the list.
 M.tool_inputs={
-  'site/content.lua','site/cli.lua','site/html.lua','site/links.lua',
+  'site/content.lua','site/cli.lua','site/html.lua','site/links.lua','site/verify-render.lua',
   'site/template.html','site/style.css','site/toolchain.lock.json',
   'site/export-documents.cmake','site/inspect-documents.cmake','site/prepare-toolchain.sh',
   'scripts/build-site.lua','scripts/check-site.lua','scripts/package-documents.lua',

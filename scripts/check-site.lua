@@ -117,5 +117,6 @@ for page,targets in pairs(links) do
   end
 end
 local urls={}; for url in pairs(external) do urls[#urls+1]=url end; table.sort(urls)
+require('verify-render').check(source,root,report,check_work)
 print('site graph/bytes/freshness PASS: '..#documents..' exported members')
 for _,url in ipairs(urls) do print('external URL (not network tested): '..url) end
