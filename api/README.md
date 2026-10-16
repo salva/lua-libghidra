@@ -33,3 +33,15 @@ M4 implemented call grammar and request/response/dispatch disposition is maintai
 in [M4-FULL](../docs/M4-FULL.md), supplementing the source-generated field facts.
 Do not infer full qualification from the generated proposal names or from method
 availability alone; service/runtime evidence and limitations remain separate.
+## Current field representation
+
+`lua5.4 scripts/render-fields.lua` regenerates `FIELDS.md` from the reviewed current
+ledger; `lua5.4 scripts/render-fields.lua --check` checks freshness. Regenerate
+coverage to a fresh candidate with the command above, review semantic differences,
+then replace current `coverage.json` and render fields together. Never regenerate
+historical ledgers. The current [API](../docs/API.md) owns call grammar; the
+[fields](FIELDS.md) describe source models, not runtime acceptance. Included
+reachability follows implemented request/response models recursively (plus factory
+options); excluded-only schemas retain native facts without supported Lua
+conversion claims. Explicit enum spellings follow the actual C++ converters,
+with numeric fallback for unknown response values.

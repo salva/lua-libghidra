@@ -47,6 +47,7 @@ function M.inventory(source,fingerprint)
  local defaults=S.implementations('cpp/include/libghidra/api.hpp',read('cpp/include/libghidra/api.hpp'))
  for name in pairs(defaults) do assert(data.declarations[name],'unknown default '..name) end
  for name in pairs(data.declarations) do assert(defaults[name],'missing default '..name) end
+ require('inventory_fields').classify(data)
  return data
 end
 return M

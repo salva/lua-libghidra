@@ -62,17 +62,18 @@ function M.split(s)
  assert(depth==0,'unbalanced argument type')
  local tail=M.norm(s:sub(start)); if tail~='' then out[#out+1]=tail end; return out
 end
-function M.lua(t)
+function M.lua(t,context)
  t=M.norm(t:gsub('%f[%w]const%f[%W]',''):gsub('&',''))
- if t:sub(1,14)=='std::optional<' then return 'optional '..M.lua(t:sub(15,-2))..' (absence=nil)' end
+ if t:sub(1,14)=='std::optional<' then return 'optional '..M.lua(t:sub(15,-2),context)..' (absence=nil)' end
  if t=='std::vector<std::uint8_t>' then return 'binary Lua string (length preserving)' end
- if t:sub(1,12)=='std::vector<' then return 'dense 1-based array of '..M.lua(t:sub(13,-2)) end
+ if t:sub(1,12)=='std::vector<' then return 'dense 1-based array of '..M.lua(t:sub(13,-2),context) end
  if t=='std::uint64_t' then return 'exact UInt64' end
- if t=='int' or t=='std::uint32_t' or t=='std::int64_t' or t=='std::uint8_t' then return 'checked Lua integer ('..t..')' end
+ if t=='std::int32_t' or t=='int' or t=='std::uint32_t' or t=='std::int64_t' or t=='std::uint8_t' then return 'checked Lua integer ('..t..')' end
  if t=='double' then return 'Lua number (native double; lua_Number precision/runtime qualification required)' end
  if t=='bool' then return 'boolean (preserve false)' end
  if t=='std::string' then return 'Lua string (no transcoding)' end
- return t..' table/enum; resolve in types/enums'
+ if context then return require('inventory_fields').named(t,context) end
+ return 'native named type '..t..' (resolved after header assembly)'
 end
 local function cite(path,raw,i) local _,n=raw:sub(1,i-1):gsub('\n',''); return {path=path,line=n+1} end
 function M.header(path,raw)

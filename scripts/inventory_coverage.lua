@@ -86,12 +86,12 @@ function M.assemble(native,coverage_table)
   local dispatch=(name=='OpenProgram' or name=='CloseProgram' or name=='Shutdown') and 'lifecycle' or name:match('^(%u%l+)')
   local mut={Set=true,Add=true,Clear=true,Delete=true,Create=true,Rename=true,Apply=true,Write=true,Patch=true,Save=true,Discard=true}
   dispatch=dispatch=='lifecycle' and dispatch or mut[dispatch] and 'mutation' or 'read'
-  local op={name=name,tier=included and assert(tiers[name],'missing normative tier '..name) or 'excluded',declaration=copy(d),implementation=impl and copy(impl) or null,lowlevel=included and snake or null,dispatch=included and dispatch or 'excluded',generation=included and dispatch~='read' and 'invalidate before dispatch including errors/partial effects; validation rejection unchanged' or 'unchanged',request={},response={native_type=d.response_type,lua=S.lua(d.response_type),fields=expand(d.response_type,'',{})},evidence={positive={status='unqualified',fixture=null,command=null},negative={status='unqualified',fixture=null,command=null}}}
+  local op={name=name,tier=included and assert(tiers[name],'missing normative tier '..name) or 'excluded',declaration=copy(d),implementation=impl and copy(impl) or null,lowlevel=included and snake or null,dispatch=included and dispatch or 'excluded',generation=included and dispatch~='read' and 'invalidate before dispatch including errors/partial effects; validation rejection unchanged' or 'unchanged',request={},response={native_type=d.response_type,lua=S.lua(d.response_type,native),fields=expand(d.response_type,'',{})},evidence={positive={status='unqualified',fixture=null,command=null},negative={status='unqualified',fixture=null,command=null}}}
   -- Source bodies are diagnostic input, not duplicated in the outbound contract.
   if included then op.implementation.body=nil end
   for _,arg in ipairs(S.split(d.arguments)) do
    local t,key=arg:match('^(.-)%s+([%w_]+)$'); assert(t and key,'invalid declaration argument')
-   local a={name=key,native_type=S.norm(t),lua=S.lua(t),nested_fields=expand(t,'',{})}
+   local a={name=key,native_type=S.norm(t),lua=S.lua(t,native),nested_fields=expand(t,'',{})}
    if included then
     if #a.nested_fields==0 then a.direct_argument_review=assert(native.request_reviews.reviewed[name] and native.request_reviews.reviewed[name][key],'unreviewed direct request '..name..'.'..key); a.semantics=a.direct_argument_review.semantics
     else for _,f in ipairs(a.nested_fields) do local review=assert(native.request_reviews.reviewed[name] and native.request_reviews.reviewed[name][key..'.'..f.path],'unreviewed nested request '..name..'.'..f.path); f.semantics=review.semantics; f.consumer_review=copy(review) end end
@@ -111,6 +111,7 @@ function M.assemble(native,coverage_table)
  end
  require("inventory_surfaces").apply(data)
  data.completeness_audit=require('inventory_completeness').validate(data)
+ require('inventory_fields').reachability(data)
  return data
 end
 return M

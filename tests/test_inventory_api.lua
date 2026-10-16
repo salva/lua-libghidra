@@ -18,13 +18,18 @@ for path in U.capture{'find',source..'/cpp/include/libghidra','-maxdepth','1','-
  for name,v in pairs(e) do assert(not enums[name]); enums[name]=v end
  for name,v in pairs(d) do assert(not declarations[name]); declarations[name]=v end
 end
+-- Historical representation strings are not native extraction facts. Preserve the
+-- historical bytes; validate current classifications against the current generator.
+require('inventory_fields').classify{types=types,enums=enums}
+local current=J.decode(U.read('api/coverage.json'))
 local n,fields=0,0
 for name,t in pairs(types) do
  n=n+1; local expected=assert(ledger.types[name],'unexpected type '..name)
  assert(#t.fields==#expected.fields,'field count '..name)
  for i,f in ipairs(t.fields) do
   fields=fields+1
-  for _,k in ipairs{'name','native_type','native_default','optional','lua'} do assert(f[k]==expected.fields[i][k],name..'.'..f.name..' '..k) end
+  assert(f.lua==current.types[name].fields[i].lua,name..'.'..f.name..' current representation')
+  for _,k in ipairs{'name','native_type','native_default','optional'} do assert(f[k]==expected.fields[i][k],name..'.'..f.name..' '..k) end
  end
  assert(t.source.path==expected.source.path and t.source.line==expected.source.line,'type citation '..name)
 end

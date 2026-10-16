@@ -27,10 +27,12 @@ claim that all corresponding-source archives have been obtained or delivered.
 | Abseil | 20240722.0 | Apache-2.0, abseil.txt |
 | utf8_range | bundled in pinned Protobuf | MIT, utf8-range.txt |
 | httplib | v0.16.3 (input, not an HTTP implementation claim) | MIT, httplib.txt |
-| engine zlib / system zlib | bundled source / system lock | zlib terms / zlib1g.txt |
+| engine zlib | bundled 1.3.1 in pinned engine | zlib terms, [exact bundled notice](evidence/native-notices/engine-zlib.txt) |
+| system zlib | Ubuntu zlib1g 1:1.3.dfsg-3.1ubuntu2.2 | [system notice](evidence/native-notices/zlib1g.txt) |
 | BFD / sframe | Ubuntu binutils 2.42-4ubuntu2.10 shared libraries | binutils.txt, GPL terms (not permissive) |
 | zstd | selected system binary/source lock | libzstd1.txt, retained dual-license terms |
-| C / C++ runtime | Ubuntu glibc 2.39 / GCC 13 profile, exact package identities in locks | libc6.txt / libstdc++6.txt, LGPL/GPL plus applicable exceptions |
+| C runtime | Ubuntu libc6 2.39-0ubuntu8.9 | libc6.txt, LGPL terms |
+| C++ / GCC runtime | GCC 14 libstdc++6 and libgcc-s1 14.2.0-4ubuntu2~24.04.1 (source gcc-14) | libstdc++6.txt, GPL/LGPL plus applicable exceptions |
 | Lua host | PUC Lua 5.4.6, Ubuntu 5.4.6-3build2 | MIT, lua.txt; borrowed from host, not linked as a second VM |
 
 All notice filenames above are in [evidence/native-notices](evidence/native-notices/).
@@ -52,6 +54,25 @@ Do not substitute arbitrary system static BFD archives. Exact standalone PIC
 Protobuf/Abseil SDK closure and offline-input overrides are in
 [foundation](PACKAGE-FOUNDATION.md). A dependency download in one SDK qualification
 was not isolated; do not label all builds offline.
+
+## Bundled zlib notice provenance
+
+The engine bundles zlib 1.3.1, distinct from the system zlib package above.
+The [exact bundled notice](evidence/native-notices/engine-zlib.txt) is the full
+opening zlib.h comment, including copyright, restrictions, disclaimer and contact
+information, without whitespace or line-ending changes. Source:
+[pinned engine zlib.h](https://raw.githubusercontent.com/NationalSecurityAgency/ghidra/2035b8153afaf7ce2edde24a2c80b62bbcf5127f/Ghidra/Features/Decompiler/src/decompile/zlib/zlib.h).
+The complete 96,885-byte header SHA256 is
+`5b3dc1c20e9b852ec1ef77f598c89129bae58de98d3773f91a4fc3071dd8cabf`.
+The extract is lines **5–33 inclusive**, bytes **56–1384** (zero-based,
+start-inclusive/end-exclusive), including the final LF: **1,328 bytes**.
+Its separate SHA256 is
+`02421fcfbfb1d656ef0b6ff4cd3c39f2946f08c3219fa42db482add7ce1f53ea`.
+Line-based extraction and an independent byte-range comparison against the verified
+header agree. This notice extract is not a complete corresponding-source bundle.
+GCC **13.3.0 is the build compiler**, not the identity of the separately locked
+GCC 14 runtime packages; the rows above describe the retained profile, not a new
+inventory of whatever packages happen to be installed today.
 
 ## Obligations before conveying artifacts
 

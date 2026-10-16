@@ -5,7 +5,7 @@ local U=require('tool_util')
 local source=assert(arg[1],'usage: check-tooling.lua PINNED_SOURCE FRESH_WORK_DIRECTORY')
 local work=assert(arg[2],'fresh work directory required'); assert(#arg==2 and not U.exists(work),'fresh work required')
 U.run{'mkdir','-p',work}
-for _,name in ipairs{'test_inventory_api','tooling_coverage','tooling_pages','tooling_adapter_pages','tooling_factory','tooling_status','tooling_requests','tooling_direct','tooling_lookup','tooling_mutations','tooling_remaining_inputs','tooling_type_inputs','tooling_containers_performance','tooling_session','tooling_producers','tooling_records','tooling_special'} do U.run{'lua5.4','tests/'..name..'.lua',source} end
+for _,name in ipairs{'test_inventory_api','tooling_fields','tooling_coverage','tooling_pages','tooling_adapter_pages','tooling_factory','tooling_status','tooling_requests','tooling_direct','tooling_lookup','tooling_mutations','tooling_remaining_inputs','tooling_type_inputs','tooling_containers_performance','tooling_session','tooling_producers','tooling_records','tooling_special'} do U.run{'lua5.4','tests/'..name..'.lua',source} end
 U.run{'lua5.4','scripts/inventory-api.lua',source,work..'/native.json'}
 U.run{'lua5.4','tests/tooling_page_artifact.lua',work..'/native.json'}
 U.run{'lua5.4','scripts/inventory-api.lua',source,work..'/coverage.json','--coverage'}
