@@ -321,7 +321,18 @@ int main() {
   "return c:list_data_items{limit=2}",
   "return c:add_perf_benchmark{bench_id='boundary',warm_ms_p50=1.5}",
   "return c:list_perf_benchmarks()",
-  "return c:patch_bytes_batch{{address=0x404010,data='a\\0b'}}"};
+  "return c:patch_bytes_batch{{address=0x404010,data='a\\0b'}}",
+  "return c:set_function_signature(0x401106,'int fault_sig(int x)')",
+  "return c:rename_function_parameter(0x401106,0,'fault_arg')",
+  "return c:set_function_parameter_type(0x401106,0,'int')",
+  "return c:rename_function_local(0x401106,'arg0','fault_local')",
+  "return c:set_function_local_type(0x401106,'arg0','int')",
+  "return c:apply_data_type(0x404010,'int')",
+  "return c:rename_data_item(0x404010,'fault_data')",
+  "return c:create_type_alias('FaultAlias','int')",
+  "return c:set_type_alias_target('FaultAlias','char')",
+  "return c:delete_perf_benchmark('absent')",
+  "return c:clear_perf_benchmarks()"};
  for(const char* source:paths) {
   unsigned refused=0; bool tail=false;
   for(size_t point=1;point<=512;++point) {
