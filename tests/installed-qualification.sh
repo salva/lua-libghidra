@@ -40,7 +40,7 @@ LIBGHIDRA_FIXTURE_ROOT="$root" \
 LUA_PATH="$prefix/share/lua/5.4/?.lua;$prefix/share/lua/5.4/?/init.lua;$prefix/share/libghidra/examples/?.lua" \
 LUA_CPATH="$prefix/lib/lua/5.4/?.so" \
 lua5.4 "$prefix/share/libghidra/examples/first_slice.lua"
-lua5.4 "$root/tests/installed_documents.lua" "$prefix"
+lua5.4 "$root/tests/installed_documents.lua" "$prefix" "$prefix" "$root"
 printf 'installed standalone/static/shared owner+Session and VM closure PASS\n'
 
 # Persistence artifacts are disposable and must remain in the active card work root.

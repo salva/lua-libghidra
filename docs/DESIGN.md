@@ -172,8 +172,10 @@ Local source configuration unconditionally runs `cmake/EmbedSpecs.cmake` and
 (evaluated union annotations) with importable Python zlib and an early CMake/
 LuaRocks version/module check. Record interpreter version in the build lock.
 Consuming a prebuilt local SDK need not run this generator. This current upstream
-build dependency is independent of Python bindings and is explicitly approved
-under SPEC's narrow pinned upstream source-build exception. There is no required
+build dependency is independent of Python bindings. Under SPEC, its narrow
+build-time exception is **pending operator approval**, OR a replacement/integration
+must be separately authorized and qualified. Neither option is preapproved;
+technical build success does not resolve the authority gate. There is no required
 Python qualification oracle. Prefer Lua for project-owned generation and tests;
 preserve native probes where needed to isolate binding behavior. Do not replace
 or modify upstream generators without a justified, separately qualified approach.
