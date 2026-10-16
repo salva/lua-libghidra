@@ -132,3 +132,21 @@ suppresses Protobuf/Abseil install rules in that build. Build/install those pinn
 PIC dependencies into the same SDK prefix first using `scripts/build-native-sdk.sh`
 or its documented CMake commands. Do not silently fall back to an ambient
 incompatible Protobuf when testing the newly installed SDK.
+
+## Lua system closure lock
+
+```sh
+lua5.4 scripts/lock-native-system.lua ARCHIVES FRESH_CANDIDATE.json --offline
+lua5.4 scripts/check-native-system.lua ARCHIVES [LOCK.json]
+lua5.4 tests/tooling_system.lua FRESH_CANDIDATE.json ARCHIVES
+```
+
+Refresh uses installed dpkg source/binary identities and apt metadata, verifies
+binary archive SHA256, and parses source-control checksum sections. Without
+`--offline`, missing files are fetched by HTTPS curl during explicit refresh
+only. Candidate output must not exist: this tool never silently changes the
+accepted lock. Review identity changes before adopting a candidate. The checker
+uses only the committed lock, local archives and dpkg, not current remote apt
+metadata. Source-control hashes/checksums do **not** prove that source archives
+were downloaded, built or that distribution obligations are discharged. The
+current closure is the locked Ubuntu 24.04 amd64 profile, not portable packaging.
