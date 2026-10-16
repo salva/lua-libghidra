@@ -182,3 +182,20 @@ are source accounting, not new native runtime positives or iterator enablement.
 The CLI removes its adjacent body-hash scratch file after success/failure; output
 is still a native artifact, not the complete semantic coverage generator. Adapter,
 request-field and remaining response/mutation semantic helpers still need porting.
+
+The native artifact additionally includes adapter-page traversal/exception
+reviews, CFG/xref extraction and indexed decompilation batch limits, six explicit
+status producer/default/error reviews, and all four factory option consumers:
+
+```sh
+lua5.4 tests/tooling_adapter_pages.lua [PINNED_SOURCE]
+lua5.4 tests/tooling_status.lua [PINNED_SOURCE]
+lua5.4 tests/tooling_factory.lua [PINNED_SOURCE]
+```
+
+Tests change actual native branches/assignments (including both serial and
+parallel completion status) rather than using Python as an oracle. Artifact
+fingerprint qualification checks also compare status and adapter-page body hashes
+against retained source reviews. Native factory checks do not replace existing
+binding owner/failure cleanup tests. These additions still do not complete request,
+remaining response/mutation/container or complete coverage-ledger generation.

@@ -13,3 +13,14 @@ end
 assert(count==18)
 assert(not U.exists(arg[1]..'.body-hash'),'fingerprint scratch leaked')
 print('All 18 Lua page body SHA256/citations match retained native review artifact PASS')
+for name,r in pairs(artifact.status_reviews or {}) do
+ local old=assert(ops[name].status_field_review)
+ assert(r.line==old.line and r.body_sha256==old.body_sha256,'status fingerprint mismatch '..name)
+end
+for name,r in pairs(artifact.adapter_page_reviews or {}) do
+ if ops[name] then
+  local old=assert(ops[name].pagination.source_review)
+  assert(r.line==old.line and r.body_sha256==old.body_sha256,'adapter fingerprint mismatch '..name)
+ end
+end
+print('Additional status and adapter page body fingerprints match retained source reviews PASS')

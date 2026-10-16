@@ -19,6 +19,9 @@ function M.inventory(source,fingerprint)
  local path='cpp/src/local_client.cpp'
  data.implementations=S.implementations(path,read(path))
  data.page_wrapper_reviews=require('inventory_pages').review(U.read(source..'/'..path),fingerprint)
+ data.status_reviews=require('inventory_status').review(U.read(source..'/'..path),data.types,fingerprint)
+ data.factory_reviews=require('inventory_factory').review(U.read(source..'/'..path),U.read(source..'/cpp/src/decompiler_pool.cpp'),data.types,fingerprint)
+ data.adapter_page_reviews=require('inventory_adapter_pages').review(read('cpp/src/local_arch_adapter.cpp'),U.read(source..'/'..path),read('cpp/src/local_arch_adapter.hpp'),read('cpp/src/decompiler_pool.cpp'),fingerprint)
  for name,impl in pairs(data.implementations) do
   local d=assert(data.declarations[name],'undeclared local override '..name)
   assert(impl.response_type==d.response_type,'override response differs '..name)
