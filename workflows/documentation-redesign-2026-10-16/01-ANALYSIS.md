@@ -129,21 +129,37 @@ At this stable point no tracked website implementation exists; unfinished
 | [decompile.lua](../../examples/decompile.lua#L9) | Own-input CLI, explicit UInt64/open/error/outcome handling, close scope before exit. Preserve these semantics in a newly task-authored example; origin verdict is not inferred from ordinary API calls. |
 | [first_slice.lua](../../examples/first_slice.lua#L2) | Authored-fixture assertion sequence exercising metadata, bytes, pages, aliases and closure. This is a regression driver, not a beginner tutorial. |
 | [core_mutation.lua](../../examples/core_mutation.lua#L2) | Regression for rename and buffered iterator invalidation; prints a milestone-labelled PASS. It belongs in tests, not installed examples. |
-| [fixture_manifest.lua](../../examples/fixture_manifest.lua#L2) | Source-tree test input paths, special project and extreme absent-address value. It must not be promoted into own-input guidance or new address-safety probing. |
+| [fixture_manifest.lua](../../examples/fixture_manifest.lua#L2) | Source-tree test input paths, special project and `absent_function_address='18446744073709551615'`. The first-slice script actually dispatches that UINT64_MAX lookup; relocation must remove it from the selected validation lane, not merely prohibit new probes. |
 
 [Installed qualification](../../tests/installed-qualification.sh#L83) currently
 runs the two fixture demonstrations from the installed example directory. Moving
-them requires updating that caller while preserving their regression purpose.
+them requires updating that caller while preserving safe regression coverage.
+Remove the native `get_function(u64(fixture.absent_function_address))` assertion
+and its helper field from the relocated demonstration; rely on existing safe
+optional-result coverage rather than finding a guessed replacement address.
+Do not run the unchanged unsafe lookup as a redesigned acceptance obligation.
 [decompile_example.lua](../../tests/decompile_example.lua#L2) tests control flow
 with synthetic outcomes; its explicit disclaimer is correct. It does not prove
 real native decompilation.
 
-An independent analyst is assessing example origins. This analysis inventories
-the actual local behavior and does not duplicate upstream provenance research.
-The narrow dependency is the final replacement/removal checklist for any copied
-or recognizably adapted user-facing material. Organization and task specifications
-can be selected now. The analyst's evidence remains in working documents, never
-a new provenance chapter in the manual.
+The completed [bounded assessment](03-EXAMPLE-ASSESSMENT.md#L6) establishes no
+distinctive copying or recognizable upstream adaptation in the inspected material.
+Actual composition origin remains unknown; this is not an originality certificate
+or clean-room finding. No more origin research is needed to proceed. Independently
+author the selected public tasks for their user value, preserving correct API
+names, outcome checks and ordinary Lua lifecycle idioms without cosmetic novelty.
+The assessment stays in working material, never a provenance chapter in the manual.
+
+The redesign itself must resist evolutionary bias: making intentional stale
+iterator invalidation part of a new public rename example would inherit the
+local `core_mutation.lua` regression-tour structure, even without upstream copying.
+Select only two public tasks: decompilation for a review note, and bounded
+inspection of a known function's metadata/bytes/instructions. The latter serves
+readers correlating pseudocode with a caller-confirmed mapped machine-code region.
+Defer a public rename task; invalidation stays in API and existing internal checks.
+No state-file context, third example or extra acceptance machinery is justified
+by uncertainty about origin. Independently bound inspection byte reads and
+instruction ranges/counts; a byte-read limit does not bound instruction decoding.
 
 ### Licenses are not optional historical baggage
 
