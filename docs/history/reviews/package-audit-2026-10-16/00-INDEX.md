@@ -31,8 +31,9 @@ repair campaign. Prior milestone approval does not replace fresh inspection.
 - [x] Reconcile overlapping/unsupported findings and perform bounded validation.
 - [x] Consolidate stable per-issue inventory; correction proposal in progress.
 - [x] Design confirmed issues using separate Astra writer/reviewer sessions.
-- [ ] Produce a sequenced implementation plan and self-contained Saivage handoff.
-- [ ] Report outcome; obtain approval before implementation or Saivage submission.
+- [x] Produce a sequenced implementation plan and self-contained Saivage handoff.
+- [x] Obtain independent master review and gated operator execution authorization.
+- [ ] Notify the root planner, resume through supported controls and verify execution.
 
 All dimension reviewers use fresh `openai/gpt-6-astra` sessions. At most four run
 concurrently. Reports must distinguish observed defects, static risks, documented
@@ -120,8 +121,9 @@ historical `docs/PLAN.md` is not being repurposed as the new execution contract.
 - D website: revised analysis/design/plan independently approved, retaining
   Pandoc/Lua after LDoc/Jekyll comparison;
   [final component review](D-DESIGN-PLAN-REVIEW-r2.md).
-- Master plan: author reconciling the final approved component contracts before
-  a fresh independent review of the whole sequence and handoff.
+- Master plan and handoff: independently approved with no required changes;
+  [final master review](MASTER-REVIEW-r1.md). All readiness conditions for the
+  operator-authorized planner handoff are met; execution verification is pending.
 
 These approvals concern proposed documents, not results from unimplemented tests
 or permission to execute, deploy, publish, push or change repository settings.
