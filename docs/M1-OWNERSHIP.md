@@ -533,3 +533,30 @@ C-built Lua runtime. This batch closes the previously untested nonempty option/
 request-copy branches, not the exhaustive Lua-frame/reentrancy/sanitizer gates.
 
 Reproduce: `cmake --build build -j4 && ctest --test-dir build -R '^read_bytes_dispatch_order$' --repeat until-fail:3 -V && ctest --test-dir build --output-on-failure`.
+
+### Allocation-driven finalization during real result/generation conversion
+
+The reentry host now also uses Lua's ordinary incremental collector, not an
+explicit collect/step call, to finalize an unreachable table while the real
+get_status/get_revision/get_capabilities/_generation operation is executing.
+The call is rooted before collector restart; debt is varied with unreachable
+tables while stopped. No allocator callback reenters Lua. A test C finalizer
+marker records execution phase; the existing pre-recheck observer ONLY marks
+phase in this mode (no collection). For dispatch cases the required finalizer
+phase is AFTER that observer; _generation has no dispatch observer and requires
+inside-call phase. Therefore setup/cleanup collection cannot satisfy the test.
+
+Finalizer closes the actual owner and constructs/closes a real replacement.
+External assertions require exactly one hit, successful inner pcall and one
+completed replacement close. Natural-finalization assertions run before any
+explicit cleanup collection. All four paths must actually observe finalization;
+not merely fail to crash. Calls must return LUA_OK; the host does not yet assert
+every detached response field in this fixture (other functional fixtures do).
+Existing deterministic pre-recheck close/reconstruct/CLOSED checks remain.
+
+This provides genuine allocation-driven reentrancy evidence for result conversion
+and generation userdata allocation with no native lock across Lua. It does NOT
+close all parsing/stack-growth/factory publication edges or attribute the exact
+allocation instruction within conversion. Those remain explicit coverage gaps;
+this is not exhaustive per-edge scheduling proof. Whole ordinary and wrapper
+ASan/UBSan suites pass with these additional cases.
