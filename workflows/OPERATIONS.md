@@ -1,5 +1,54 @@
 # Automation operations
 
+## Batched qualification guidance — 2026-10-16
+
+Operator-requested same-release adoption: source `2b31f57`, editorial approval
+by independent Astra (final edition confirmed). Maintained overrides are under
+`workflows/prompts/`; host-side adapted skills are in `.github/skills/` and loaded
+through project OpenCode configuration. They cover prompt adoption, validation,
+this LXC instance and skill authoring, not new Executor tools or permissions.
+
+The common/Planner guidance and test add-coverage/verify prompts now request
+coherent related batches, a concise current finish list/status, applicable evidence
+reuse and meaningful regression boundaries. Existing graph/outcomes, required
+safety acceptance and independent review remain unchanged; no fixed batch size,
+extra report/card or waived gate. This changes execution granularity, not the M1
+product contract or permission to implement a later node's work.
+
+Exact release `39ffe231` compiled **28 role bindings and 75 process prompts**;
+effective settings and generated node-result contracts were unchanged. Supported
+Project Stop reported contained and zero managed processes; service exclusion
+then verified no service-user processes or runtime lock. Complete independent
+stopped backup/candidate retained all project files, including ignored state/work.
+Actual release consumers validated both trees: **10 cards, 57 card-history rows,
+127 accepted records, 15 sessions, 26 segments, 6,859 messages, 1,700 provider
+rows**, no images or missing work/record references. Two historical unmatched
+calls were preserved, not reinterpreted as successful effects.
+
+Whole-tree comparison checked **149,717 regular files, 5,717,844,976 bytes per
+tree and seven symlinks**, namespace/mode/ownership and no writable aliases.
+No sockets/FIFOs were present. Only the four allowlisted prompt files differed;
+YAML, models/providers/tools/compaction/identities, credentials, product files and
+history were unchanged. No migration or reset. The complete candidate prompt tree
+was published under exclusion with displaced originals retained; no saved-state
+root was replaced. Service restarted at 00:16 UTC, PID 22945; readiness passed and
+execution remained stopped until ordinary Run.
+
+Current-instructions API verified batching policy in all four inspected bindings
+(root Planner, M1 Planner, qualification Executor, Analyst), with current record
+and historical conversation/catalog access intact. Three normal notices to
+`project`, `card-b` and `card-b-c` reported `interruption: not_requested`.
+Supported `start_project` succeeded at 00:17 UTC. Fresh child execution is verified
+separately below; startup/Run alone does not establish adoption or M1 acceptance.
+
+Evidence and full backup/candidate/displaced prompts:
+`/home/salva/g/ml/tmp/lua-libghidra-batched-guidance-2026-10-16/`.
+Key files: `source-check/guidance-validation.json`, `source-validation.json`,
+`candidate-validation.json`, `tree-validation.json`, `publication.json`,
+`live-bindings-and-history.json`, `stop-receipt.json`, `notify-resume-receipt.json`.
+These secret-bearing full copies stay outside Git. Rollback is prompt-only under
+fresh exclusion; do not restore historical state over new execution. No push.
+
 ## Deployment — 2026-10-15
 
 The operator authorized a new container and autonomous launch after review
