@@ -33,7 +33,8 @@ repair campaign. Prior milestone approval does not replace fresh inspection.
 - [x] Design confirmed issues using separate Astra writer/reviewer sessions.
 - [x] Produce a sequenced implementation plan and self-contained Saivage handoff.
 - [x] Obtain independent master review and gated operator execution authorization.
-- [ ] Notify the root planner, resume through supported controls and verify execution.
+- [x] Notify the root planner, resume through supported controls and verify fresh root execution.
+- [ ] Verify fresh child-stage execution after root planning.
 
 All dimension reviewers use fresh `openai/gpt-6-astra` sessions. At most four run
 concurrently. Reports must distinguish observed defects, static risks, documented
@@ -108,7 +109,7 @@ No implementation or submission is authorized by completion of these documents.
 The operator explicitly requested a master plan pointing to the smaller plans.
 Its stable location is
 [99-MASTER-PLAN.md](../../../development/plans/package-fixes-2026-10-16/99-MASTER-PLAN.md).
-It is currently a draft index and will carry the final sequence and handoff;
+It carries the approved final sequence and handoff;
 historical `docs/PLAN.md` is not being repurposed as the new execution contract.
 
 ### Current independent review status
@@ -123,7 +124,9 @@ historical `docs/PLAN.md` is not being repurposed as the new execution contract.
   [final component review](D-DESIGN-PLAN-REVIEW-r2.md).
 - Master plan and handoff: independently approved with no required changes;
   [final master review](MASTER-REVIEW-r1.md). All readiness conditions for the
-  operator-authorized planner handoff are met; execution verification is pending.
+  operator-authorized planner handoff are met. Supported reopen/normal notice/Run
+  succeeded; fresh root tool results confirm it read the master and assignment.
+  New `card-h` was created for F01–F14. Child execution verification is pending.
 
 These approvals concern proposed documents, not results from unimplemented tests
 or permission to execute, deploy, publish, push or change repository settings.
@@ -137,3 +140,8 @@ plan/handoff, supported lifecycle controls and ordinary Run, preserving all hist
 Verify fresh owning-planner/child execution. This supersedes the earlier hold on
 submission/implementation only at that readiness gate; it does not authorize push,
 Pages publication/settings changes, deployment modification or upstream patches.
+
+## Outcome and operations evidence
+
+- [Consolidated outcome](09-AUDIT-RESULTS.md)
+- [Planner handoff and execution evidence](08-PLANNER-HANDOFF.md)
