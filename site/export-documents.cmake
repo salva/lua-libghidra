@@ -1,0 +1,12 @@
+# MIT Copyright 2026 Salvador Fandiño.
+cmake_minimum_required(VERSION 3.26)
+if(NOT DEFINED LLG_DOCUMENT_EXPORT_DIR OR NOT IS_ABSOLUTE "${LLG_DOCUMENT_EXPORT_DIR}")
+  message(FATAL_ERROR "LLG_DOCUMENT_EXPORT_DIR must be an absolute fresh directory")
+endif()
+if(EXISTS "${LLG_DOCUMENT_EXPORT_DIR}" OR IS_SYMLINK "${LLG_DOCUMENT_EXPORT_DIR}")
+  message(FATAL_ERROR "LLG_DOCUMENT_EXPORT_DIR must not exist")
+endif()
+get_filename_component(source "${CMAKE_CURRENT_LIST_DIR}/.." ABSOLUTE)
+include("${source}/cmake/PackageDocuments.cmake")
+file(MAKE_DIRECTORY "${LLG_DOCUMENT_EXPORT_DIR}")
+llg_export_package_documents("${LLG_DOCUMENT_EXPORT_DIR}/package-documents.txt")

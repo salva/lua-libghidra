@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="generator" content="Pandoc">
+<title>$pagetitle$ · lua-libghidra</title>
+<link rel="stylesheet" href="$stylesheet$">
+<link rel="canonical" href="$canonical$">
+</head>
+<body>
+<a class="skip-link" href="#main-content">Skip to content</a>
+<header>
+<p class="brand">lua-libghidra</p>
+<nav aria-label="Main navigation"><ul>
+$for(navigation)$
+<li><a href="$navigation.href$"$if(navigation.current)$ aria-current="page"$endif$>$navigation.label$</a></li>
+$endfor$
+</ul></nav>
+</header>
+<div class="layout">
+$if(toc)$
+<aside><nav aria-label="On this page"><h2>On this page</h2>
+$table-of-contents$
+</nav></aside>
+$endif$
+<main id="main-content" tabindex="-1">
+$body$
+</main>
+</div>
+<footer><p>Lua bindings for native-local libghidra. See <a href="$notices$">Notices</a> for licenses and source obligations.</p></footer>
+</body>
+</html>
