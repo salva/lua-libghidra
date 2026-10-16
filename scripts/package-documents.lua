@@ -115,8 +115,10 @@ function M.heading_ids()
     return base .. (n>0 and ('-'..n) or '')
   end
 end
-local function anchors(text)
-  local found, id = {}, M.heading_ids()
+-- Raw source spellings in encounter order, before inline rendering. Keep this
+-- extraction authoritative for package fragments and site Header assignment.
+function M.heading_texts(text)
+  local headings = {}
   local previous
   for line in (prose(text)..'\n'):gmatch('(.-)\n') do
     local heading = line:match('^%s*#+%s+(.+)')
@@ -126,8 +128,15 @@ local function anchors(text)
     previous=line~='' and line or nil
     if heading then
       heading=heading:gsub('%s+#+%s*$','')
-      found[id(heading)]=true
+      headings[#headings+1]=heading
     end
+  end
+  return headings
+end
+local function anchors(text)
+  local found, id = {}, M.heading_ids()
+  for _,heading in ipairs(M.heading_texts(text)) do
+    found[id(heading)]=true
   end
   return found
 end

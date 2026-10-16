@@ -19,6 +19,44 @@ assert(other('Repeat')=='repeat' and other('Repeat')=='repeat-1','allocator inde
 assert(ids('Repeat')=='repeat-3','interleaved allocator independence')
 assert(policy.heading_ids()('Repeat')=='repeat','fresh document state')
 print('Shared heading API/parity/duplicates/collision semantics/independence PASS')
+-- Raw source spelling is significant: stringify loses link destinations and
+-- entities even when the shared allocator itself is correct.
+assert(type(policy.heading_texts)=='function','shared-heading-text-api: heading_texts missing')
+local raw_fixture=table.concat({
+ '# [Installation](docs/INSTALL.md) ###', '', 'Fish &amp; chips', '----------------', '',
+ '## [Reference][ref]', '## Escape \\*literal\\*', '## *Emphasis* and **strong**',
+ '## `code`', '## Repeat', '## Repeat-1', '## Repeat',
+ '## Has#hash', '## Closing ###', '', 'Setext `raw` ##', '===', '',
+ '```md', '# fenced', '```', '~~~', '# tilde fenced', '~~~',
+ '    # indented', '\t# tab indented', '   ## Three spaces', '',
+ 'Prior line', '', '---', '', 'Interrupted', '    code', '---', '',
+ 'Previous', '---', '===', '', '## !!!', '## !!!', '',
+ '[ref]: page.md',
+},'\n')
+local expected_raw={
+ '[Installation](docs/INSTALL.md)', 'Fish &amp; chips', '[Reference][ref]',
+ 'Escape \\*literal\\*', '*Emphasis* and **strong**', '`code`',
+ 'Repeat','Repeat-1','Repeat','Has#hash','Closing','Setext `raw`','Three spaces',
+ 'Previous','---','!!!','!!!',
+}
+local function same_array(actual,expected,label)
+ assert(#actual==#expected,label..': count '..#actual..' ~= '..#expected)
+ for i,value in ipairs(expected) do assert(actual[i]==value,label..': item '..i..' '..tostring(actual[i])) end
+end
+local extracted=policy.heading_texts(raw_fixture)
+same_array(extracted,expected_raw,'raw extraction order/parity')
+local fresh=policy.heading_texts(raw_fixture)
+assert(fresh~=extracted,'heading arrays must be fresh')
+extracted[1]='mutated'; extracted[#extracted+1]='extra'
+same_array(fresh,expected_raw,'unaliased raw extraction')
+same_array(policy.heading_texts(raw_fixture),expected_raw,'repeat extraction')
+same_array(policy.heading_texts(''),{},'empty extraction')
+local raw_ids=policy.heading_ids()
+assert(raw_ids(expected_raw[1])=='installationdocsinstallmd')
+assert(raw_ids(expected_raw[2])=='fish-amp-chips')
+assert(policy.heading_ids()('Installation')=='installation')
+assert(policy.heading_ids()('Fish & chips')=='fish--chips')
+print('Raw heading spelling/order/multiplicity/freshness/parsing boundaries PASS')
 policy.absolute(work)
 local function q(s) return "'"..s:gsub("'","'\\''").."'" end
 assert(os.execute('test ! -e '..q(work)..' && mkdir -p '..q(work)))
@@ -55,6 +93,31 @@ check(good..'\n[third](page.md#repeat-2)')
 assert(allocations==2 and calls==5,'anchors must share exported allocator per document')
 policy.heading_ids=factory
 check(good..'\n[fenced is not a heading](page.md#repeat-3)','missing-fragment','repeat-3')
+-- Real graph consumption must use the exported raw list, not stringify or a
+-- second scanner. Observe calls and add a sentinel only through that interface.
+local graph_fixture=raw_fixture:gsub('docs/INSTALL%.md','page.md')
+local combined=graph_fixture..'\n# Page `value`\n'
+write('page.md',combined)
+local texts=policy.heading_texts
+local text_calls=0
+local links=good..'\n[exported](page.md#exported-extraction-sentinel)'
+local graph_ids=policy.heading_ids()
+for _,heading in ipairs(texts(graph_fixture)) do
+ local fragment=graph_ids(heading)
+ if fragment~='' then links=links..'\n[raw heading](page.md#'..fragment..')' end
+end
+-- good's existing page-value/repeat-1 links also resolve in the combined fixture.
+policy.heading_texts=function(text)
+ text_calls=text_calls+1
+ local headings=texts(text)
+ if text==combined then headings[#headings+1]='Exported extraction sentinel' end
+ return headings
+end
+check(links)
+assert(text_calls==2,'anchors must extract once per selected Markdown document')
+policy.heading_texts=texts
+check(links,'missing-fragment','exported-extraction-sentinel')
+check(good..'\n[not rendered text](page.md#fish--chips)','missing-fragment','fish--chips')
 write('page.md','# Page `value`\n\n## Repeat\n\n## Repeat\n')
 check(good..'\n[bad](absent.md)','missing-link-target','absent.md')
 check(good..'\n![bad](absent.png)','missing-link-target','absent.png')
