@@ -585,3 +585,32 @@ attribution, not an exact allocation-PC trace or an injected postpublication edg
 Parsing/stack-growth-specific scheduling remains a residual coverage question;
 these tests do not manufacture product allocations to claim those edges exercised.
 Both complete ordinary and sanitizer suites were rerun on this fixture.
+
+### Invalid-request conversion reentrancy and pre-native API qualification
+
+Natural reentry fixture additionally passes invalid typed options to OpenProgram,
+CloseProgram and Shutdown. Function, receiver and request table are rooted before
+collector restart; required phase1 finalization occurs before dispatch observer.
+Exactly one finalizer closes owner and constructs/closes replacement; returned
+structured error must remain INVALID_ARGUMENT/binding, and generation remains one
+from binding close alone. These are validation/error-conversion paths, NOT proof
+of finalization during successful parsing. Initial attempts to require successful
+parsing phase1 scheduling (debt1..128, then8192) did not observe it; those fixture
+failures are retained in card status, not claimed as product defects or passes.
+
+PUC Lua5.4.6 source inspection (lua.org/ftp/lua-5.4.6.tar.gz) informs attribution:
+lapi.c lua_pushstring does call luaC_checkGC even for interned keys; rawget,
+lua_next and typed reads do not invoke table metamethods. Wrapper read_text checks
+string type before lua_tolstring, avoiding number-to-string conversion. Thus raw
+request __index/__pairs hooks are not revalidation tests. lua_checkstack calls
+luaD_growstack, whose realloc path is storage growth, not an ordinary incremental
+collector step; emergency allocation recovery is distinct from ordinary finalizer
+scheduling. Do not insert fake allocating product code to manufacture a stack
+finalizer edge. Stack OOM remains covered by fault tests/static longjmp audit.
+
+Natural phase1 invalid-request evidence attributes only the pre-observer window,
+which includes structured error allocation. It cannot distinguish key pushing
+from error conversion. Applicable successful parsing scheduling remains to be
+settled; failed observation is neither proof of nonapplicability nor a wrapper
+failure. Existing successful conversion/factory paths and deterministic precheck
+revalidation remain established independently.

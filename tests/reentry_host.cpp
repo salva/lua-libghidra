@@ -31,7 +31,7 @@ static int natural_call(lua_State* L) {
  // alone schedule pending finalizers while the real method executes.
  lua_gc(L,LUA_GCRESTART);
  natural_phase=1;
- lua_call(L,1,2);
+ lua_call(L,lua_gettop(L)-1,2);
  natural_phase=2;
  return 2;
 }
@@ -59,7 +59,7 @@ int main() {
  natural=true;
  for(const char* method:methods) {
   bool observed=false;
-  for(int debt=1;debt<=128 && !observed;debt*=2) {
+  for(int debt=1;debt<=8192 && !observed;debt*=2) {
    natural_phase=0;
    run(L,"finalizer_phase=0; collectgarbage('collect'); collectgarbage('incremental',100,1000,0); "
          "c=assert(n.local_client()); collectgarbage('stop'); hits=0; finalizer_ok=false; completed=0; "
@@ -93,11 +93,47 @@ int main() {
   }
   assert(observed);
  }
+ // Invalid option paths allocate structured errors before receiver lookup.
+ // Require natural finalization in that window and preserve INVALID_ARGUMENT.
+ const char* parsing[]={
+  "return {program_path=false}",
+  "return {policy=false}",
+  "return {policy=false}"};
+ const char* parse_methods[]={"open_program","close_program","shutdown"};
+ int parse_index=0;
+ for(const char* source:parsing) {
+  bool observed=false;
+  for(int debt=1;debt<=8192 && !observed;debt*=2) {
+   natural_phase=0;
+   run(L,"collectgarbage('collect'); c=assert(n.local_client()); collectgarbage('stop'); "
+         "hits=0; completed=0; finalizer_phase=0; do local owner=c; "
+         "local f=setmetatable({}, {__gc=function() finalizer_phase=mark_finalizer(); hits=hits+1; "
+         "finalizer_ok,finalizer_error=pcall(function() assert(owner:close()); "
+         "local r=assert(n.local_client()); assert(r:close()); completed=completed+1 end) end}) end");
+   // Compile before restarting collector; closure and parsed request strings
+   // are rooted. Collection must be observed before observer advances phase.
+   assert(luaL_loadstring(L,source)==LUA_OK); assert(lua_pcall(L,0,1,0)==LUA_OK);
+   for(int i=0;i<debt;++i) { lua_newtable(L); lua_pop(L,1); }
+   lua_pushcfunction(L,natural_call); lua_insert(L,-2);
+   lua_getglobal(L,"c"); lua_getfield(L,-1,parse_methods[parse_index]);
+   lua_insert(L,-2); // table, method, receiver -> method, receiver, table
+   lua_rotate(L,-3,-1);
+   assert(lua_pcall(L,3,2,0)==LUA_OK); natural_phase=2;
+   lua_pushvalue(L,-1); lua_setglobal(L,"parse_error"); lua_pop(L,2);
+   lua_getglobal(L,"finalizer_phase"); observed=lua_tointeger(L,-1)==1; lua_pop(L,1);
+   if(observed) run(L,"assert(hits==1 and completed==1); assert(finalizer_ok,finalizer_error); "
+       "assert(parse_error.code=='INVALID_ARGUMENT' and parse_error.backend=='binding'); "
+       "assert(c:_generation():decimal()=='1')");
+   run(L,"c:close(); c=nil; collectgarbage('collect')");
+  }
+  assert(observed); ++parse_index;
+ }
+ std::puts("allocation-driven validation errors: open/close_program/shutdown error preservation PASS");
  // Factory userdata allocation is before native ownership publication. A
  // pending finalizer may construct/close another owner there; the outer owner
  // must publish normally afterwards without inheriting the competitor's slot.
  bool factory_observed=false;
- for(int debt=1;debt<=128 && !factory_observed;debt*=2) {
+ for(int debt=1;debt<=8192 && !factory_observed;debt*=2) {
   natural_phase=0;
   run(L,"result=nil; result_error=nil; finalizer_phase=0; collectgarbage('collect'); "
         "collectgarbage('incremental',100,1000,0); collectgarbage('stop'); hits=0; completed=0; "
