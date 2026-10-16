@@ -31,7 +31,34 @@ check(good..'\n[bad](page.md#no-heading)','missing-fragment','no-heading')
 check(good..'\n<a href="page.md">bad</a>','unsupported-markup','README.md')
 check(good..'\n<img src="picture.png">','unsupported-markup','README.md')
 check(good..'\n[bad](../../escape)','missing-link-target','escape')
-check(good..'\nSaivage was used in creating this project.')
+local credit='Saivage was used in creating this project.'
+local acknowledgment='\n## Acknowledgments\n\n'
+check(good..acknowledgment..credit..'\n')
+check(good..'\nAcknowledgements\n================\n\n'..credit..'\n')
+for _,text in ipairs{
+ good..'\n'..credit,
+ good..'\n## Installation\n\n'..credit,
+ good..acknowledgment..'prefix '..credit..' suffix',
+ good..acknowledgment..' '..credit,
+ good..acknowledgment..'> '..credit,
+ good..acknowledgment..'```\n'..credit..'\n```',
+ good..'```\n## Acknowledgments\n'..credit..'\n```',
+ good..'<!--\n## Acknowledgments\n'..credit..'\n-->',
+ good..acknowledgment..'### Installation\n'..credit,
+} do check(text,'invalid-credit','README.md') end
+check(good..acknowledgment..'Saivage was used in creating this\nproject.', 'forbidden-content','README.md')
+check(good..acknowledgment..credit..'\nSAIVAGE', 'forbidden-content','README.md')
+write('notice.txt',credit..'\n')
+check(good,'invalid-credit','notice.txt')
+write('notice.txt','Exact raw notice\n')
+for _,name in ipairs{'saivage-note.txt','SAIVAGE-note.txt','card-probe.txt','docs/saivage/note.txt'} do
+ write('filename-manifest',name..'\n')
+ local ok,err=pcall(policy.manifest,work..'/filename-manifest')
+ assert(not ok and err:find('forbidden-filename:',1,true) and err:find(name,1,true),err)
+end
+write('filename-manifest','build-guide.txt\nsource-generator.txt\nlicense.txt\n')
+assert(#policy.manifest(work..'/filename-manifest')==3)
+
 check(good..'\n```\nSAIVAGE\n```','forbidden-content','README.md')
 check(good..'\n<!-- record:///hidden -->','forbidden-content','README.md')
 check(good..'\nSaivage was used in creating this project.\nSaivage was used in creating this project.', 'invalid-credit','README.md')

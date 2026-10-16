@@ -16,6 +16,14 @@ function M.absolute(path)
   end
   return path:gsub('/+$', '')
 end
+-- Same lexical policy for selected document paths and all document bytes.
+-- Ordinary build/source/license vocabulary is deliberately not prohibited.
+local function forbidden(text)
+  local lower=text:lower()
+  for _,pattern in ipairs{'saivage', 'card://', 'record://', 'work://', '%[%[card:', 'card%-[a-z]+'} do
+    if lower:find(pattern) then return pattern end
+  end
+end
 function M.manifest(path)
   M.absolute(path)
   local text = read(path, 'invalid-manifest')
@@ -30,19 +38,49 @@ function M.manifest(path)
       if part == '.' or part == '..' then fail('invalid-manifest', path, entry) end
     end
     if set[entry] then fail('invalid-manifest', path, 'duplicate ' .. entry) end
+    local marker=forbidden(entry)
+    if marker then fail('forbidden-filename',entry,marker) end
     set[entry] = true; list[#list+1] = entry
   end
   return list, set
 end
 local credit = 'Saivage was used in creating this project.'
 local function content(path, text)
-  local n = 0
-  local stripped = text:gsub('Saivage was used in creating this project%.', function() n=n+1; return '' end)
-  if n > 1 or (n > 0 and path ~= 'README.md') then fail('invalid-credit', path) end
-  local lower = stripped:lower()
-  for _, pattern in ipairs{'saivage', 'card://', 'record://', 'work://', '%[%[card:', 'card%-[a-z]+'} do
-    if lower:find(pattern) then fail('forbidden-content', path, pattern) end
+  local first=text:find(credit,1,true)
+  local stripped=text
+  if first then
+    if path~='README.md' or text:find(credit,first+#credit,true) then
+      fail('invalid-credit',path)
+    end
+    -- Only a complete literal line in an acknowledgment section is exempt.
+    -- Track fenced code/comments so fake headings cannot grant an exemption.
+    local section, fence, fence_length, comment, previous = false, nil, 0, false, nil
+    local offset, permitted = 1, false
+    for line in (text..'\n'):gmatch('(.-)\n') do
+      local run=line:match('^%s*(```+)') or line:match('^%s*(~~~+)')
+      local hidden=comment or line:find('<!--',1,true)
+      if line:find('<!--',1,true) then comment=true end
+      if line:find('-->',1,true) then comment=false end
+      if run and not hidden and (not fence or (run:sub(1,1)==fence and #run>=fence_length)) then
+        if fence then fence=nil else fence=run:sub(1,1); fence_length=#run end
+      elseif not fence and not hidden then
+        local heading=line:match('^#+%s+(.+)')
+        if not heading and (line:match('^===+%s*$') or line:match('^%-%-%-+%s*$')) then heading=previous end
+        if heading then
+          heading=heading:gsub('%s+#+%s*$',''):lower()
+          section=heading=='acknowledgment' or heading=='acknowledgments'
+            or heading=='acknowledgement' or heading=='acknowledgements'
+        end
+        if line==credit and offset==first and section then permitted=true end
+      end
+      previous=(not fence and not hidden and line~='') and line or nil
+      offset=offset+#line+1
+    end
+    if not permitted then fail('invalid-credit',path) end
+    stripped=text:sub(1,first-1)..text:sub(first+#credit)
   end
+  local marker=forbidden(stripped)
+  if marker then fail('forbidden-content',path,marker) end
 end
 -- Strip only Markdown code for graph analysis, never for the all-byte policy.
 local function prose(text)

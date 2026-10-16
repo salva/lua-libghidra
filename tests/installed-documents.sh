@@ -57,6 +57,33 @@ printf 'unlisted\n' > "$work/documents/UNLISTED-PLAN.md"
 reject unlisted-document UNLISTED-PLAN.md
 printf '\nWORK:///notice-probe\n' >> "$work/documents/docs/evidence/native-notices/engine.txt"
 reject forbidden-content docs/evidence/native-notices/engine.txt
+# Credit policy must be decided before byte freshness, with no substring exemption.
+for variant in valid inline wrapped mislocated no-section fenced; do
+ check
+ case $variant in
+  valid) printf '\n## Acknowledgments\n\nSaivage was used in creating this project.\n' >> "$work/documents/README.md"; category=stale-bytes;;
+  inline) printf '\n## Acknowledgments\n\nPrefix Saivage was used in creating this project. suffix\n' >> "$work/documents/README.md"; category=invalid-credit;;
+  wrapped) printf '\n## Acknowledgments\n\nSaivage was used in creating this\nproject.\n' >> "$work/documents/README.md"; category=forbidden-content;;
+  mislocated) printf '\n## Installation probe\n\nSaivage was used in creating this project.\n' >> "$work/documents/README.md"; category=invalid-credit;;
+  no-section) printf '\nSaivage was used in creating this project.\n' >> "$work/documents/README.md"; category=invalid-credit;;
+  fenced) printf '\n## Acknowledgments\n\n```\nSaivage was used in creating this project.\n```\n' >> "$work/documents/README.md"; category=invalid-credit;;
+ esac
+ reject "$category" README.md
+done
+# Both file and export are disposable; filename policy must win over freshness.
+original_manifest=$manifest
+for filename in saivage-note.txt SAIVAGE-note.txt card-probe.txt; do
+ check
+ manifest="$work/filename.manifest"
+ cp "$original_manifest" "$manifest"
+ printf '%s\n' "$filename" >> "$manifest"
+ printf 'Ordinary bytes.\n' > "$work/documents/$filename"
+ if check >"$work/filename-$filename.log" 2>&1; then echo "false green: $filename" >&2; exit 1; fi
+ grep -F 'forbidden-filename:' "$work/filename-$filename.log"
+ grep -F "$filename" "$work/filename-$filename.log"
+ manifest=$original_manifest
+ restore
+done
 original_manifest=$manifest
 for fault in duplicate escaping absolute blank unterminated; do
  manifest="$work/$fault.manifest"
