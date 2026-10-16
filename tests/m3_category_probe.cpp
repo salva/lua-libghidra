@@ -21,12 +21,20 @@ int main(int argc,char** argv) {
  if(! report("alias",c->CreateTypeAlias("M3Alias","int")).updated) throw std::runtime_error("mutation flag false");
  if(! report("enum",c->CreateTypeEnum("M3Enum",4,true)).updated) throw std::runtime_error("mutation flag false");
  if(! report("enum member",c->AddTypeEnumMember("M3Enum","ONE",1)).updated) throw std::runtime_error("mutation flag false");
- if(! report("signature",c->SetFunctionSignature(0x401106,"int native_smoke(int x)")).updated) throw std::runtime_error("mutation flag false");
+ if(! report("signature",c->SetFunctionSignature(0x401106,"int native_smoke(int m3_persist_parameter)")).updated) throw std::runtime_error("mutation flag false");
  if(! report("comment",c->SetComment(0x401106,CommentKind::kEol,"M3 persisted comment")).updated) throw std::runtime_error("mutation flag false");
  if(! report("data",c->ApplyDataType(0x404010,"int")).updated) throw std::runtime_error("mutation flag false");
  PerfBenchmarkRecord perf;perf.bench_id="m3_perf";perf.status="ok";
  if(!report("benchmark",c->AddPerfBenchmark(perf)).added) throw std::runtime_error("benchmark flag false");
  auto observe=[&](const char* phase, bool populated) {
+  auto signature=checked(c->GetFunctionSignature(0x401106)).signature;
+  if(!signature) throw std::runtime_error("missing signature");
+  std::cout<<phase<<" prototype="<<signature->prototype<<std::endl;
+  if(populated) {
+   if(signature->parameters.size()!=1 || signature->parameters[0].name!="m3_persist_parameter")
+    throw std::runtime_error("signature mutation not observable before save");
+  } else if(!signature->parameters.empty() || signature->return_type!="void")
+   throw std::runtime_error("signature loss observation changed; investigate");
   const auto aliases=checked(c->ListTypeAliases("M3",100,0)).aliases.size();
   const auto enums=checked(c->ListTypeEnums("M3",100,0)).enums.size();
   const auto members=checked(c->ListTypeMembers("M3Struct",100,0)).members.size();

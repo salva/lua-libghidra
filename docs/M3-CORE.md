@@ -254,3 +254,14 @@ iterator families, ELF/project, on the same invocation. Configured SaveProgram
 success is also included in loaded publication finalizers, asserts saved=true and
 generation=3, with disposable state removed on completion. Real full owner release
 and fresh-owner reuse are asserted; no mock substitutes for these runtime paths.
+
+### Category-specific signature persistence
+
+The direct-native probe now seeds a distinctive `int` parameter name and asserts
+it before save. Reopen without prior decompile yields `void func_0x00401106()`
+with no parameters (asserted), not the seeded signature; saved=true is not proof
+of signature restoration. This observes immediate reload semantics, not a claim
+that later analysis cannot recover inferred parameter types. Attempts using
+`unsigned int` and `uint` both returned native SET_PROTOTYPE_FAILED parse errors;
+the existing supported `int` grammar plus unique parameter name was sufficient
+to observe loss, without extending/repairing the native prototype parser.
