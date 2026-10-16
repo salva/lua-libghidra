@@ -22,10 +22,13 @@ audit coordinator.
   the master and assignment after Run, at 09:24:09 and 09:24:14 UTC on 2026-10-16.
   This establishes actual root execution and assignment access, not just a flag.
 
-The root has created new goal `card-h`, “Deliver approved F01–F14 package
-corrections and static website stage”. At first observation it was backlog;
-child activation/implementation evidence will be recorded separately when seen.
-Root reads/card creation alone do not establish child execution or completed fixes.
+The root created and activated new goal `card-h`, “Deliver approved F01–F14
+package corrections and static website stage”. Its fresh current Planner segment
+`41e1395c-17c8-418f-add7-69ac82d6827c`, version 1, contains successful returned
+`get_card` at 09:25:51, master `read` calls at 09:25:56 and 09:26:00, and assignment
+`read` at 09:26:02 UTC. Root and child actors are running. This verifies fresh
+child execution and assignment access, not implemented fixes or passing future
+qualification. Completed milestone children remain done.
 
 ## Limits and retained evidence
 
@@ -37,4 +40,5 @@ and does not extend to source/tools/tests.
 
 Full operator API receipts remain host-local, mode 0600, under
 `/home/salva/g/ml/tmp/lua-libghidra-package-audit-2026-10-16/`:
-`reopen-receipt.json`, `planner-notification-receipt.json`, `run-receipt.json`.
+`reopen-receipt.json`, `planner-notification-receipt.json`, `run-receipt.json`,
+`root-execution-evidence.json`, `child-execution-evidence.json`.

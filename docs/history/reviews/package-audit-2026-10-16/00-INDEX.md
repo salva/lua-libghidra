@@ -34,7 +34,7 @@ repair campaign. Prior milestone approval does not replace fresh inspection.
 - [x] Produce a sequenced implementation plan and self-contained Saivage handoff.
 - [x] Obtain independent master review and gated operator execution authorization.
 - [x] Notify the root planner, resume through supported controls and verify fresh root execution.
-- [ ] Verify fresh child-stage execution after root planning.
+- [x] Verify fresh child-stage execution after root planning.
 
 All dimension reviewers use fresh `openai/gpt-6-astra` sessions. At most four run
 concurrently. Reports must distinguish observed defects, static risks, documented
@@ -126,7 +126,8 @@ historical `docs/PLAN.md` is not being repurposed as the new execution contract.
   [final master review](MASTER-REVIEW-r1.md). All readiness conditions for the
   operator-authorized planner handoff are met. Supported reopen/normal notice/Run
   succeeded; fresh root tool results confirm it read the master and assignment.
-  New `card-h` was created for F01–F14. Child execution verification is pending.
+  New `card-h` was created and activated for F01–F14. Its Planner has fresh
+  successful tool results reading the master and handoff; child execution verified.
 
 These approvals concern proposed documents, not results from unimplemented tests
 or permission to execute, deploy, publish, push or change repository settings.
