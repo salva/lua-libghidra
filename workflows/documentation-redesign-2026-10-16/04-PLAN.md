@@ -311,7 +311,9 @@ prefix or repository. Check runnable example copies against source bytes too.
    authorship. Preserve optional exact landing credit policy and exact legal bytes.
 8. Update [installed qualification's example group](../../tests/installed-qualification.sh#L83)
    to run public installed scripts with safe fixture arguments and corrected
-   source-only regressions against installed modules. Keep full/reduced semantics;
+   source-only regressions against installed modules. Its public-example call uses
+   the exact explicit host/module/example-root interface below, with values from
+   its selected build and actual install; no legacy `--prefix` inference. Keep full/reduced semantics;
    do not silently skip old groups or broaden reduced into a full claim.
 
 ### Real validation and installation scope
@@ -319,17 +321,98 @@ prefix or repository. Check runnable example copies against source bytes too.
 Add one focused future runner `tests/installed-examples.sh` with this interface:
 
 ```sh
-bash tests/installed-examples.sh --prefix "$PREFIX" --source "$SOURCE" \
+bash tests/installed-examples.sh --lua "$SELECTED_LUA" \
+  --lua-module-dir "$DEPLOYED_LUA_DIR" --c-module-dir "$DEPLOYED_C_DIR" \
+  --example-root "$INSTALLED_EXAMPLES" --source "$SOURCE" \
   --work "$WORK/examples" --external-specs "$EXTERNAL_SPECS"
 ```
 
-The runner is new, not an existing command claimed to pass. Paths are absolute;
-work is fresh. External-specs is optional for the installed driver's embedded-only
-lane; E2's focused acceptance invokes it as shown and exercises both modes. It
-sets installed-only Lua module paths, enters a fresh cwd, selects existing locked
-fixture bytes/known safe entry and mapped spans, and supplies them as CLI arguments.
-No source fixture import by public scripts. Do not use the helper's deleted
-extreme address. Check hashes via existing fixture SHA256SUMS before execution.
+The runner is new, not an existing command claimed to pass. Every path is absolute;
+work is fresh. `--lua` is the artifact's selected ordinary Lua executable, not an
+ambient `lua5.4` or a new embedded host. `--lua-module-dir` is the deployed directory
+containing `libghidra/init.lua`; `--c-module-dir` contains `libghidra/_native.so`
+and its installed helper DSO. `--example-root` contains the two installed scripts
+and is independent of both module roots. `--source` locates test fixtures/oracles
+only, never a fallback module or public-example location. Verify these files,
+selected-host identity and example byte equality before execution; missing or
+ambiguous route inputs fail rather than selecting ambient modules.
+
+For public script subprocesses, clear `LUA_INIT`, `LUA_INIT_5_4`, `LUA_PATH`,
+`LUA_PATH_5_4`, `LUA_CPATH` and `LUA_CPATH_5_4`, then set only:
+
+```text
+LUA_PATH=<DEPLOYED_LUA_DIR>/?.lua;<DEPLOYED_LUA_DIR>/?/init.lua
+LUA_CPATH=<DEPLOYED_C_DIR>/?.so
+```
+
+No `;;`, empty search element, cwd, source, fixture-helper or ambient/default
+fallback. Reject roots containing path-list separators. Invoke the explicit
+selected executable with the installed script's absolute path from a fresh cwd.
+Do not use Lua `-E`, which would discard these explicit environment paths. Retain
+the package's installed $ORIGIN/helper layout, not a build-tree DSO fallback.
+Safe internal regressions may load their source-only fixture helper explicitly;
+their binding modules must still resolve from the same deployed roots.
+
+External-specs is optional for the installed driver's embedded-only lane; E2's
+focused acceptance invokes it and exercises both modes. The runner selects
+existing locked fixture bytes/known safe entry and mapped spans and supplies them
+as CLI arguments. No source fixture import by public scripts. Do not use the
+helper's deleted extreme address. Check existing fixture SHA256SUMS before execution.
+
+**CMake invocation.** Obtain SELECTED_LUA from the producing build's
+`LUA_EXECUTABLE` cache value and confirm its recorded qualified host identity.
+Resolve that build's `LUA_SOURCE_DIR` and `LUA_MODULE_DIR` install destinations:
+relative values are beneath the actual install prefix, absolute values are used
+as written. Confirm the installed files/install manifest, including any install
+prefix override. For the current conventional relative destinations
+`share/lua/5.4` and `lib/lua/5.4`, the concrete call is:
+
+```sh
+SELECTED_LUA=$(sed -n 's/^LUA_EXECUTABLE:[^=]*=//p' "$BUILD/CMakeCache.txt")
+bash tests/installed-examples.sh --lua "$SELECTED_LUA" \
+  --lua-module-dir "$PREFIX/share/lua/5.4" --c-module-dir "$PREFIX/lib/lua/5.4" \
+  --example-root "$PREFIX/share/libghidra/examples" --source "$SOURCE" \
+  --work "$WORK/cmake-examples" --external-specs "$EXTERNAL_SPECS"
+```
+
+Use the resolved actual destinations instead if the cache differs. The updated
+installed-qualification example group passes these same flags and resolved values;
+its embedded-only invocation omits `--external-specs`, not the host/module roots.
+
+**Actual LuaRocks invocation.** Use the same `--tree`, `--lua-version` and
+`--lua-dir` selection that produced the installed rock. The
+[rockspec](../../lua-libghidra-scm-1.rockspec#L15) passes PREFIX, LIBDIR, LUADIR and
+resolved LUA separately to the [driver](../../scripts/luarocks-build.lua#L14).
+Record those actual expanded values from that build/install: PREFIX is reflected
+in its CMAKE_INSTALL_PREFIX, LIBDIR in LUA_MODULE_DIR and LUADIR in LUA_SOURCE_DIR.
+PREFIX locates versioned package data; LIBDIR/LUADIR describe CMake's rock install
+destinations and may be staging directories, not final deployed module roots.
+LuaRocks deployment must be verified separately using the selected tree's
+`deploy_lua_dir`/`deploy_lib_dir` values and actual installed files. Never append
+CMake's conventional module subpaths to the versioned package PREFIX.
+
+Here ROCK_BUILD is the real producing LLG_BUILD_DIR, ROCKS the actual installed
+tree, and LUA_DIR the compatible host prefix supplied to that installation:
+
+```sh
+ROCK_PACKAGE_PREFIX=$(sed -n 's/^CMAKE_INSTALL_PREFIX:[^=]*=//p' "$ROCK_BUILD/CMakeCache.txt")
+ROCK_LUA=$(luarocks --lua-version=5.4 --lua-dir="$LUA_DIR" --tree="$ROCKS" config variables.LUA)
+ROCK_LUA_MODULES=$(luarocks --lua-version=5.4 --lua-dir="$LUA_DIR" --tree="$ROCKS" config deploy_lua_dir)
+ROCK_C_MODULES=$(luarocks --lua-version=5.4 --lua-dir="$LUA_DIR" --tree="$ROCKS" config deploy_lib_dir)
+bash tests/installed-examples.sh --lua "$ROCK_LUA" \
+  --lua-module-dir "$ROCK_LUA_MODULES" --c-module-dir "$ROCK_C_MODULES" \
+  --example-root "$ROCK_PACKAGE_PREFIX/share/libghidra/examples" --source "$SOURCE" \
+  --work "$WORK/rock-examples" --external-specs "$EXTERNAL_SPECS"
+```
+
+Before the call, verify ROCK_LUA agrees with the expanded build-command LUA and
+cache LUA_EXECUTABLE, all values are absolute/resolved, and package data plus
+deployed module/helper bytes are from this actual installation. Querying current
+config alone cannot certify an older artifact's host or deployment. Resolve any
+discrepancy from its real install records; otherwise report a blocker. Do not
+simulate a versioned prefix or use `luarocks path` output with ambient fallbacks.
+Reuse unchanged host/ABI qualification; these explicit inputs add no four-route
+clean rebuild or new shared/static-host campaign.
 
 Assert actual known arithmetic semantics for decompilation, exact address text,
 completed/nonfallback flags/status, expected function name after discovery,
@@ -347,7 +430,9 @@ cannot safely be induced. Report unavailable cases explicitly.
 The existing private authored fixture provides a concrete minimal oracle:
 `tests/fixtures/inputs/authored.elf`, `native_smoke` at `0x401106`, semantic
 `x * 3 + 7`, and entry bytes `f3 0f 1e fa` (ENDBR64), as used by
-[the existing first-slice assertions](../../examples/first_slice.lua#L15).
+[the baseline first-slice assertions](../../examples/first_slice.lua#L15).
+For execution-time inspection after relocation, use `tests/examples/first_slice.lua`
+with the unsafe absent-address assertion removed, not the former examples path.
 After confirming the locked fixture matches those identities, inspection can
 request BYTE_COUNT=4, INSTRUCTION_END=0x401109 and INSTRUCTION_COUNT=1 with a
 confirmed mapped extent covering the complete four-byte instruction. Require
