@@ -17,6 +17,14 @@ API signatures and supported-host text. Ask C for explicit integration selection
 and fixture invocation details for example checks. These are dependencies, not
 permission to implement A/C changes here. Other docs work can proceed separately.
 
+C must propagate the selected build's `package-documents.txt` through both
+pristine and shell-probe calls using the exact interfaces in section 5 below.
+B owns the Lua checker and shell mutation loop; C owns the qualification-driver
+call sites/full-reduced selection. Deliver the checker and caller change together
+for integration; do not retain a legacy positional adapter. The website owner
+receives the maintained source paths plus the same manifest, not a second manual
+or a request to reorganize source for a site.
+
 Before rewriting pages, extract a working content checklist of accepted grammar,
 limitations, provenance and obligations using section 4 of `02-DESIGN.md`.
 Resolve contradictory current claims against real exports/converters and agreed
@@ -109,6 +117,11 @@ open; describe a suitable symbol-address extraction command such as
 and tell the user to choose a known function's mapped virtual address, never a
 file offset. The example is not a general safe address scanner.
 
+Make hexadecimal copy/paste explicit: `nm` prints unprefixed hexadecimal, so
+prefix the selected address with `0x`. For example, a displayed
+`0000000000401106` becomes argument `0x0000000000401106` (equivalently `0x401106`).
+A bare all-digit string is decimal to `u64`, not automatically hexadecimal.
+
 Use the real two-surface API and Lua 5.4 close scope, handle open/decompile errors
 without assertions that erase structured diagnostics, print outcome flags/error
 message and pseudocode, and return nonzero for a failed/incomplete/fallback
@@ -176,8 +189,11 @@ notices. Exact URL is
 
 Introduce `cmake/PackageDocuments.cmake` with the design's exact explicit list.
 Replace `install(DIRECTORY docs api)` with per-file installation retaining relative
-paths. Export a configure-time newline-separated path list for Lua checks; accept
-only this simple list syntax rather than parsing arbitrary CMake in Lua. Inspect
+paths. Export `${CMAKE_BINARY_DIR}/package-documents.txt` directly from
+`LLG_PACKAGE_DOCUMENTS` during configure: one relative path per line, final
+newline, no comments/blank lines. Do not check in or independently edit this
+projection. Accept only this simple list syntax rather than parsing arbitrary
+CMake in Lua. Inspect
 all install directives for unlisted documentation, including rock deployment.
 
 Rework `tests/installed_documents.lua` to consume the exported list and explicit
@@ -203,6 +219,133 @@ Document bounded cleanup of the previous doc subtree for users intentionally
 replacing that old install; no automatic destructive cleanup of arbitrary prefix
 content belongs in this change.
 
+### Exact checker and caller handoff
+
+Replace the old positional checker/shell interfaces, without compatibility
+fallback, with these required arguments (all paths absolute):
+
+```text
+lua5.4 tests/installed_documents.lua source SOURCE_ROOT MANIFEST
+lua5.4 tests/installed_documents.lua installed DOCUMENT_ROOT SOURCE_ROOT MANIFEST
+bash tests/installed-documents.sh DOCUMENT_ROOT SOURCE_ROOT MANIFEST FRESH_WORK
+```
+
+DOCUMENT_ROOT names the doc directory itself, not a module/data prefix. MANIFEST
+is the configure export belonging to the build that produced this install.
+Source mode checks the selected source files/graph/content; installed mode checks
+exact membership, graph/content and then byte freshness against SOURCE_ROOT.
+Source mode permits unselected developer/history files in the checkout. Both
+modes reject missing/malformed manifest input rather than inferring a build.
+
+B updates every checker call inside `tests/installed-documents.sh`. The shell
+requires nonexistent FRESH_WORK, creates an untouched snapshot and a mutable
+`FRESH_WORK/documents` copy of DOCUMENT_ROOT, and passes SOURCE_ROOT/MANIFEST
+unchanged on every invocation. Its pristine, expected-failure and restored calls
+all have this exact shape:
+
+```sh
+lua5.4 "$source/tests/installed_documents.lua" installed \
+  "$work/documents" "$source" "$manifest"
+```
+
+Replace the existing loop over API/M4/FIELDS/coverage with manifest-member
+mutations: select/assert current prose members for link/fragment/content probes
+and members from the manifest for missing/stale probes. Never mutate or restore
+M4-FULL/coverage.json as shipped files. Named probe targets are test cases, not
+a second list used for installation or completeness. Each isolated probe has a
+pristine-before check, one mutation, expected rejection, snapshot restoration
+(or removal of the deliberately unlisted file), and pristine-after check. End
+with another pristine check. Preserve logs identifying the mutated file/target.
+
+Diagnose membership/missing files first, local graph/fragment/content violations
+next, stale bytes last. Require an error category and implicated path/target for
+each probe, so a general freshness failure cannot pass a link/content test:
+
+| Probe | Mutation and expected diagnostic |
+| --- | --- |
+| Missing | Remove a listed file; `missing-member` and its path |
+| Freshness | Harmless prose edit leaving links/content valid; `stale-bytes` and path |
+| Local destination | Append a Markdown link to a nonexistent local target in a listed prose page; `missing-link-target` and target |
+| Fragment | Link to an existing listed page with a nonexistent heading fragment; `missing-fragment` and fragment/target |
+| Content | Inject forbidden name or card URI into listed prose; `forbidden-content` and path |
+| Credit | Put the exact permitted credit in the wrong file, or duplicate it in README (insert twice even if original has none); `invalid-credit` and path |
+| Membership | Add an unlisted file in the copy; `unlisted-document` and path |
+
+For all mutations the real install, current source and manifest are unchanged.
+No retained artifact is used as a mutable baseline. Separate assertions cover
+invalid/duplicate/escaping manifest entries on disposable manifest copies.
+
+C updates the qualification driver's existing pristine and probe call sites
+(baseline lines 43 and 46). For its selected absolute build/prefix/source:
+
+```sh
+manifest="$build/package-documents.txt"
+document_root="$prefix/share/doc/lua-libghidra"
+lua5.4 "$root/tests/installed_documents.lua" source "$root" "$manifest"
+lua5.4 "$root/tests/installed_documents.lua" installed \
+  "$document_root" "$root" "$manifest"
+# In full mode only; documents is C's newly allocated work child.
+bash "$root/tests/installed-documents.sh" \
+  "$document_root" "$root" "$manifest" "$documents/probes"
+```
+
+Both source and installed pristine checks run in reduced/full mode; full-only
+probe omission is reported under C's selection contract. No independent manifest
+selector/cache option or new test-selection system is needed. Reconfigure the
+selected build to obtain its current export before running checks. C also updates
+its child-interface documentation to exactly match this handoff. B's caller
+contract does not expand `tests/package-foundation.sh` into a full integration
+driver; LuaRocks doc checks are explicit route verification below.
+
+### Concrete future validation commands
+
+These commands are for the authorized implementation, not reported passes. From
+the source/CMake recipe above, SOURCE/WORK/PREFIX are already absolute:
+
+```sh
+BUILD="$WORK/cmake-source"
+MANIFEST="$BUILD/package-documents.txt"
+DOCUMENT_ROOT="$PREFIX/share/doc/lua-libghidra"
+lua5.4 "$SOURCE/tests/installed_documents.lua" source "$SOURCE" "$MANIFEST"
+lua5.4 "$SOURCE/tests/installed_documents.lua" installed \
+  "$DOCUMENT_ROOT" "$SOURCE" "$MANIFEST"
+bash "$SOURCE/tests/installed-documents.sh" \
+  "$DOCUMENT_ROOT" "$SOURCE" "$MANIFEST" "$WORK/cmake-source-doc-probes"
+```
+
+For the source LuaRocks recipe, use its own build export and the versioned
+package-data prefix. With the baseline package/version and ordinary LuaRocks 5.4
+tree layout, the explicit inputs are below. Confirm ROCK_PACKAGE_PREFIX equals
+the actual `$(PREFIX)` used by the rock driver/CMake install (inspect that build's
+CMakeCache/install log); for a configured different layout, set that exact prefix
+explicitly before these checks. Do not search for or silently select another tree.
+
+```sh
+ROCK_BUILD="$WORK/rock-source-build"
+ROCK_MANIFEST="$ROCK_BUILD/package-documents.txt"
+ROCK_PACKAGE_PREFIX="$ROCKS/lib/luarocks/rocks-5.4/lua-libghidra/scm-1"
+ROCK_DOCUMENT_ROOT="$ROCK_PACKAGE_PREFIX/share/doc/lua-libghidra"
+test -f "$ROCK_MANIFEST"
+test -d "$ROCK_DOCUMENT_ROOT"
+lua5.4 "$SOURCE/tests/installed_documents.lua" source "$SOURCE" "$ROCK_MANIFEST"
+lua5.4 "$SOURCE/tests/installed_documents.lua" installed \
+  "$ROCK_DOCUMENT_ROOT" "$SOURCE" "$ROCK_MANIFEST"
+bash "$SOURCE/tests/installed-documents.sh" \
+  "$ROCK_DOCUMENT_ROOT" "$SOURCE" "$ROCK_MANIFEST" "$WORK/rock-source-doc-probes"
+```
+
+Repeat the same calls for SDK CMake using its configured `$WORK/cmake-sdk` build
+and distinct SDK wrapper-install prefix; for SDK LuaRocks use the exact fresh
+LLG_BUILD_DIR and tree/package prefix chosen for that route. Allocate new probe
+work directories each time. Record each concrete command/path; do not count a
+source-route manifest check as validation of the SDK route's install.
+
+Historical-baggage recheck: this replaces the old fixed shipping assertions and
+excluded-file restoration, not supplements them. CMake owns the single list;
+the text export and shell probe targets introduce neither a second policy nor a
+legacy adapter. The website handoff is read-only reuse of the maintained source
+layer, not grounds for extra native-package pages or install lists.
+
 ## 6. Completion, validation matrix and bounded rollback
 
 Once authorized implementation passes its checks, report exact modified paths,
@@ -222,7 +365,7 @@ release/legal clearance or source-delivery claim follows from doc tests.
 | Notices | Header/extract byte checks, all direct local notice links, locked runtime rows | Exact observed provenance; no substituted license bytes or complete-bundle/legal claim |
 | Source docs | Manifest existence, path validity, local links/anchors, final-doc content scan | Closed local graph; only optional exact single README creation-credit exception |
 | Installed docs | All manifest files and only those files in each clean doc root; equality with source; same closure/content checks | Fresh and complete CMake/LuaRocks data roots; development plans/history absent |
-| Checker sensitivity | Disposable missing target/bad fragment/stale file/unlisted file/content/credit mutations | Each rejected with actionable path-specific diagnostic, originals untouched |
+| Checker sensitivity | Exact section 5 source/installed/probe commands, disposable missing target/bad fragment/stale file/unlisted file/content/credit mutations | Same build manifest propagated throughout; each intended failure categorized; pristine before/after every restore; originals untouched |
 | Regression integration | Project-required checks appropriate to tooling/install edits using C's explicit selection contract | Real selections executed and recorded; no silent skip or replay of old approval phrases |
 
 Rollback is limited to this future documentation/manifest/generator/example/check

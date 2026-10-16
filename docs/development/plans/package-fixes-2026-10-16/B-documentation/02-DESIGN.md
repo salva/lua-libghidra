@@ -22,7 +22,13 @@ Retain these familiar paths as the maintained package documentation:
 The future `cmake/PackageDocuments.cmake` is the sole shipping list, with explicit
 repository-relative file paths, no directory recursion or globs. It defines
 `LLG_PACKAGE_DOCUMENTS`; Binding.cmake includes it and installs each file under
-`share/doc/lua-libghidra/<same relative path>`. The exact initial list is:
+`share/doc/lua-libghidra/<same relative path>`.
+
+CMake writes `${CMAKE_BINARY_DIR}/package-documents.txt` at configure time from
+that same variable: one repository-relative path per line, final newline, no
+comments or blank lines. This build-owned projection is not installed and is
+never edited independently. Reconfigure the selected build after list changes.
+The exact initial shipping list is:
 
 ```text
 README.md
@@ -131,6 +137,8 @@ known mapped function address, language ID, compiler-spec ID, and optional exter
 spec root. Address is a native virtual address, not a file offset; obtain it from
 the binary's symbols/mapping using a suitable tool, not arbitrary guesses. Place
 the known native crash/extreme-address limitation next to this instruction.
+`nm` prints hexadecimal without a prefix: pass `0x401106` (or
+`0x0000000000401106`), not bare `0000000000401106`, which `u64` treats as decimal.
 
 Use `u64` without floats and check its `nil,error`. Use `session <close>` after a
 successful open (Lua 5.4) so normal scope exit and raised Lua errors release the
@@ -232,9 +240,9 @@ is found, report the exact file/hash/context and obtain an explicit requirement
 resolution before acceptance. Do not preemptively ban license URLs, source paths,
 or general build terms, or claim such a conflict was observed.
 
-## 7. Source/install validation boundary
+## 7. Source/install validation boundary and caller contract
 
-Export the manifest list during CMake configure for the Lua document checker;
+Use the configure-exported `BUILD/package-documents.txt` for every check;
 do not independently maintain another installed-file list. Reject duplicates,
 absolute/parent-escaping entries, missing files and unlisted installed documents.
 Walk supported Markdown inline/reference links, images and fragment-only links;
@@ -250,3 +258,60 @@ selection explicit for LuaRocks's versioned package prefix. A clean install must
 contain exactly the listed doc files; do not silently delete old user installs
 to make an upgrade look clean. Validate clean destinations and document that
 replacing an old dossier install needs removal of its old doc subtree only.
+
+The exact future interfaces are:
+
+```text
+lua5.4 tests/installed_documents.lua source SOURCE_ROOT MANIFEST
+lua5.4 tests/installed_documents.lua installed DOCUMENT_ROOT SOURCE_ROOT MANIFEST
+bash tests/installed-documents.sh DOCUMENT_ROOT SOURCE_ROOT MANIFEST FRESH_WORK
+```
+
+All path arguments must be explicit absolute paths. DOCUMENT_ROOT is the actual
+`.../share/doc/lua-libghidra` directory, not a module prefix or data prefix.
+SOURCE_ROOT contains current maintained source bytes. MANIFEST is the selected
+build's absolute `package-documents.txt` path; missing/unreadable or malformed
+input fails immediately, without guessing another build. No optional old
+signatures or environment fallback remain. Source mode validates only the
+manifest-selected graph/content and existence, not absence of other source files.
+Installed mode also requires exact installed membership and source-byte equality.
+
+B owns the checker and `tests/installed-documents.sh` including its existing
+mutation loop. C owns `tests/installed-qualification.sh` propagation: set
+`manifest="$build/package-documents.txt"` and
+`document_root="$prefix/share/doc/lua-libghidra"`; pass the same manifest to the
+source/pristine checks and, in full mode, the shell probe. Pristine checks run
+in both full and reduced modes; only probes follow C's full-only selection.
+An integration target needs no separate manifest cache knob: the selected build
+already determines it. No module-prefix argument is needed for pure doc checks.
+
+The shell creates `FRESH_WORK/documents` by copying DOCUMENT_ROOT, then invokes
+installed mode against that copy with the unchanged SOURCE_ROOT and MANIFEST.
+Run a pristine check before each independent mutation, require failure for the
+intended defect, restore from an untouched copy of the original installed bytes,
+and require a pristine check immediately after each restoration and at the end.
+Do not restore excluded files from the source dossier. Use manifest membership
+to select/confirm mutation targets, never a parallel list of shipping files.
+
+Cover missing member, stale bytes, bad local destination, bad fragment, forbidden
+content, mislocated/duplicated credit and an unlisted file. Use current guide/API/
+README members for prose faults, asserting membership before mutation. To avoid
+freshness masking a graph/content regression, installed validation diagnoses
+membership/existence first, graph/content next and byte freshness last, with
+distinct error categories and target paths. For the stale-byte probe use a
+harmless prose change that leaves graph/content valid. Each probe asserts the
+expected category and offending path/target, not merely nonzero exit. The
+deliberately unlisted file is removed on restoration; it is not added to the
+manifest. These are test fixtures, not another shipping policy.
+
+For LuaRocks use that route's own absolute `LLG_BUILD_DIR/package-documents.txt`
+and `ROCK_PACKAGE_PREFIX/share/doc/lua-libghidra` document root, where
+ROCK_PACKAGE_PREFIX is the actual versioned package prefix produced by that make.
+Never substitute the CMake sibling build's manifest, the top-level rocks tree's
+share directory, or infer the root by searching for any matching install.
+The shell/checker signatures are identical for CMake and LuaRocks.
+
+The website subplan receives these stable source paths and the single manifest
+as its content boundary. Site rendering/navigation belongs to that work; it must
+reuse the maintained manual rather than motivate another manual or relocation
+here. Website output is not an additional native-package shipping list.

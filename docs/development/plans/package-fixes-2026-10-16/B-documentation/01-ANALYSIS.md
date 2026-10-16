@@ -93,6 +93,19 @@ Group C owns integration selection and specialist/leaf test assertions. This
 group owns document checks and recipe/example verification; it uses C's explicit
 test-selection contract without duplicating driver changes or expanding claims.
 
+The existing caller chain is part of that boundary: `tests/installed-qualification.sh`
+calls the pristine Lua checker and `tests/installed-documents.sh`, which calls
+the checker before, during and after mutations. The shell currently mutates
+`docs/M4-FULL.md` and `api/coverage.json`; neither belongs to the selected final
+docs. B must replace that loop and supply one explicit build-manifest contract
+through every call. C owns propagation in the qualification driver, not another
+shipping list. The configure export is a mechanical projection of the one CMake
+manifest, not a second policy file. No legacy signature adapter is needed.
+
+The separate website work consumes these maintained documents and the same
+explicit manifest as a stable source handoff. It does not require a second manual
+or source-layout changes in this work. Site design remains with its own author.
+
 This analysis inspected source/document owners and the supplied audit. It did
 not build, execute recipes, fetch license material, replay qualification or
 inspect live runtime state. Audit observations remain attributed observations;
