@@ -5,26 +5,26 @@
 #include <cassert>
 #include <stdexcept>
 extern "C" int luaopen_libghidra__native(lua_State*);
-struct Allocator { size_t calls = 0, fail = SIZE_MAX, bytes = 0; };
+struct Allocator { size_t calls = 0, fail = SIZE_MAX, bytes = 0, refused = 0; };
 static void* allocate(void* ud, void* ptr, size_t old, size_t n) {
     auto* a = static_cast<Allocator*>(ud);
     if (!ptr) old = 0;
     if (!n) { a->bytes -= old; free(ptr); return nullptr; }
-    if (n > old && ++a->calls >= a->fail) return nullptr;
+    if (n > old && ++a->calls >= a->fail) { ++a->refused; return nullptr; }
     void* p = realloc(ptr, n);
     if (p) a->bytes = a->bytes - old + n;
     return p;
 }
 struct Owned {
-    static inline int live = 0;
+    static inline int live = 0, constructed = 0, destroyed = 0;
     std::string bytes = std::string("a\0b", 3);
     std::optional<bool> flag = false;
     std::optional<int> zero = 0;
     std::optional<std::optional<bool>> nested = std::optional<bool>(false);
     std::optional<int> missing;
     std::vector<uint64_t> ids = {0, UINT64_MAX};
-    Owned() { ++live; }
-    ~Owned() { --live; }
+    Owned() { ++live; ++constructed; }
+    ~Owned() { assert(live>0); --live; ++destroyed; }
 };
 static int convert(lua_State* L) {
     auto* p = static_cast<Owned*>(lua_touserdata(L, 1));
@@ -61,7 +61,52 @@ static int exercise(lua_State* L) {
 static int sweep_body(lua_State* L) {
     int rc = exercise(L); if (rc) return lua_error(L); return 0;
 }
+// Each chunk is compiled and rooted BEFORE refusal, so reached points belong
+// to the selected runtime path rather than parser/setup allocations.
+static void edge_sweeps() {
+ const char* cases[]={
+  "return n.u64('18446744073709551615')",
+  "local x,e=n.u64('18446744073709551616'); assert(x==nil and e.code=='INVALID_ARGUMENT')",
+  "return u:hex(),u:decimal()",
+  "local x,e=u:to_integer(); assert(x==nil and e.operation=='to_integer')",
+  "return z:add(1):sub(1)",
+  "local x,e=u:add(1); assert(x==nil and e.operation=='add')",
+  "local x,e=z:sub(1); assert(x==nil and e.operation=='sub')",
+  "local x,e=u:add(false); assert(x==nil and e.operation=='add')",
+  "local ok,e=pcall(function() return u<false end); assert(not ok and e.operation=='__lt')",
+  "local ok,e=pcall(function() return u<=false end); assert(not ok and e.operation=='__le')",
+  "local ok,e=pcall(function() u.x=1 end); assert(not ok and e.operation=='__newindex')",
+  "local x,e=n._validate_page{limit=0}; assert(x==nil and e.operation=='page')",
+  "return n._validate_page{range_start='0xffffffffffffffff',range_end=0,limit=1,offset=0}",
+  "local x,e=n._validate_read_size(-1); assert(x==nil and e.operation=='read_bytes')",
+  "return detached()"
+ };
+ size_t denials=0;
+ for(const char* source:cases) {
+  size_t hits=0; bool tail=false;
+  for(size_t point=1;point<=512;++point) {
+   Allocator a; lua_State* L=lua_newstate(allocate,&a); assert(L);
+   luaL_openlibs(L); luaL_requiref(L,"libghidra._native",luaopen_libghidra__native,0); lua_setglobal(L,"n");
+   lua_pushcfunction(L,detached); lua_setglobal(L,"detached");
+   assert(luaL_dostring(L,"u=assert(n.u64('18446744073709551615')); z=assert(n.u64(0))")==LUA_OK);
+   assert(luaL_loadstring(L,source)==LUA_OK);
+   a.calls=a.refused=0; a.fail=point;
+   int rc=lua_pcall(L,0,LUA_MULTRET,0); a.fail=SIZE_MAX;
+   if(a.refused) { ++hits; assert(rc==LUA_ERRMEM); }
+   else { assert(rc==LUA_OK && a.calls<point); tail=true; }
+   assert(Owned::live==0);
+   lua_settop(L,0);
+   // Retry on SAME ordinary Lua VM after every actual error.
+   assert(luaL_dostring(L,source)==LUA_OK); assert(Owned::live==0);
+   lua_close(L); assert(a.bytes==0);
+   if(tail) break;
+  }
+  assert(tail && hits>0); denials+=hits;
+ }
+ std::printf("UInt64/helper/error/detached per-path Lua OOM: %zu paths, %zu actual refusal points, same-VM retries PASS\n",sizeof(cases)/sizeof(cases[0]),denials);
+}
 int main() {
+    edge_sweeps();
     size_t boundaries = 0;
     for (size_t failure = 0; ; ++failure) {
         Allocator a;
@@ -102,5 +147,6 @@ int main() {
         lua_close(L); assert(a.bytes == 0);
         if (failure == boundaries) break;
     }
-    std::printf("detached conversions + persistent OOM sweep: %zu allocation boundaries PASS\n", boundaries);
+    assert(Owned::constructed==Owned::destroyed && Owned::constructed>0);
+    std::printf("detached conversions + persistent OOM sweep: %zu allocation boundaries, %d matched owner destructions PASS\n", boundaries,Owned::destroyed);
 }
