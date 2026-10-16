@@ -101,3 +101,34 @@ incomplete output for diagnosis, never a successful profile marker; retry with a
 fresh directory. Only the exact authorized patch hash/revisions/base lock can
 produce the patched profile marker. Existing Python preparation is retained as
 historical reference during migration, not needed by this entrypoint.
+
+## Lua native validators
+
+The following direct replacements take the predecessor's positional arguments
+except the source-integrity checker additionally requires a fresh scratch path:
+
+```sh
+lua5.4 scripts/check-native-patched.lua BUILD SPECS FRESH_WORK
+lua5.4 scripts/check-native-cache.lua PROBE ELF FRESH_HOME ADDRESS
+lua5.4 scripts/check-native-loader-gap.lua UNMODIFIED_BUILD SPECS WORK
+lua5.4 scripts/check-native-profile-inputs.lua ARCHIVES INPUTS FRESH_WORK
+lua5.4 tests/tooling_native.lua FRESH_WORK
+```
+
+Run cache/permission controls as the ordinary guest user, not root or a namespace
+that makes that user appear root. Probe stdout, stderr and exit/signal status are
+checked separately; matching output cannot hide a failed process. Read-only
+permission modes are restored on assertion failures. Cold/warm/unwritable cache
+checks preserve nanosecond mtimes and sizes and additionally compare hashes.
+The unmodified loader regression's expected failure is **not** readiness.
+Source-integrity checking reconstructs the exact authorized profile from hashes,
+compares all five source trees (including spec overlays and unexpected additions),
+and excludes only upstream's normal generated known_languages.py metadata. It
+never calls Python tooling or imports upstream bindings. Historical Python
+validators remain until the overall tooling migration is complete.
+
+A plain source wrapper install is not by itself a complete reusable SDK: upstream
+suppresses Protobuf/Abseil install rules in that build. Build/install those pinned
+PIC dependencies into the same SDK prefix first using `scripts/build-native-sdk.sh`
+or its documented CMake commands. Do not silently fall back to an ambient
+incompatible Protobuf when testing the newly installed SDK.
