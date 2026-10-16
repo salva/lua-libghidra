@@ -92,3 +92,44 @@ fault injection and loaded finalizer coverage for newly allocating M3 requests
 need extension beyond existing M2 coverage. Reconcile per-operation runtime slots
 in api/coverage.* as those gates settle, and obtain independent workflow review.
 No global snapshot, full M3 approval or release acceptance inferred.
+
+## Serial iterator batch
+
+`lua/libghidra/iterator.lua` now owns bounded progression and failure handling for
+functions, symbols, memory blocks, basic blocks and xrefs. Session descriptors
+map exact native identity and serial comparison fields. No sorting or deduplication
+is applied. Symbols compare native traversal symbol_id (assigned before pagination),
+identity address + length-delimited name/namespace. Blocks compare function_entry,
+start/end; memory compares start/name; xrefs compare from_function_address,
+from_address,to_address,ref_type, identity source/destination/kind. These qualify
+the authored serial pool_size=1 paths, not arbitrary engines or snapshots; any
+non-advancing order/duplicate raises PAGINATION_STALLED rather than skipping data.
+Xrefs native producer emits call references before load/store references; a
+non-address-monotonic function therefore can stall safely. No global native
+ordering guarantee is claimed. Native pages remain available for such inputs.
+
+The shared primitive checks generation at entry, after fetch publication and
+before buffered yield, including after identity/key allocations. It retains
+only one page's identity set and last tuple; no unbounded history. An offending
+page/error ends traversal. Offset advances by actual count, short/capped pages
+continue, and arithmetic stays within compound INT_MAX bounds.
+
+**ListTypes remains pages-only with real limitation evidence:** an attempted
+iter_types failed the duplicate-identity guard. Both real warmed fixture routes
+return multiple anonymous records with path_name="/"; native dependentOrder
+constructs path_name as "/" + getName(), while type_id is only a traversal counter.
+DESIGN's canonical path identity is therefore insufficient. Do not substitute
+that ephemeral counter as identity, silently deduplicate or fabricate paths.
+`tests/m3_iterators.lua` asserts the collisions and absence of iter_types; this is
+a practical native identity limitation, not a wrapper-positive iterator claim.
+Other unqualified subtype/CFG/comment families remain pages-only pending their
+original qualification/limitation disposition. Signatures/DefinedStrings retain
+their explicit no-iterator contracts.
+
+`tests/m3_iterators.lua` compares two serial scans to real full pages at page
+sizes 1/2/100 on ELF/project, covers empty offsets, validation, early exit and
+native discard invalidation of each family. Primitive fixtures cover short caps,
+duplicate/reversed/oversized pages, no retry after error, structured native errors,
+and actual Lua finalizers mutating generation during publication/key/buffer phases.
+These primitive fixtures are not real-backend operation positives. Installed
+qualification executes the test with standalone and shared/static existing VMs.

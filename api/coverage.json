@@ -7965,7 +7965,15 @@
           "return": "complete detached native response or nil,error"
         }
       },
-      "tier": "core"
+      "tier": "core",
+      "m3_iterator_batch": {
+        "identity": "function_entry,start_address,end_address",
+        "order": "function_entry,start_address,end_address",
+        "cursor": "returned records; actual count; empty page exhaustion",
+        "evidence": "tests/m3_iterators.lua; installed standalone/static/shared; ELF and analyzed project; sizes 1/2/100 repeated serial scans",
+        "limits": "pool_size=1; no universal order/snapshot; reject nonadvancing/duplicate pages; native xrefs call-before-load ordering can stall",
+        "status": "qualified authored serial paths; broader original M3 acceptance remains open"
+      }
     },
     {
       "declaration": {
@@ -11121,7 +11129,15 @@
           "return": "complete detached native response or nil,error"
         }
       },
-      "tier": "slice"
+      "tier": "slice",
+      "m3_iterator_batch": {
+        "identity": "entry_address",
+        "order": "entry_address",
+        "cursor": "returned records; actual count; empty page exhaustion",
+        "evidence": "tests/m3_iterators.lua; installed standalone/static/shared; ELF and analyzed project; sizes 1/2/100 repeated serial scans",
+        "limits": "pool_size=1; no universal order/snapshot; reject nonadvancing/duplicate pages; native xrefs call-before-load ordering can stall",
+        "status": "qualified authored serial paths; broader original M3 acceptance remains open"
+      }
     },
     {
       "declaration": {
@@ -12537,7 +12553,15 @@
           "return": "complete detached native response or nil,error"
         }
       },
-      "tier": "core"
+      "tier": "core",
+      "m3_iterator_batch": {
+        "identity": "start_address,name",
+        "order": "start_address,name",
+        "cursor": "returned records; actual count; empty page exhaustion",
+        "evidence": "tests/m3_iterators.lua; installed standalone/static/shared; ELF and analyzed project; sizes 1/2/100 repeated serial scans",
+        "limits": "pool_size=1; no universal order/snapshot; reject nonadvancing/duplicate pages; native xrefs call-before-load ordering can stall",
+        "status": "qualified authored serial paths; broader original M3 acceptance remains open"
+      }
     },
     {
       "collection_contract": {
@@ -13817,7 +13841,15 @@
           "return": "complete detached native response or nil,error"
         }
       },
-      "tier": "core"
+      "tier": "core",
+      "m3_iterator_batch": {
+        "identity": "address,name,namespace_name",
+        "order": "symbol_id native traversal counter",
+        "cursor": "returned records; actual count; empty page exhaustion",
+        "evidence": "tests/m3_iterators.lua; installed standalone/static/shared; ELF and analyzed project; sizes 1/2/100 repeated serial scans",
+        "limits": "pool_size=1; no universal order/snapshot; reject nonadvancing/duplicate pages; native xrefs call-before-load ordering can stall",
+        "status": "qualified authored serial paths; broader original M3 acceptance remains open"
+      }
     },
     {
       "declaration": {
@@ -15837,7 +15869,12 @@
           "return": "complete detached native response or nil,error"
         }
       },
-      "tier": "core"
+      "tier": "core",
+      "m3_iterator_batch": {
+        "status": "pages-only practical native identity limitation",
+        "evidence": "tests/m3_iterators.lua: both real warmed fixtures contain multiple anonymous path_name=/ records",
+        "limitation": "canonical path identity collides; type_id is ephemeral traversal counter, not replacement identity"
+      }
     },
     {
       "container_result_review": {
@@ -16309,7 +16346,15 @@
         }
       },
       "tier": "core",
-      "xref_population_limits": "calls then constant LOAD then constant STORE, not all native references; missing call specs/op or nonconstant address skipped; no dedup; caught errors may yield partial successful vector; helper performs and clears same-instance analysis, no preceding decompileAt; function/address-space metadata remain defaults"
+      "xref_population_limits": "calls then constant LOAD then constant STORE, not all native references; missing call specs/op or nonconstant address skipped; no dedup; caught errors may yield partial successful vector; helper performs and clears same-instance analysis, no preceding decompileAt; function/address-space metadata remain defaults",
+      "m3_iterator_batch": {
+        "identity": "from_address,to_address,ref_type",
+        "order": "from_function_address,from_address,to_address,ref_type",
+        "cursor": "returned records; actual count; empty page exhaustion",
+        "evidence": "tests/m3_iterators.lua; installed standalone/static/shared; ELF and analyzed project; sizes 1/2/100 repeated serial scans",
+        "limits": "pool_size=1; no universal order/snapshot; reject nonadvancing/duplicate pages; native xrefs call-before-load ordering can stall",
+        "status": "qualified authored serial paths; broader original M3 acceptance remains open"
+      }
     },
     {
       "declaration": {

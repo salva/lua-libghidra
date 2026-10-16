@@ -23,11 +23,13 @@ for host in "$build/boundary_static_host" "$build/boundary_shared_host"; do
   "$host" "$root/tests/installed_owner.lua" "$prefix" "$root"
   "$host" "$root/tests/m2_slice.lua" "$prefix" "$root"
   "$host" "$root/tests/m3_core.lua" "$prefix" "$root"
+  "$host" "$root/tests/m3_iterators.lua" "$prefix" "$root"
 done
 # Standalone interpreter receives same arguments as embedded C hosts.
 lua5.4 "$root/tests/installed_owner.lua" "$prefix" "$root"
 lua5.4 "$root/tests/m2_slice.lua" "$prefix" "$root"
 lua5.4 "$root/tests/m3_core.lua" "$prefix" "$root"
+lua5.4 "$root/tests/m3_iterators.lua" "$prefix" "$root"
 LIBGHIDRA_FIXTURE_ROOT="$root" \
 LUA_PATH="$prefix/share/lua/5.4/?.lua;$prefix/share/lua/5.4/?/init.lua;$prefix/share/libghidra/examples/?.lua" \
 LUA_CPATH="$prefix/lib/lua/5.4/?.so" \

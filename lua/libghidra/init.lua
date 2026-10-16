@@ -54,41 +54,39 @@ function Session:get_decompilation(address, options)
   end
   return unwrap(self,'get_decompilation','decompilation',address)
 end
-function Session:iter_functions(options)
-  local function raise(code, message)
-    error({code=code,message=message,operation='iter_functions',backend='binding'},0)
-  end
-  local page, err = require('libghidra._native')._validate_page(options,true)
-  if not page then error(err,0) end
-  local owner, generation = self._owner, self._owner:_generation()
-  local records, index, last, done = {}, 1, nil, false
-  local function validate_generation()
-    if not owner:_generation_matches(generation) then
-      raise('ITERATOR_INVALIDATED','owner generation changed')
+local iterate=require('libghidra.iterator')
+local function textkey(s) return #s..':'..s end
+local families={
+  functions={field='functions', id=function(r) return r.entry_address:hex() end,
+    order=function(r) return {r.entry_address:hex()} end},
+  symbols={field='symbols', id=function(r) return r.address:hex()..textkey(r.name)..textkey(r.namespace_name) end,
+    order=function(r) return {r.symbol_id:hex()} end},
+  memory_blocks={field='blocks', counts=true, id=function(r) return r.start_address:hex()..textkey(r.name) end,
+    order=function(r) return {r.start_address:hex(),r.name} end},
+  basic_blocks={field='blocks', id=function(r) return r.function_entry:hex()..r.start_address:hex()..r.end_address:hex() end,
+    order=function(r) return {r.function_entry:hex(),r.start_address:hex(),r.end_address:hex()} end},
+  xrefs={field='xrefs', id=function(r) return r.from_address:hex()..r.to_address:hex()..textkey(r.ref_type) end,
+    order=function(r) return {r.from_function_address:hex(),r.from_address:hex(),r.to_address:hex(),r.ref_type} end},
+}
+for family,descriptor in pairs(families) do
+  Session['iter_'..family]=function(self,first,second)
+    local query,options
+    if descriptor.text then query,options=first,second
+    else options=first end
+    if descriptor.text and type(query)~='string' then
+      error({code='INVALID_ARGUMENT',operation='iter_'..family,backend='binding',message='query string required'},0)
     end
-  end
-  return function()
-    validate_generation()
-    if done then return nil end
-    if index > #records then
-      local response, failure = owner:list_functions(page)
-      validate_generation() -- publication may have run owner-closing finalizers
-      if not response then error(failure,0) end
-      records, index = response.functions, 1
-      if #records > page.limit then raise('PAGINATION_STALLED','oversized page') end
-      for _, record in ipairs(records) do
-        local key = record.entry_address
-        if last and key <= last then raise('PAGINATION_STALLED','non-advancing function order') end
-        last = key
-      end
-      if #records == 0 then done=true; return nil end
-      if page.offset > 2147483647 - page.limit - #records then
-        raise('PAGINATION_STALLED','pagination offset exhausted')
-      end
-      page.offset = page.offset + #records
-    end
-    validate_generation() -- also guards buffered yields; no allocating token publication
-    local record=records[index]; index=index+1; return record
+    local owner=self._owner
+    return iterate(owner,'iter_'..family,function(page)
+      local response,failure
+      if descriptor.counts then
+        local counts={limit=page.limit,offset=page.offset}
+        if descriptor.text then response,failure=owner['list_'..family](owner,query,counts)
+        else response,failure=owner['list_'..family](owner,counts) end
+      else response,failure=owner['list_'..family](owner,page) end
+      if not response then return nil,failure end
+      return response[descriptor.field]
+    end,descriptor.id,descriptor.order,options,descriptor.counts)
   end
 end
 local function invalid(message)
