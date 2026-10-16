@@ -28,15 +28,27 @@ root recovery actor; stage and website were stopped. This establishes actual
 access to the new assignment, not only a running flag, and shows the obsolete
 website was not directly relaunched by Run.
 
-Owning-stage adoption/current direction and new child execution will be recorded
-once observed. Root reads alone do not certify adopted dependencies or completed
-restructuring. Website release remains dependent on E2 under the new plan.
+Root published a new accepted `status.md` at 11:45:50 UTC explicitly adopting the
+replacement contract, superseding conflicting B/D directions and recording the
+E1 → E2 → existing website E3 gate. The write returned success. Root then called
+`activate_card` for existing `card-h` at 11:46:09 with explicit replacement
+instructions and the rule that website activation waits for E2; completed A/B/C
+must remain done. Because the installed tools do not mutate dependencies, the
+accepted owner direction enforces this prerequisite by withholding site activation,
+not by claiming a fabricated graph edit.
+
+Fresh `card-h` execution returned successful `get_card` at 11:46:15 and `read` at
+11:46:19 UTC. Verification at 11:46:21 showed runtime running and `card-h-d` still
+stopped with no children. This verifies durable root adoption, explicit current
+parent-to-child direction and actual owning-stage execution, not completion of
+E1/E2 or the stage's eventual implementation results. Website remains gated.
 
 ## Evidence and boundaries
 
 API receipts are host-local mode 0600 under
 `/home/salva/g/ml/tmp/lua-libghidra-documentation-redesign-2026-10-16/`:
-`notification-receipt.json` and `run-receipt.json`.
+`notification-receipt.json`, `run-receipt.json`, `owning-execution-evidence.json`
+and `adoption-verification.json`.
 
 No coordinator implementation, push, Pages publication/dispatch/settings changes,
 deployment/config/model/prompt changes or new dependency patches. Plans and this
