@@ -92,6 +92,10 @@ function M.review(raw,adapter,data,fingerprint)
    if not done[field] then result.unreviewed[#result.unreviewed+1]={operation=name,argument=field,reason='remaining direct consumption/domain review not migrated'} end
   end
  end
+ local direct=require("inventory_direct").review(raw,adapter,data,fingerprint)
+ for name,args in pairs(direct.requests) do for arg,r in pairs(args) do result.reviewed[name]=result.reviewed[name] or {}; assert(not result.reviewed[name][arg],"duplicate request review"); result.reviewed[name][arg]=r end end
+ result.related_response_reviews=direct.responses
+ local remaining={}; for _,r in ipairs(result.unreviewed) do if not (direct.requests[r.operation] and direct.requests[r.operation][r.argument]) then remaining[#remaining+1]=r end end; result.unreviewed=remaining
  table.sort(result.unreviewed,function(a,b) return a.operation..'.'..a.argument<b.operation..'.'..b.argument end)
  return result
 end
