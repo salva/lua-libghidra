@@ -125,3 +125,13 @@ historical `docs/PLAN.md` is not being repurposed as the new execution contract.
 
 These approvals concern proposed documents, not results from unimplemented tests
 or permission to execute, deploy, publish, push or change repository settings.
+
+### Subsequent operator execution authorization
+
+The operator subsequently authorized notifying the main planner and resuming the
+dedicated Saivage process **once the master plan is ready**. After final independent
+approval and committed reconciliation, use a normal planner notice with the master
+plan/handoff, supported lifecycle controls and ordinary Run, preserving all history.
+Verify fresh owning-planner/child execution. This supersedes the earlier hold on
+submission/implementation only at that readiness gate; it does not authorize push,
+Pages publication/settings changes, deployment modification or upstream patches.
