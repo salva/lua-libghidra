@@ -17,6 +17,6 @@ local ok,data=xpcall(function()
 end,debug.traceback)
 if U.exists(scratch) then assert(os.remove(scratch)) end
 assert(ok,data)
-if arg[3]=='--coverage' then data=require('inventory_coverage').assemble(data,U.read(root..'/docs/COVERAGE.md')) end
+if arg[3]=='--coverage' then data=require('inventory_coverage').assemble(data,U.read(root..'/docs/development/COVERAGE.md')) end
 U.write(output,require('tool_json_encode')(data)..'\n')
 print(arg[3]=='--coverage' and 'Wrote integrated native-only source coverage (runtime evidence separate):' or 'Wrote native review artifact:',output)

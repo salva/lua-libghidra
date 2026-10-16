@@ -214,7 +214,14 @@ function M.check(mode, root, source, manifest)
       if not text:find(fact,1,true) then fail('missing-policy',path,fact) end
     end
   end
-  if files['docs/API.md'] and files['docs/NOTICES.md'] and files['docs/EXAMPLES.md'] then
+  -- Product manifests are recognized by any stable product asset, not a page
+  -- conjunction that renaming/removing a policy page could disable.
+  if files['native-inputs.lock.json'] or files['native-patched.lock.json'] or
+     files['native-system.lock.json'] or files['api/FIELDS.md'] then
+    for _,path in ipairs{'README.md','docs/API.md','docs/NOTICES.md','docs/EXAMPLES.md',
+      'native-inputs.lock.json','native-patched.lock.json','native-system.lock.json','api/FIELDS.md'} do
+      if not files[path] then fail('missing-policy',path,'required product member') end
+    end
     require_facts('README.md', {'no HTTP, SWIG', 'upstream Python-binding dependency',
       'signed', 'eight-byte double', 'Native SOURCE builds alone', 'cpp/embed_specs.py',
       'Python >=3.10', 'zlib/XML', 'SDK-consumer or runtime Python'})

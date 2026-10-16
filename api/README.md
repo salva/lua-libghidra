@@ -1,51 +1,39 @@
-# Native source coverage and retained runtime evidence
+# Native source accounting and generated fields
 
-`coverage.json` is generated **only from pinned C++ input and migrated Lua reviews**.
-Its 110 operation rows include 70 local implementations and 40 excluded defaults.
-All generated runtime slots are unqualified. Surface calls distinguish the ten
-original approved first-slice grammars from sixty historical inventory proposals;
-this classification grants no new syntax and does not revoke the [current API](../docs/API.md). Iterator qualification is not generated from source order.
+`coverage.json` is generated from pinned C++ source and Lua source reviews. Its
+110 operation rows include 70 local implementations and 40 excluded defaults.
+Generated runtime slots remain unqualified. The historical ten-surface grammar
+classification and sixty proposal slots are source metadata, not current syntax.
+[API](../docs/API.md) is the sole call/default/envelope authority;
+[contributor coverage](../docs/development/COVERAGE.md) supplies operation categories.
 
-Reproduce, without Python or upstream Python research sources:
+From the checkout, select existing verified libghidra source at
+`d51ca813ae1b6b59519551a9be8c0b1ad74d862d`. Outputs/work must be fresh:
 
+```sh
+lua5.4 scripts/inventory-api.lua "$PINNED_SOURCE" "$FRESH_JSON" --coverage
+lua5.4 scripts/check-tooling.lua "$PINNED_SOURCE" "$FRESH_WORK"
+# Inspect the semantic diff before replacing api/coverage.json.
+lua5.4 scripts/render-fields.lua
+lua5.4 scripts/render-fields.lua --check
+lua5.4 tests/tooling_fields.lua
 ```
-lua5.4 scripts/inventory-api.lua "$PINNED_LIBGHIDRA_SOURCE" "$FRESH_JSON" --coverage
-lua5.4 scripts/check-tooling.lua "$PINNED_LIBGHIDRA_SOURCE" "$FRESH_WORK_DIRECTORY"
-cmp "$FRESH_JSON" api/coverage.json
-```
 
-The CLI refuses to overwrite an existing output. To update the committed ledger,
-generate a fresh file, review its semantic diff, then replace the committed file.
-Two-argument CLI mode emits raw native reviews for source fingerprint regression.
+The CLI refuses to overwrite an existing candidate. Two-argument inventory mode
+emits raw native source reviews. No Python oracle or upstream Python binding is
+required. Never regenerate `history/coverage-m3.json` or `runtime-evidence-m3.json`:
+these are immutable test-consumed data, not generation input or manual pages.
 
-`history/coverage-m3.json` preserves the exact pre-cutover ledger, including all M3
-manual/runtime annotations and Python development research. It is immutable
-historical evidence, **not a generation input**. `runtime-evidence-m3.json` indexes
-its per-operation runtime evidence without manufacturing newer qualification and
-pins the full historical file's SHA256. Historical tests may compare old native
-fingerprints/defaults, never execute Python or require upstream Python binding.
-`coverage.md` remains chronological research history, not regeneration directions.
-Current requirements and real Lua/native evidence remain authoritative. No runtime
-acceptance is gained or lost by source-ledger format migration.
+`coverage.json` → `scripts/render-fields.lua` → [FIELDS](FIELDS.md) is the only
+field pipeline. Scope-first exhaustive partitions put supported result values,
+input/options, envelopes and enums before native-only appendix models/enums.
+HealthStatus and Capability are result values; BytePatch is an input item.
+Unknown/unassigned/duplicate models fail. Model anchors and nested links remain
+stable. Request model defaults never imply optional Lua positional arguments.
 
-M4 implemented call grammar and request/response/dispatch disposition is maintained
-in [M4-FULL](../docs/M4-FULL.md), supplementing the source-generated field facts.
-Do not infer full qualification from the generated proposal names or from method
-availability alone; service/runtime evidence and limitations remain separate.
-## Current field representation
-
-`lua5.4 scripts/render-fields.lua` regenerates `FIELDS.md` from the reviewed current
-ledger; `lua5.4 scripts/render-fields.lua --check` checks freshness. Regenerate
-coverage to a fresh candidate with the command above, review semantic differences,
-then replace current `coverage.json` and render fields together. Never regenerate
-historical ledgers. The current [API](../docs/API.md) owns call grammar; the
-[fields](FIELDS.md) describe source models, not runtime acceptance. Included
-reachability follows implemented request/response models recursively (plus factory
-options); excluded-only schemas retain native facts without supported Lua
-conversion claims. Explicit enum spellings follow the actual C++ converters,
-with numeric fallback for unknown response values.
-
-Current call signatures, lifecycle and support limits are owned by
-[API](../docs/API.md), not historical surface proposals in source accounting.
-The [source-only developer index](../docs/development/README.md) classifies retained
-reports; FIELDS remains generated via the commands above, never hand-edited.
+Recursive included reachability establishes conversion availability, not populated
+producers, stable iteration, persistence or runtime qualification. Enum spellings
+follow actual converters with unknown numeric-response fallback. Native-only
+schemas retain source facts without supported conversion claims. Current
+[contributor testing](../docs/development/TESTING.md) documents real validation
+scope, prerequisites and full/reduced integration commands.

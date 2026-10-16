@@ -3,7 +3,7 @@ package.path='scripts/?.lua;'..package.path
 local U,J,C=require('tool_util'),require('tool_json'),require('inventory_coverage')
 local source=arg[1] or '.cache/native-inputs-patched/libghidra-d51ca813ae1b6b59519551a9be8c0b1ad74d862d'
 local native=require('inventory_native').inventory(source)
-local tabletext=U.read('docs/COVERAGE.md')
+local tabletext=U.read('docs/development/COVERAGE.md')
 local data=C.assemble(native,tabletext)
 local counts=data.completeness_audit
 assert(counts.included_operations==70 and counts.excluded_operations==40 and counts.expanded_response_paths==345 and counts.direct_request_paths==156 and counts.nested_request_paths==20)

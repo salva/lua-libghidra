@@ -3,7 +3,9 @@
 - Scope is the native local libghidra functionality only; HTTP support is deferred.
   Do not use SWIG, including for prototypes, generators or fallback bindings.
 
-- Read `docs/SPEC.md`, `docs/DESIGN.md`, `docs/COVERAGE.md` and `docs/PLAN.md`.
+- Read `docs/development/SPEC.md`, `docs/development/DESIGN.md`,
+  `docs/development/COVERAGE.md` and `docs/development/TESTING.md`.
+  Current delivery sequencing is in `workflows/documentation-redesign-2026-10-16/04-PLAN.md`.
   The operator authorized implementation of the reviewed baseline; see
   `workflows/LAUNCH.md` for the objective and `workflows/OPERATIONS.md` for deployment.
 - Keep product requirements and design separate from automation configuration.

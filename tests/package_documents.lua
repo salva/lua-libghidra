@@ -72,3 +72,11 @@ for _,bad in ipairs{'','README.md','README.md\nREADME.md\n','../escape\n','/abso
  assert(not ok and err:find('invalid-manifest:',1,true),err)
 end
 print('package document grammar/content/manifest boundaries PASS')
+-- A product asset must keep required policy checks active even when a page is
+-- omitted/renamed in the manifest. Generic synthetic documents remain allowed.
+write('native-inputs.lock.json','{}\n')
+write('product-manifest','README.md\nnative-inputs.lock.json\n')
+write('README.md','# Product\n')
+local ok,err=pcall(policy.check,'source',work,work,work..'/product-manifest')
+assert(not ok and tostring(err):find('missing-policy:',1,true),tostring(err))
+print('Product-policy missing-member/rename bypass rejected PASS')

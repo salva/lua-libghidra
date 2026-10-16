@@ -55,8 +55,8 @@ printf '\nSaivage was used in creating this project.\nSaivage was used in creati
 reject invalid-credit README.md
 printf 'unlisted\n' > "$work/documents/UNLISTED-PLAN.md"
 reject unlisted-document UNLISTED-PLAN.md
-printf '\nWORK:///notice-probe\n' >> "$work/documents/docs/evidence/native-notices/engine.txt"
-reject forbidden-content docs/evidence/native-notices/engine.txt
+printf '\nWORK:///notice-probe\n' >> "$work/documents/docs/notices/engine.txt"
+reject forbidden-content docs/notices/engine.txt
 # Credit policy must be decided before byte freshness, with no substring exemption.
 for variant in valid inline wrapped mislocated no-section fenced; do
  check

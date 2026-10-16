@@ -5,7 +5,7 @@ Original Lua/C++ wrapper and documentation: Copyright 2026 Salvador Fandiño,
 [upstream](https://github.com/0xeb/libghidra), pinned at
 `d51ca813ae1b6b59519551a9be8c0b1ad74d862d` (reports 0.0.9, not tag equivalence).
 No endorsement is implied. Upstream's Human-Origin Source License v1.0 is retained
-verbatim in [libghidra notice](evidence/native-notices/libghidra.txt).
+verbatim in [libghidra notice](notices/libghidra.txt).
 This is not legal clearance, a combined-license compatibility finding or an
 exemption from applicable upstream wrapper conditions.
 
@@ -26,8 +26,8 @@ claim that all corresponding-source archives have been obtained or delivered.
 | Abseil | 20240722.0 | Apache-2.0, abseil.txt |
 | utf8_range | bundled in pinned Protobuf | MIT, utf8-range.txt |
 | httplib | v0.16.3 (input, not an HTTP implementation claim) | MIT, httplib.txt |
-| engine zlib | bundled 1.3.1 in pinned engine | zlib terms, [exact bundled notice](evidence/native-notices/engine-zlib.txt) |
-| system zlib | Ubuntu zlib1g 1:1.3.dfsg-3.1ubuntu2.2 | [system notice](evidence/native-notices/zlib1g.txt) |
+| engine zlib | bundled 1.3.1 in pinned engine | zlib terms, [exact bundled notice](notices/engine-zlib.txt) |
+| system zlib | Ubuntu zlib1g 1:1.3.dfsg-3.1ubuntu2.2 | [system notice](notices/zlib1g.txt) |
 | BFD / sframe | Ubuntu binutils 2.42-4ubuntu2.10 shared libraries | binutils.txt, GPL terms (not permissive) |
 | zstd | selected system binary/source lock | libzstd1.txt, retained dual-license terms |
 | C runtime | Ubuntu libc6 2.39-0ubuntu8.9 | libc6.txt, LGPL terms |
@@ -36,7 +36,7 @@ claim that all corresponding-source archives have been obtained or delivered.
 
 Direct retained notices:
 
-[libghidra.txt](evidence/native-notices/libghidra.txt), [engine.txt](evidence/native-notices/engine.txt), [protobuf.txt](evidence/native-notices/protobuf.txt), [abseil.txt](evidence/native-notices/abseil.txt), [utf8-range.txt](evidence/native-notices/utf8-range.txt), [httplib.txt](evidence/native-notices/httplib.txt), [binutils.txt](evidence/native-notices/binutils.txt), [libiberty-dev.txt](evidence/native-notices/libiberty-dev.txt), [zlib1g.txt](evidence/native-notices/zlib1g.txt), [libzstd1.txt](evidence/native-notices/libzstd1.txt), [libc6.txt](evidence/native-notices/libc6.txt), [libstdc++6.txt](evidence/native-notices/libstdc++6.txt), [lua.txt](evidence/native-notices/lua.txt).
+[libghidra.txt](notices/libghidra.txt), [engine.txt](notices/engine.txt), [protobuf.txt](notices/protobuf.txt), [abseil.txt](notices/abseil.txt), [utf8-range.txt](notices/utf8-range.txt), [httplib.txt](notices/httplib.txt), [binutils.txt](notices/binutils.txt), [libiberty-dev.txt](notices/libiberty-dev.txt), [zlib1g.txt](notices/zlib1g.txt), [libzstd1.txt](notices/libzstd1.txt), [libc6.txt](notices/libc6.txt), [libstdc++6.txt](notices/libstdc++6.txt), [lua.txt](notices/lua.txt).
 
 
 `libiberty-dev.txt` is retained as input accounting; the selected shared BFD
@@ -46,30 +46,20 @@ BFD/zlib/zstd/sframe and C/C++ runtimes form its shared closure. The retained bu
 
 The selected engine patch `bfd-sleigh-target-autodetect`, SHA256
 `488eda3edc8c26cc93155240663f20d0512318428c4b69e2fbb3b409989ac82d`, is in use.
-The [patch lock](../native-patched.lock.json) records the approved profile.
+The [patch lock](../native-patched.lock.json) records the selected profile.
 Source uses local_whole; SDK consumption uses WHOLE_ARCHIVE rather than a bare
 local archive. Incorporated archives require PIC. Do not substitute arbitrary
 static system BFD archives. See [installation](EXAMPLES.md) for input selection,
 SDK requirements and the distinction between preparation and disconnected builds.
 
-## Bundled zlib notice provenance
+## Bundled zlib source
 
-The engine bundles zlib 1.3.1, distinct from the system zlib package above.
-The [exact bundled notice](evidence/native-notices/engine-zlib.txt) is the full
-opening zlib.h comment, including copyright, restrictions, disclaimer and contact
-information, without whitespace or line-ending changes. Source:
+The engine bundles zlib 1.3.1, distinct from system zlib. Its
+[exact notice](notices/engine-zlib.txt) retains copyright, restrictions,
+disclaimer and contact information from the
 [pinned engine zlib.h](https://raw.githubusercontent.com/NationalSecurityAgency/ghidra/2035b8153afaf7ce2edde24a2c80b62bbcf5127f/Ghidra/Features/Decompiler/src/decompile/zlib/zlib.h).
-The complete 96,885-byte header SHA256 is
-`5b3dc1c20e9b852ec1ef77f598c89129bae58de98d3773f91a4fc3071dd8cabf`.
-The extract is lines **5–33 inclusive**, bytes **56–1384** (zero-based,
-start-inclusive/end-exclusive), including the final LF: **1,328 bytes**.
-Its separate SHA256 is
-`02421fcfbfb1d656ef0b6ff4cd3c39f2946f08c3219fa42db482add7ce1f53ea`.
-Line-based extraction and an independent byte-range comparison against the verified
-header agree. This notice extract is not a complete corresponding-source bundle.
-GCC **13.3.0 is the build compiler**, not the identity of the separately locked
-GCC 14 runtime packages; the rows above describe the retained profile, not a new
-inventory of whatever packages happen to be installed today.
+The notice is not a complete corresponding-source bundle. GCC 13.3.0 is the
+build compiler; the separately locked GCC 14 packages supply runtime libraries.
 
 ## Obligations before conveying artifacts
 
@@ -101,7 +91,7 @@ binaries or source are included when they are not. The local install deliberatel
 ships retained notices and accounting rather than fetching source or publishing.
 No new permission to distribute linked dependencies is granted.
 
-Native source builds use only the approved unchanged pinned `cpp/embed_specs.py` via
+Native source builds use only the unchanged pinned `cpp/embed_specs.py` via
 `cpp/cmake/EmbedSpecs.cmake`, Python >=3.10 stdlib zlib/XML during native
 SOURCE builds only. This excludes upstream Python bindings, owned Python tools/tests/parity,
 SDK consumers and Lua runtime. No replacement, patch or new distribution rights.

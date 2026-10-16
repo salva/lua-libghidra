@@ -10,20 +10,20 @@ set(LLG_PACKAGE_DOCUMENTS
   docs/API.md
   docs/NOTICES.md
   api/FIELDS.md
-  docs/evidence/native-notices/libghidra.txt
-  docs/evidence/native-notices/engine.txt
-  docs/evidence/native-notices/protobuf.txt
-  docs/evidence/native-notices/abseil.txt
-  docs/evidence/native-notices/utf8-range.txt
-  docs/evidence/native-notices/httplib.txt
-  docs/evidence/native-notices/binutils.txt
-  docs/evidence/native-notices/libiberty-dev.txt
-  docs/evidence/native-notices/zlib1g.txt
-  docs/evidence/native-notices/libzstd1.txt
-  docs/evidence/native-notices/libc6.txt
-  docs/evidence/native-notices/libstdc++6.txt
-  docs/evidence/native-notices/lua.txt
-  docs/evidence/native-notices/engine-zlib.txt
+  docs/notices/libghidra.txt
+  docs/notices/engine.txt
+  docs/notices/protobuf.txt
+  docs/notices/abseil.txt
+  docs/notices/utf8-range.txt
+  docs/notices/httplib.txt
+  docs/notices/binutils.txt
+  docs/notices/libiberty-dev.txt
+  docs/notices/zlib1g.txt
+  docs/notices/libzstd1.txt
+  docs/notices/libc6.txt
+  docs/notices/libstdc++6.txt
+  docs/notices/lua.txt
+  docs/notices/engine-zlib.txt
 )
 function(llg_export_package_documents output)
   string(REPLACE ";" "\n" documents "${LLG_PACKAGE_DOCUMENTS}")

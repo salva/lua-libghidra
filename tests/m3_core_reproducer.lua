@@ -4,7 +4,7 @@ local prefix, root = assert(arg[1]), assert(arg[2])
 package.path = prefix..'/share/lua/5.4/?.lua;'..prefix..'/share/lua/5.4/?/init.lua'
 package.cpath = prefix..'/lib/lua/5.4/?.so'
 local low, gh = require('libghidra.lowlevel'), require('libghidra')
--- docs/COVERAGE.md core rows, including already implemented GetRevision.
+-- docs/development/COVERAGE.md core rows, including already implemented GetRevision.
 local core = {
   'save_program','discard_program','get_revision','rename_function',
   'list_basic_blocks','list_cfg_edges','get_symbol','list_symbols','rename_symbol',

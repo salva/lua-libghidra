@@ -8,7 +8,9 @@ description: 'Validate lua-libghidra native C++/Lua code, tests, build profiles 
 Adapted from sibling Saivage development-validation: select checks by changed
 surface and report evidence honestly, rather than copying TypeScript/UI commands.
 
-- Read SPEC, DESIGN, PLAN, COVERAGE and relevant M1/readiness evidence. Use the
+- Read `docs/development/{SPEC,DESIGN,COVERAGE,TESTING}.md` and the current
+  accepted plan in `workflows/`. Relevant M1/readiness evidence is under
+  `workflows/history/`, not the maintained manual. Use the
   supported real upstream pin and approved engine profile, ordinary C-built Lua,
   and both public surfaces. Mocks and Python-binding comparisons are not gates.
 - Batch related assertions and fixtures within the current node's authority.

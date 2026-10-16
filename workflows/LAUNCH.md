@@ -3,8 +3,8 @@
 The operator authorized dedicated-container setup and autonomous Run after the
 documentation review converged. This supersedes the earlier setup-only hold.
 
-Implement the reviewed local-only Lua binding described by `docs/SPEC.md`,
-`docs/DESIGN.md`, `docs/COVERAGE.md`, `docs/EXAMPLES.md` and `docs/PLAN.md`.
+Implement the reviewed local-only Lua binding described by `docs/development/SPEC.md`,
+`docs/development/DESIGN.md`, `docs/development/COVERAGE.md`, `docs/EXAMPLES.md` and `workflows/documentation-redesign-2026-10-16/04-PLAN.md`.
 The accepted starting baseline is commit `6d023d7`: Lua 5.4/Linux x86-64 first,
 two public layers over one native owner, exact integers, sol2 only if the native
 boundary spike qualifies it, and no SWIG. HTTP functionality remains excluded.
@@ -124,7 +124,7 @@ uncertainties. Owner should propagate this settled disposition downstream withou
 reset/restart, repeated permission investigation, or unrelated card changes.
 Preserve the full research and third-party notices. This is not legal clearance,
 compatibility proof, new rightsholder permission or upstream relicensing.
-No publication, send or push is authorized. See [report](../docs/M0-LICENSE.md).
+No publication, send or push is authorized. See [report](history/M0-LICENSE.md).
 
 ## Wrapper license decision
 

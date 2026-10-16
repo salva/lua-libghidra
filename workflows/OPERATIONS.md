@@ -129,7 +129,8 @@ deployment pattern, not as a source of product-specific prompts or live state.
 Verify its current configuration at deployment time; workspace-level historic
 container addresses and v2 instructions may be stale.
 
-1. Agree on `docs/SPEC.md` and `docs/DESIGN.md` and prepare `docs/PLAN.md`.
+1. Agree on `docs/development/SPEC.md` and `docs/development/DESIGN.md` and
+   prepare the current delivery plan under `workflows/`.
 2. Select the Saivage release, general software-development workflow and model
    routing. Do not copy PM reconstruction/observation workflows by default.
 3. Provision an isolated environment with this project mounted as its target.

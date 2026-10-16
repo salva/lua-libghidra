@@ -43,7 +43,7 @@ scripts/check-project-fixture.sh "$PWD/.cache/native-sdk-patched" \
 ```
 
 This builds installed-only direct C++ probes and runs binary and project semantic
-checks; needs no Java/Python/network at runtime. Logs in docs/evidence/fixture-*.
+checks; needs no Java/Python/network at runtime. Logs in workflows/evidence/fixture-*.
 The original binary-only probe/reproducer is preserved. Missing project is an
 error, not binary success. Upstream library/engine were not edited. Existing
 patched SDK profile controls remain independently applicable.

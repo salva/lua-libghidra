@@ -92,3 +92,50 @@ copy=require('tool_json').decode(U.read'api/coverage.json')
 copy.types.FunctionRecord.fields[1].native_default='sensitivity marker'
 assert(R.render(copy)~=text,'field change must invalidate freshness')
 print('Scope-first exhaustive renderer partition, exceptions, ordered index, nested links and rejection sensitivity PASS')
+-- API owns method-to-envelope/nested-record links. Check the maintained manual
+-- against the actual native registration and facade, not proposed ledger syntax.
+local function api_contract(api)
+ -- Split without consuming the next delimiter so consecutive entries are kept.
+ local entries={}
+ local starts={}
+ for pos,name in api:gmatch('()\n### ([%w_]+)\n') do starts[#starts+1]={pos,name} end
+ for i,item in ipairs(starts) do
+  assert(not entries[item[2]],'duplicate API method '..item[2])
+  entries[item[2]]=api:sub(item[1],starts[i+1] and starts[i+1][1]-1 or #api)
+ end
+ local function linked(body,name)
+  assert(body:find('](../api/FIELDS.md#'..name:lower()..')',1,true),'missing API model link '..name)
+ end
+ local source=U.read'src/owner.cpp'
+ local registered=assert(source:match('operation_names%[%]%s*=%s*{(.-)};'))
+ local names={}
+ for name in registered:gmatch('"([%w_]+)"') do names[name]=true; assert(entries[name],'missing API method '..name) end
+ local count=0; for _ in pairs(names) do count=count+1 end; assert(count==70)
+ for _,name in ipairs{'open','local_client','check','u64','native','close','iter_functions','iter_symbols','iter_memory_blocks'} do
+  assert(entries[name],'missing API helper '..name)
+ end
+ for _,op in ipairs(d.operations) do if op.tier~='excluded' then
+  local body=assert(entries[op.lowlevel])
+  assert(body:find('**both**',1,true) or body:find('**lowlevel**',1,true),'missing surface '..op.lowlevel)
+  local visited={}
+  local function model(name)
+   if visited[name] or not d.types[name] then return end
+   visited[name]=true; linked(body,name)
+   for _,f in ipairs(d.types[name].fields) do
+    for nested in f.native_type:gmatch('[%w_]+') do model(nested) end
+   end
+  end
+  for name in op.response.native_type:gmatch('[%w_]+') do model(name) end
+ end end
+ linked(entries.patch_bytes_batch,'BytePatch')
+ linked(entries.add_perf_benchmark,'PerfBenchmarkRecord')
+ assert(not entries.iter_instructions and not entries.iter_types and not entries.iter_function_signatures)
+end
+local api=U.read'docs/API.md'
+api_contract(api)
+for _,mutation in ipairs{
+ function(t) return t:gsub('### get_function\n','### removed_function\n',1) end,
+ function(t) return t:gsub('%]%(%../api/FIELDS%.md#healthstatus%)','](../api/FIELDS.md#absent)',1) end,
+ function(t) return t:gsub('%]%(%../api/FIELDS%.md#bytepatch%)','](../api/FIELDS.md#absent)',1) end,
+} do assert(not pcall(api_contract,mutation(api)),'API contract corruption accepted') end
+print('Actual 70 native methods, helpers, surfaces, envelope/nested/input links and corruption sensitivity PASS')
