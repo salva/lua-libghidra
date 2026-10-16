@@ -174,7 +174,7 @@ M.tool_inputs={
   'site/template.html','site/style.css','site/toolchain.lock.json',
   'site/export-documents.cmake','site/inspect-documents.cmake','site/prepare-toolchain.sh',
   'scripts/build-site.lua','scripts/check-site.lua','scripts/package-documents.lua',
-  'scripts/render-fields.lua','scripts/tool_json.lua','scripts/tool_json_encode.lua',
+  'api/coverage.json','scripts/render-fields.lua','scripts/tool_json.lua','scripts/tool_json_encode.lua',
   'tests/installed_documents.lua','cmake/PackageDocuments.cmake',
 }
 return M

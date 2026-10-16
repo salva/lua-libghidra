@@ -12,7 +12,30 @@ assert(type(policy.heading_ids)=='function',
 local next_id=policy.heading_ids()
 local route=assert(config.routes[config.source])
 local external={}
+-- Generated C++ type notation is text, not an HTML extension. Permit only
+-- exact ledger model names (and bool) on the generated fields page, escaped
+-- through Str. All attributes, closing tags and other raw markup still fail.
+local ledger=json.decode(content.read(source_root..'/api/coverage.json'))
+local function raw_inline(el)
+  local name=el.text:match('^<([%w_]+)>$')
+  assert(config.source=='api/FIELDS.md' and el.format=='html' and name
+    and (ledger.types[name] or name=='bool'), 'unsupported raw inline markup')
+  return pandoc.Str(el.text)
+end
+local native_names={}
+for _,model in pairs(ledger.types) do
+  for _,field in ipairs(model.fields or {}) do
+    for name in field.native_type:gmatch('std::[%w_]+') do native_names[name]=true end
+  end
+end
 local function target(el)
+  -- Pandoc recognizes angle-bracket C++ namespace notation as a URI scheme.
+  -- Restore exact visible text only for ledger-native names, never arbitrary
+  -- schemes or explicit labelled links.
+  if config.source=='api/FIELDS.md' and native_names[el.target]
+    and el.t=='Link' and pandoc.utils.stringify(el.content)==el.target then
+    return pandoc.Str('<'..el.target..'>')
+  end
   local value,is_external=content.link(config.source,el.target or el.src,config.routes)
   if is_external then external[value]=true end
   if el.t=='Image' then assert(not is_external,'remote image forbidden'); el.src=value
@@ -27,10 +50,10 @@ return {
     end,
     Link=target, Image=target,
     RawBlock=function() error('unsupported raw block markup') end,
-    RawInline=function() error('unsupported raw inline markup') end,
+    RawInline=raw_inline,
     Table=function(el)
       return pandoc.Div({el},pandoc.Attr('',{'table-scroll'},
-        {role='region',['aria-label']='Scrollable table',tabindex='0'}))
+        {{'role','region'},{'aria-label','Scrollable table'},{'tabindex','0'}}))
     end,
     CodeBlock=function(el) el.attributes.tabindex='0'; return el end,
   },

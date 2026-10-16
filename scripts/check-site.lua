@@ -74,9 +74,9 @@ end
 assert(c.read(root..'/assets/style.css')==c.read(source..'/site/style.css'),'stale stylesheet')
 assert(c.read(root..'/.nojekyll')=='','invalid .nojekyll')
 -- Rendered complete example displays are exact text, not merely the presence
--- of a download link. Pandoc omits the source final LF in code blocks.
+-- of a download link. Directly constructed CodeBlocks retain source final LF.
 for _,path in ipairs(examples) do
-  local wanted=c.read(source..'/'..path):gsub('\n$','')
+  local wanted=c.read(source..'/'..path)
   local count=0
   for _,block in ipairs(details[routes['docs/EXAMPLES.md'].output].code) do
     if block.text==wanted then count=count+1 end
