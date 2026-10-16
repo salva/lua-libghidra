@@ -118,3 +118,12 @@ install(FILES ${PROJECT_SOURCE_DIR}/examples/first_slice.lua
               ${PROJECT_SOURCE_DIR}/examples/core_mutation.lua
               ${PROJECT_SOURCE_DIR}/examples/fixture_manifest.lua
         DESTINATION share/libghidra/examples)
+if(BUILD_TESTING)
+  add_executable(m3_seeded_host ${PROJECT_SOURCE_DIR}/tests/m3_seeded_host.cpp
+    ${PROJECT_SOURCE_DIR}/src/boundary.cpp ${PROJECT_SOURCE_DIR}/src/owner.cpp)
+  target_compile_definitions(m3_seeded_host PRIVATE LLG_OWNER LLG_CORE_FIXTURE)
+  target_include_directories(m3_seeded_host PRIVATE ${LUA_INCLUDE_DIRS})
+  target_compile_options(m3_seeded_host PRIVATE -UNDEBUG)
+  target_link_libraries(m3_seeded_host PRIVATE ${LUA_LIBRARIES} binding_local_whole)
+  add_test(NAME m3_seeded_core COMMAND m3_seeded_host ${PROJECT_SOURCE_DIR}/tests/m3_seeded.lua ${PROJECT_SOURCE_DIR})
+endif()

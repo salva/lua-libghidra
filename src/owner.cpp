@@ -12,6 +12,9 @@
 #include <cstdio>
 #include <stdexcept>
 namespace llg {
+#ifdef LLG_CORE_FIXTURE
+void seed_core_fixture(libghidra::client::IClient*);
+#endif
 #ifdef LLG_ADAPTER_OBSERVER
 void before_adapter_dispatch(int);
 #endif
@@ -364,7 +367,11 @@ int dispatch(lua_State* L) {
      case 10: take(p,client->ListInstructions(page.start,page.end,page.limit,page.offset),p.instructions); break;
      case 11: take(p,client->GetDecompilation(address,static_cast<int>(timeout)),p.decompilation); break;
      case 0: take(p,client->GetStatus(),p.health); break;
-     case 1: take(p,client->OpenProgram(request),p.opened); break;
+     case 1: if(take(p,client->OpenProgram(request),p.opened)) {
+#ifdef LLG_CORE_FIXTURE
+      seed_core_fixture(client); // test-only native fixture setup; no Lua calls
+#endif
+     } break;
      case 2: { c::CloseProgramResponse r; if(take(p,client->CloseProgram(policy),r)) p.flag=r.closed; break; }
      case 3: { c::ShutdownResponse r; if(take(p,client->Shutdown(policy),r)) p.flag=r.accepted; break; }
      case 4: take(p,client->GetRevision(),p.revision); break;

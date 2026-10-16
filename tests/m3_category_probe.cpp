@@ -26,18 +26,26 @@ int main(int argc,char** argv) {
  if(! report("data",c->ApplyDataType(0x404010,"int")).updated) throw std::runtime_error("mutation flag false");
  PerfBenchmarkRecord perf;perf.bench_id="m3_perf";perf.status="ok";
  if(!report("benchmark",c->AddPerfBenchmark(perf)).added) throw std::runtime_error("benchmark flag false");
- auto observe=[&](const char* phase) {
-  std::cout<<phase<<" aliases="<<checked(c->ListTypeAliases("M3",100,0)).aliases.size()
-   <<" enums="<<checked(c->ListTypeEnums("M3",100,0)).enums.size()
-   <<" members="<<checked(c->ListTypeMembers("M3Struct",100,0)).members.size()
-   <<" enum_members="<<checked(c->ListTypeEnumMembers("M3Enum",100,0)).members.size()
-   <<" comments="<<checked(c->GetComments(0x401106,0x401106,100,0)).comments.size()
-   <<" data="<<checked(c->ListDataItems(0x404010,0x404010,100,0)).data_items.size()
-   <<" benchmarks="<<checked(c->ListPerfBenchmarks()).records.size()<<std::endl;
+ auto observe=[&](const char* phase, bool populated) {
+  const auto aliases=checked(c->ListTypeAliases("M3",100,0)).aliases.size();
+  const auto enums=checked(c->ListTypeEnums("M3",100,0)).enums.size();
+  const auto members=checked(c->ListTypeMembers("M3Struct",100,0)).members.size();
+  const auto enum_members=checked(c->ListTypeEnumMembers("M3Enum",100,0)).members.size();
+  const auto comments=checked(c->GetComments(0x401106,0x401106,100,0)).comments.size();
+  const auto data=checked(c->ListDataItems(0x404010,0x404010,100,0)).data_items.size();
+  const auto benchmarks=checked(c->ListPerfBenchmarks()).records.size();
+  std::cout<<phase<<" aliases="<<aliases<<" enums="<<enums<<" members="<<members
+   <<" enum_members="<<enum_members<<" comments="<<comments<<" data="<<data
+   <<" benchmarks="<<benchmarks<<std::endl;
+  const size_t expected=populated?1:0;
+  if(aliases!=expected || enums!=expected || members!=expected || enum_members!=expected ||
+     comments!=expected || data!=expected || benchmarks!=expected)
+    throw std::runtime_error("category persistence observation changed; investigate, do not normalize");
  };
- observe("before-save");
+ observe("before-save",true);
  auto saved=checked(c->SaveProgram());std::cout<<"saved="<<saved.saved<<std::endl;
+ if(!saved.saved) throw std::runtime_error("save flag false");
  checked(c->CloseProgram(ShutdownPolicy::kDiscard)); c.reset();
- c=CreateLocalClient(opts);checked(c->OpenProgram(p));observe("after-reopen");
+ c=CreateLocalClient(opts);checked(c->OpenProgram(p));observe("after-reopen",false);
  } catch(const std::exception& e) {std::cerr<<e.what()<<std::endl;return 1;}
 }

@@ -205,3 +205,24 @@ that gate. Missing signature-filter, union/CFG and remaining Lua evidence stay o
 Build/run with tests/installed-sdk and a caller-supplied disposable state path;
 never use fixture directories for mutable state. Initial generated flag assertions
 had a parenthesis compile error; corrected before running, no ignored build failure.
+
+## Real populated Lua fixture host
+
+`m3_seeded_host` uses a compile-guarded `LLG_CORE_FIXTURE` callback after successful
+native open, with no Lua calls during setup, to seed the same real native owner
+through public C++ mutations. It does not mock IClient, alter responses or export
+M4 adapters in production. `tests/m3_seeded.lua` calls the actual core Lua methods
+on ELF and analyzed project and checks populated alias/enum/enum-member/struct-member,
+comment and signature data, zero UInt64 ordinals, signed member offsets, booleans
+and first/end singleton pages. This closes the previous populated Lua evidence
+for those families without relying on the lossy state reload. The host has no
+persistent state and closes all owners; fixture files remain unchanged. CTest now
+includes m3_seeded_core. Production owner compilation excludes the seed callback.
+The direct category probe now asserts both populated pre-save counts and observed
+empty post-reopen counts and saved=true, instead of merely logging them. Unexpected
+future persistence changes fail rather than being normalized into this limitation.
+
+Still open: populated union and nonempty CFG, missing-signature filtering,
+remaining iterator family dispositions, category-specific signature persistence,
+configured save-success finalizer and final runtime ledger/review closure. No
+broad native persistence or new Lua full-tier mutation support is claimed.
