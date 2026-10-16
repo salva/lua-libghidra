@@ -1,62 +1,81 @@
-# Later implementation assignment
+# Implementation assignment
 
-Developer record; exclude this file from final package documentation. This text
-does not submit work, start Saivage or authorize implementation. The owner must
-first authorize the reconciled [master contract](99-MASTER-PLAN.md); review state
-and interface blockers are recorded in the
-[companion](../../../history/reviews/package-audit-2026-10-16/MASTER-AUTHOR-COMPANION.md).
+Developer record; exclude from final package documentation. The operator authorized
+main-planner notification and supported project resume once the
+[master contract](99-MASTER-PLAN.md) is ready. Confirm final independent approval
+and committed reconciliation before submission; creating this file does not start work.
 
-## Assignment to give after authorization
+## Assignment to give after the readiness gate
 
-Address F01–F14 against baseline `4903eb7` following the master and its linked
-component analysis/design/plans. Inspect actual HEAD and preserve existing work.
-Read AGENTS and the validation skill. Use the existing qualified non-root native
-environment; return missing environment/fixture authority to the owner.
+Address F01–F14 against baseline `4903eb7` using the master and linked A/B/C/D
+analysis/design/plans. Inspect actual HEAD and preserve existing work. Read AGENTS
+and the validation skill. Use an existing qualified non-root native environment;
+return unavailable environment/fixtures to the owner without changing deployments.
 
-Execute these six batches serially:
+Execute six coherent batches:
 
-1. **A — boundaries:** retain guarded facade reopen/shutdown; explicit Lua host/
-   headers and early ABI rejection; real facade tests and incompatible-host proof.
-2. **C — regressions:** explicit full/reduced driver and thin integration target;
-   observable specialist mutation/pre-save/reload tests and exact authored leaves.
-   Supply B actual outcomes and final command interface.
-3. **B — fields/notices:** generator-owned scalar/enum/model corrections; regenerate
-   current outputs; exact verified bundled-zlib notice and runtime identities.
-4. **B — manual/example:** current API/user journey and own-binary example; source-
-   only developer index, retained dated history. Consume A/C contracts first.
-5. **B with C — package acceptance:** explicit final-doc manifest and graph/content/
-   equality checks, clean source/SDK × CMake/LuaRocks installs, final CTest/full
-   integration plus separately mandatory A ABI/facade checks and reduced-selection
-   sensitivity run. Use the master's commands and prerequisite/profile matrix.
-6. **D — static website:** consume B's validated source pages, generated fields,
-   example and manifest; implement D's single-source static presentation and
-   pinned build-only toolchain. Check exact artifact allowlist, byte integrity,
-   current-source freshness, links/fragments/content, `/lua-libghidra` and empty
+1. **A boundaries:** retain guarded facade reopen/shutdown; explicit Lua host/
+   headers and early ABI rejection. Resolve actual header search directories.
+   Provision the pinned PUC 5.4.6 ordinary nondefault prefix and int64/float32
+   rejection fixture per A §3; prove selected-host identity and separate system
+   embedded-library identities. Run real facade, configure and numeric-rejection
+   checks; no fabricated upstream flags or broad custom-ABI guarantee.
+2. **C scoped regressions:** parser/preflight and explicit full/reduced selection
+   work; real specialist readbacks/pre-save/reload and authored leaf oracles.
+   Stage the new document caller hunks for batch 5. This stage does not close F08
+   or claim full integration before B's new checker/export exists.
+3. **B fields/notices:** generator-owned scalar/enum/model corrections and current
+   outputs; exact verified bundled-zlib extract and compiler/runtime identities.
+4. **B manual/example:** compact current manual, complete API, own-input example
+   and source-only developer index, consuming A/C contracts and observed results.
+   Preserve historical records. Use source-relative package links and `0x` when
+   copying hexadecimal addresses from nm.
+5. **B + C integration:** land B manifest/checker/probes and C's new callers
+   together; clean source/SDK × CMake/LuaRocks route validation, CTest and one full
+   integration run plus reduced-selection sensitivity. A standalone configure/ABI
+   evidence and final-prefix facade/rejection checks remain mandatory siblings;
+   C full success alone does not prove them.
+6. **D website:** use Pandoc/Lua presentation over B's same maintained sources,
+   manifest, fields and example. Validate exact allowlist, current-source freshness,
+   copied notice/example integrity, links/IDs/content, `/lua-libghidra` and empty
    baseurl, reproducibility and keyboard/narrow-screen presentation. Prepare
-   read-only build CI and separate manual publication workflow. Local build
-   acceptance does not authorize pushing, enabling Pages or deploying the site.
+   read-only CI and separate manual publication workflow. Do not switch renderer
+   or add an API generator; report a bounded converter-validation blocker instead.
 
-One owner edits shared files at a time: Binding.cmake A → C → B; C owns driver
-orchestration, B its document probes/manual, A selected-host build interface.
-Do not invent a mismatch-host driver flag or doc-checker CLI. B fixes the exact
-manifest export/checker/probe propagation contract, C aligns both callers, and D
-consumes the same manifest/shared helper after B passes. A supplies verified header
-resolution, pinned mismatch-fixture provisioning and a real nondefault compatible
-host case; absent inputs remain blocked. D's converter choice and tool interfaces
-must settle before its implementation; do not independently substitute Jekyll or
-LDoc or add a duplicate API generator. Reconcile these dependencies before claiming
-integration completion. Shared D helper changes return to B for package revalidation.
+The settled document interfaces are:
 
-Preserve pin/approved engine profile, no HTTP/SWIG/second VM. No dependency patch,
-upstream repair campaign, deployment/runtime/config change, submission or push.
-Only the unchanged upstream build-time Python spec generator exception remains.
-Final package docs omit Saivage/process history except the optional exact single
-README creation credit; this is not a ban on source/tools/tests or developer records.
+```text
+BUILD/package-documents.txt
+lua5.4 tests/installed_documents.lua source SOURCE_ROOT MANIFEST
+lua5.4 tests/installed_documents.lua installed DOCUMENT_ROOT SOURCE_ROOT MANIFEST
+bash tests/installed-documents.sh DOCUMENT_ROOT SOURCE_ROOT MANIFEST FRESH_WORK
+```
 
-Commit authorized coherent changes promptly as Salvador Fandiño
-<sfandino@yahoo.com>, author and committer. Report per batch: paths/commit, commands,
-real profiles/identities, passes/failures/blocked prerequisites, and bounded claim
-corrections. Missing tests remain open; old results are not new runs. Roll back
-only own future edits and exact disposable outputs, preserving unrelated work,
-locks, evidence and runtime. Deliver the final F01–F14 evidence mapping to the
-owner; technical completion is not release/publication or legal clearance.
+All paths are absolute. DOCUMENT_ROOT is the doc directory itself; MANIFEST is
+the producing build's configure export, including each LuaRocks build's own export
+paired with its confirmed versioned rock package doc root. FRESH_WORK must not
+exist. Both pristine checks run in full/reduced; probes are full-only. B owns
+checker/probe implementation, C propagation. No module-prefix argument, implicit
+fallback or old-signature adapter. D script-mode exports the same CMake list and
+uses B's source mode; HTML validation remains D's checker.
+
+One owner edits shared files at a time: Binding.cmake A → C → B; C owns driver,
+B document probes/manual/helper, A selected-host build interface. D compatibility
+changes to B's helper return to B for source/install revalidation before site
+acceptance. Use the master's exact commands, route paths and evidence boundaries.
+
+Preserve native pins/authorized engine profile, no HTTP/SWIG/second VM. No new
+dependency patch, upstream repair campaign, deployment/runtime/config change,
+submission or push. The narrow unchanged upstream source-build Python exception
+remains. Site tools are documentation-build-only. Final package/site docs exclude
+process history and Saivage references except the exact optional single README/
+landing creation credit; source/tools/tests/developer records have no blanket ban.
+
+Commit authorized coherent validated changes promptly as Salvador Fandiño
+<sfandino@yahoo.com>, author and committer. Report each batch's paths/commit,
+commands, identities, passes/failures/blocked inputs and bounded claim corrections.
+Future tests are not passes until run; old results retain their original scope.
+Rollback only own edits/exact disposable outputs, preserving unrelated work,
+locks, evidence and runtime. Deliver F01–F14 evidence to the owner. Push, Pages
+enablement/settings changes, deployment and rollback deployment require separate
+operator authority; a local site build is not publication, release or legal clearance.
