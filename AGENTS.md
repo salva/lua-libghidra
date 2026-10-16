@@ -18,6 +18,10 @@
   Keep Saivage state project-local in `.saivage/` and `.saivage-work/`.
 - Do not modify sibling projects or start autonomous work without operator approval.
 - Commit implemented changes promptly. Do not push without operator permission.
+- Follow the project skills in `.github/skills/` when their task matches:
+  guidance-adoption for Saivage prompt changes, validation for binding/build
+  checks, lxc-operations for this deployment and skill-authoring for skill edits.
+  These host-side skills do not grant Saivage Executors deployment authority.
 - Use Salvador Fandiño <sfandino@yahoo.com> as both Git author and committer,
   including automated commits; do not override this with a Saivage identity.
   The operator authorized the initial public GitHub publication only, not ongoing
