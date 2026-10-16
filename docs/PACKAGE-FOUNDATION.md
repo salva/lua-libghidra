@@ -239,3 +239,14 @@ comment side-maps and conditional benchmark revision. New artifacts now require
 records/graph/decompilation/performance/container/session semantic migration and
 complete coverage output still remain. No inferred union producer, durable member
 identity, comment persistence or mutation rollback guarantee is added.
+
+Lua generation now includes 24 response-container population reviews, all four
+caller-supplied performance store operations, and session open/save/discard/close/
+shutdown transitions. Run `tests/tooling_containers_performance.lua` and
+`tests/tooling_session.lua` with Lua5.4 and optional pinned source directory.
+Container records preserve sequence/duplicates; failed decompilation remains a
+present record. Performance fields remain caller data, never measured benchmark
+qualification. Logical close resets adapters, not engines/owner; failed save
+precedes reset, and discard acknowledgement is not rollback. Remaining migration
+is nested record/graph/decompilation/special-result producers and full coverage
+assembly, not direct-input or container closure. Native artifact remains partial.

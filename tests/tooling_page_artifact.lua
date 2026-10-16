@@ -45,3 +45,13 @@ for name,r in pairs(req.type_reconstruction_reviews) do
 end
 assert(reconstructed==20)
 print('Type-family source fingerprints and complete direct request ledger PASS (not runtime approval)')
+for group,key in pairs{container_reviews='container_result_review',performance_reviews='performance_field_review'} do
+ local count=0
+ for name,r in pairs(assert(artifact[group])) do
+  count=count+1; local old=assert(ops[name][key],'retained review missing '..name)
+  assert(r.body_sha256==old.body_sha256,'container/performance fingerprint mismatch '..name)
+ end
+ assert(count==(group=='container_reviews' and 24 or 4),'review family count')
+end
+assert(artifact.session_reviews.CloseHelper and artifact.session_reviews.OpenProgram)
+print('24 container and four performance body fingerprints match retained review; session reviews present PASS')
