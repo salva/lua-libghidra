@@ -264,3 +264,27 @@ synthetic type paths and non-durable enumeration IDs remain explicit. No graph
 completeness, new union/signature producer or runtime success is inferred.
 Full semantic-output assembly/replacement of the old owned entry points remains
 open: generated native artifacts still say partial and do not replace coverage.json.
+
+### Integrated native-only semantic output (candidate consumer path)
+
+```
+lua5.4 scripts/inventory-api.lua "$PINNED_LIBGHIDRA_SOURCE" "$FRESH_OUTPUT_JSON" --coverage
+lua5.4 tests/tooling_coverage.lua "$PINNED_LIBGHIDRA_SOURCE"
+```
+
+The opt-in output joins migrated reviews into 110 operation rows (70 local/40
+excluded), 156 direct/20 nested request paths, and 345 expanded response paths.
+Independent completeness validation is run before writing and after JSON reload
+in the integration test. Missing reviews fail closed; evidence is **unqualified**,
+not regenerated from history. True JSON null is emitted for absent fields.
+This path never reads coverage.json or upstream Python sources. Default two-argument
+mode remains the forensic native-review artifact for existing hash regressions.
+
+This is not yet a drop-in replacement for the reviewed `api/coverage.json`:
+its preserved M3 runtime/manual evidence and detailed public-surface/grammar
+annotations must be explicitly separated/reconciled before entry-point cutover.
+The candidate currently references current SPEC/COVERAGE for surface authority;
+it does not reproduce every former surface annotation or authorize new syntax.
+Do not run the retired Python generator over accepted M3 evidence to achieve a
+textual match. Remaining work is that schema/evidence/surface cutover and integrated
+owned-tool entry-point audit, not more isolated producer-helper migrations.

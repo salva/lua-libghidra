@@ -7,6 +7,7 @@ local function quote(s)
 end
 local encode
 function encode(v)
+ if v==require('tool_json').null then return 'null' end
  local kind=type(v)
  if kind=='string' then return quote(v) end
  if kind=='boolean' then return tostring(v) end
