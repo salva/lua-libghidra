@@ -26,7 +26,8 @@ variable selects tests or supplies an implicit reduced mode. Reject positional
 legacy inputs and unknown/duplicate flags with usage and nonzero status.
 
 Preflight selected-group prerequisites before building/installing: configured
-build/cache, `cmake`, `lua5.4`, `readelf`, `nm`, `ldd`, fixture files and hashes;
+build/cache and readable `BUILD/package-documents.txt`, `cmake`, `lua5.4`,
+`readelf`, `nm`, `ldd`, fixture files and hashes;
 full mode also requires `cc`, a non-root user, the external tree, `unshare` and
 mount/network namespace capability. Probe capability in a short-lived namespace,
 not by altering the host. A denied namespace or missing fixture is a named
@@ -45,8 +46,8 @@ deletes. Caller can remove the exact newly allocated artifacts after inspection.
 | --- | --- | --- |
 | Build/install and ELF VM/guard closure | run | run |
 | installed_owner, m2_slice, m3_core, m3_iterators, m4_full_reproducer, m4_services, m4_contract on standalone/static/shared hosts | run | run |
-| Installed first_slice/core_mutation examples and pristine document check | run | run |
-| Installed-document stale/missing mutation probes | OMIT | run |
+| Installed first_slice/core_mutation examples and source/installed pristine document checks | run | run |
+| Installed-document membership/freshness/link/fragment/content/credit mutation probes | OMIT | run |
 | m3_persistence and m4_persistence | OMIT | run |
 | Compile existing branch.c and run m3_branch | OMIT | run |
 | External and embedded cold/warm/permission profiles | OMIT | run |
@@ -63,15 +64,61 @@ Preserve child scripts, extending their positional interfaces as follows:
 ```text
 installed-profiles.sh PREFIX FRESH_WORK EXTERNAL_SPECS
 installed-absence.sh PREFIX FRESH_WORK BUILD
-installed-documents.sh MODULE_PREFIX DOCUMENT_PREFIX FRESH_WORK
+installed-documents.sh DOCUMENT_ROOT SOURCE_ROOT MANIFEST FRESH_WORK
 ```
 
 The first two require their new argument (no `root/build` or spec-cache fallback).
 Both run from a fresh cwd; absence uses the passed build's two embedded hosts.
-The document signature remains B's interface. Update callers of the changed
+Update callers of the changed
 child interfaces with explicit paths; currently both are in the qualification
 driver. `tests/package-foundation.sh` is a separate LuaRocks smoke route and does
 not invoke these children; preserve that scope rather than expanding it here.
+
+B owns the document checker and mutation-driver implementations. Their exact
+interfaces, with every path absolute, are:
+
+```text
+lua5.4 tests/installed_documents.lua source SOURCE_ROOT MANIFEST
+lua5.4 tests/installed_documents.lua installed DOCUMENT_ROOT SOURCE_ROOT MANIFEST
+bash tests/installed-documents.sh DOCUMENT_ROOT SOURCE_ROOT MANIFEST FRESH_WORK
+```
+
+Configure exports `BUILD/package-documents.txt` directly from B's sole
+`LLG_PACKAGE_DOCUMENTS` list: repository-relative paths, one per line, final
+newline, no comments/blanks. It is build-owned, not installed or independently
+edited. Reconfigure the selected build after manifest-list changes; require its
+export rather than guessing another build. No integration manifest option,
+module-prefix argument, environment fallback or old-signature adapter is added.
+
+C's qualification driver derives and passes these exact inputs after install:
+
+```sh
+manifest="$build/package-documents.txt"
+document_root="$prefix/share/doc/lua-libghidra"
+lua5.4 "$root/tests/installed_documents.lua" source "$root" "$manifest"
+lua5.4 "$root/tests/installed_documents.lua" installed \
+  "$document_root" "$root" "$manifest"
+# Full mode only; run is the driver's unique absolute work directory.
+documents="$run/documents"
+mkdir "$documents"
+bash "$root/tests/installed-documents.sh" \
+  "$document_root" "$root" "$manifest" "$documents/probes"
+```
+
+Both pristine checks run in full and reduced modes; only the mutation driver is
+omitted in reduced mode. `DOCUMENT_ROOT` names the doc directory itself. For B's
+separate LuaRocks verification it is the actual versioned package prefix's
+`share/doc/lua-libghidra`, paired with that route's own `LLG_BUILD_DIR` export,
+never a sibling build manifest or top-level rocks share directory.
+
+B's shell probe requires nonexistent FRESH_WORK and uses a disposable document
+copy plus untouched snapshot. It checks pristine before each mutation and after
+restoration, requires the intended diagnostic category/path for missing/stale
+members, links/fragments, forbidden content, credit misuse and unlisted files,
+and ends pristine. Targets must be manifest members except the deliberate extra
+file; excluded historical files are never restored. Membership/graph/content
+diagnostics precede freshness so stale bytes cannot mask another intended fault.
+C invokes and reports this group; it does not duplicate B's implementation/list.
 
 Add an opt-in `integration` custom target under `BUILD_TESTING`, never an `ALL`
 target or registered CTest test. Cache inputs are `LLG_INTEGRATION_PREFIX`,

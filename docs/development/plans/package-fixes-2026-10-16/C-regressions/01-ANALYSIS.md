@@ -90,7 +90,15 @@ it. Existing inventories remain source accounting, not runtime proof.
 
 Group A owns API/ABI boundary changes. Group B owns docs/install manifests,
 document probes and final audience relocation. C owns driver orchestration and
-the two M4 tests; B consumes C's claim corrections and commands. Final package
+the two M4 tests; B consumes C's claim corrections and commands. B's configure
+export `BUILD/package-documents.txt` is the sole shipping-list projection consumed
+by C's source/installed pristine checks in both modes and mutation probes in full
+mode. C derives it from the selected build, and passes the actual document root
+`PREFIX/share/doc/lua-libghidra`, source root and manifest as absolute paths.
+Missing export is a prerequisite failure; no fallback list or legacy interface
+is retained. B owns checker/probe implementation; C owns those caller arguments.
+The separate website track D consumes B's manual/manifest and adds no C work.
+Final package
 documentation must have no automation-product references except creation credit;
 that condition does not ban identifiers in code, tools or tests. No extra code
 renaming is required. Coordinate the shared CMake file by distinct hunks rather

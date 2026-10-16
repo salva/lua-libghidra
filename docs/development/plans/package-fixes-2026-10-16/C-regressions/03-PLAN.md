@@ -24,8 +24,34 @@ Files: `tests/installed-qualification.sh`, `tests/installed-profiles.sh`,
 introduced callers (currently only the qualification driver). Add the exact flag parser,
 full/reduced summaries, preflight, unique work allocation, fresh cwd/HOME, prefix
 freshness and explicit child arguments specified in the design. Preserve all
-current selected test bodies and three-host coverage. Coordinate document group
-invocation with B's unchanged three-argument document driver interface.
+current selected native test bodies and three-host coverage. Land document caller
+integration together with B's checker/mutation-driver replacement: consume the
+selected configured build's absolute `package-documents.txt`, with no fallback
+or compatibility adapter. B owns those implementations; C owns the qualification
+driver call sites and selection. Both source and installed pristine checks run
+in full/reduced mode; full mode also calls the four-argument mutation driver:
+
+```sh
+manifest="$build/package-documents.txt"
+document_root="$prefix/share/doc/lua-libghidra"
+lua5.4 "$root/tests/installed_documents.lua" source "$root" "$manifest"
+lua5.4 "$root/tests/installed_documents.lua" installed \
+  "$document_root" "$root" "$manifest"
+# Full mode only, under the driver's unique absolute run directory.
+documents="$run/documents"
+mkdir "$documents"
+bash "$root/tests/installed-documents.sh" \
+  "$document_root" "$root" "$manifest" "$documents/probes"
+```
+
+All paths are absolute. The document root is the directory itself, not a module
+or data prefix; `probes` must not exist. Reconfigure after B's shipping-list changes
+to obtain the current build-owned export, and fail clearly if missing/unreadable.
+No manifest CLI/cache option or second shipping list is introduced. B's broader
+probe group covers missing/stale members, links/fragments, content/credit and
+unlisted files, with intended category/path diagnostics and pristine checks before
+each mutation and after snapshot restoration. Confirm that group completes;
+do not reimplement it or restore excluded historical files in C.
 
 Then add only the integration-target/cache-input hunk to `cmake/Binding.cmake`.
 This shared file also belongs to A's ABI and B's install changes: integrate their
@@ -34,7 +60,7 @@ to pretend the installed integration suite was already registered.
 
 Check shell syntax for every edited shell script with `bash -n`. Validate parser
 errors without building: missing/unknown/duplicate options, existing prefix,
-unwritable work root, missing external specs. Confirm diagnostics distinguish
+unwritable work root, missing external specs or selected-build manifest. Confirm diagnostics distinguish
 usage/prerequisite failures from a child-test failure. No automatic fallback.
 
 ### 2. Specialist state prerequisites (F09)
@@ -102,6 +128,7 @@ env -u SAIVAGE_CARD_WORK_ROOT bash tests/installed-qualification.sh \
   --external-specs "$SPECS" --mode full
 ```
 
+The selected build must already have been reconfigured with B's manifest export.
 The prefix does not exist beforehand. The driver builds/installs and runs from its
 own fresh cwd, so do not manually reuse a stale install. `WORK` is ordinary caller
 storage, not a required special path. Run full mode as non-root with namespace
@@ -124,6 +151,28 @@ sha256sum -c tests/fixtures/SHA256SUMS
 
 These focused commands are not replacements for full selection. Persistence uses
 a fresh directory so its known state-file removals cannot touch prior runs.
+For a focused document handoff check after that fresh installation, the exact
+commands are below; normally the driver already ran them, so do not repeat them
+without a changed input or unresolved failure:
+
+```sh
+MANIFEST="$BUILD/package-documents.txt"
+DOCUMENT_ROOT="$RUN/install-full/share/doc/lua-libghidra"
+lua5.4 "$ROOT/tests/installed_documents.lua" source "$ROOT" "$MANIFEST"
+lua5.4 "$ROOT/tests/installed_documents.lua" installed \
+  "$DOCUMENT_ROOT" "$ROOT" "$MANIFEST"
+DOC_RUN=$(mktemp -d "$RUN/document-check.XXXXXX")
+bash "$ROOT/tests/installed-documents.sh" \
+  "$DOCUMENT_ROOT" "$ROOT" "$MANIFEST" "$DOC_RUN/probes"
+```
+
+For B-owned LuaRocks route verification, substitute that route's own absolute
+`LLG_BUILD_DIR/package-documents.txt` and actual versioned package prefix's
+`share/doc/lua-libghidra` as MANIFEST/DOCUMENT_ROOT, retaining the same commands
+and a fresh probe directory. Never use a sibling build export or top-level rocks
+share directory. This does not expand `tests/package-foundation.sh` into full
+integration or assign its packaging verification to C.
+
 Configure the optional named target on the existing build using its existing
 configuration plus:
 
@@ -158,8 +207,10 @@ B applies it to the replacement/current equivalents of:
   permission prerequisites, retained artifacts, and CTest versus integration scope.
 
 A must provide a supported configured ABI/build and disclose any changed test
-host naming. B must provide installed documentation layout/probe compatibility
-before final full integration. Final package docs exclude automation-product
+host naming. B must provide the configured manifest export and exact checker/probe
+interfaces above together with C's callers before final integration. Track D's
+website consumes B's maintained manual/manifest; C has no website work.
+Final package docs exclude automation-product
 references except creation credit; identifiers in code/tests/tools are not banned.
 C does not edit B's audience/navigation/install-manifest files concurrently.
 
