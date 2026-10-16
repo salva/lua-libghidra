@@ -25,7 +25,7 @@ foreach(pair IN ITEMS "libghidra;libghidra-d51ca813ae1b6b59519551a9be8c0b1ad74d8
   string(TOUPPER "${name}" upper)
   set(NATIVE_${upper}_SOURCE "${NATIVE_INPUT_ROOT}/${directory}" CACHE PATH "Override ${name} source")
   if(NOT EXISTS "${NATIVE_${upper}_SOURCE}")
-    message(FATAL_ERROR "Missing ${name} input: ${NATIVE_${upper}_SOURCE}; run scripts/prepare-native.py or supply NATIVE_${upper}_SOURCE")
+    message(FATAL_ERROR "Missing ${name} input: ${NATIVE_${upper}_SOURCE}; run lua5.4 scripts/prepare-native.lua or supply NATIVE_${upper}_SOURCE")
   endif()
 endforeach()
 set(FETCHCONTENT_FULLY_DISCONNECTED ON CACHE BOOL "No implicit network fetches" FORCE)

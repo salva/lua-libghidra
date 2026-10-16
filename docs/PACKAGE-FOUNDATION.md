@@ -78,3 +78,26 @@ Alternatives:
 Operator decision requested: accept that narrow upstream source-build exception,
 or authorize the separately qualified replacement approach. No option is
 preapproved. Continue independent owned-tooling and package work meanwhile.
+
+## Lua input preparation
+
+```sh
+unshare -Urn lua5.4 scripts/prepare-native.lua --offline \
+  --archives /caller/locked-archives --output /caller/fresh-inputs \
+  --profile bfd-sleigh-target-autodetect
+lua5.4 tests/tooling_prepare.lua "$SAIVAGE_CARD_WORK_ROOT/preparation-tests"
+```
+
+Requires GNU tar, unzip, sha256sum, patch, realpath and ordinary core utilities;
+explicit online preparation additionally uses curl (HTTPS only). No Lua packages
+or Python are required. Every archive hash is checked before extraction; all
+member names/kinds are preflighted. This pinned-input implementation deliberately
+rejects tar symlinks, hardlinks, special files and escaped/ambiguous names rather
+than emulating Python's more permissive safe-link filter. The six locked inputs
+have no such required tar entries. Zip language overlay bytes are streamed to
+regular files, not extracted with archive modes/links. Reusing an output path is
+rejected, including a dangling symlink. A failed extraction/patch leaves an
+incomplete output for diagnosis, never a successful profile marker; retry with a
+fresh directory. Only the exact authorized patch hash/revisions/base lock can
+produce the patched profile marker. Existing Python preparation is retained as
+historical reference during migration, not needed by this entrypoint.
