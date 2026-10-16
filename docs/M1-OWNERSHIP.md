@@ -483,3 +483,30 @@ validity/recovery; alternatively an engine-owner-approved transaction/cleanup
 change would need its existing authority and locked patch process. No upstream
 source or installed SDK was changed during this investigation. A debugger exit
 0 after SIGABRT is diagnostic success only, not test success.
+
+### Operator scope disposition (a0289f5)
+
+The explicit operator decision now limits allocation-failure acceptance to wrapper
+ownership/cleanup, Lua longjmp/publication/conversion and boundary exception
+handling. The historical threshold-602 upstream global specpaths mutation remains
+an observed upstream issue, **not repaired**, and is ignored as a qualification
+blocker. No upstream OOM recovery guarantee is made. The earlier demand to finish
+an exhaustive native factory/internal destructor sweep is superseded.
+
+The mandatory read-order test no longer sweeps SDK/internal allocations. It
+refuses the first wrapper Handle allocation (before CreateLocalClient), checks
+structured exception conversion and block/byte balance, retains combined wrapper
+Handle+Lua-error conversion refusal, Lua factory publication faults, ReadBytes
+ordering/bounds and real successful GetCapabilities response conversion under
+Lua OOM with native response storage balance. Normal native factory, lifecycle
+and concurrency tests remain required. The historical upstream reproducer remains
+reproducible from d6d61e2/6239b3a and its recorded logs; it is not a mandatory green
+release test. No known wrapper failure is excluded by this disposition.
+
+An uncommitted test-only specpaths move/reset experiment was stopped and removed
+on delivery of the decision. It reached 685 native faults plus success tail only
+WITH test reset, recording 84 attempts with 1707 blocks/367395 reachable bytes
+removed by test cleanup. Its green results were not production rollback evidence.
+A raw mode still reproduced threshold 602. Neither result repairs upstream state;
+no additional global accounting/investigation is required or continued. Source,
+SDK and approved engine patch remain unchanged.

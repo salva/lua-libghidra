@@ -71,52 +71,17 @@ int main() {
  lua_State* L=lua_newstate(lua_allocate,&allocator); assert(L); luaL_openlibs(L);
  luaL_requiref(L,"libghidra._native",luaopen_libghidra__native,0);
  lua_getfield(L,-1,"local_client");
- // Warm the real SDK once so lazy global caches are outside per-factory balance.
+ // Refuse wrapper Handle allocation only; never enter upstream construction.
  lua_pushcfunction(L,factory); lua_pushvalue(L,1);
- assert(lua_pcall(L,1,2,0)==LUA_OK && lua_isuserdata(L,-2));
- lua_getfield(L,-2,"get_status"); lua_pushvalue(L,-3);
- assert(lua_pcall(L,1,2,0)==LUA_OK); lua_pop(L,2);
- lua_getfield(L,-2,"close"); lua_pushvalue(L,-3);
- assert(lua_pcall(L,1,1,0)==LUA_OK); lua_pop(L,3); lua_gc(L,LUA_GCCOLLECT);
- unsigned factory_native_faults=0, factory_native_tail=0;
- // Persistent refusal through catch/error conversion; measured tail, not 16 sites.
- for(unsigned point=1;point<=4096;++point) {
-  const size_t blocks=live_blocks, bytes=live_bytes;
-  lua_pushcfunction(L,factory); lua_pushvalue(L,1);
-  attempts=denied=0; deny_after=point; watching=deny=true;
-  int result=lua_pcall(L,1,2,0); watching=deny=false;
-  assert(result==LUA_OK);
-  if(denied) {
-   ++factory_native_faults;
-   assert(lua_isnil(L,-2) && lua_istable(L,-1));
-   lua_getfield(L,-1,"code");
-   assert(std::string_view(lua_tostring(L,-1))=="NATIVE_EXCEPTION"); lua_pop(L,1);
-   lua_getfield(L,-1,"operation");
-   assert(std::string_view(lua_tostring(L,-1))=="local_client"); lua_pop(L,1);
-   lua_pop(L,2);
-  } else {
-   ++factory_native_tail;
-   assert(attempts<point && lua_isuserdata(L,-2));
-   lua_getfield(L,-2,"close"); lua_pushvalue(L,-3);
-   assert(lua_pcall(L,1,1,0)==LUA_OK); lua_pop(L,3);
-  }
-  lua_gc(L,LUA_GCCOLLECT);
-  if(live_blocks!=blocks || live_bytes!=bytes) std::fprintf(stderr,"factory point=%u denied=%u attempts=%u blocks=%zu->%zu bytes=%zu->%zu\n",point,denied,attempts,blocks,live_blocks,bytes,live_bytes);
-  assert(live_blocks==blocks && live_bytes==bytes);
-  // Failed factory must not retain the process slot or poison native init.
-  lua_pushcfunction(L,factory); lua_pushvalue(L,1);
-  assert(lua_pcall(L,1,2,0)==LUA_OK && lua_isuserdata(L,-2));
-  lua_getfield(L,-2,"get_status"); lua_pushvalue(L,-3);
-  assert(lua_pcall(L,1,2,0)==LUA_OK && lua_istable(L,-2)); lua_pop(L,2);
-  lua_getfield(L,-2,"close"); lua_pushvalue(L,-3);
-  assert(lua_pcall(L,1,1,0)==LUA_OK && lua_toboolean(L,-1)); lua_pop(L,3);
-  lua_gc(L,LUA_GCCOLLECT);
-  // Successful retry may populate upstream process caches; each following
-  // fault gets a fresh baseline. Failure cleanup itself must still balance.
-  if(factory_native_tail) break;
- }
- assert(factory_native_faults>16 && factory_native_tail==1);
- std::printf("Native factory sweep: %u actual faults then measured success tail; block/byte balance and recovery PASS\n",factory_native_faults);
+ const size_t wrapper_blocks=live_blocks, wrapper_bytes=live_bytes;
+ attempts=denied=0; deny_after=1; watching=deny=true;
+ int factory_result=lua_pcall(L,1,2,0); watching=deny=false;
+ assert(denied==1 && factory_result==LUA_OK && lua_isnil(L,-2));
+ lua_getfield(L,-1,"code");
+ assert(std::string_view(lua_tostring(L,-1))=="NATIVE_EXCEPTION"); lua_pop(L,3);
+ lua_gc(L,LUA_GCCOLLECT);
+ assert(live_blocks==wrapper_blocks && live_bytes==wrapper_bytes);
+ std::puts("Wrapper Handle allocation refusal: exception conversion and balance PASS");
  // Sweep Lua setup/publication/error exits of the real factory. An owner may
  // already have been published when pcall's result adjustment allocates.
  unsigned factory_oom=0,factory_tail=0;
@@ -193,64 +158,10 @@ int main() {
               (long long)size,phases[0],phases[1],largest);
   lua_pop(L,2);
  }
- // Fail real C++ allocation in the SDK NO_PROGRAM/error-copy phase. Denial
- // stays enabled through catch and protected Lua conversion (Lua uses malloc).
- phases[0]=phases[1]=0; denied=0;
- lua_pushcfunction(L,call); lua_pushvalue(L,owner); lua_pushinteger(L,0);
- watching=true; deny=true;
- int rc=lua_pcall(L,2,2,0);
- watching=false; deny=false;
- assert(denied>0 && rc==LUA_OK && lua_isnil(L,-2) && lua_istable(L,-1));
- lua_getfield(L,-1,"code");
- assert(std::string_view(lua_tostring(L,-1))=="NATIVE_EXCEPTION"); lua_pop(L,1);
- lua_getfield(L,-1,"backend");
- assert(std::string_view(lua_tostring(L,-1))=="binding"); lua_pop(L,1);
- lua_getfield(L,-1,"operation");
- assert(std::string_view(lua_tostring(L,-1))=="read_bytes"); lua_pop(L,1);
- lua_getfield(L,-1,"message");
- assert(lua_isstring(L,-1) && lua_rawlen(L,-1)>0); lua_pop(L,1);
- assert(phases[0]==1 && phases[1]==1); lua_pop(L,2);
- // Native and binding locks must unwind; same live owner must remain usable.
- phases[0]=phases[1]=0;
- lua_pushcfunction(L,call); lua_pushvalue(L,owner); lua_pushinteger(L,0);
- assert(lua_pcall(L,2,2,0)==LUA_OK);
- lua_getfield(L,-1,"code");
- assert(std::string_view(lua_tostring(L,-1))=="NO_PROGRAM"); lua_pop(L,3);
- std::printf("ReadBytes native bad_alloc: %u actual denials, structured exception and same-owner recovery PASS\n",denied);
- // Sweep allocation failures through a real allocating success response.
- // GetCapabilities creates native vector/string storage before Lua conversion.
- unsigned reached=0, unreached=0;
- for(unsigned point=1;point<=256;++point) {
-  attempts=denied=0; deny_after=point;
-  const size_t before_blocks=live_blocks, before_bytes=live_bytes;
-  lua_pushcfunction(L,capabilities); lua_pushvalue(L,owner);
-  watching=deny=true; int result=lua_pcall(L,1,2,0); watching=deny=false;
-  assert(result==LUA_OK);
-  if(denied) {
-   ++reached; assert(lua_isnil(L,-2) && lua_istable(L,-1));
-   lua_getfield(L,-1,"code");
-   assert(std::string_view(lua_tostring(L,-1))=="NATIVE_EXCEPTION"); lua_pop(L,1);
-   lua_getfield(L,-1,"operation");
-   assert(std::string_view(lua_tostring(L,-1))=="get_capabilities"); lua_pop(L,1);
-   lua_getfield(L,-1,"backend");
-   assert(std::string_view(lua_tostring(L,-1))=="binding"); lua_pop(L,1);
-  } else {
-   ++unreached; assert(attempts<point && lua_istable(L,-2) && lua_rawlen(L,-2)>0);
-  }
-  lua_pop(L,2);
-  assert(live_blocks==before_blocks && live_bytes==before_bytes);
-  // Retry the complete success path on the same owner after every failure.
-  lua_pushcfunction(L,capabilities); lua_pushvalue(L,owner);
-  assert(lua_pcall(L,1,2,0)==LUA_OK && lua_istable(L,-2) && lua_rawlen(L,-2)>0);
-  lua_pop(L,2);
-  assert(live_blocks==before_blocks && live_bytes==before_bytes);
-  if(unreached) break;
- }
- assert(reached>1 && unreached==1);
- std::printf("GetCapabilities allocation sweep: %u reached failures, success tail, same-owner retries and block/byte balance PASS\n",reached);
+ // Upstream-internal C++ allocation sweeps are excluded by operator scope.
  // Deny Lua conversion allocations after a successful allocating native call.
  // The Packet's vector/strings must die even when conversion longjmps.
- for(int native_fault=0;native_fault<2;++native_fault) {
+ {
  unsigned lua_reached=0,lua_tail=0;
  lua_gc(L,LUA_GCSTOP);
  for(size_t point=1;point<=512;++point) {
@@ -258,24 +169,15 @@ int main() {
   lua_pushcfunction(L,capabilities); lua_pushvalue(L,owner);
   allocator.calls=allocator.refused=0; allocator.fail=point;
   attempts=denied=0; deny_after=1;
-  watching=deny=bool(native_fault);
+  watching=deny=false;
   int result=lua_pcall(L,1,2,0);
   watching=deny=false;
   allocator.fail=SIZE_MAX;
-  if(native_fault) assert(denied>0);
   if(allocator.refused) {
    ++lua_reached; assert(result==LUA_ERRMEM); lua_pop(L,1);
   } else {
    ++lua_tail; assert(result==LUA_OK);
-   if(native_fault) {
-    assert(lua_isnil(L,-2) && lua_istable(L,-1));
-    lua_getfield(L,-1,"code");
-    assert(std::string_view(lua_tostring(L,-1))=="NATIVE_EXCEPTION"); lua_pop(L,1);
-    lua_getfield(L,-1,"backend");
-    assert(std::string_view(lua_tostring(L,-1))=="binding"); lua_pop(L,1);
-    lua_getfield(L,-1,"operation");
-    assert(std::string_view(lua_tostring(L,-1))=="get_capabilities"); lua_pop(L,1);
-   } else assert(lua_istable(L,-2) && lua_rawlen(L,-2)>0);
+   assert(lua_istable(L,-2) && lua_rawlen(L,-2)>0);
    lua_pop(L,2);
   }
   assert(live_blocks==blocks && live_bytes==bytes);
@@ -285,7 +187,7 @@ int main() {
   if(lua_tail) break;
  }
  assert(lua_reached>1 && lua_tail==1);
- std::printf("GetCapabilities Lua conversion OOM (native fault=%d): %u reached, success tail, native block/byte balance PASS\n",native_fault,lua_reached);
+ std::printf("GetCapabilities Lua conversion OOM: %u reached, success tail, native block/byte balance PASS\n",lua_reached);
  lua_gc(L,LUA_GCRESTART);
  }
  lua_close(L); assert(allocator.bytes==0);
