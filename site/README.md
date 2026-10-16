@@ -15,7 +15,7 @@ owner must first expose its existing heading allocator as
 heading text and returns the current helper's slug with duplicate suffixes.
 `site/links.lua` explicitly refuses an independent approximation. No package-owned
 file is changed by the site tools. Full artifact mutation tests, browser/reader
-observations and CI workflow preparation remain required before acceptance.
+observations remain required before acceptance. CI files are preparation only.
 
 ## Explicit tool preparation
 
@@ -29,8 +29,10 @@ therefore records the actually inspected archive, not a claimed upstream signed
 checksum. Review the upstream COPYRIGHT for exceptions; no converter is shipped
 in the manual or installed runtime.
 
-Prepare separately in a fresh caller-owned work directory (the following commands
-need curl and tar and are not part of offline build/check):
+Prepare separately in a fresh caller-owned work directory using
+`sh site/prepare-toolchain.sh "$TOOLS"`. It consumes the lock and verifies the
+archive before extraction. It needs curl and tar and is not part of offline
+build/check. Equivalent explicit steps are:
 
 ```sh
 URL=https://github.com/jgm/pandoc/releases/download/3.6.4/pandoc-3.6.4-linux-amd64.tar.gz
@@ -81,7 +83,14 @@ fresh render, deterministic double rendering and actual desktop/360px/zoom/
 keyboard/reader behavior before acceptance. Do not claim a full accessibility
 audit from bounded observations.
 
-Publication workflows are not prepared yet. The public repository API reports
-`main` as the default branch. Preparing local tools grants no permission to push,
+The two prepared workflows use ubuntu-24.04, full-SHA actions and read-only
+build jobs. `site-check.yml` handles PR/main push; `site-publish.yml` is manual,
+main-only with only the deploy job holding Pages/OIDC rights, a github-pages
+environment and serialized publication. It uploads only a checked output tar
+from that run. The upload is pinned directly instead of using the Pages upload
+composite, whose reviewed revision invokes a floating upload-artifact@v4. The
+public repository API reports `main` as the default branch. YAML parsing and
+permission/pin assertions passed locally; no remote run or deployment occurred.
+The contract test remains red, so these workflows cannot yet publish successfully. Preparing local tools grants no permission to push,
 dispatch, enable Pages, alter repository settings or deploy. There is no live-site
 claim and no distribution permission implied by rendering exact legal assets.

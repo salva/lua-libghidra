@@ -167,4 +167,14 @@ function M.link(source,url,routes)
   local result=M.page_relative(routes[source].output,target.output)..suffix
   return result,false,target.output
 end
+-- Inputs whose identity affects generation or verification. This is tooling
+-- provenance, not a second document inventory. Builder/checker share the list.
+M.tool_inputs={
+  'site/content.lua','site/cli.lua','site/html.lua','site/links.lua',
+  'site/template.html','site/style.css','site/toolchain.lock.json',
+  'site/export-documents.cmake','site/inspect-documents.cmake','site/prepare-toolchain.sh',
+  'scripts/build-site.lua','scripts/check-site.lua','scripts/package-documents.lua',
+  'scripts/render-fields.lua','scripts/tool_json.lua','scripts/tool_json_encode.lua',
+  'tests/installed_documents.lua','cmake/PackageDocuments.cmake',
+}
 return M

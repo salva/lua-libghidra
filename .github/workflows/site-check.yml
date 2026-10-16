@@ -1,0 +1,31 @@
+# Preparation only; no deployment permission.
+name: Site check
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  check:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Prepare explicit converter and prerequisites
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y lua5.4 cmake
+          sh site/prepare-toolchain.sh "$RUNNER_TEMP/pandoc"
+      - name: Offline build and checks
+        run: |
+          PANDOC="$RUNNER_TEMP/pandoc/pandoc-3.6.4/bin/pandoc"
+          lua5.4 scripts/build-site.lua --pandoc "$PANDOC" --baseurl /lua-libghidra --origin https://salva.github.io --output "$RUNNER_TEMP/site" --report "$RUNNER_TEMP/site.json"
+          lua5.4 scripts/check-site.lua --root "$RUNNER_TEMP/site" --baseurl /lua-libghidra --report "$RUNNER_TEMP/site.json" --source .
+          lua5.4 tests/site_contract.lua --work "$RUNNER_TEMP/probes" --pandoc "$PANDOC"
+          lua5.4 scripts/build-site.lua --pandoc "$PANDOC" --baseurl /lua-libghidra --origin https://salva.github.io --output "$RUNNER_TEMP/again" --report "$RUNNER_TEMP/again.json"
+          diff -r "$RUNNER_TEMP/site" "$RUNNER_TEMP/again"
+          lua5.4 scripts/build-site.lua --pandoc "$PANDOC" --baseurl '' --origin https://salva.github.io --output "$RUNNER_TEMP/root-site" --report "$RUNNER_TEMP/root.json"
+          lua5.4 scripts/check-site.lua --root "$RUNNER_TEMP/root-site" --baseurl '' --report "$RUNNER_TEMP/root.json" --source .

@@ -7,6 +7,10 @@ local o=cli.options(arg,{'--root','--baseurl','--report','--source'})
 local root=c.safe_path(o['--root'],'directory')
 local source=o['--source']=='.' and c.capture('pwd -P'):gsub('\n$','') or c.absolute(o['--source'])
 c.safe_path(source,'directory'); c.baseurl(o['--baseurl'])
+assert(source==c.capture('pwd -P'):gsub('\n$',''),'--source must be the current checkout')
+c.disjoint(root,source..'/site')
+c.safe_path(source..'/site/inspect-documents.cmake','file')
+c.safe_path(source..'/cmake/PackageDocuments.cmake','file')
 local report=json.decode(c.read(c.safe_path(o['--report'],'file')))
 assert(report.schema==1 and report.baseurl==o['--baseurl'],'report configuration mismatch')
 c.origin(report.origin)
@@ -33,7 +37,14 @@ for item in c.capture('find '..c.quote(root).." -mindepth 1 -printf '%y %P\\0'")
     seen[path]=true
   end
 end
-local ids,links={},{}
+-- Recheck current source graph/content; hashes in an editable report cannot
+-- waive policy. Reuse the package checker against our own current export.
+local check_work=c.capture('mktemp -d '..c.quote(o['--report']..'.check-XXXXXX')):gsub('\n$','')
+local export_work=check_work..'/export'
+c.command('cmake -DLLG_DOCUMENT_EXPORT_DIR='..c.quote(export_work)..' -P site/export-documents.cmake')
+c.command('lua5.4 scripts/render-fields.lua --check')
+c.command('lua5.4 tests/installed_documents.lua source '..c.quote(source)..' '..c.quote(export_work..'/package-documents.txt'))
+local ids,links,details={},{},{}
 local external={}
 for path in pairs(outputs) do
   assert(seen[path],'missing output: '..path)
@@ -41,8 +52,9 @@ for path in pairs(outputs) do
   assert(report.files[path]==hash(root..'/'..path),'stale output/report: '..path)
   if path:match('%.html$') then
     local decoded
-    ids[path],links[path],decoded=html.inspect(c.read(root..'/'..path),path)
+    ids[path],links[path],decoded,details[path]=html.inspect(c.read(root..'/'..path),path)
     html.policy(path,decoded)
+    assert(details[path].canonical_count==1,'exactly one canonical link required: '..path)
   end
 end
 for path in pairs(report.files) do assert(outputs[path]~=nil,'unlisted report member: '..path) end
@@ -55,14 +67,22 @@ for _,path in ipairs(documents) do
   end
 end
 for path in pairs(report.sources) do assert(routes[path],'unlisted report source') end
-for _,path in ipairs{'site/content.lua','site/links.lua','site/template.html','site/style.css',
-  'site/toolchain.lock.json','site/export-documents.cmake','scripts/build-site.lua',
-  'scripts/check-site.lua','scripts/package-documents.lua','cmake/PackageDocuments.cmake'} do
+for _,path in ipairs(c.tool_inputs) do
   c.safe_path(source..'/'..path,'file')
   assert(report.tools[path]==hash(source..'/'..path),'stale tooling: '..path)
 end
 assert(c.read(root..'/assets/style.css')==c.read(source..'/site/style.css'),'stale stylesheet')
 assert(c.read(root..'/.nojekyll')=='','invalid .nojekyll')
+-- Rendered complete example displays are exact text, not merely the presence
+-- of a download link. Pandoc omits the source final LF in code blocks.
+for _,path in ipairs(examples) do
+  local wanted=c.read(source..'/'..path):gsub('\n$','')
+  local count=0
+  for _,block in ipairs(details[routes['docs/EXAMPLES.md'].output].code) do
+    if block.text==wanted then count=count+1 end
+  end
+  assert(count==1,'missing/altered/duplicate complete example display: '..path)
+end
 for page,targets in pairs(links) do
   for _,target in ipairs(targets) do
     local url=target.value

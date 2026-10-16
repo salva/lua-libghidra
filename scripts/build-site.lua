@@ -64,9 +64,7 @@ c.write(output..'/assets/style.css',c.read('site/style.css'))
 c.write(output..'/.nojekyll','')
 files['assets/style.css']=digest(output..'/assets/style.css'); files['.nojekyll']=digest(output..'/.nojekyll')
 local tools={}
-for _,path in ipairs{'site/content.lua','site/links.lua','site/template.html','site/style.css',
-  'site/toolchain.lock.json','site/export-documents.cmake','scripts/build-site.lua',
-  'scripts/check-site.lua','scripts/package-documents.lua','cmake/PackageDocuments.cmake'} do
+for _,path in ipairs(c.tool_inputs) do
   tools[path]=digest(source..'/'..path)
 end
 c.write(report,encode({schema=1,baseurl=o['--baseurl'],origin=o['--origin'],
