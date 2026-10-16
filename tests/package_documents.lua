@@ -2,6 +2,23 @@
 -- Focused synthetic grammar tests, not a second package inventory.
 local root, work=assert(arg[1]),assert(arg[2])
 local policy=dofile(root..'/scripts/package-documents.lua')
+-- Public package/site interface: keep the existing slug/count semantics, not
+-- Pandoc defaults or global uniqueness repair of colliding suffixed bases.
+assert(type(policy.heading_ids)=='function','shared-heading-api: heading_ids missing')
+local ids,other=policy.heading_ids(),policy.heading_ids()
+assert(type(ids)=='function' and type(other)=='function')
+for _,case in ipairs{
+ {'Page `value`','page-value'}, {'Repeat','repeat'}, {'Repeat','repeat-1'},
+ {'Repeat','repeat-2'}, {'A & B!','a--b'}, {'A_B-C','a_b-c'},
+ {' spaced  text ','-spaced--text-'}, {'tab\there','tab-here'},
+ {'',''}, {'!!!','-1'}, {'','-2'},
+ {'Collision','collision'}, {'Collision-1','collision-1'},
+ {'Collision','collision-1'}, {'Collision-1','collision-1-1'},
+} do assert(ids(case[1])==case[2],'heading ID parity: '..case[1]) end
+assert(other('Repeat')=='repeat' and other('Repeat')=='repeat-1','allocator independence')
+assert(ids('Repeat')=='repeat-3','interleaved allocator independence')
+assert(policy.heading_ids()('Repeat')=='repeat','fresh document state')
+print('Shared heading API/parity/duplicates/collision semantics/independence PASS')
 policy.absolute(work)
 local function q(s) return "'"..s:gsub("'","'\\''").."'" end
 assert(os.execute('test ! -e '..q(work)..' && mkdir -p '..q(work)))
@@ -24,6 +41,21 @@ local function check(text,category,target)
  else assert(ok,err) end
 end
 check(good)
+-- Anchors must consume the exported allocator, with one state per document.
+-- Cover ATX closing marks, setext, duplicate suffixes and fenced exclusions.
+write('page.md','# Page `value` ###\n\nRepeat\n------\n\n## Repeat\n\n## Repeat\n\n```md\n## Repeat\n```\n')
+local factory=policy.heading_ids
+local allocations,calls=0,0
+policy.heading_ids=function()
+ allocations=allocations+1
+ local allocate=factory()
+ return function(heading) calls=calls+1;return allocate(heading) end
+end
+check(good..'\n[third](page.md#repeat-2)')
+assert(allocations==2 and calls==5,'anchors must share exported allocator per document')
+policy.heading_ids=factory
+check(good..'\n[fenced is not a heading](page.md#repeat-3)','missing-fragment','repeat-3')
+write('page.md','# Page `value`\n\n## Repeat\n\n## Repeat\n')
 check(good..'\n[bad](absent.md)','missing-link-target','absent.md')
 check(good..'\n![bad](absent.png)','missing-link-target','absent.png')
 check(good..'\n[bad][no-definition]','missing-link-target','no-definition')

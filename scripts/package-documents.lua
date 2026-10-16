@@ -105,8 +105,18 @@ end
 local function slug(s)
   return s:lower():gsub('`',''):gsub('[^%w%s_%-]',''):gsub('%s','-')
 end
+-- One allocator per document. Preserve per-base suffix counting, including
+-- collisions with literal suffixed bases; consumers share this exact policy.
+function M.heading_ids()
+  local counts = {}
+  return function(heading)
+    local base=slug(heading); local n=counts[base] or 0
+    counts[base]=n+1
+    return base .. (n>0 and ('-'..n) or '')
+  end
+end
 local function anchors(text)
-  local found, counts = {}, {}
+  local found, id = {}, M.heading_ids()
   local previous
   for line in (prose(text)..'\n'):gmatch('(.-)\n') do
     local heading = line:match('^%s*#+%s+(.+)')
@@ -116,8 +126,7 @@ local function anchors(text)
     previous=line~='' and line or nil
     if heading then
       heading=heading:gsub('%s+#+%s*$','')
-      local base=slug(heading); local n=counts[base] or 0
-      counts[base]=n+1; found[base .. (n>0 and ('-'..n) or '')]=true
+      found[id(heading)]=true
     end
   end
   return found
