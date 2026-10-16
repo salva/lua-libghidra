@@ -8,7 +8,9 @@ not a guarantee that the pinned engine supports every input or persists every ed
 
 ## Start here
 
-- [Install and decompile your own input](docs/EXAMPLES.md)
+- [Installation: source or local SDK, CMake or LuaRocks](docs/INSTALL.md)
+- [Decompile your own function](docs/TUTORIAL.md)
+- [Two task scripts and their results](docs/EXAMPLES.md)
 - [Current API, exact values and limitations](docs/API.md)
 - [Generated native field reference](api/FIELDS.md)
 - [Dependency notices and conveyance obligations](docs/NOTICES.md)

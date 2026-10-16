@@ -130,11 +130,6 @@ if(BUILD_TESTING)
     ${PROJECT_SOURCE_DIR}/tests/ownership_loaded_copy.lua ${CMAKE_BINARY_DIR})
   set_tests_properties(ownership_loaded_copy PROPERTIES TIMEOUT 30)
 endif()
-# Runnable first-slice example plus explicit fixture test data, not module APIs.
-install(FILES ${PROJECT_SOURCE_DIR}/examples/first_slice.lua
-              ${PROJECT_SOURCE_DIR}/examples/core_mutation.lua
-              ${PROJECT_SOURCE_DIR}/examples/fixture_manifest.lua
-        DESTINATION share/libghidra/examples)
 if(BUILD_TESTING)
   add_executable(m3_seeded_host ${PROJECT_SOURCE_DIR}/tests/m3_seeded_host.cpp
     ${PROJECT_SOURCE_DIR}/src/boundary.cpp ${PROJECT_SOURCE_DIR}/src/owner.cpp)
@@ -153,5 +148,14 @@ foreach(document IN LISTS LLG_PACKAGE_DOCUMENTS)
   install(FILES "${PROJECT_SOURCE_DIR}/${document}"
     DESTINATION "share/doc/lua-libghidra/${directory}")
 endforeach()
-install(FILES ${PROJECT_SOURCE_DIR}/examples/decompile.lua
-  DESTINATION share/libghidra/examples)
+foreach(example IN LISTS LLG_PACKAGE_EXAMPLES)
+  install(FILES "${PROJECT_SOURCE_DIR}/${example}" DESTINATION share/libghidra/examples)
+endforeach()
+if(BUILD_TESTING)
+  add_test(NAME decompile_example COMMAND ${LUA_EXECUTABLE}
+    ${PROJECT_SOURCE_DIR}/tests/decompile_example.lua ${PROJECT_SOURCE_DIR})
+  add_test(NAME inspect_function_example COMMAND ${LUA_EXECUTABLE}
+    ${PROJECT_SOURCE_DIR}/tests/inspect_function_example.lua ${PROJECT_SOURCE_DIR})
+  set_tests_properties(inspect_function_example PROPERTIES
+    ENVIRONMENT "LUA_PATH=${PROJECT_SOURCE_DIR}/lua/?.lua\;${PROJECT_SOURCE_DIR}/lua/?/init.lua;LUA_CPATH=${CMAKE_BINARY_DIR}/?.so")
+endif()

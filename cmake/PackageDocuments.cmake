@@ -6,6 +6,8 @@ set(LLG_PACKAGE_DOCUMENTS
   native-inputs.lock.json
   native-patched.lock.json
   native-system.lock.json
+  docs/INSTALL.md
+  docs/TUTORIAL.md
   docs/EXAMPLES.md
   docs/API.md
   docs/NOTICES.md
@@ -25,7 +27,15 @@ set(LLG_PACKAGE_DOCUMENTS
   docs/notices/lua.txt
   docs/notices/engine-zlib.txt
 )
+set(LLG_PACKAGE_EXAMPLES
+  examples/decompile.lua
+  examples/inspect_function.lua
+)
+list(APPEND LLG_PACKAGE_DOCUMENTS ${LLG_PACKAGE_EXAMPLES})
 function(llg_export_package_documents output)
   string(REPLACE ";" "\n" documents "${LLG_PACKAGE_DOCUMENTS}")
   file(WRITE "${output}" "${documents}\n")
+  get_filename_component(directory "${output}" DIRECTORY)
+  string(REPLACE ";" "\n" examples "${LLG_PACKAGE_EXAMPLES}")
+  file(WRITE "${directory}/package-examples.txt" "${examples}\n")
 endfunction()

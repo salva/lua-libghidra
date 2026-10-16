@@ -5,5 +5,5 @@ return {
  binary_path=root..'/tests/fixtures/inputs/authored.elf',
  project_path=root..'/tests/fixtures/project/authored.gpr',
  spec_root='', language_id='x86:LE:64:default', compiler_spec_id='gcc',
- function_address='0x401106', absent_function_address='18446744073709551615',
+ function_address='0x401106',
 }

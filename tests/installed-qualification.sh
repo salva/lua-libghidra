@@ -81,12 +81,18 @@ for host in "$(command -v lua5.4)" "$build/boundary_static_host" "$build/boundar
 done
 echo 'COMPLETE services'
 group=examples
-for example in first_slice core_mutation; do
- LIBGHIDRA_FIXTURE_ROOT="$root" \
- LUA_PATH="$prefix/share/lua/5.4/?.lua;$prefix/share/lua/5.4/?/init.lua;$prefix/share/libghidra/examples/?.lua" \
- LUA_CPATH="$prefix/lib/lua/5.4/?.so" \
- lua5.4 "$prefix/share/libghidra/examples/$example.lua"
-done
+selected_lua=$(sed -n 's/^LUA_EXECUTABLE:[^=]*=//p' "$build/CMakeCache.txt")
+lua_destination=$(sed -n 's/^LUA_SOURCE_DIR:[^=]*=//p' "$build/CMakeCache.txt")
+c_destination=$(sed -n 's/^LUA_MODULE_DIR:[^=]*=//p' "$build/CMakeCache.txt")
+[[ $selected_lua == /* && -x $selected_lua && -n $lua_destination && -n $c_destination ]] || prerequisite 'selected Lua/module destinations missing from build cache'
+[[ $lua_destination == /* ]] || lua_destination="$prefix/$lua_destination"
+[[ $c_destination == /* ]] || c_destination="$prefix/$c_destination"
+example_options=()
+[[ -z $external_specs ]] || example_options=(--external-specs "$external_specs")
+bash "$root/tests/installed-examples.sh" --lua "$selected_lua" \
+ --lua-module-dir "$lua_destination" --c-module-dir "$c_destination" \
+ --example-root "$prefix/share/libghidra/examples" --source "$root" \
+ --work "$run/examples" "${example_options[@]}"
 echo 'COMPLETE examples'
 group=pristine-documents
 document_root="$prefix/share/doc/lua-libghidra"

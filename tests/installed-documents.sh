@@ -30,6 +30,25 @@ reject() {
 # These are probe cases, not a second shipping inventory.
 for path in README.md docs/API.md; do grep -Fx "$path" "$manifest"; done
 check
+for path in docs/INSTALL.md docs/TUTORIAL.md examples/decompile.lua examples/inspect_function.lua; do
+ rm "$work/documents/$path"
+ reject missing-member "$path"
+done
+rm "$work/documents/README.md"
+ln -s "$source/README.md" "$work/documents/README.md"
+reject unlisted-document README.md
+# Required-member policy survives removal from both the tree and export.
+original_manifest=$manifest
+for path in docs/INSTALL.md docs/TUTORIAL.md examples/inspect_function.lua; do
+ manifest="$work/required.manifest"
+ grep -Fxv "$path" "$original_manifest" > "$manifest"
+ rm "$work/documents/$path"
+ if check > "$work/required.log" 2>&1; then echo "false green: omitted $path" >&2; exit 1; fi
+ grep -F 'missing-policy:' "$work/required.log"
+ grep -F "$path" "$work/required.log"
+ manifest=$original_manifest
+ restore
+done
 rm "$work/documents/docs/API.md"
 reject missing-member docs/API.md
 printf '\nHarmless freshness probe.\n' >> "$work/documents/README.md"

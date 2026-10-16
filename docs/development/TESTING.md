@@ -2,7 +2,7 @@
 
 Run from a checkout with absolute input/build/work paths. Use the locked local
 native revision and selected engine profile, ordinary C-built Lua 5.4/compatible
-headers, C++20 and CMake >=3.26. [Installation](../EXAMPLES.md) documents source
+headers, C++20 and CMake >=3.26. [Installation](../INSTALL.md) documents source
 and qualified-SDK CMake/LuaRocks routes. Do not substitute an HTTP-only SDK or
 arbitrary static BFD closure. Source builds alone run unchanged upstream
 `cpp/embed_specs.py` with Python >=3.10 stdlib zlib/XML; SDK consumption and Lua

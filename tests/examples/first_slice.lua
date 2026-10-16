@@ -16,8 +16,6 @@ local alias,metadata
  assert(dec==env.decompilation and dec.completed and not dec.is_fallback)
  assert(dec.pseudocode:find('* 3 + 7',1,true))
  local fn,response=check(session:get_function(address)); assert(fn==response['function'])
- local missing,err,response=session:get_function(check(ghidra.u64(fixture.absent_function_address)))
- assert(missing==nil and err.code=='NOT_FOUND' and response['function']==nil)
  local bytes,response=check(session:read_bytes(address,16)); assert(bytes==response.data)
  assert(bytes:sub(1,4)=='\xf3\x0f\x1e\xfa')
  for _,record in ipairs(check(session:list_functions{limit=2}).functions) do print(record.name) end

@@ -184,6 +184,15 @@ end
 function M.check(mode, root, source, manifest)
   root=M.absolute(root); source=M.absolute(source)
   local list,set=M.manifest(manifest)
+  -- Enforce required product membership before graph traversal, so removing a
+  -- page and its manifest entry cannot turn a policy obligation into a link error.
+  if set['native-inputs.lock.json'] or set['native-patched.lock.json'] or set['native-system.lock.json'] or set['api/FIELDS.md'] then
+    for _,path in ipairs{'README.md','docs/API.md','docs/NOTICES.md','docs/EXAMPLES.md',
+      'docs/INSTALL.md','docs/TUTORIAL.md','examples/decompile.lua','examples/inspect_function.lua',
+      'native-inputs.lock.json','native-patched.lock.json','native-system.lock.json','api/FIELDS.md'} do
+      if not set[path] then fail('missing-policy',path,'required product member') end
+    end
+  end
   local files,headings={},{}
   -- Membership and existence always precede graph/content and freshness.
   -- Inspect file kinds before opening: never follow a link or block on a FIFO.
@@ -219,12 +228,16 @@ function M.check(mode, root, source, manifest)
   if files['native-inputs.lock.json'] or files['native-patched.lock.json'] or
      files['native-system.lock.json'] or files['api/FIELDS.md'] then
     for _,path in ipairs{'README.md','docs/API.md','docs/NOTICES.md','docs/EXAMPLES.md',
+      'docs/INSTALL.md','docs/TUTORIAL.md','examples/decompile.lua','examples/inspect_function.lua',
       'native-inputs.lock.json','native-patched.lock.json','native-system.lock.json','api/FIELDS.md'} do
       if not files[path] then fail('missing-policy',path,'required product member') end
     end
     require_facts('README.md', {'no HTTP, SWIG', 'upstream Python-binding dependency',
       'signed', 'eight-byte double', 'Native SOURCE builds alone', 'cpp/embed_specs.py',
       'Python >=3.10', 'zlib/XML', 'SDK-consumer or runtime Python'})
+    require_facts('docs/INSTALL.md', {'Python >=3.10', 'zlib/XML', 'Protobuf', 'PIC', '$ORIGIN', 'LUA_MODULE_DIR', 'deploy_lua_dir'})
+    require_facts('docs/TUTORIAL.md', {'native process crash', 'one binding-owned client', 'no autosave', 'FileBytes', 'True-local'})
+    require_facts('docs/EXAMPLES.md', {'BYTE_COUNT', 'INSTRUCTION_END', 'INSTRUCTION_COUNT', 'NOT_FOUND', 'Close scopes'})
     require_facts('docs/API.md', {'CLIENT_IN_USE', 'pages-only', 'native process crash'})
     require_facts('docs/NOTICES.md', {'Elias Bachaalany', 'redistribution clearance',
       'SOURCE builds only', 'cpp/embed_specs.py', 'Python >=3.10', 'zlib/XML',
