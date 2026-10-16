@@ -1,6 +1,9 @@
 # Implementation and qualification plan
 
-Updated exit report, 2026-10-15. M0 is pending review; M1–M5 are not qualified. [SPEC](SPEC.md) is the contract;
+Historical planning/exit reports are retained below. Current slice/core implementation
+and bounded installed evidence are summarized in [INSTALLED-CORE](INSTALLED-CORE.md).
+These are not M5 acceptance or independent reviewer approval; old pending-stage
+statements below describe their original report, not absence of current code. [SPEC](SPEC.md) is the contract;
 [DESIGN](DESIGN.md) the architecture; [coverage](COVERAGE.md) the scope.
 Deployment policy stays in [operations](../workflows/OPERATIONS.md).
 

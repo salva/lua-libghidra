@@ -1,7 +1,8 @@
 # Lua bindings for libghidra — specification
 
-Proposed review baseline, 2026-10-15; no implementation or runtime qualification
-is complete. See [design](DESIGN.md), [plan](PLAN.md),
+Requirements baseline, 2026-10-15. Implementation and bounded runtime evidence
+are tracked separately in [current qualification](INSTALLED-CORE.md); no M5
+release approval is implied. See [design](DESIGN.md), [plan](PLAN.md),
 [coverage](COVERAGE.md) and [review dispositions](reviews/00-INDEX.md).
 
 ## 1. Scope

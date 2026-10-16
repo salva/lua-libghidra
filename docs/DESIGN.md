@@ -1,8 +1,8 @@
 # Design
 
-Proposed implementation of [SPEC.md](SPEC.md); no experiments are claimed passed.
-Use a minimal C++20 adapter and small Lua facade. sol2 is provisional, contingent
-on M1's C-built Lua longjmp audit; direct Lua C API is the fallback. No SWIG,
+Architecture for [SPEC.md](SPEC.md). The implemented minimal C++20 adapter and
+small Lua facade use protected direct Lua C API frames; sol2 was not retained.
+See [current qualification](INSTALLED-CORE.md) for evidence, separate from design. No SWIG,
 HTTP abstraction, Python bridge or record-object hierarchy.
 
 ## 1. Layers and ownership

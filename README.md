@@ -1,21 +1,25 @@
 # lua-libghidra
 
-Proposed local Lua bindings for [libghidra by Elias Bachaalany](https://github.com/0xeb/libghidra).
-These AI-assisted design documents are informed by upstream API, documentation
-and source review; no binding implementation or runtime qualification exists yet.
+Native local Lua bindings for [libghidra by Elias Bachaalany](https://github.com/0xeb/libghidra).
+This original wrapper and its AI-assisted documentation are informed by upstream
+API, documentation and source review. Both Lua surfaces and core adapters are
+implemented; bounded real installed runtime evidence exists, but M5 release
+acceptance and publication are not approved. See [current qualification](docs/INSTALLED-CORE.md).
 Upstream is not represented as endorsing this project.
 
+- [Core API reference](docs/API.md), [field manifest](api/FIELDS.md), and
+  [local notices/source obligations](docs/NOTICES.md).
 - [Specification](docs/SPEC.md): two public surfaces, values and behavior.
 - [Design](docs/DESIGN.md): ownership, pagination and reproducible native build.
 - [Coverage](docs/COVERAGE.md): named native operations and release tiers.
-- [Proposed examples](docs/EXAMPLES.md): first-slice calls and shared ownership.
+- [Installed examples](docs/EXAMPLES.md): first-slice calls and shared ownership.
 - [Plan](docs/PLAN.md): readiness and release qualification gates.
 - [Review index](docs/reviews/00-INDEX.md): dispositions and pending review.
 - [Operations](workflows/OPERATIONS.md): automation policy.
 
 Baseline: Linux x86-64, Lua 5.4, C++20, native local engine, CMake/LuaRocks.
-sol2 is provisional pending ownership validation. HTTP is deferred; SWIG excluded.
-The SDK proposes faithful `libghidra.lowlevel` responses and a small `libghidra`
+The adapter uses the protected direct Lua C API (no sol2). HTTP is deferred; SWIG excluded.
+The SDK provides faithful `libghidra.lowlevel` responses and a small `libghidra`
 Session facade sharing one owner. Source builds require Python >=3.10 with zlib
 for upstream spec embedding in the current dependency profile. Python is allowed
 during development, but upstream Python bindings are not a build/runtime/test

@@ -139,3 +139,14 @@ if(BUILD_TESTING)
   target_link_libraries(m3_seeded_host PRIVATE ${LUA_LIBRARIES} binding_local_whole)
   add_test(NAME m3_seeded_core COMMAND m3_seeded_host ${PROJECT_SOURCE_DIR}/tests/m3_seeded.lua ${PROJECT_SOURCE_DIR})
 endif()
+
+# Local source handoff: preserve relative documentation/manifest/lock links.
+# Installing notices is accounting, not permission to convey linked dependencies.
+set(LLG_DOCUMENT_DIR share/doc/lua-libghidra)
+install(FILES ${PROJECT_SOURCE_DIR}/README.md ${PROJECT_SOURCE_DIR}/LICENSE
+              ${PROJECT_SOURCE_DIR}/native-inputs.lock.json
+              ${PROJECT_SOURCE_DIR}/native-patched.lock.json
+              ${PROJECT_SOURCE_DIR}/native-system.lock.json
+        DESTINATION ${LLG_DOCUMENT_DIR})
+install(DIRECTORY ${PROJECT_SOURCE_DIR}/docs ${PROJECT_SOURCE_DIR}/api
+        DESTINATION ${LLG_DOCUMENT_DIR})

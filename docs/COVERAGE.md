@@ -4,7 +4,10 @@ Inventory at the [SPEC pin](SPEC.md): public interfaces in
 `cpp/include/libghidra/`, implementations in `cpp/src/local_client.cpp`.
 Names below are native C++ operations; low-level names are snake_case.
 All listed local overrides belong to the full target; tier marks first delivery.
-No row is runtime-qualified. Each needs a positive real supported case, including
+This table is the target inventory, not a runtime pass ledger. Implemented slice/core
+evidence is linked in [current qualification](INSTALLED-CORE.md) and [API](API.md);
+generated source slots remain unqualified by design. Each supported row needs a
+positive real supported case, including
 analyzed-project inputs where required, plus negative limitation tests. The
 constant-empty compatibility row below has an explicit fidelity-only gate.
 
