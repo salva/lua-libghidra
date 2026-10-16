@@ -62,14 +62,35 @@ CFG/xref/type families, union/signature practical producer limits, category-spec
 persistence, and no rollback/general restoration guarantee. Source inventory,
 converter tests or positive acknowledgements do not override those facts.
 
-## Upstream generator decision — pending authority
+## Upstream generator decision — resolved
 
 Unchanged pinned upstream `EmbedSpecs.cmake` invokes Python >=3.10 + stdlib/zlib
 at source configure, even with bindings off. SDK/runtime paths do not need it.
-The narrow build-time exception is **pending operator approval**, OR a
-replacement/integration must be separately authorized and qualified. Neither
-option is preapproved; alternatives and rationale remain in `PACKAGE-FOUNDATION.md`.
-No Python bindings, project-owned Python tooling/test oracle, SDK-consumer dependency
-or installed-runtime Python requirement is authorized. Technical source-build
-success does not resolve this authority gate or establish M5/release acceptance.
-No generator changes or new distribution permission are inferred.
+The operator approved this unchanged pinned generator's build-time-only Python
+use; alternatives and rationale remain in `PACKAGE-FOUNDATION.md`. No Python
+bindings, project-owned Python tooling/test oracle, SDK-consumer dependency or
+installed-runtime Python requirement is authorized. Resume the existing package
+qualification/review; approval is not a test pass or new distribution permission.
+
+## Post-decision qualification and current wrapper
+
+Interpreter/module identities and reproducible disconnected source commands are
+in `evidence/source-generator-qualification.txt`. Current source build reuses
+unchanged dependency objects and reports 385 embedded files up-to-date; it is not
+new clean-generation evidence. It rebuilt current M4 wrapper code and installs
+at `$SAIVAGE_CARD_WORK_ROOT/approved-source-prefix` using relative module paths.
+Do not reuse pre-M4 wrapper binaries as current safety proof. Existing installed
+VM matrix now includes M4 full-reproducer/services/contracts alongside M2/M3;
+`bash tests/installed-qualification.sh build` also checks installed policy copies
+against source, so future stale-authority regressions are visible.
+
+The original source-rock build cache used absolute LuaRocks destinations. For a
+separate CMake prefix set `LUA_MODULE_DIR=lib/lua/5.4` and
+`LUA_SOURCE_DIR=share/lua/5.4` explicitly; `--prefix` alone does not relocate absolute
+cached destinations. This does not change the LuaRocks driver's installation.
+For the document suite use both explicit prefixes and optional source freshness:
+
+```sh
+prefix="$SAIVAGE_CARD_WORK_ROOT/approved-source-prefix"
+lua5.4 tests/installed_documents.lua "$prefix" "$prefix" "$PWD"
+```

@@ -29,35 +29,24 @@ assert(not readme:find('no binding implementation', 1, true))
 assert(not readme:find('sol2 is provisional', 1, true))
 print('installed API/fields/notices/provenance and honest current summaries PASS')
 
--- R1: technical source-build success is not retained-generator permission.
--- Keep the original red-stage claim probes; also require the pending disposition.
-local policy={
- {'docs/SPEC.md','approved one narrow exception'},
- {'docs/DESIGN.md','is explicitly approved'},
- {'docs/PLAN.md','The operator approved the unchanged pinned upstream'},
- {'docs/PACKAGE-FOUNDATION.md','explicitly approved this narrow'},
- {'docs/PACKAGE-HANDOFF.md','The operator approved this unchanged pinned'},
-}
-for _, row in ipairs(policy) do
- local text=read(root..row[1])
- assert(not text:find(row[2],1,true), 'unsupported generator authority: '..row[1])
- assert(not text:find('operator-approved exception',1,true))
- assert(not text:find('Operator decision: **accepted**',1,true))
- assert(not text:find('generator decision — resolved',1,true))
- -- Normalize line wrapping, not meaning.
- local normalized=text:gsub('%s+',' ')
- assert(normalized:find('pending operator approval',1,true), row[1])
- assert(normalized:find('separately authorized and qualified',1,true), row[1])
- assert(normalized:find('Neither option is preapproved',1,true), row[1])
- if arg[3] then
-  assert(text==read(arg[3]..'/'..row[1]), 'stale installed policy: '..row[1])
- end
+-- Operator YES/19d0945 is narrow SOURCE-build authority, not runtime permission.
+local spec = read(root .. 'docs/SPEC.md')
+assert(spec:find('approved one narrow exception', 1, true))
+assert(spec:find('unchanged pinned upstream `cpp/embed_specs.py`', 1, true))
+assert(spec:find('SDK-consumer builds or installed Lua runtime', 1, true))
+for _,path in ipairs{'docs/SPEC.md','docs/DESIGN.md','docs/PLAN.md',
+  'docs/PACKAGE-FOUNDATION.md','docs/PACKAGE-HANDOFF.md'} do
+ local text=read(root..path)
+ assert(not text:find('pending operator approval',1,true), 'obsolete pending decision in '..path)
+ assert(not text:find('pending authority',1,true), 'obsolete pending decision in '..path)
+ assert(not text:find('Neither option is preapproved',1,true), 'obsolete pending decision in '..path)
+ if arg[3] then assert(text==read(arg[3]..'/'..path), 'stale installed policy: '..path) end
 end
+local foundation=read(root..'docs/PACKAGE-FOUNDATION.md')
+assert(foundation:find('Record Python/zlib identities',1,true))
+print('installed narrow source-generator authority and exclusions PASS')
 if arg[3] then
  local launch=read(arg[3]..'/workflows/LAUNCH.md')
- assert(not launch:find('This resolves the specific external policy blocker',1,true))
- assert(not launch:find('spec generator approved',1,true))
- assert(launch:find('pending operator approval',1,true))
- assert(launch:find('remains unresolved',1,true))
+ assert(launch:find('spec generator approved',1,true))
+ assert(not launch:find('pending operator approval',1,true))
 end
-print('installed retained-generator pending authority and optional source freshness PASS')

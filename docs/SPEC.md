@@ -20,15 +20,12 @@ Python is permitted for initial development, not a required qualification oracle
 The finished Lua/C++ binding must not depend on upstream Python bindings for
 execution, building or required tests. Project-owned scripts, generators and
 acceptance tests should be Lua-based by release. Any retained Python use needs a
-documented compelling reason, alternatives and explicit operator acceptance.
-The unchanged pinned upstream `cpp/embed_specs.py`, invoked by
-`cpp/cmake/EmbedSpecs.cmake`, uses Python >=3.10 and standard-library zlib/XML
-in native source builds. Its narrow build-time exception is **pending operator
-approval**, OR a replacement/integration must be separately authorized and qualified.
-Neither option is preapproved; technical source-build success does not resolve
-this authority gate. SDK-consumer builds and the installed Lua runtime need not
-run the generator. No Python bindings or project-owned Python tooling/test oracles
-are authorized by this candidate exception.
+documented compelling reason, alternatives and operator acceptance. The operator
+approved one narrow exception: the unchanged pinned upstream `cpp/embed_specs.py`
+generator, invoked by `cpp/cmake/EmbedSpecs.cmake`, may use Python >=3.10 and its
+standard-library modules (including zlib/XML) during native source builds only.
+This does not permit Python bindings, project-owned Python tooling/test oracles,
+or any Python requirement in SDK-consumer builds or installed Lua runtime.
 The native C++ adapter, CMake/LuaRocks and native compiler/sanitizer tooling remain
 part of the design. See DESIGN's two spec-loading profiles.
 

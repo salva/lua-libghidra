@@ -68,23 +68,20 @@ Owners must reconcile obsolete acceptance through supported lifecycle/activation
 mechanisms, preserving history; notifications do not rewrite immutable briefs.
 Do not reset/restart, create new upstream-fix work or change unrelated scope.
 
-## Pending authority — upstream build-time spec generator
+## Operator decision — upstream build-time spec generator approved
 
-The unchanged pinned upstream `cpp/cmake/EmbedSpecs.cmake` invokes
-`cpp/embed_specs.py`, using Python >=3.10 with standard-library zlib/XML during
-native source configuration even with Python bindings disabled. SDK-consumer
-builds and the installed Lua runtime need not run it. These are technical facts,
-not evidence of operator permission.
+The operator explicitly approved retaining the unchanged pinned upstream
+`cpp/embed_specs.py` generator invoked by `cpp/cmake/EmbedSpecs.cmake`, using
+Python >=3.10 with standard-library zlib/XML during native source configuration.
+This narrow exception avoids replacing upstream machinery merely to remove a
+build tool. It excludes project-owned tooling/tests, Python-binding dependencies,
+mandatory parity/oracles, SDK-consumer builds and the installed Lua runtime.
+Record interpreter/module identities in source-build qualification as designed.
 
-The narrow build-time exception is **pending operator approval**, OR a
-replacement/integration must be separately authorized and qualified. Neither
-option is preapproved. This specific external authority gate for [[card:card-e]]
-remains unresolved; independent wrapper work may continue. No generator change,
-new upstream patch, Python-binding dependency, project-owned Python tooling/test
-oracle or distribution permission is authorized here. Preserve technical source-build
-evidence and historical records without claiming M5/release acceptance. An actual
-operator decision must be reconciled by the owning root through existing lifecycle
-controls, not inferred from a documentation assertion or successful test.
+This resolves the specific external policy blocker reported by card-e-a/card-e.
+Owners should resume their existing review/qualification work through supported
+lifecycle controls without reset or duplicated tasks. Do not claim approval itself
+passes unrun tests, grants new distribution rights or permits other Python use.
 
 ## Operator update — Lua-based deliverable, no Python-binding dependency
 
@@ -92,8 +89,8 @@ Python is allowed during initial development. The finished project must not
 depend on upstream Python bindings for build, runtime or required acceptance.
 Use Lua for project-owned tooling, generators and acceptance tests by release;
 retain Python only for a documented compelling reason with operator acceptance.
-Assess the pinned upstream spec-embedding generator as the pending narrow
-exception above, not approval to retain Python. Native C++ probes/adapter and ordinary
+The pinned upstream spec-embedding generator has the narrow explicit exception
+above, not blanket approval to retain Python. Native C++ probes/adapter and ordinary
 CMake/LuaRocks/compiler tooling remain appropriate.
 
 This supersedes earlier mandatory Python-oracle/comparison gates. For card-a-c,
