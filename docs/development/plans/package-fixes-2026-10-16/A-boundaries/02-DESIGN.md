@@ -14,6 +14,8 @@ Retain `Session:open_program(program_options)`. Remove it from the unconditional
 Extract the [factory's key check](/lua/libghidra/init.lua#L105) into a private
 helper accepting a program table and error-operation name. Use `type`, `next`
 and `rawget` as appropriate; do not invoke `pairs`, `__index` or `__pairs`.
+Use fixed diagnostics for unknown keys; do not call `tostring` on an arbitrary
+table/userdata key or otherwise invoke its `__tostring` while rejecting it.
 
 The helper requires a table with only:
 
@@ -101,7 +103,12 @@ otherwise native-only full-specialist surface.
 Add a cache path `LLG_LUA_INCLUDE_DIR` for the directory containing `lua.h`,
 `lauxlib.h` and `luaconf.h`. Use existing `LUA_EXECUTABLE` as the selected absolute
 host executable. Resolve defaults from ordinary `pkg-config lua5.4` headers and
-`find_program(lua5.4)` only when those inputs are absent. Log resolved executable,
+`find_program(lua5.4)` only when those inputs are absent. For default headers,
+search pkg-config's `LUA_INCLUDE_DIRS` for a directory containing all three
+required files; fail with the searched paths if none is complete. Do not use
+pkg-config's base `includedir` or append a guessed version suffix. An explicit
+directory must itself contain all three files; missing-header diagnostics are
+distinct from compile-profile and selected-host ABI diagnostics. Log resolved executable,
 include path and header version/profile. Never silently substitute ambient
 headers when an explicit directory is missing or incompatible.
 
@@ -129,11 +136,27 @@ and original loader/ABI diagnostic on failure. This check runs even when
 `BUILD_TESTING=OFF`, covering LuaRocks. Keep the probe narrow; this is not a Lua
 discovery framework, arbitrary cross-compile feature or native engine test.
 
-Embedded positive tests continue to use the ordinary system shared/static Lua
-libraries; these are test executables, never module dependencies. Their headers
-must use the selected include directory and the ordinary ABI requirement. Using
-a compatible explicit prefix is not a claim that all arbitrary Lua builds or
-libraries have been qualified.
+Keep the probe artifact at a reported stable path, `BUILD/lua-abi-probe.so`, so
+the exact ordinary-header probe can also be loaded by the rejection fixture.
+
+Embedded positive tests form a separate ordinary system lane. Resolve their
+header directory from system pkg-config include directories and their shared
+library and static archive to absolute paths in that installation's library
+directories; retain those paths in configure output/cache. Use those headers for
+embedded executables, including test targets compiling boundary/owner sources,
+and those absolute library paths for their links. Do not conflate `${LUA_LIBRARIES}`
+bare link names or an old independently cached archive with the selected custom
+interpreter's identity. Check these system headers against the same ordinary
+numeric profile. These executables own their host VM; their libraries are never
+module dependencies. Record compile/link commands and shared-host `ldd` output.
+
+Require a separate, real nondefault compatible prefix for LuaRocks selection
+qualification. Provision unchanged PUC 5.4.6 from the pinned archive described
+below into WORK, leaving ambient system discovery in place. Compare LuaRocks's
+resolved executable/include settings and build-driver arguments to the CMake
+cache and actual native-module compile flags. Execute installed regressions with
+that selected host. A system-prefix-only run or renamed system executable is not
+a substitute. Retain an independent no-overrides system-default build as well.
 
 ### Real module entry contract
 
@@ -145,6 +168,17 @@ userdata publication. Lua's standard version/numeric-size mismatch raises a Lua
 error, caught by `require`/caller `pcall`; it is not a native error envelope.
 Do not preflight with a module-side call returning `lua_Number`, and do not
 replace the standard numeric-size check with only `_VERSION` string comparison.
+
+At PUC 5.4.6, `luaL_checkversion` calls
+`luaL_checkversion_(L, LUA_VERSION_NUM, LUAL_NUMSIZES)`, with a `lua_Number`
+second argument and size token `sizeof(lua_Integer)*16 + sizeof(lua_Number)`.
+The host implementation calls its own `lua_version(L)` and checks that size
+token before comparing the received version. For an ordinary module versus
+int64/float host the tokens are 136 versus 132. On Linux amd64 the integer token
+and pointer use the same argument locations even though the floating parameter
+type differs. This motivates the bounded test, not a portable C ABI guarantee:
+the differing signatures preclude a general arbitrary-host safety claim. Require
+an observed protected numeric-type diagnostic for this exact fixture/toolchain.
 
 The configure probe prevents accidental selected-host mismatch during package
 build. The real entry check remains necessary because a completed module can
@@ -168,13 +202,32 @@ reads after rejection. Use writable disposable state paths and copies for save
 cases; never modify authored input fixtures. Exercise both ELF and analyzed
 project routes using the current explicit architecture hints.
 
-ABI tests require ordinary standalone/shared/static positives plus a real
-incompatible numeric Lua 5.4 host supplied as a test fixture. It must reject a
-protected load of the ordinary module with a numeric-size diagnostic, not merely
-a missing symbol or search-path failure, and remain usable afterwards. Rejection
-must precede UInt64/owner metatable publication and native construction. A
-missing mismatch host is an unmet regression prerequisite, never a silent pass.
-Do not obtain it by altering pinned libghidra/engine dependencies.
+ABI tests require ordinary standalone/shared/static positives, the nondefault
+compatible-prefix positive, and a real incompatible numeric host. Provision two
+isolated copies of official PUC Lua **5.4.6** from
+<https://www.lua.org/ftp/lua-5.4.6.tar.gz>, SHA-256
+`7d5ea1b9cb6aa0b59ca3dde1c6adcb57ef83a1ba8e5432c0ecd06bf439b3ad88`
+(official checksum: <https://www.lua.org/ftp/>). Build the compatible copy
+unchanged. In the negative copy's `src/luaconf.h`, replace exactly one definition
+of `LUA_FLOAT_DEFAULT LUA_FLOAT_DOUBLE` with `LUA_FLOAT_DEFAULT LUA_FLOAT_FLOAT`;
+retain `LUA_INT_DEFAULT LUA_INT_LONGLONG`, `LUA_32BITS 0` and non-C89 compilation.
+Do not rely on `-DLUA_FLOAT_TYPE`, which the header can overwrite. Compile on the
+qualified amd64 toolchain with `LUA_USE_LINUX`, `-Wl,-E` and `-ldl` for exported
+symbols and dynamic module loading. The plan provides executable commands and
+configuration assertions; these fixture-only copies are not dependency repairs.
+
+Require version 5.4.6 observations, `string.packsize('j')==8` on both hosts, and
+`string.packsize('n')==8`/`==4` on compatible/negative hosts. Inspect exported
+`luaL_checkversion_` and `lua_version` symbols and successful `package.loadlib`
+resolution. Protected entry of both the ordinary-header probe and production
+module must report `core and library have incompatible numeric types`, not a
+missing-symbol/search-path/version error. After each failure the same host must
+execute Lua and collect garbage normally. The production check must leave
+`libghidra.UInt64` and `libghidra.owner` absent from the registry and publish no
+factory. Do not instantiate an engine to prove a pre-publication check.
+This qualifies only clean rejection of the specified amd64 case, never float
+Lua support or a broad ABI firewall. Provisioning and test execution are future
+implementation work; absent actual results are not passes.
 
 Group B updates current public grammar, compatibility notes and build inputs,
 including selected shutdown behavior, without rewriting historical evidence as

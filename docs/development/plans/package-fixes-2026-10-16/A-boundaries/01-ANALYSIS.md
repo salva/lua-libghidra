@@ -125,6 +125,33 @@ Headers outside the supported profile fail configuration. A differently
 configured loading host fails a protected ABI check. Neither outcome qualifies
 the alternate host, and no Lua library is linked into `_native.so`.
 
+Default header resolution must inspect pkg-config's include search directories
+for `lua.h`, `lauxlib.h` and `luaconf.h`, not use its base `includedir` variable:
+on Debian-style layouts that base can be `/usr/include` while the actual headers
+are in `/usr/include/lua5.4`. An explicit wrong directory must produce a missing
+header diagnostic, distinguishable from a host numeric-size mismatch.
+
+Qualification has three distinct identities: ordinary system standalone and
+embedded shared/static hosts; a genuinely separately built compatible prefix
+selected by LuaRocks; and an isolated rejection-only float host. The latter two
+are built from PUC Lua 5.4.6's official `lua-5.4.6.tar.gz`, SHA-256
+`7d5ea1b9cb6aa0b59ca3dde1c6adcb57ef83a1ba8e5432c0ecd06bf439b3ad88`.
+The compatible prefix uses unchanged headers. The rejection fixture changes only
+`LUA_FLOAT_DEFAULT` from `LUA_FLOAT_DOUBLE` to `LUA_FLOAT_FLOAT` in its copied
+`luaconf.h`, retaining `LUA_INT_DEFAULT=LUA_INT_LONGLONG` and `LUA_32BITS=0`.
+The plan supplies the complete isolated provisioning recipe; no unnamed fixture
+owner or modification of libghidra/engine inputs is required.
+
+This rejection claim is deliberately bounded to the qualified Linux amd64
+toolchain: `luaL_checkversion_` itself takes a `lua_Number` version argument, so
+the caller and float host have different C signatures. At this PUC pin its host
+implementation checks the integer size token before comparing the version
+argument. A clean protected numeric-error result must be observed for both the
+tiny probe and real module; source reasoning alone is not a universal ABI
+firewall. Record integer/number sizes (8/4 versus 8/8), executable/header paths,
+compile flags and actual shared/static library identities separately. A `/usr`
+LuaRocks test cannot demonstrate that a nondefault selection was respected.
+
 ## Historical baggage versus justified safeguards
 
 Bulk method forwarding likely made facade policy drift easy; it is not a reason
