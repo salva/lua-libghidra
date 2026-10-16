@@ -99,3 +99,11 @@ Session native(). See [M4 exact grammar, dispatch/field mapping and bounded
 qualification](M4-FULL.md). This extends the core surface; it does not upgrade
 historical core evidence or grant M5/release approval. No new facade convenience
 or iterator is enabled.
+
+M4 writer qualification now includes the full operation negative/dispatch matrix
+and disposable new-category save/reload assertions. The pinned state path retains
+a struct shell but loses members/aliases/enums/comments/data and edited signature/
+local metadata in the exercised binary/project profiles; performance records and
+byte overlays reset. See M4-FULL for exact observations, native attribution and
+safe mixed-success decompilation batch evidence. These are limitations, not a
+complete-persistence promise. Independent review and M5 remain separate.

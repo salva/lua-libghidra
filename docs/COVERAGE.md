@@ -115,3 +115,13 @@ All full-tier adapters are now implemented at the shared dispatch primitive;
 real installed service coverage, limitations and remaining qualification. Existing
 generated runtime slots are not rewritten as passes. Surface availability is not
 by itself full runtime acceptance or independent review.
+
+M4 writer reconciliation is completed in M4-FULL: every full row's native request/
+response fields, defaults, errors, mutation/read classification and native()
+disposition are accounted for. `m4_contract.lua` adds all-operation unloaded/closed/
+validation/generation checks and field-class boundaries; `m4_persistence.lua`
+qualifies new-category reload limitations on both profiles. Supported native batch
+semantics include mixed completed/incomplete decompilation; no safe ordinary
+mid-patch status-error branch exists after ensure_loaded at this pin. Independent
+review does not replace these completed writer checks, and release approval is
+not inferred. Generated runtime slots intentionally remain source-only.

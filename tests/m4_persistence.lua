@@ -26,10 +26,12 @@ for _,project in ipairs{false,true} do
   assert(must(n:set_type_enum_member_comment('M4PersistEnum',0,'enum-persist')).updated)
   assert(must(n:set_function_signature(a,'int native_smoke(int persist_arg)')).updated)
   assert(must(n:rename_function_parameter(a,0,'persist_parameter')).updated)
-  local locals=must(n:get_decompilation(a)).decompilation.locals
+  local locals=must(n:get_decompilation(a)).decompilation.locals; local edited=false
   for _,l in ipairs(locals) do if l.kind=='local' then
-   assert(must(n:rename_function_local(a,l.local_id,'persist_local')).updated); break
+   assert(must(n:rename_function_local(a,l.local_id,'persist_local')).updated); edited=true; break
   end end
+  if not edited then assert(must(n:rename_function_local(a,locals[1].local_id,'persist_local')).updated); edited=true end
+  assert(edited)
   assert(must(n:set_comment(a,'eol','m4-persist-comment')).updated)
   assert(must(n:apply_data_type(data,'int')).updated)
   assert(must(n:rename_data_item(data,'m4_persist_data')).updated)

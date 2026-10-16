@@ -100,8 +100,8 @@ int (4). Enum width 123 and false are accepted, not enforced. DeleteSymbol's
 mismatched name deletes by address. Unsupported type kinds remain native
 NOT_SUPPORTED. Existing M2 publication guard and M3 pages-only policy unchanged.
 Native comment/type text storage is not promised to roundtrip arbitrary NUL even
-though wrapper conversion preserves its full length. Saved=true retains existing
-category-loss limitations; no new persistence promise.
+though wrapper conversion preserves its full length. Save/reload results for new categories are explicitly qualified below;
+no complete persistence promise is made.
 
 Patch batch forwards a single vector, in order, without rollback/preflight of
 native effects; no atomicity is invented. Native implementation applies every
@@ -124,9 +124,8 @@ allocation sweep. Empty/error result sweeps now allow a structured native error
 Qualification evidence is recorded in the card status with exact commands and
 logs. Existing field ledger generated runtime slots intentionally remain
 unqualified; this grammar/evidence supplement is not retroactive generator output.
-Independent review, exhaustive field/negative reconciliation, additional partial
-native-failure and persistence qualification remain separate from passing the
-surface reproducer. Do not infer full release acceptance from method availability.
+The completed writer reconciliation and new persistence/native batch evidence
+are below. Independent review remains separate from writer qualification. Do not infer full release acceptance from method availability.
 Preserve M2 extreme-address/raw FileBytes and M3 producer/category limitations.
 No upstream patch, generator authority decision or new distribution right.
 
@@ -136,3 +135,143 @@ invalidation, exact max uint64 ordinal failure, overlapping native patch order
 (later writes win) and ignored enum width through actual resulting type length.
 Deterministic finalizer closure/reconstruction recheck includes type, patch and
 benchmark adapters. Installed qualification script includes M4 in all three hosts.
+
+## Completed writer reconciliation (pinned native headers and LocalClient)
+
+The table above is the operation manifest for **all 37 full rows**, not a proposal.
+Reconciliation used `cpp/include/libghidra/{types,symbols,functions,decompiler,
+listing,memory,session,models}.hpp`, LocalClient overrides and `src/owner.cpp`
+at the SPEC pin/authorized SDK. There are no additional included full operations
+hidden behind interface defaults: DeleteTypeEnum/ParseDeclarations and all other
+excluded defaults remain excluded as COVERAGE specifies. Core M3 mappings and
+M2/M3 limitations are reused, not regenerated as full evidence. All full specialist
+calls, including Shutdown, use native(); none creates a Session convenience.
+
+Field-by-field result: type/alias/enum/member mutation responses contain only the
+listed bools, except RenameType also has name. Signature response also preserves
+empty function_name and requested prototype; parameter/local/data mutations retain
+name/data_type/local_id exactly as declared. DeleteSymbol has both deleted and
+uint32 deleted_count; patch has two uint32 counters; clear benchmark has bool and
+uint32 removed_count. Shutdown has accepted, **not** closed. No optional response
+fields occur in these mutation envelopes. The only arrays are native function,
+decompilation, data-item and performance arrays. Every nested output field uses
+the existing FunctionRecord/DecompilationRecord converters, explicit DataItemRecord
+and all ten PerfBenchmarkRecord fields; models/defaults/types are enumerated in
+[FIELDS](../api/FIELDS.md). Empty arrays are tables, not nil. Known enums use names;
+unknown response enum numbers use existing converter numeric fallback.
+
+Request reconciliation: all positional scalar fields are required, despite native
+model zero/empty defaults. No invented request tables or flags. The sole full
+native struct inputs are BytePatch[] and PerfBenchmarkRecord; all of their fields
+are accounted for above (benchmark fields optional with exact native defaults;
+patch fields required). CommentKind mapping covers all six native constants.
+Shutdown intentionally accepts only explicit save/discard as specified, not native
+unspecified/none. Narrow parameter ordinals are nonnegative int, enum/member
+ordinals and sizes exact uint64, enum values signed int64. All string lengths are
+preserved at conversion. Finite doubles are accepted without integer coercion;
+NaN/infinity are rejected. The only optional argument tables are pages/batch timeout.
+Page bounds and zero-end sentinel match the actual downstream function/data paths.
+No timeout deadline, read-only, size or signed-enum-width enforcement is fabricated.
+Native batch timeout ignores the field. Included non-full fields remain governed
+by M2/M3 contracts, not silently replaced by this extension.
+
+`tests/m4_contract.lua` provides an operation-wide negative/dispatch matrix for
+**every 36 new adapters**: unloaded NO_PROGRAM through valid inputs, closed CLOSED,
+wrong first argument on every argument-taking method, no generation change for
+validation rejection, increment before every dispatched mutation even NO_PROGRAM,
+and no increment for reads. Shutdown validation/logical reopen uses both surfaces;
+existing core save-policy/failure tests remain applicable. Paged negatives cover
+unknown keys/zero limit/negative offset/compound overflow; timeout wrong/unknown
+fields; false benchmark delete, empty native benchmark ID error; every benchmark
+field including embedded NUL, defaults, zero and negative/fractional values;
+all comment kinds with NUL text roundtrip; signed enum INT64_MIN/MAX/zero readback;
+empty patch and a nonempty-plus-empty patch. `m4_services.lua` supplies supported
+positive mutations in both profiles (including project-required leaves), ignored
+fields, exact max ordinal native rejection and iterator invalidation. Together
+these cover the declared grammar/error/field classes without an invented claim
+that every arbitrary engine input is supported. Actual engine type/category
+limitations are retained below. No wrapper defect found in this reconciliation.
+
+## New-category persistence qualification
+
+`tests/m4_persistence.lua PREFIX ROOT WORK` uses purpose-named disposable XML files,
+never writes source ELF/project fixtures, and runs both raw ELF and analyzed-project
+profiles. On each it creates struct/member/comment, alias, enum/member/comment,
+function signature/parameter/local names, EOL comment, typed/renamed data,
+benchmark and byte patch; requires each mutation acknowledgement, SaveProgram
+saved=true, DiscardProgram discarded=true without overlay rollback and local
+Shutdown(save) accepted=true. It releases owner and reopens with the same state.
+
+**Observed pinned limitation (asserted, not silently skipped):** struct name/kind
+survives as a zero-length shell, with zero members; alias and enum are absent;
+comments/data items/benchmarks are empty; changed signature/parameter/local names
+are absent/reset; patched bytes return original ELF bytes. This applies to these
+specific new-category profiles; not a promise that every possible state is lost
+or every type persists. Native load is best-effort primary-slot reload:
+LocalClient OpenProgram line 144 calls pool loadState; SaveProgram lines 164–182
+saves state; decompiler_pool.cpp lines 87–95 forwards save/load to slot 0 and
+rebuilds its adapter. Logical close clears benchmark records. The binding forwards
+all of these, stores no parallel persistence layer. Attribution is to the native
+state path/limited persistence contract, not an unexplored wrapper conversion
+failure. Existing M3 function-name/overlay/discard/no-autosave and seeded type
+category evidence remains applicable only to its exercised categories. This closes
+the writer evidence gap, **not** the native persistence limitations.
+
+## Native batch semantics and safe failure evidence
+
+LocalClient ListDecompilations lines 323–346 paginates candidate functions, calls
+pool decompileMany once and preserves result array. decompiler_pool.cpp lines
+148–170 (pool_size=1) iterates candidates serially: success populates code/locals
+and completed=true; ordinary failure leaves completed=false and accurate error
+text, then continues loop. Prototype/tokens/fallback stay model defaults on that
+batch path; the wrapper does not invent single-call token/prototype output.
+`m4_contract.lua` creates a finite unmapped function at 0x500000 using supported
+RenameFunction (the bounded address already qualified by M2), and requests a batch
+containing authored completed code plus that incomplete record. It asserts both
+completed and failed records, error text, arrays and false fallback in the same
+successful native batch response. Diagnostics are expected evidence, not erased.
+
+PatchBytesBatch lines 1639–1654 sequentially applies each write, ignores each
+write's boolean result, increments revision once, returns requested count/bytes.
+No per-item status or rollback. Tests prove overlap last-write-wins, binary NUL
+readback and nonempty followed by empty patch while retaining first effect and
+requested counters. **No safe supported ordinary mid-patch Status error exists
+in this source path after ensure_loaded**: it neither checks write results nor
+returns per-patch errors. Therefore no injected dependency OOM or extreme-address
+crash is required to manufacture one. Native C++ exceptions are separately handled
+and tested at the wrapper boundary, not evidence of dependency recovery. There
+is no added recovery acceptance gate; partial effects on an exceptional native
+failure remain possible, generation already invalidated.
+
+One exploratory attempt to obtain a *later success after incomplete decompilation*
+using RET plus 511 NOP overlay at 0x500100 still caused the native decoder to request
+bytes at 0x5001f0 and returned incomplete. No source was changed or upstream repair
+started; the final bounded fixture asserts mixed success/failure, and source
+establishes continuation without a fabricated later-success claim.
+
+## Safety/regression boundary and delivery disposition
+
+Extended existing wrapper allocator/publication/three boundary-exception sweeps
+also exercise signature, parameter/local, data, alias and benchmark delete/clear
+families. Each direct operation has no setup calls that could consume the fault.
+Existing type/enum/comment/patch sweeps, deterministic finalizer rechecks and M2/M3
+publication/iterator guards remain relevant; no new owner or Lua-allocating RAII
+frame was introduced. Broader installed standalone/static/shared checks now include
+contract matrix; disposable persistence runs at the existing installed boundary.
+Build/CTest and wrapper sanitizer results are recorded in current card status.
+
+Writer M4 qualification is complete within these explicitly supported native
+semantics and limitations: all included full operations/fields/defaults/dispositions
+reconciled, real supported positives and negatives, persistence limits and safe
+batch behavior evidenced. Independent review is still required, not writer work
+silently delegated to reviewers. Generated source ledger runtime slots remain
+unqualified by design, with this hand-maintained runtime supplement as evidence.
+M5 source-build generator permission, license/distribution authorization, other
+release gates and retained M2/M3 limitations are unchanged.
+
+Persistence fixture nuance: the raw ELF decompiler may expose only parameter
+local IDs after setting the prototype. The test always executes RenameFunctionLocal,
+using a genuine local ID when available and the supported parameter local ID
+otherwise (never silently skips the operation). Its reload assertion checks absence
+of both edited names. This qualifies local-ID edit persistence in those profiles,
+not a guarantee of a stable stack/register-local producer across engine versions.
