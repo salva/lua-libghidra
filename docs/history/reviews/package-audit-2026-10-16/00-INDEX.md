@@ -24,7 +24,7 @@ repair campaign. Prior milestone approval does not replace fresh inspection.
 - [x] Map subsystems and assign independent review dimensions.
 - [x] Native boundary, ownership, GC/reentrancy, process lifetime.
 - [x] API semantics, Lua ergonomics, conversions, iteration and persistence.
-- [ ] Build/install/package reproducibility and dependency/VM closure.
+- [x] Build/install/package reproducibility and dependency/VM closure.
 - [ ] User documentation, navigation and historical separation.
 - [ ] Test quality, blind spots and reproducibility of qualification claims.
 - [ ] Dependency integrity, license/notices and source/shipping claims (not legal clearance).
@@ -56,5 +56,8 @@ Dimension reports and consolidated findings are added as they complete.
 - [API semantics](02-API-SEMANTICS.md): reproduced medium Session reopen validation
   bypass and low Shutdown facade/documentation inconsistency. Findings await
   stable consolidated issue IDs and independently reviewed design proposals.
+- [Packaging](03-PACKAGING.md): three medium findings concerning Lua host/header
+  ABI rejection, installed-document link closure and harness-dependent user install
+  recipes. Ordinary retained installations were not found broken by this review.
 - [Baseline execution](07-BASELINE-VALIDATION.md): existing configured build and
   registered tests passed 18/18; broader qualification was not rerun.
