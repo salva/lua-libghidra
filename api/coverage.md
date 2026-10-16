@@ -992,3 +992,21 @@ populated positive. `tests/reentry_host.cpp` now observes actual allocation-driv
 publication finalizers for every enabled iterator family (empty/populated,
 ELF/project) and configured SaveProgram saved=true. These supersede the earlier
 function-only publication qualification, not the unresolved total-order limitations.
+
+### Current M3 runtime ledger reconciliation
+
+Core rows in coverage.json now replace stale planned/unqualified surface labels
+with implemented checked native-local surfaces and operation-scoped runtime
+references. `m3_runtime` separates normal Lua/native positives, synthetic boundary
+field fidelity, practical limitations and independent review still outstanding.
+Union is explicitly success-empty with a public producer limitation, not a
+populated positive. Signature candidate offset tests do not claim a missing-
+signature filtering positive. Native category loss is not repaired by saved=true.
+
+Alias/enum/member/comment pages remain pages-only: singleton seeded records do not
+qualify a multi-record cross-page ordering comparator. Types have canonical-path
+collisions; CFG lacks structural ordinal; basic-block numeric comparator stalls on
+real structured traversal; xref call/load phases can also stall. These are explicit
+limitations, not hidden full traversal or snapshot claims. Other full-tier/M2 row
+historical source reviews are retained; this reconciliation does not upgrade their
+runtime or grant distribution rights or independent review approval.

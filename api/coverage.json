@@ -3840,16 +3840,16 @@
       "dispatch": "mutation",
       "evidence": {
         "negative": {
-          "assertions": "unloaded/unsupported/validation and recorded limitations",
-          "command": null,
-          "fixture": null,
-          "status": "unqualified"
+          "status": "exercised scoped paths; not exhaustive native error oracle",
+          "command": "ctest --test-dir build --output-on-failure; bash tests/installed-qualification.sh",
+          "fixture": "same real profiles plus wrapper fault hosts",
+          "assertions": "unloaded/invalid arguments/compound bounds and wrapper lifetime/error containment; see m3_runtime"
         },
         "positive": {
-          "assertions": "real supported case with all response fields; defined strings fidelity exception applies",
-          "command": null,
-          "fixture": null,
-          "status": "unqualified"
+          "status": "real Lua/native supported paths exercised; field completeness additionally converter-tested, not every native field populated",
+          "command": "bash tests/installed-qualification.sh; ctest --test-dir build --output-on-failure",
+          "fixture": "authored ELF/analyzed project; native-seeded host or conditional fixture where cited",
+          "assertions": "tests/m3_core.lua; tests/m3_core_reproducer.lua; native profile limitations retained; docs/M3-CORE.md"
         },
         "python_oracle": "unqualified"
       },
@@ -3938,22 +3938,22 @@
         "facade": {
           "disposition": "native escape hatch",
           "extraction": null,
-          "grammar_status": "native() uses lowlevel grammar; no convenience promised",
+          "grammar_status": "implemented M3 convenience or explicit native() escape hatch",
           "name": null,
           "return": "complete response/error via convenience or native() as disposed"
         },
-        "implementation_status": "planned M0 contract only; not runtime-qualified",
-        "iterator": "not enabled; source identity/order alone is not runtime qualification",
+        "implementation_status": "implemented M3; runtime evidence and limitations below; independent review outstanding",
+        "iterator": "pages/lookup only; see m3_runtime iterator disposition",
         "lowlevel": {
           "call": "discard_program()",
-          "call_status": "proposed; not approved for adapter implementation",
+          "call_status": "implemented checked native-local adapter",
           "grammar": {
-            "approved_call": null,
-            "authority": "inventory presentation only; docs/COVERAGE.md approves tier/disposition, not this syntax",
+            "approved_call": "discard_program()",
+            "authority": "accepted M3 brief; docs/M3-CORE.md; src/owner.cpp",
             "default_rule": "only explicit binding defaults; model initializer is not proof of request optionality; preserve false, zero and empty",
             "native_argument_order": [],
             "proposed_call": "discard_program()",
-            "status": "proposed; not approved for adapter implementation",
+            "status": "implemented M3; src/owner.cpp is executable checked grammar",
             "unknown_keys": "reject before dispatch; validation-only rejection does not invalidate generation"
           },
           "name": "discard_program",
@@ -3961,7 +3961,22 @@
           "return": "complete detached native response or nil,error"
         }
       },
-      "tier": "core"
+      "tier": "core",
+      "m3_runtime": {
+        "status": "real Lua/native supported paths exercised; field completeness additionally converter-tested, not every native field populated",
+        "positive": [
+          "tests/m3_core.lua",
+          "tests/m3_core_reproducer.lua"
+        ],
+        "negative": [
+          "tests/m3_core.lua (unloaded/argument/compound bounds)",
+          "tests/read_order_host.cpp (wrapper publication/copy faults)",
+          "tests/reentry_host.cpp (real loaded finalizer paths)"
+        ],
+        "iterator_disposition": "not an iterator family",
+        "limitations": "native profile limitations retained; docs/M3-CORE.md",
+        "review": "independent workflow review outstanding; not acceptance waiver"
+      }
     },
     {
       "capability_entries": [
@@ -4184,16 +4199,16 @@
       "dispatch": "read",
       "evidence": {
         "negative": {
-          "assertions": "unloaded/unsupported/validation and recorded limitations",
-          "command": null,
-          "fixture": null,
-          "status": "unqualified"
+          "status": "exercised scoped paths; not exhaustive native error oracle",
+          "command": "ctest --test-dir build --output-on-failure; bash tests/installed-qualification.sh",
+          "fixture": "same real profiles plus wrapper fault hosts",
+          "assertions": "unloaded/invalid arguments/compound bounds and wrapper lifetime/error containment; see m3_runtime"
         },
         "positive": {
-          "assertions": "real supported case with all response fields; defined strings fidelity exception applies",
-          "command": null,
-          "fixture": null,
-          "status": "unqualified"
+          "status": "real Lua/native supported paths exercised; field completeness additionally converter-tested, not every native field populated",
+          "command": "bash tests/installed-qualification.sh; ctest --test-dir build --output-on-failure",
+          "fixture": "authored ELF/analyzed project; native-seeded host or conditional fixture where cited",
+          "assertions": "tests/m3_seeded.lua (real native-seeded Lua ELF/project); native profile limitations retained; docs/M3-CORE.md"
         },
         "python_oracle": "unqualified"
       },
@@ -4361,18 +4376,18 @@
         "facade": {
           "disposition": "complete response convenience/page",
           "extraction": null,
-          "grammar_status": "proposed; not approved for adapter implementation",
+          "grammar_status": "implemented M3 convenience or explicit native() escape hatch",
           "name": "get_comments",
           "return": "complete response/error via convenience or native() as disposed"
         },
-        "implementation_status": "planned M0 contract only; not runtime-qualified",
-        "iterator": "not enabled; source identity/order alone is not runtime qualification",
+        "implementation_status": "implemented M3; runtime evidence and limitations below; independent review outstanding",
+        "iterator": "pages/lookup only; see m3_runtime iterator disposition",
         "lowlevel": {
           "call": "get_comments(options={})",
-          "call_status": "proposed; not approved for adapter implementation",
+          "call_status": "implemented checked native-local adapter",
           "grammar": {
-            "approved_call": null,
-            "authority": "inventory presentation only; docs/COVERAGE.md approves tier/disposition, not this syntax",
+            "approved_call": "get_comments(options={})",
+            "authority": "accepted M3 brief; docs/M3-CORE.md; src/owner.cpp",
             "default_rule": "only explicit binding defaults; model initializer is not proof of request optionality; preserve false, zero and empty",
             "native_argument_order": [
               "range_start",
@@ -4381,7 +4396,7 @@
               "offset"
             ],
             "proposed_call": "get_comments(options={})",
-            "status": "proposed; not approved for adapter implementation",
+            "status": "implemented M3; src/owner.cpp is executable checked grammar",
             "unknown_keys": "reject before dispatch; validation-only rejection does not invalidate generation"
           },
           "name": "get_comments",
@@ -4394,7 +4409,21 @@
           "return": "complete detached native response or nil,error"
         }
       },
-      "tier": "core"
+      "tier": "core",
+      "m3_runtime": {
+        "status": "real Lua/native supported paths exercised; field completeness additionally converter-tested, not every native field populated",
+        "positive": [
+          "tests/m3_seeded.lua (real native-seeded Lua ELF/project)"
+        ],
+        "negative": [
+          "tests/m3_core.lua (unloaded/argument/compound bounds)",
+          "tests/read_order_host.cpp (wrapper publication/copy faults)",
+          "tests/reentry_host.cpp (real loaded finalizer paths)"
+        ],
+        "iterator_disposition": "pages-only: singleton seeded positives establish extraction, not multi-record cross-page identity/order qualification; no fabricated comparator",
+        "limitations": "native profile limitations retained; docs/M3-CORE.md",
+        "review": "independent workflow review outstanding; not acceptance waiver"
+      }
     },
     {
       "container_result_review": {
@@ -5260,16 +5289,16 @@
       "dispatch": "read",
       "evidence": {
         "negative": {
-          "assertions": "unloaded/unsupported/validation and recorded limitations",
-          "command": null,
-          "fixture": null,
-          "status": "unqualified"
+          "status": "exercised scoped paths; not exhaustive native error oracle",
+          "command": "ctest --test-dir build --output-on-failure; bash tests/installed-qualification.sh",
+          "fixture": "same real profiles plus wrapper fault hosts",
+          "assertions": "unloaded/invalid arguments/compound bounds and wrapper lifetime/error containment; see m3_runtime"
         },
         "positive": {
-          "assertions": "real supported case with all response fields; defined strings fidelity exception applies",
-          "command": null,
-          "fixture": null,
-          "status": "unqualified"
+          "status": "real Lua/native supported paths exercised; field completeness additionally converter-tested, not every native field populated",
+          "command": "bash tests/installed-qualification.sh; ctest --test-dir build --output-on-failure",
+          "fixture": "authored ELF/analyzed project; native-seeded host or conditional fixture where cited",
+          "assertions": "tests/m3_core.lua; tests/m3_core_reproducer.lua; native profile limitations retained; docs/M3-CORE.md"
         },
         "python_oracle": "unqualified"
       },
@@ -5595,24 +5624,24 @@
         "facade": {
           "disposition": "direct extraction",
           "extraction": "signature",
-          "grammar_status": "proposed; not approved for adapter implementation",
+          "grammar_status": "implemented M3 convenience or explicit native() escape hatch",
           "name": "get_function_signature",
           "return": "value,nil,response; optional absent -> nil,NOT_FOUND,response; native error -> nil,error"
         },
-        "implementation_status": "planned M0 contract only; not runtime-qualified",
-        "iterator": "not enabled; source identity/order alone is not runtime qualification",
+        "implementation_status": "implemented M3; runtime evidence and limitations below; independent review outstanding",
+        "iterator": "pages/lookup only; see m3_runtime iterator disposition",
         "lowlevel": {
           "call": "get_function_signature(address)",
-          "call_status": "proposed; not approved for adapter implementation",
+          "call_status": "implemented checked native-local adapter",
           "grammar": {
-            "approved_call": null,
-            "authority": "inventory presentation only; docs/COVERAGE.md approves tier/disposition, not this syntax",
+            "approved_call": "get_function_signature(address)",
+            "authority": "accepted M3 brief; docs/M3-CORE.md; src/owner.cpp",
             "default_rule": "only explicit binding defaults; model initializer is not proof of request optionality; preserve false, zero and empty",
             "native_argument_order": [
               "address"
             ],
             "proposed_call": "get_function_signature(address)",
-            "status": "proposed; not approved for adapter implementation",
+            "status": "implemented M3; src/owner.cpp is executable checked grammar",
             "unknown_keys": "reject before dispatch; validation-only rejection does not invalidate generation"
           },
           "name": "get_function_signature",
@@ -5622,7 +5651,22 @@
           "return": "complete detached native response or nil,error"
         }
       },
-      "tier": "core"
+      "tier": "core",
+      "m3_runtime": {
+        "status": "real Lua/native supported paths exercised; field completeness additionally converter-tested, not every native field populated",
+        "positive": [
+          "tests/m3_core.lua",
+          "tests/m3_core_reproducer.lua"
+        ],
+        "negative": [
+          "tests/m3_core.lua (unloaded/argument/compound bounds)",
+          "tests/read_order_host.cpp (wrapper publication/copy faults)",
+          "tests/reentry_host.cpp (real loaded finalizer paths)"
+        ],
+        "iterator_disposition": "not an iterator family",
+        "limitations": "native profile limitations retained; docs/M3-CORE.md",
+        "review": "independent workflow review outstanding; not acceptance waiver"
+      }
     },
     {
       "container_result_review": {
@@ -6182,16 +6226,16 @@
       "dispatch": "read",
       "evidence": {
         "negative": {
-          "assertions": "unloaded/unsupported/validation and recorded limitations",
-          "command": null,
-          "fixture": null,
-          "status": "unqualified"
+          "status": "exercised scoped paths; not exhaustive native error oracle",
+          "command": "ctest --test-dir build --output-on-failure; bash tests/installed-qualification.sh",
+          "fixture": "same real profiles plus wrapper fault hosts",
+          "assertions": "unloaded/invalid arguments/compound bounds and wrapper lifetime/error containment; see m3_runtime"
         },
         "positive": {
-          "assertions": "real supported case with all response fields; defined strings fidelity exception applies",
-          "command": null,
-          "fixture": null,
-          "status": "unqualified"
+          "status": "real Lua/native supported paths exercised; field completeness additionally converter-tested, not every native field populated",
+          "command": "bash tests/installed-qualification.sh; ctest --test-dir build --output-on-failure",
+          "fixture": "authored ELF/analyzed project; native-seeded host or conditional fixture where cited",
+          "assertions": "tests/m3_core.lua; tests/m3_core_reproducer.lua; native profile limitations retained; docs/M3-CORE.md"
         },
         "python_oracle": "unqualified"
       },
@@ -6334,22 +6378,22 @@
         "facade": {
           "disposition": "complete response convenience/page",
           "extraction": null,
-          "grammar_status": "proposed; not approved for adapter implementation",
+          "grammar_status": "implemented M3 convenience or explicit native() escape hatch",
           "name": "get_revision",
           "return": "complete response/error via convenience or native() as disposed"
         },
-        "implementation_status": "planned M0 contract only; not runtime-qualified",
-        "iterator": "not enabled; source identity/order alone is not runtime qualification",
+        "implementation_status": "implemented M3; runtime evidence and limitations below; independent review outstanding",
+        "iterator": "pages/lookup only; see m3_runtime iterator disposition",
         "lowlevel": {
           "call": "get_revision()",
-          "call_status": "proposed; not approved for adapter implementation",
+          "call_status": "implemented checked native-local adapter",
           "grammar": {
-            "approved_call": null,
-            "authority": "inventory presentation only; docs/COVERAGE.md approves tier/disposition, not this syntax",
+            "approved_call": "get_revision()",
+            "authority": "accepted M3 brief; docs/M3-CORE.md; src/owner.cpp",
             "default_rule": "only explicit binding defaults; model initializer is not proof of request optionality; preserve false, zero and empty",
             "native_argument_order": [],
             "proposed_call": "get_revision()",
-            "status": "proposed; not approved for adapter implementation",
+            "status": "implemented M3; src/owner.cpp is executable checked grammar",
             "unknown_keys": "reject before dispatch; validation-only rejection does not invalidate generation"
           },
           "name": "get_revision",
@@ -6357,7 +6401,22 @@
           "return": "complete detached native response or nil,error"
         }
       },
-      "tier": "core"
+      "tier": "core",
+      "m3_runtime": {
+        "status": "real Lua/native supported paths exercised; field completeness additionally converter-tested, not every native field populated",
+        "positive": [
+          "tests/m3_core.lua",
+          "tests/m3_core_reproducer.lua"
+        ],
+        "negative": [
+          "tests/m3_core.lua (unloaded/argument/compound bounds)",
+          "tests/read_order_host.cpp (wrapper publication/copy faults)",
+          "tests/reentry_host.cpp (real loaded finalizer paths)"
+        ],
+        "iterator_disposition": "not an iterator family",
+        "limitations": "native profile limitations retained; docs/M3-CORE.md",
+        "review": "independent workflow review outstanding; not acceptance waiver"
+      }
     },
     {
       "declaration": {
@@ -6569,16 +6628,16 @@
       "dispatch": "read",
       "evidence": {
         "negative": {
-          "assertions": "unloaded/unsupported/validation and recorded limitations",
-          "command": null,
-          "fixture": null,
-          "status": "unqualified"
+          "status": "exercised scoped paths; not exhaustive native error oracle",
+          "command": "ctest --test-dir build --output-on-failure; bash tests/installed-qualification.sh",
+          "fixture": "same real profiles plus wrapper fault hosts",
+          "assertions": "unloaded/invalid arguments/compound bounds and wrapper lifetime/error containment; see m3_runtime"
         },
         "positive": {
-          "assertions": "real supported case with all response fields; defined strings fidelity exception applies",
-          "command": null,
-          "fixture": null,
-          "status": "unqualified"
+          "status": "real Lua/native supported paths exercised; field completeness additionally converter-tested, not every native field populated",
+          "command": "bash tests/installed-qualification.sh; ctest --test-dir build --output-on-failure",
+          "fixture": "authored ELF/analyzed project; native-seeded host or conditional fixture where cited",
+          "assertions": "tests/m3_core.lua; tests/m3_core_reproducer.lua; native profile limitations retained; docs/M3-CORE.md"
         },
         "python_oracle": "unqualified"
       },
@@ -6889,24 +6948,24 @@
         "facade": {
           "disposition": "direct extraction",
           "extraction": "symbol",
-          "grammar_status": "proposed; not approved for adapter implementation",
+          "grammar_status": "implemented M3 convenience or explicit native() escape hatch",
           "name": "get_symbol",
           "return": "value,nil,response; optional absent -> nil,NOT_FOUND,response; native error -> nil,error"
         },
-        "implementation_status": "planned M0 contract only; not runtime-qualified",
-        "iterator": "not enabled; source identity/order alone is not runtime qualification",
+        "implementation_status": "implemented M3; runtime evidence and limitations below; independent review outstanding",
+        "iterator": "pages/lookup only; see m3_runtime iterator disposition",
         "lowlevel": {
           "call": "get_symbol(address)",
-          "call_status": "proposed; not approved for adapter implementation",
+          "call_status": "implemented checked native-local adapter",
           "grammar": {
-            "approved_call": null,
-            "authority": "inventory presentation only; docs/COVERAGE.md approves tier/disposition, not this syntax",
+            "approved_call": "get_symbol(address)",
+            "authority": "accepted M3 brief; docs/M3-CORE.md; src/owner.cpp",
             "default_rule": "only explicit binding defaults; model initializer is not proof of request optionality; preserve false, zero and empty",
             "native_argument_order": [
               "address"
             ],
             "proposed_call": "get_symbol(address)",
-            "status": "proposed; not approved for adapter implementation",
+            "status": "implemented M3; src/owner.cpp is executable checked grammar",
             "unknown_keys": "reject before dispatch; validation-only rejection does not invalidate generation"
           },
           "name": "get_symbol",
@@ -6916,7 +6975,22 @@
           "return": "complete detached native response or nil,error"
         }
       },
-      "tier": "core"
+      "tier": "core",
+      "m3_runtime": {
+        "status": "real Lua/native supported paths exercised; field completeness additionally converter-tested, not every native field populated",
+        "positive": [
+          "tests/m3_core.lua",
+          "tests/m3_core_reproducer.lua"
+        ],
+        "negative": [
+          "tests/m3_core.lua (unloaded/argument/compound bounds)",
+          "tests/read_order_host.cpp (wrapper publication/copy faults)",
+          "tests/reentry_host.cpp (real loaded finalizer paths)"
+        ],
+        "iterator_disposition": "not an iterator family",
+        "limitations": "native profile limitations retained; docs/M3-CORE.md",
+        "review": "independent workflow review outstanding; not acceptance waiver"
+      }
     },
     {
       "container_result_review": {
@@ -6937,16 +7011,16 @@
       "dispatch": "read",
       "evidence": {
         "negative": {
-          "assertions": "unloaded/unsupported/validation and recorded limitations",
-          "command": null,
-          "fixture": null,
-          "status": "unqualified"
+          "status": "exercised scoped paths; not exhaustive native error oracle",
+          "command": "ctest --test-dir build --output-on-failure; bash tests/installed-qualification.sh",
+          "fixture": "same real profiles plus wrapper fault hosts",
+          "assertions": "unloaded/invalid arguments/compound bounds and wrapper lifetime/error containment; see m3_runtime"
         },
         "positive": {
-          "assertions": "real supported case with all response fields; defined strings fidelity exception applies",
-          "command": null,
-          "fixture": null,
-          "status": "unqualified"
+          "status": "real Lua/native supported paths exercised; field completeness additionally converter-tested, not every native field populated",
+          "command": "bash tests/installed-qualification.sh; ctest --test-dir build --output-on-failure",
+          "fixture": "authored ELF/analyzed project; native-seeded host or conditional fixture where cited",
+          "assertions": "tests/m3_core.lua; tests/m3_core_reproducer.lua; native profile limitations retained; docs/M3-CORE.md"
         },
         "python_oracle": "unqualified"
       },
@@ -7238,24 +7312,24 @@
         "facade": {
           "disposition": "direct extraction",
           "extraction": "type",
-          "grammar_status": "proposed; not approved for adapter implementation",
+          "grammar_status": "implemented M3 convenience or explicit native() escape hatch",
           "name": "get_type",
           "return": "value,nil,response; optional absent -> nil,NOT_FOUND,response; native error -> nil,error"
         },
-        "implementation_status": "planned M0 contract only; not runtime-qualified",
-        "iterator": "not enabled; source identity/order alone is not runtime qualification",
+        "implementation_status": "implemented M3; runtime evidence and limitations below; independent review outstanding",
+        "iterator": "pages/lookup only; see m3_runtime iterator disposition",
         "lowlevel": {
           "call": "get_type(path)",
-          "call_status": "proposed; not approved for adapter implementation",
+          "call_status": "implemented checked native-local adapter",
           "grammar": {
-            "approved_call": null,
-            "authority": "inventory presentation only; docs/COVERAGE.md approves tier/disposition, not this syntax",
+            "approved_call": "get_type(path)",
+            "authority": "accepted M3 brief; docs/M3-CORE.md; src/owner.cpp",
             "default_rule": "only explicit binding defaults; model initializer is not proof of request optionality; preserve false, zero and empty",
             "native_argument_order": [
               "path"
             ],
             "proposed_call": "get_type(path)",
-            "status": "proposed; not approved for adapter implementation",
+            "status": "implemented M3; src/owner.cpp is executable checked grammar",
             "unknown_keys": "reject before dispatch; validation-only rejection does not invalidate generation"
           },
           "name": "get_type",
@@ -7265,7 +7339,22 @@
           "return": "complete detached native response or nil,error"
         }
       },
-      "tier": "core"
+      "tier": "core",
+      "m3_runtime": {
+        "status": "real Lua/native supported paths exercised; field completeness additionally converter-tested, not every native field populated",
+        "positive": [
+          "tests/m3_core.lua",
+          "tests/m3_core_reproducer.lua"
+        ],
+        "negative": [
+          "tests/m3_core.lua (unloaded/argument/compound bounds)",
+          "tests/read_order_host.cpp (wrapper publication/copy faults)",
+          "tests/reentry_host.cpp (real loaded finalizer paths)"
+        ],
+        "iterator_disposition": "not an iterator family",
+        "limitations": "native profile limitations retained; docs/M3-CORE.md",
+        "review": "independent workflow review outstanding; not acceptance waiver"
+      }
     },
     {
       "declaration": {
@@ -7665,16 +7754,16 @@
       "dispatch": "read",
       "evidence": {
         "negative": {
-          "assertions": "unloaded/unsupported/validation and recorded limitations",
-          "command": null,
-          "fixture": null,
-          "status": "unqualified"
+          "status": "exercised scoped paths; not exhaustive native error oracle",
+          "command": "ctest --test-dir build --output-on-failure; bash tests/installed-qualification.sh",
+          "fixture": "same real profiles plus wrapper fault hosts",
+          "assertions": "unloaded/invalid arguments/compound bounds and wrapper lifetime/error containment; see m3_runtime"
         },
         "positive": {
-          "assertions": "real supported case with all response fields; defined strings fidelity exception applies",
-          "command": null,
-          "fixture": null,
-          "status": "unqualified"
+          "status": "real Lua/native supported paths exercised; field completeness additionally converter-tested, not every native field populated",
+          "command": "bash tests/installed-qualification.sh; ctest --test-dir build --output-on-failure",
+          "fixture": "authored ELF/analyzed project; native-seeded host or conditional fixture where cited",
+          "assertions": "tests/m3_core.lua; tests/m3_core_reproducer.lua; real conditional structural traversal not address-monotone; iterator deliberately stalls rather than sorts/skips"
         },
         "python_oracle": "unqualified"
       },
@@ -7932,18 +8021,18 @@
         "facade": {
           "disposition": "complete response convenience/page",
           "extraction": null,
-          "grammar_status": "proposed; not approved for adapter implementation",
+          "grammar_status": "implemented M3 convenience or explicit native() escape hatch",
           "name": "list_basic_blocks",
           "return": "complete response/error via convenience or native() as disposed"
         },
-        "implementation_status": "planned M0 contract only; not runtime-qualified",
-        "iterator": "not enabled; source identity/order alone is not runtime qualification",
+        "implementation_status": "implemented M3; runtime evidence and limitations below; independent review outstanding",
+        "iterator": "iter_basic_blocks (safe stall on structural nonmonotone order)",
         "lowlevel": {
           "call": "list_basic_blocks(options={})",
-          "call_status": "proposed; not approved for adapter implementation",
+          "call_status": "implemented checked native-local adapter",
           "grammar": {
-            "approved_call": null,
-            "authority": "inventory presentation only; docs/COVERAGE.md approves tier/disposition, not this syntax",
+            "approved_call": "list_basic_blocks(options={})",
+            "authority": "accepted M3 brief; docs/M3-CORE.md; src/owner.cpp",
             "default_rule": "only explicit binding defaults; model initializer is not proof of request optionality; preserve false, zero and empty",
             "native_argument_order": [
               "range_start",
@@ -7952,7 +8041,7 @@
               "offset"
             ],
             "proposed_call": "list_basic_blocks(options={})",
-            "status": "proposed; not approved for adapter implementation",
+            "status": "implemented M3; src/owner.cpp is executable checked grammar",
             "unknown_keys": "reject before dispatch; validation-only rejection does not invalidate generation"
           },
           "name": "list_basic_blocks",
@@ -7977,6 +8066,21 @@
       "m3_followthrough": {
         "evidence": "tests/m3_branch.lua; authored branch ELF; installed native; four blocks/four edges, repeat singleton pages",
         "iterator_limitation": "structural order not address monotone; iter_basic_blocks safely stalls on third singleton page; CFG pages-only absent structural ordinal/comparator"
+      },
+      "m3_runtime": {
+        "status": "real Lua/native supported paths exercised; field completeness additionally converter-tested, not every native field populated",
+        "positive": [
+          "tests/m3_core.lua",
+          "tests/m3_core_reproducer.lua"
+        ],
+        "negative": [
+          "tests/m3_core.lua (unloaded/argument/compound bounds)",
+          "tests/read_order_host.cpp (wrapper publication/copy faults)",
+          "tests/reentry_host.cpp (real loaded finalizer paths)"
+        ],
+        "iterator_disposition": "iter_basic_blocks (safe stall on structural nonmonotone order)",
+        "limitations": "real conditional structural traversal not address-monotone; iterator deliberately stalls rather than sorts/skips",
+        "review": "independent workflow review outstanding; not acceptance waiver"
       }
     },
     {
@@ -8324,16 +8428,16 @@
       "dispatch": "read",
       "evidence": {
         "negative": {
-          "assertions": "unloaded/unsupported/validation and recorded limitations",
-          "command": null,
-          "fixture": null,
-          "status": "unqualified"
+          "status": "exercised scoped paths; not exhaustive native error oracle",
+          "command": "ctest --test-dir build --output-on-failure; bash tests/installed-qualification.sh",
+          "fixture": "same real profiles plus wrapper fault hosts",
+          "assertions": "unloaded/invalid arguments/compound bounds and wrapper lifetime/error containment; see m3_runtime"
         },
         "positive": {
-          "assertions": "real supported case with all response fields; defined strings fidelity exception applies",
-          "command": null,
-          "fixture": null,
-          "status": "unqualified"
+          "status": "real Lua/native supported paths exercised; field completeness additionally converter-tested, not every native field populated",
+          "command": "bash tests/installed-qualification.sh; ctest --test-dir build --output-on-failure",
+          "fixture": "authored ELF/analyzed project; native-seeded host or conditional fixture where cited",
+          "assertions": "tests/m3_core.lua; tests/m3_core_reproducer.lua; native profile limitations retained; docs/M3-CORE.md"
         },
         "python_oracle": "unqualified"
       },
@@ -8578,18 +8682,18 @@
         "facade": {
           "disposition": "complete response convenience/page",
           "extraction": null,
-          "grammar_status": "proposed; not approved for adapter implementation",
+          "grammar_status": "implemented M3 convenience or explicit native() escape hatch",
           "name": "list_cfg_edges",
           "return": "complete response/error via convenience or native() as disposed"
         },
-        "implementation_status": "planned M0 contract only; not runtime-qualified",
-        "iterator": "not enabled; source identity/order alone is not runtime qualification",
+        "implementation_status": "implemented M3; runtime evidence and limitations below; independent review outstanding",
+        "iterator": "pages/lookup only; see m3_runtime iterator disposition",
         "lowlevel": {
           "call": "list_cfg_edges(options={})",
-          "call_status": "proposed; not approved for adapter implementation",
+          "call_status": "implemented checked native-local adapter",
           "grammar": {
-            "approved_call": null,
-            "authority": "inventory presentation only; docs/COVERAGE.md approves tier/disposition, not this syntax",
+            "approved_call": "list_cfg_edges(options={})",
+            "authority": "accepted M3 brief; docs/M3-CORE.md; src/owner.cpp",
             "default_rule": "only explicit binding defaults; model initializer is not proof of request optionality; preserve false, zero and empty",
             "native_argument_order": [
               "range_start",
@@ -8598,7 +8702,7 @@
               "offset"
             ],
             "proposed_call": "list_cfg_edges(options={})",
-            "status": "proposed; not approved for adapter implementation",
+            "status": "implemented M3; src/owner.cpp is executable checked grammar",
             "unknown_keys": "reject before dispatch; validation-only rejection does not invalidate generation"
           },
           "name": "list_cfg_edges",
@@ -8615,6 +8719,21 @@
       "m3_followthrough": {
         "evidence": "tests/m3_branch.lua; authored branch ELF; installed native; four blocks/four edges, repeat singleton pages",
         "iterator_limitation": "structural order not address monotone; iter_basic_blocks safely stalls on third singleton page; CFG pages-only absent structural ordinal/comparator"
+      },
+      "m3_runtime": {
+        "status": "real Lua/native supported paths exercised; field completeness additionally converter-tested, not every native field populated",
+        "positive": [
+          "tests/m3_core.lua",
+          "tests/m3_core_reproducer.lua"
+        ],
+        "negative": [
+          "tests/m3_core.lua (unloaded/argument/compound bounds)",
+          "tests/read_order_host.cpp (wrapper publication/copy faults)",
+          "tests/reentry_host.cpp (real loaded finalizer paths)"
+        ],
+        "iterator_disposition": "pages-only; native cursor/identity/order limitation described in docs/M3-CORE.md",
+        "limitations": "native profile limitations retained; docs/M3-CORE.md",
+        "review": "independent workflow review outstanding; not acceptance waiver"
       }
     },
     {
@@ -10171,16 +10290,16 @@
       "dispatch": "read",
       "evidence": {
         "negative": {
-          "assertions": "unloaded/unsupported/validation and recorded limitations",
-          "command": null,
-          "fixture": null,
-          "status": "unqualified"
+          "status": "exercised scoped paths; not exhaustive native error oracle",
+          "command": "ctest --test-dir build --output-on-failure; bash tests/installed-qualification.sh",
+          "fixture": "same real profiles plus wrapper fault hosts",
+          "assertions": "unloaded/invalid arguments/compound bounds and wrapper lifetime/error containment; see m3_runtime"
         },
         "positive": {
-          "assertions": "real supported case with all response fields; defined strings fidelity exception applies",
-          "command": null,
-          "fixture": null,
-          "status": "unqualified"
+          "status": "real Lua/native supported paths exercised; field completeness additionally converter-tested, not every native field populated",
+          "command": "bash tests/installed-qualification.sh; ctest --test-dir build --output-on-failure",
+          "fixture": "authored ELF/analyzed project; native-seeded host or conditional fixture where cited",
+          "assertions": "tests/m3_core.lua; tests/m3_core_reproducer.lua; candidate offsets exercised; optional post-candidate filtering branch has no reproduced missing-signature candidate; pages-only, no output-count cursor"
         },
         "python_oracle": "unqualified"
       },
@@ -10546,18 +10665,18 @@
         "facade": {
           "disposition": "complete response page; no iterator",
           "extraction": null,
-          "grammar_status": "proposed; not approved for adapter implementation",
+          "grammar_status": "implemented M3 convenience or explicit native() escape hatch",
           "name": "list_function_signatures",
           "return": "complete response/error via convenience or native() as disposed"
         },
-        "implementation_status": "planned M0 contract only; not runtime-qualified",
-        "iterator": "not enabled; source identity/order alone is not runtime qualification",
+        "implementation_status": "implemented M3; runtime evidence and limitations below; independent review outstanding",
+        "iterator": "pages/lookup only; see m3_runtime iterator disposition",
         "lowlevel": {
           "call": "list_function_signatures(options={})",
-          "call_status": "proposed; not approved for adapter implementation",
+          "call_status": "implemented checked native-local adapter",
           "grammar": {
-            "approved_call": null,
-            "authority": "inventory presentation only; docs/COVERAGE.md approves tier/disposition, not this syntax",
+            "approved_call": "list_function_signatures(options={})",
+            "authority": "accepted M3 brief; docs/M3-CORE.md; src/owner.cpp",
             "default_rule": "only explicit binding defaults; model initializer is not proof of request optionality; preserve false, zero and empty",
             "native_argument_order": [
               "range_start",
@@ -10566,7 +10685,7 @@
               "offset"
             ],
             "proposed_call": "list_function_signatures(options={})",
-            "status": "proposed; not approved for adapter implementation",
+            "status": "implemented M3; src/owner.cpp is executable checked grammar",
             "unknown_keys": "reject before dispatch; validation-only rejection does not invalidate generation"
           },
           "name": "list_function_signatures",
@@ -10579,7 +10698,22 @@
           "return": "complete detached native response or nil,error"
         }
       },
-      "tier": "core"
+      "tier": "core",
+      "m3_runtime": {
+        "status": "real Lua/native supported paths exercised; field completeness additionally converter-tested, not every native field populated",
+        "positive": [
+          "tests/m3_core.lua",
+          "tests/m3_core_reproducer.lua"
+        ],
+        "negative": [
+          "tests/m3_core.lua (unloaded/argument/compound bounds)",
+          "tests/read_order_host.cpp (wrapper publication/copy faults)",
+          "tests/reentry_host.cpp (real loaded finalizer paths)"
+        ],
+        "iterator_disposition": "pages-only; native cursor/identity/order limitation described in docs/M3-CORE.md",
+        "limitations": "candidate offsets exercised; optional post-candidate filtering branch has no reproduced missing-signature candidate; pages-only, no output-count cursor",
+        "review": "independent workflow review outstanding; not acceptance waiver"
+      }
     },
     {
       "declaration": {
@@ -12193,16 +12327,16 @@
       "dispatch": "read",
       "evidence": {
         "negative": {
-          "assertions": "unloaded/unsupported/validation and recorded limitations",
-          "command": null,
-          "fixture": null,
-          "status": "unqualified"
+          "status": "exercised scoped paths; not exhaustive native error oracle",
+          "command": "ctest --test-dir build --output-on-failure; bash tests/installed-qualification.sh",
+          "fixture": "same real profiles plus wrapper fault hosts",
+          "assertions": "unloaded/invalid arguments/compound bounds and wrapper lifetime/error containment; see m3_runtime"
         },
         "positive": {
-          "assertions": "real supported case with all response fields; defined strings fidelity exception applies",
-          "command": null,
-          "fixture": null,
-          "status": "unqualified"
+          "status": "real Lua/native supported paths exercised; field completeness additionally converter-tested, not every native field populated",
+          "command": "bash tests/installed-qualification.sh; ctest --test-dir build --output-on-failure",
+          "fixture": "authored ELF/analyzed project; native-seeded host or conditional fixture where cited",
+          "assertions": "tests/m3_core.lua; tests/m3_core_reproducer.lua; native profile limitations retained; docs/M3-CORE.md"
         },
         "python_oracle": "unqualified"
       },
@@ -12532,25 +12666,25 @@
         "facade": {
           "disposition": "complete response convenience/page",
           "extraction": null,
-          "grammar_status": "proposed; not approved for adapter implementation",
+          "grammar_status": "implemented M3 convenience or explicit native() escape hatch",
           "name": "list_memory_blocks",
           "return": "complete response/error via convenience or native() as disposed"
         },
-        "implementation_status": "planned M0 contract only; not runtime-qualified",
-        "iterator": "not enabled; source identity/order alone is not runtime qualification",
+        "implementation_status": "implemented M3; runtime evidence and limitations below; independent review outstanding",
+        "iterator": "iter_memory_blocks",
         "lowlevel": {
           "call": "list_memory_blocks(options={})",
-          "call_status": "proposed; not approved for adapter implementation",
+          "call_status": "implemented checked native-local adapter",
           "grammar": {
-            "approved_call": null,
-            "authority": "inventory presentation only; docs/COVERAGE.md approves tier/disposition, not this syntax",
+            "approved_call": "list_memory_blocks(options={})",
+            "authority": "accepted M3 brief; docs/M3-CORE.md; src/owner.cpp",
             "default_rule": "only explicit binding defaults; model initializer is not proof of request optionality; preserve false, zero and empty",
             "native_argument_order": [
               "limit",
               "offset"
             ],
             "proposed_call": "list_memory_blocks(options={})",
-            "status": "proposed; not approved for adapter implementation",
+            "status": "implemented M3; src/owner.cpp is executable checked grammar",
             "unknown_keys": "reject before dispatch; validation-only rejection does not invalidate generation"
           },
           "name": "list_memory_blocks",
@@ -12569,6 +12703,21 @@
         "evidence": "tests/m3_iterators.lua; installed standalone/static/shared; ELF and analyzed project; sizes 1/2/100 repeated serial scans",
         "limits": "pool_size=1; no universal order/snapshot; reject nonadvancing/duplicate pages; native xrefs call-before-load ordering can stall",
         "status": "qualified authored serial paths; broader original M3 acceptance remains open"
+      },
+      "m3_runtime": {
+        "status": "real Lua/native supported paths exercised; field completeness additionally converter-tested, not every native field populated",
+        "positive": [
+          "tests/m3_core.lua",
+          "tests/m3_core_reproducer.lua"
+        ],
+        "negative": [
+          "tests/m3_core.lua (unloaded/argument/compound bounds)",
+          "tests/read_order_host.cpp (wrapper publication/copy faults)",
+          "tests/reentry_host.cpp (real loaded finalizer paths)"
+        ],
+        "iterator_disposition": "iter_memory_blocks",
+        "limitations": "native profile limitations retained; docs/M3-CORE.md",
+        "review": "independent workflow review outstanding; not acceptance waiver"
       }
     },
     {
@@ -13447,16 +13596,16 @@
       "dispatch": "read",
       "evidence": {
         "negative": {
-          "assertions": "unloaded/unsupported/validation and recorded limitations",
-          "command": null,
-          "fixture": null,
-          "status": "unqualified"
+          "status": "exercised scoped paths; not exhaustive native error oracle",
+          "command": "ctest --test-dir build --output-on-failure; bash tests/installed-qualification.sh",
+          "fixture": "same real profiles plus wrapper fault hosts",
+          "assertions": "unloaded/invalid arguments/compound bounds and wrapper lifetime/error containment; see m3_runtime"
         },
         "positive": {
-          "assertions": "real supported case with all response fields; defined strings fidelity exception applies",
-          "command": null,
-          "fixture": null,
-          "status": "unqualified"
+          "status": "real Lua/native supported paths exercised; field completeness additionally converter-tested, not every native field populated",
+          "command": "bash tests/installed-qualification.sh; ctest --test-dir build --output-on-failure",
+          "fixture": "authored ELF/analyzed project; native-seeded host or conditional fixture where cited",
+          "assertions": "tests/m3_core.lua; tests/m3_core_reproducer.lua; native profile limitations retained; docs/M3-CORE.md"
         },
         "python_oracle": "unqualified"
       },
@@ -13816,18 +13965,18 @@
         "facade": {
           "disposition": "complete response convenience/page",
           "extraction": null,
-          "grammar_status": "proposed; not approved for adapter implementation",
+          "grammar_status": "implemented M3 convenience or explicit native() escape hatch",
           "name": "list_symbols",
           "return": "complete response/error via convenience or native() as disposed"
         },
-        "implementation_status": "planned M0 contract only; not runtime-qualified",
-        "iterator": "not enabled; source identity/order alone is not runtime qualification",
+        "implementation_status": "implemented M3; runtime evidence and limitations below; independent review outstanding",
+        "iterator": "iter_symbols",
         "lowlevel": {
           "call": "list_symbols(options={})",
-          "call_status": "proposed; not approved for adapter implementation",
+          "call_status": "implemented checked native-local adapter",
           "grammar": {
-            "approved_call": null,
-            "authority": "inventory presentation only; docs/COVERAGE.md approves tier/disposition, not this syntax",
+            "approved_call": "list_symbols(options={})",
+            "authority": "accepted M3 brief; docs/M3-CORE.md; src/owner.cpp",
             "default_rule": "only explicit binding defaults; model initializer is not proof of request optionality; preserve false, zero and empty",
             "native_argument_order": [
               "range_start",
@@ -13836,7 +13985,7 @@
               "offset"
             ],
             "proposed_call": "list_symbols(options={})",
-            "status": "proposed; not approved for adapter implementation",
+            "status": "implemented M3; src/owner.cpp is executable checked grammar",
             "unknown_keys": "reject before dispatch; validation-only rejection does not invalidate generation"
           },
           "name": "list_symbols",
@@ -13857,6 +14006,21 @@
         "evidence": "tests/m3_iterators.lua; installed standalone/static/shared; ELF and analyzed project; sizes 1/2/100 repeated serial scans",
         "limits": "pool_size=1; no universal order/snapshot; reject nonadvancing/duplicate pages; native xrefs call-before-load ordering can stall",
         "status": "qualified authored serial paths; broader original M3 acceptance remains open"
+      },
+      "m3_runtime": {
+        "status": "real Lua/native supported paths exercised; field completeness additionally converter-tested, not every native field populated",
+        "positive": [
+          "tests/m3_core.lua",
+          "tests/m3_core_reproducer.lua"
+        ],
+        "negative": [
+          "tests/m3_core.lua (unloaded/argument/compound bounds)",
+          "tests/read_order_host.cpp (wrapper publication/copy faults)",
+          "tests/reentry_host.cpp (real loaded finalizer paths)"
+        ],
+        "iterator_disposition": "iter_symbols",
+        "limitations": "native profile limitations retained; docs/M3-CORE.md",
+        "review": "independent workflow review outstanding; not acceptance waiver"
       }
     },
     {
@@ -13978,16 +14142,16 @@
       "dispatch": "read",
       "evidence": {
         "negative": {
-          "assertions": "unloaded/unsupported/validation and recorded limitations",
-          "command": null,
-          "fixture": null,
-          "status": "unqualified"
+          "status": "exercised scoped paths; not exhaustive native error oracle",
+          "command": "ctest --test-dir build --output-on-failure; bash tests/installed-qualification.sh",
+          "fixture": "same real profiles plus wrapper fault hosts",
+          "assertions": "unloaded/invalid arguments/compound bounds and wrapper lifetime/error containment; see m3_runtime"
         },
         "positive": {
-          "assertions": "real supported case with all response fields; defined strings fidelity exception applies",
-          "command": null,
-          "fixture": null,
-          "status": "unqualified"
+          "status": "real Lua/native supported paths exercised; field completeness additionally converter-tested, not every native field populated",
+          "command": "bash tests/installed-qualification.sh; ctest --test-dir build --output-on-failure",
+          "fixture": "authored ELF/analyzed project; native-seeded host or conditional fixture where cited",
+          "assertions": "tests/m3_seeded.lua (real native-seeded Lua ELF/project); native profile limitations retained; docs/M3-CORE.md"
         },
         "python_oracle": "unqualified"
       },
@@ -14202,26 +14366,26 @@
         "facade": {
           "disposition": "complete response convenience/page",
           "extraction": null,
-          "grammar_status": "proposed; not approved for adapter implementation",
+          "grammar_status": "implemented M3 convenience or explicit native() escape hatch",
           "name": "list_type_aliases",
           "return": "complete response/error via convenience or native() as disposed"
         },
-        "implementation_status": "planned M0 contract only; not runtime-qualified",
-        "iterator": "not enabled; source identity/order alone is not runtime qualification",
+        "implementation_status": "implemented M3; runtime evidence and limitations below; independent review outstanding",
+        "iterator": "pages/lookup only; see m3_runtime iterator disposition",
         "lowlevel": {
-          "call": "list_type_aliases(options={})",
-          "call_status": "proposed; not approved for adapter implementation",
+          "call": "list_type_aliases(query, options={})",
+          "call_status": "implemented checked native-local adapter",
           "grammar": {
-            "approved_call": null,
-            "authority": "inventory presentation only; docs/COVERAGE.md approves tier/disposition, not this syntax",
+            "approved_call": "list_type_aliases(query, options={})",
+            "authority": "accepted M3 brief; docs/M3-CORE.md; src/owner.cpp",
             "default_rule": "only explicit binding defaults; model initializer is not proof of request optionality; preserve false, zero and empty",
             "native_argument_order": [
               "query",
               "limit",
               "offset"
             ],
-            "proposed_call": "list_type_aliases(options={})",
-            "status": "proposed; not approved for adapter implementation",
+            "proposed_call": "list_type_aliases(query, options={})",
+            "status": "implemented M3; src/owner.cpp is executable checked grammar",
             "unknown_keys": "reject before dispatch; validation-only rejection does not invalidate generation"
           },
           "name": "list_type_aliases",
@@ -14233,7 +14397,21 @@
           "return": "complete detached native response or nil,error"
         }
       },
-      "tier": "core"
+      "tier": "core",
+      "m3_runtime": {
+        "status": "real Lua/native supported paths exercised; field completeness additionally converter-tested, not every native field populated",
+        "positive": [
+          "tests/m3_seeded.lua (real native-seeded Lua ELF/project)"
+        ],
+        "negative": [
+          "tests/m3_core.lua (unloaded/argument/compound bounds)",
+          "tests/read_order_host.cpp (wrapper publication/copy faults)",
+          "tests/reentry_host.cpp (real loaded finalizer paths)"
+        ],
+        "iterator_disposition": "pages-only: singleton seeded positives establish extraction, not multi-record cross-page identity/order qualification; no fabricated comparator",
+        "limitations": "native profile limitations retained; docs/M3-CORE.md",
+        "review": "independent workflow review outstanding; not acceptance waiver"
+      }
     },
     {
       "container_result_review": {
@@ -14254,16 +14432,16 @@
       "dispatch": "read",
       "evidence": {
         "negative": {
-          "assertions": "unloaded/unsupported/validation and recorded limitations",
-          "command": null,
-          "fixture": null,
-          "status": "unqualified"
+          "status": "exercised scoped paths; not exhaustive native error oracle",
+          "command": "ctest --test-dir build --output-on-failure; bash tests/installed-qualification.sh",
+          "fixture": "same real profiles plus wrapper fault hosts",
+          "assertions": "unloaded/invalid arguments/compound bounds and wrapper lifetime/error containment; see m3_runtime"
         },
         "positive": {
-          "assertions": "real supported case with all response fields; defined strings fidelity exception applies",
-          "command": null,
-          "fixture": null,
-          "status": "unqualified"
+          "status": "real Lua/native supported paths exercised; field completeness additionally converter-tested, not every native field populated",
+          "command": "bash tests/installed-qualification.sh; ctest --test-dir build --output-on-failure",
+          "fixture": "authored ELF/analyzed project; native-seeded host or conditional fixture where cited",
+          "assertions": "tests/m3_seeded.lua (real native-seeded Lua ELF/project); native profile limitations retained; docs/M3-CORE.md"
         },
         "python_oracle": "unqualified"
       },
@@ -14513,26 +14691,26 @@
         "facade": {
           "disposition": "complete response convenience/page",
           "extraction": null,
-          "grammar_status": "proposed; not approved for adapter implementation",
+          "grammar_status": "implemented M3 convenience or explicit native() escape hatch",
           "name": "list_type_enum_members",
           "return": "complete response/error via convenience or native() as disposed"
         },
-        "implementation_status": "planned M0 contract only; not runtime-qualified",
-        "iterator": "not enabled; source identity/order alone is not runtime qualification",
+        "implementation_status": "implemented M3; runtime evidence and limitations below; independent review outstanding",
+        "iterator": "pages/lookup only; see m3_runtime iterator disposition",
         "lowlevel": {
-          "call": "list_type_enum_members(options={})",
-          "call_status": "proposed; not approved for adapter implementation",
+          "call": "list_type_enum_members(type_id_or_path, options={})",
+          "call_status": "implemented checked native-local adapter",
           "grammar": {
-            "approved_call": null,
-            "authority": "inventory presentation only; docs/COVERAGE.md approves tier/disposition, not this syntax",
+            "approved_call": "list_type_enum_members(type_id_or_path, options={})",
+            "authority": "accepted M3 brief; docs/M3-CORE.md; src/owner.cpp",
             "default_rule": "only explicit binding defaults; model initializer is not proof of request optionality; preserve false, zero and empty",
             "native_argument_order": [
               "type_id_or_path",
               "limit",
               "offset"
             ],
-            "proposed_call": "list_type_enum_members(options={})",
-            "status": "proposed; not approved for adapter implementation",
+            "proposed_call": "list_type_enum_members(type_id_or_path, options={})",
+            "status": "implemented M3; src/owner.cpp is executable checked grammar",
             "unknown_keys": "reject before dispatch; validation-only rejection does not invalidate generation"
           },
           "name": "list_type_enum_members",
@@ -14544,7 +14722,21 @@
           "return": "complete detached native response or nil,error"
         }
       },
-      "tier": "core"
+      "tier": "core",
+      "m3_runtime": {
+        "status": "real Lua/native supported paths exercised; field completeness additionally converter-tested, not every native field populated",
+        "positive": [
+          "tests/m3_seeded.lua (real native-seeded Lua ELF/project)"
+        ],
+        "negative": [
+          "tests/m3_core.lua (unloaded/argument/compound bounds)",
+          "tests/read_order_host.cpp (wrapper publication/copy faults)",
+          "tests/reentry_host.cpp (real loaded finalizer paths)"
+        ],
+        "iterator_disposition": "pages-only: singleton seeded positives establish extraction, not multi-record cross-page identity/order qualification; no fabricated comparator",
+        "limitations": "native profile limitations retained; docs/M3-CORE.md",
+        "review": "independent workflow review outstanding; not acceptance waiver"
+      }
     },
     {
       "container_result_review": {
@@ -14565,16 +14757,16 @@
       "dispatch": "read",
       "evidence": {
         "negative": {
-          "assertions": "unloaded/unsupported/validation and recorded limitations",
-          "command": null,
-          "fixture": null,
-          "status": "unqualified"
+          "status": "exercised scoped paths; not exhaustive native error oracle",
+          "command": "ctest --test-dir build --output-on-failure; bash tests/installed-qualification.sh",
+          "fixture": "same real profiles plus wrapper fault hosts",
+          "assertions": "unloaded/invalid arguments/compound bounds and wrapper lifetime/error containment; see m3_runtime"
         },
         "positive": {
-          "assertions": "real supported case with all response fields; defined strings fidelity exception applies",
-          "command": null,
-          "fixture": null,
-          "status": "unqualified"
+          "status": "real Lua/native supported paths exercised; field completeness additionally converter-tested, not every native field populated",
+          "command": "bash tests/installed-qualification.sh; ctest --test-dir build --output-on-failure",
+          "fixture": "authored ELF/analyzed project; native-seeded host or conditional fixture where cited",
+          "assertions": "tests/m3_seeded.lua (real native-seeded Lua ELF/project); native profile limitations retained; docs/M3-CORE.md"
         },
         "python_oracle": "unqualified"
       },
@@ -14806,26 +14998,26 @@
         "facade": {
           "disposition": "complete response convenience/page",
           "extraction": null,
-          "grammar_status": "proposed; not approved for adapter implementation",
+          "grammar_status": "implemented M3 convenience or explicit native() escape hatch",
           "name": "list_type_enums",
           "return": "complete response/error via convenience or native() as disposed"
         },
-        "implementation_status": "planned M0 contract only; not runtime-qualified",
-        "iterator": "not enabled; source identity/order alone is not runtime qualification",
+        "implementation_status": "implemented M3; runtime evidence and limitations below; independent review outstanding",
+        "iterator": "pages/lookup only; see m3_runtime iterator disposition",
         "lowlevel": {
-          "call": "list_type_enums(options={})",
-          "call_status": "proposed; not approved for adapter implementation",
+          "call": "list_type_enums(query, options={})",
+          "call_status": "implemented checked native-local adapter",
           "grammar": {
-            "approved_call": null,
-            "authority": "inventory presentation only; docs/COVERAGE.md approves tier/disposition, not this syntax",
+            "approved_call": "list_type_enums(query, options={})",
+            "authority": "accepted M3 brief; docs/M3-CORE.md; src/owner.cpp",
             "default_rule": "only explicit binding defaults; model initializer is not proof of request optionality; preserve false, zero and empty",
             "native_argument_order": [
               "query",
               "limit",
               "offset"
             ],
-            "proposed_call": "list_type_enums(options={})",
-            "status": "proposed; not approved for adapter implementation",
+            "proposed_call": "list_type_enums(query, options={})",
+            "status": "implemented M3; src/owner.cpp is executable checked grammar",
             "unknown_keys": "reject before dispatch; validation-only rejection does not invalidate generation"
           },
           "name": "list_type_enums",
@@ -14837,7 +15029,21 @@
           "return": "complete detached native response or nil,error"
         }
       },
-      "tier": "core"
+      "tier": "core",
+      "m3_runtime": {
+        "status": "real Lua/native supported paths exercised; field completeness additionally converter-tested, not every native field populated",
+        "positive": [
+          "tests/m3_seeded.lua (real native-seeded Lua ELF/project)"
+        ],
+        "negative": [
+          "tests/m3_core.lua (unloaded/argument/compound bounds)",
+          "tests/read_order_host.cpp (wrapper publication/copy faults)",
+          "tests/reentry_host.cpp (real loaded finalizer paths)"
+        ],
+        "iterator_disposition": "pages-only: singleton seeded positives establish extraction, not multi-record cross-page identity/order qualification; no fabricated comparator",
+        "limitations": "native profile limitations retained; docs/M3-CORE.md",
+        "review": "independent workflow review outstanding; not acceptance waiver"
+      }
     },
     {
       "container_result_review": {
@@ -14858,16 +15064,16 @@
       "dispatch": "read",
       "evidence": {
         "negative": {
-          "assertions": "unloaded/unsupported/validation and recorded limitations",
-          "command": null,
-          "fixture": null,
-          "status": "unqualified"
+          "status": "exercised scoped paths; not exhaustive native error oracle",
+          "command": "ctest --test-dir build --output-on-failure; bash tests/installed-qualification.sh",
+          "fixture": "same real profiles plus wrapper fault hosts",
+          "assertions": "unloaded/invalid arguments/compound bounds and wrapper lifetime/error containment; see m3_runtime"
         },
         "positive": {
-          "assertions": "real supported case with all response fields; defined strings fidelity exception applies",
-          "command": null,
-          "fixture": null,
-          "status": "unqualified"
+          "status": "real Lua/native supported paths exercised; field completeness additionally converter-tested, not every native field populated",
+          "command": "bash tests/installed-qualification.sh; ctest --test-dir build --output-on-failure",
+          "fixture": "authored ELF/analyzed project; native-seeded host or conditional fixture where cited",
+          "assertions": "tests/m3_seeded.lua (real native-seeded Lua ELF/project); native profile limitations retained; docs/M3-CORE.md"
         },
         "python_oracle": "unqualified"
       },
@@ -15180,26 +15386,26 @@
         "facade": {
           "disposition": "complete response convenience/page",
           "extraction": null,
-          "grammar_status": "proposed; not approved for adapter implementation",
+          "grammar_status": "implemented M3 convenience or explicit native() escape hatch",
           "name": "list_type_members",
           "return": "complete response/error via convenience or native() as disposed"
         },
-        "implementation_status": "planned M0 contract only; not runtime-qualified",
-        "iterator": "not enabled; source identity/order alone is not runtime qualification",
+        "implementation_status": "implemented M3; runtime evidence and limitations below; independent review outstanding",
+        "iterator": "pages/lookup only; see m3_runtime iterator disposition",
         "lowlevel": {
-          "call": "list_type_members(options={})",
-          "call_status": "proposed; not approved for adapter implementation",
+          "call": "list_type_members(parent_type_id_or_path, options={})",
+          "call_status": "implemented checked native-local adapter",
           "grammar": {
-            "approved_call": null,
-            "authority": "inventory presentation only; docs/COVERAGE.md approves tier/disposition, not this syntax",
+            "approved_call": "list_type_members(parent_type_id_or_path, options={})",
+            "authority": "accepted M3 brief; docs/M3-CORE.md; src/owner.cpp",
             "default_rule": "only explicit binding defaults; model initializer is not proof of request optionality; preserve false, zero and empty",
             "native_argument_order": [
               "type_id_or_path",
               "limit",
               "offset"
             ],
-            "proposed_call": "list_type_members(options={})",
-            "status": "proposed; not approved for adapter implementation",
+            "proposed_call": "list_type_members(parent_type_id_or_path, options={})",
+            "status": "implemented M3; src/owner.cpp is executable checked grammar",
             "unknown_keys": "reject before dispatch; validation-only rejection does not invalidate generation"
           },
           "name": "list_type_members",
@@ -15211,7 +15417,21 @@
           "return": "complete detached native response or nil,error"
         }
       },
-      "tier": "core"
+      "tier": "core",
+      "m3_runtime": {
+        "status": "real Lua/native supported paths exercised; field completeness additionally converter-tested, not every native field populated",
+        "positive": [
+          "tests/m3_seeded.lua (real native-seeded Lua ELF/project)"
+        ],
+        "negative": [
+          "tests/m3_core.lua (unloaded/argument/compound bounds)",
+          "tests/read_order_host.cpp (wrapper publication/copy faults)",
+          "tests/reentry_host.cpp (real loaded finalizer paths)"
+        ],
+        "iterator_disposition": "pages-only: singleton seeded positives establish extraction, not multi-record cross-page identity/order qualification; no fabricated comparator",
+        "limitations": "native profile limitations retained; docs/M3-CORE.md",
+        "review": "independent workflow review outstanding; not acceptance waiver"
+      }
     },
     {
       "container_result_review": {
@@ -15232,16 +15452,16 @@
       "dispatch": "read",
       "evidence": {
         "negative": {
-          "assertions": "unloaded/unsupported/validation and recorded limitations",
-          "command": null,
-          "fixture": null,
-          "status": "unqualified"
+          "status": "exercised scoped paths; not exhaustive native error oracle",
+          "command": "ctest --test-dir build --output-on-failure; bash tests/installed-qualification.sh",
+          "fixture": "same real profiles plus wrapper fault hosts",
+          "assertions": "unloaded/invalid arguments/compound bounds and wrapper lifetime/error containment; see m3_runtime"
         },
         "positive": {
-          "assertions": "real supported case with all response fields; defined strings fidelity exception applies",
-          "command": null,
-          "fixture": null,
-          "status": "unqualified"
+          "status": "real Lua success-empty only; practical native public union producer limitation",
+          "command": "bash tests/installed-qualification.sh; ctest --test-dir build --output-on-failure",
+          "fixture": "authored ELF/analyzed project; native-seeded host or conditional fixture where cited",
+          "assertions": "tests/m3_seeded.lua; tests/m3_seeded_host.cpp (native limitation); CreateType union NOT_SUPPORTED in native seed host; no populated union claim"
         },
         "python_oracle": "unqualified"
       },
@@ -15457,26 +15677,26 @@
         "facade": {
           "disposition": "complete response convenience/page",
           "extraction": null,
-          "grammar_status": "proposed; not approved for adapter implementation",
+          "grammar_status": "implemented M3 convenience or explicit native() escape hatch",
           "name": "list_type_unions",
           "return": "complete response/error via convenience or native() as disposed"
         },
-        "implementation_status": "planned M0 contract only; not runtime-qualified",
-        "iterator": "not enabled; source identity/order alone is not runtime qualification",
+        "implementation_status": "implemented M3; runtime evidence and limitations below; independent review outstanding",
+        "iterator": "pages/lookup only; see m3_runtime iterator disposition",
         "lowlevel": {
-          "call": "list_type_unions(options={})",
-          "call_status": "proposed; not approved for adapter implementation",
+          "call": "list_type_unions(query, options={})",
+          "call_status": "implemented checked native-local adapter",
           "grammar": {
-            "approved_call": null,
-            "authority": "inventory presentation only; docs/COVERAGE.md approves tier/disposition, not this syntax",
+            "approved_call": "list_type_unions(query, options={})",
+            "authority": "accepted M3 brief; docs/M3-CORE.md; src/owner.cpp",
             "default_rule": "only explicit binding defaults; model initializer is not proof of request optionality; preserve false, zero and empty",
             "native_argument_order": [
               "query",
               "limit",
               "offset"
             ],
-            "proposed_call": "list_type_unions(options={})",
-            "status": "proposed; not approved for adapter implementation",
+            "proposed_call": "list_type_unions(query, options={})",
+            "status": "implemented M3; src/owner.cpp is executable checked grammar",
             "unknown_keys": "reject before dispatch; validation-only rejection does not invalidate generation"
           },
           "name": "list_type_unions",
@@ -15492,6 +15712,21 @@
       "m3_followthrough": {
         "evidence": "tests/m3_seeded_host.cpp public CreateType union returns NOT_SUPPORTED; real Lua success-empty union page",
         "limitation": "no populated union claim; imported union capability unknown; no upstream repair gate"
+      },
+      "m3_runtime": {
+        "status": "real Lua success-empty only; practical native public union producer limitation",
+        "positive": [
+          "tests/m3_seeded.lua",
+          "tests/m3_seeded_host.cpp (native limitation)"
+        ],
+        "negative": [
+          "tests/m3_core.lua (unloaded/argument/compound bounds)",
+          "tests/read_order_host.cpp (wrapper publication/copy faults)",
+          "tests/reentry_host.cpp (real loaded finalizer paths)"
+        ],
+        "iterator_disposition": "pages-only: singleton seeded positives establish extraction, not multi-record cross-page identity/order qualification; no fabricated comparator",
+        "limitations": "CreateType union NOT_SUPPORTED in native seed host; no populated union claim",
+        "review": "independent workflow review outstanding; not acceptance waiver"
       }
     },
     {
@@ -15513,16 +15748,16 @@
       "dispatch": "read",
       "evidence": {
         "negative": {
-          "assertions": "unloaded/unsupported/validation and recorded limitations",
-          "command": null,
-          "fixture": null,
-          "status": "unqualified"
+          "status": "exercised scoped paths; not exhaustive native error oracle",
+          "command": "ctest --test-dir build --output-on-failure; bash tests/installed-qualification.sh",
+          "fixture": "same real profiles plus wrapper fault hosts",
+          "assertions": "unloaded/invalid arguments/compound bounds and wrapper lifetime/error containment; see m3_runtime"
         },
         "positive": {
-          "assertions": "real supported case with all response fields; defined strings fidelity exception applies",
-          "command": null,
-          "fixture": null,
-          "status": "unqualified"
+          "status": "real Lua/native supported paths exercised; field completeness additionally converter-tested, not every native field populated",
+          "command": "bash tests/installed-qualification.sh; ctest --test-dir build --output-on-failure",
+          "fixture": "authored ELF/analyzed project; native-seeded host or conditional fixture where cited",
+          "assertions": "tests/m3_core.lua; tests/m3_core_reproducer.lua; anonymous path_name=/ collisions; pages-only; native type_id ephemeral"
         },
         "python_oracle": "unqualified"
       },
@@ -15850,26 +16085,26 @@
         "facade": {
           "disposition": "complete response convenience/page",
           "extraction": null,
-          "grammar_status": "proposed; not approved for adapter implementation",
+          "grammar_status": "implemented M3 convenience or explicit native() escape hatch",
           "name": "list_types",
           "return": "complete response/error via convenience or native() as disposed"
         },
-        "implementation_status": "planned M0 contract only; not runtime-qualified",
-        "iterator": "not enabled; source identity/order alone is not runtime qualification",
+        "implementation_status": "implemented M3; runtime evidence and limitations below; independent review outstanding",
+        "iterator": "pages/lookup only; see m3_runtime iterator disposition",
         "lowlevel": {
-          "call": "list_types(options={})",
-          "call_status": "proposed; not approved for adapter implementation",
+          "call": "list_types(query, options={})",
+          "call_status": "implemented checked native-local adapter",
           "grammar": {
-            "approved_call": null,
-            "authority": "inventory presentation only; docs/COVERAGE.md approves tier/disposition, not this syntax",
+            "approved_call": "list_types(query, options={})",
+            "authority": "accepted M3 brief; docs/M3-CORE.md; src/owner.cpp",
             "default_rule": "only explicit binding defaults; model initializer is not proof of request optionality; preserve false, zero and empty",
             "native_argument_order": [
               "query",
               "limit",
               "offset"
             ],
-            "proposed_call": "list_types(options={})",
-            "status": "proposed; not approved for adapter implementation",
+            "proposed_call": "list_types(query, options={})",
+            "status": "implemented M3; src/owner.cpp is executable checked grammar",
             "unknown_keys": "reject before dispatch; validation-only rejection does not invalidate generation"
           },
           "name": "list_types",
@@ -15886,6 +16121,21 @@
         "status": "pages-only practical native identity limitation",
         "evidence": "tests/m3_iterators.lua: both real warmed fixtures contain multiple anonymous path_name=/ records",
         "limitation": "canonical path identity collides; type_id is ephemeral traversal counter, not replacement identity"
+      },
+      "m3_runtime": {
+        "status": "real Lua/native supported paths exercised; field completeness additionally converter-tested, not every native field populated",
+        "positive": [
+          "tests/m3_core.lua",
+          "tests/m3_core_reproducer.lua"
+        ],
+        "negative": [
+          "tests/m3_core.lua (unloaded/argument/compound bounds)",
+          "tests/read_order_host.cpp (wrapper publication/copy faults)",
+          "tests/reentry_host.cpp (real loaded finalizer paths)"
+        ],
+        "iterator_disposition": "pages-only; native cursor/identity/order limitation described in docs/M3-CORE.md",
+        "limitations": "anonymous path_name=/ collisions; pages-only; native type_id ephemeral",
+        "review": "independent workflow review outstanding; not acceptance waiver"
       }
     },
     {
@@ -15907,16 +16157,16 @@
       "dispatch": "read",
       "evidence": {
         "negative": {
-          "assertions": "unloaded/unsupported/validation and recorded limitations",
-          "command": null,
-          "fixture": null,
-          "status": "unqualified"
+          "status": "exercised scoped paths; not exhaustive native error oracle",
+          "command": "ctest --test-dir build --output-on-failure; bash tests/installed-qualification.sh",
+          "fixture": "same real profiles plus wrapper fault hosts",
+          "assertions": "unloaded/invalid arguments/compound bounds and wrapper lifetime/error containment; see m3_runtime"
         },
         "positive": {
-          "assertions": "real supported case with all response fields; defined strings fidelity exception applies",
-          "command": null,
-          "fixture": null,
-          "status": "unqualified"
+          "status": "real Lua/native supported paths exercised; field completeness additionally converter-tested, not every native field populated",
+          "command": "bash tests/installed-qualification.sh; ctest --test-dir build --output-on-failure",
+          "fixture": "authored ELF/analyzed project; native-seeded host or conditional fixture where cited",
+          "assertions": "tests/m3_core.lua; tests/m3_core_reproducer.lua; native profile limitations retained; docs/M3-CORE.md"
         },
         "python_oracle": "unqualified"
       },
@@ -16324,18 +16574,18 @@
         "facade": {
           "disposition": "complete response convenience/page",
           "extraction": null,
-          "grammar_status": "proposed; not approved for adapter implementation",
+          "grammar_status": "implemented M3 convenience or explicit native() escape hatch",
           "name": "list_xrefs",
           "return": "complete response/error via convenience or native() as disposed"
         },
-        "implementation_status": "planned M0 contract only; not runtime-qualified",
-        "iterator": "not enabled; source identity/order alone is not runtime qualification",
+        "implementation_status": "implemented M3; runtime evidence and limitations below; independent review outstanding",
+        "iterator": "iter_xrefs (safe stall on native call/load order)",
         "lowlevel": {
           "call": "list_xrefs(options={})",
-          "call_status": "proposed; not approved for adapter implementation",
+          "call_status": "implemented checked native-local adapter",
           "grammar": {
-            "approved_call": null,
-            "authority": "inventory presentation only; docs/COVERAGE.md approves tier/disposition, not this syntax",
+            "approved_call": "list_xrefs(options={})",
+            "authority": "accepted M3 brief; docs/M3-CORE.md; src/owner.cpp",
             "default_rule": "only explicit binding defaults; model initializer is not proof of request optionality; preserve false, zero and empty",
             "native_argument_order": [
               "range_start",
@@ -16344,7 +16594,7 @@
               "offset"
             ],
             "proposed_call": "list_xrefs(options={})",
-            "status": "proposed; not approved for adapter implementation",
+            "status": "implemented M3; src/owner.cpp is executable checked grammar",
             "unknown_keys": "reject before dispatch; validation-only rejection does not invalidate generation"
           },
           "name": "list_xrefs",
@@ -16366,6 +16616,21 @@
         "evidence": "tests/m3_iterators.lua; installed standalone/static/shared; ELF and analyzed project; sizes 1/2/100 repeated serial scans",
         "limits": "pool_size=1; no universal order/snapshot; reject nonadvancing/duplicate pages; native xrefs call-before-load ordering can stall",
         "status": "qualified authored serial paths; broader original M3 acceptance remains open"
+      },
+      "m3_runtime": {
+        "status": "real Lua/native supported paths exercised; field completeness additionally converter-tested, not every native field populated",
+        "positive": [
+          "tests/m3_core.lua",
+          "tests/m3_core_reproducer.lua"
+        ],
+        "negative": [
+          "tests/m3_core.lua (unloaded/argument/compound bounds)",
+          "tests/read_order_host.cpp (wrapper publication/copy faults)",
+          "tests/reentry_host.cpp (real loaded finalizer paths)"
+        ],
+        "iterator_disposition": "iter_xrefs (safe stall on native call/load order)",
+        "limitations": "native profile limitations retained; docs/M3-CORE.md",
+        "review": "independent workflow review outstanding; not acceptance waiver"
       }
     },
     {
@@ -17756,16 +18021,16 @@
       "dispatch": "mutation",
       "evidence": {
         "negative": {
-          "assertions": "unloaded/unsupported/validation and recorded limitations",
-          "command": null,
-          "fixture": null,
-          "status": "unqualified"
+          "status": "exercised scoped paths; not exhaustive native error oracle",
+          "command": "ctest --test-dir build --output-on-failure; bash tests/installed-qualification.sh",
+          "fixture": "same real profiles plus wrapper fault hosts",
+          "assertions": "unloaded/invalid arguments/compound bounds and wrapper lifetime/error containment; see m3_runtime"
         },
         "positive": {
-          "assertions": "real supported case with all response fields; defined strings fidelity exception applies",
-          "command": null,
-          "fixture": null,
-          "status": "unqualified"
+          "status": "real Lua/native supported paths exercised; field completeness additionally converter-tested, not every native field populated",
+          "command": "bash tests/installed-qualification.sh; ctest --test-dir build --output-on-failure",
+          "fixture": "authored ELF/analyzed project; native-seeded host or conditional fixture where cited",
+          "assertions": "tests/m3_core.lua; tests/m3_core_reproducer.lua; native profile limitations retained; docs/M3-CORE.md"
         },
         "python_oracle": "unqualified"
       },
@@ -17903,25 +18168,25 @@
         "facade": {
           "disposition": "complete response convenience/page",
           "extraction": null,
-          "grammar_status": "proposed; not approved for adapter implementation",
+          "grammar_status": "implemented M3 convenience or explicit native() escape hatch",
           "name": "rename_function",
           "return": "complete response/error via convenience or native() as disposed"
         },
-        "implementation_status": "planned M0 contract only; not runtime-qualified",
-        "iterator": "not enabled; source identity/order alone is not runtime qualification",
+        "implementation_status": "implemented M3; runtime evidence and limitations below; independent review outstanding",
+        "iterator": "pages/lookup only; see m3_runtime iterator disposition",
         "lowlevel": {
           "call": "rename_function(address, new_name)",
-          "call_status": "proposed; not approved for adapter implementation",
+          "call_status": "implemented checked native-local adapter",
           "grammar": {
-            "approved_call": null,
-            "authority": "inventory presentation only; docs/COVERAGE.md approves tier/disposition, not this syntax",
+            "approved_call": "rename_function(address, new_name)",
+            "authority": "accepted M3 brief; docs/M3-CORE.md; src/owner.cpp",
             "default_rule": "only explicit binding defaults; model initializer is not proof of request optionality; preserve false, zero and empty",
             "native_argument_order": [
               "address",
               "new_name"
             ],
             "proposed_call": "rename_function(address, new_name)",
-            "status": "proposed; not approved for adapter implementation",
+            "status": "implemented M3; src/owner.cpp is executable checked grammar",
             "unknown_keys": "reject before dispatch; validation-only rejection does not invalidate generation"
           },
           "name": "rename_function",
@@ -17932,7 +18197,22 @@
           "return": "complete detached native response or nil,error"
         }
       },
-      "tier": "core"
+      "tier": "core",
+      "m3_runtime": {
+        "status": "real Lua/native supported paths exercised; field completeness additionally converter-tested, not every native field populated",
+        "positive": [
+          "tests/m3_core.lua",
+          "tests/m3_core_reproducer.lua"
+        ],
+        "negative": [
+          "tests/m3_core.lua (unloaded/argument/compound bounds)",
+          "tests/read_order_host.cpp (wrapper publication/copy faults)",
+          "tests/reentry_host.cpp (real loaded finalizer paths)"
+        ],
+        "iterator_disposition": "not an iterator family",
+        "limitations": "native profile limitations retained; docs/M3-CORE.md",
+        "review": "independent workflow review outstanding; not acceptance waiver"
+      }
     },
     {
       "declaration": {
@@ -18339,16 +18619,16 @@
       "dispatch": "mutation",
       "evidence": {
         "negative": {
-          "assertions": "unloaded/unsupported/validation and recorded limitations",
-          "command": null,
-          "fixture": null,
-          "status": "unqualified"
+          "status": "exercised scoped paths; not exhaustive native error oracle",
+          "command": "ctest --test-dir build --output-on-failure; bash tests/installed-qualification.sh",
+          "fixture": "same real profiles plus wrapper fault hosts",
+          "assertions": "unloaded/invalid arguments/compound bounds and wrapper lifetime/error containment; see m3_runtime"
         },
         "positive": {
-          "assertions": "real supported case with all response fields; defined strings fidelity exception applies",
-          "command": null,
-          "fixture": null,
-          "status": "unqualified"
+          "status": "real Lua/native supported paths exercised; field completeness additionally converter-tested, not every native field populated",
+          "command": "bash tests/installed-qualification.sh; ctest --test-dir build --output-on-failure",
+          "fixture": "authored ELF/analyzed project; native-seeded host or conditional fixture where cited",
+          "assertions": "tests/m3_core.lua; tests/m3_core_reproducer.lua; native profile limitations retained; docs/M3-CORE.md"
         },
         "python_oracle": "unqualified"
       },
@@ -18484,25 +18764,25 @@
         "facade": {
           "disposition": "complete response convenience/page",
           "extraction": null,
-          "grammar_status": "proposed; not approved for adapter implementation",
+          "grammar_status": "implemented M3 convenience or explicit native() escape hatch",
           "name": "rename_symbol",
           "return": "complete response/error via convenience or native() as disposed"
         },
-        "implementation_status": "planned M0 contract only; not runtime-qualified",
-        "iterator": "not enabled; source identity/order alone is not runtime qualification",
+        "implementation_status": "implemented M3; runtime evidence and limitations below; independent review outstanding",
+        "iterator": "pages/lookup only; see m3_runtime iterator disposition",
         "lowlevel": {
           "call": "rename_symbol(address, new_name)",
-          "call_status": "proposed; not approved for adapter implementation",
+          "call_status": "implemented checked native-local adapter",
           "grammar": {
-            "approved_call": null,
-            "authority": "inventory presentation only; docs/COVERAGE.md approves tier/disposition, not this syntax",
+            "approved_call": "rename_symbol(address, new_name)",
+            "authority": "accepted M3 brief; docs/M3-CORE.md; src/owner.cpp",
             "default_rule": "only explicit binding defaults; model initializer is not proof of request optionality; preserve false, zero and empty",
             "native_argument_order": [
               "address",
               "new_name"
             ],
             "proposed_call": "rename_symbol(address, new_name)",
-            "status": "proposed; not approved for adapter implementation",
+            "status": "implemented M3; src/owner.cpp is executable checked grammar",
             "unknown_keys": "reject before dispatch; validation-only rejection does not invalidate generation"
           },
           "name": "rename_symbol",
@@ -18513,7 +18793,22 @@
           "return": "complete detached native response or nil,error"
         }
       },
-      "tier": "core"
+      "tier": "core",
+      "m3_runtime": {
+        "status": "real Lua/native supported paths exercised; field completeness additionally converter-tested, not every native field populated",
+        "positive": [
+          "tests/m3_core.lua",
+          "tests/m3_core_reproducer.lua"
+        ],
+        "negative": [
+          "tests/m3_core.lua (unloaded/argument/compound bounds)",
+          "tests/read_order_host.cpp (wrapper publication/copy faults)",
+          "tests/reentry_host.cpp (real loaded finalizer paths)"
+        ],
+        "iterator_disposition": "not an iterator family",
+        "limitations": "native profile limitations retained; docs/M3-CORE.md",
+        "review": "independent workflow review outstanding; not acceptance waiver"
+      }
     },
     {
       "adapter_source_review": {
@@ -19035,16 +19330,16 @@
       "dispatch": "mutation",
       "evidence": {
         "negative": {
-          "assertions": "unloaded/unsupported/validation and recorded limitations",
-          "command": null,
-          "fixture": null,
-          "status": "unqualified"
+          "status": "exercised scoped paths; not exhaustive native error oracle",
+          "command": "ctest --test-dir build --output-on-failure; bash tests/installed-qualification.sh",
+          "fixture": "same real profiles plus wrapper fault hosts",
+          "assertions": "unloaded/invalid arguments/compound bounds and wrapper lifetime/error containment; see m3_runtime"
         },
         "positive": {
-          "assertions": "real supported case with all response fields; defined strings fidelity exception applies",
-          "command": null,
-          "fixture": null,
-          "status": "unqualified"
+          "status": "real Lua/native supported paths exercised; field completeness additionally converter-tested, not every native field populated",
+          "command": "bash tests/installed-qualification.sh; ctest --test-dir build --output-on-failure",
+          "fixture": "authored ELF/analyzed project; native-seeded host or conditional fixture where cited",
+          "assertions": "tests/m3_persistence.lua; tests/m3_seeded.lua (seeding OFF on reopen); native profile limitations retained; docs/M3-CORE.md"
         },
         "python_oracle": "unqualified"
       },
@@ -19137,22 +19432,22 @@
         "facade": {
           "disposition": "complete response convenience/page",
           "extraction": null,
-          "grammar_status": "proposed; not approved for adapter implementation",
+          "grammar_status": "implemented M3 convenience or explicit native() escape hatch",
           "name": "save_program",
           "return": "complete response/error via convenience or native() as disposed"
         },
-        "implementation_status": "planned M0 contract only; not runtime-qualified",
-        "iterator": "not enabled; source identity/order alone is not runtime qualification",
+        "implementation_status": "implemented M3; runtime evidence and limitations below; independent review outstanding",
+        "iterator": "pages/lookup only; see m3_runtime iterator disposition",
         "lowlevel": {
           "call": "save_program()",
-          "call_status": "proposed; not approved for adapter implementation",
+          "call_status": "implemented checked native-local adapter",
           "grammar": {
-            "approved_call": null,
-            "authority": "inventory presentation only; docs/COVERAGE.md approves tier/disposition, not this syntax",
+            "approved_call": "save_program()",
+            "authority": "accepted M3 brief; docs/M3-CORE.md; src/owner.cpp",
             "default_rule": "only explicit binding defaults; model initializer is not proof of request optionality; preserve false, zero and empty",
             "native_argument_order": [],
             "proposed_call": "save_program()",
-            "status": "proposed; not approved for adapter implementation",
+            "status": "implemented M3; src/owner.cpp is executable checked grammar",
             "unknown_keys": "reject before dispatch; validation-only rejection does not invalidate generation"
           },
           "name": "save_program",
@@ -19160,7 +19455,22 @@
           "return": "complete detached native response or nil,error"
         }
       },
-      "tier": "core"
+      "tier": "core",
+      "m3_runtime": {
+        "status": "real Lua/native supported paths exercised; field completeness additionally converter-tested, not every native field populated",
+        "positive": [
+          "tests/m3_persistence.lua",
+          "tests/m3_seeded.lua (seeding OFF on reopen)"
+        ],
+        "negative": [
+          "tests/m3_core.lua (unloaded/argument/compound bounds)",
+          "tests/read_order_host.cpp (wrapper publication/copy faults)",
+          "tests/reentry_host.cpp (real loaded finalizer paths)"
+        ],
+        "iterator_disposition": "not an iterator family",
+        "limitations": "native profile limitations retained; docs/M3-CORE.md",
+        "review": "independent workflow review outstanding; not acceptance waiver"
+      }
     },
     {
       "declaration": {
@@ -21852,16 +22162,16 @@
       },
       "evidence": {
         "negative": {
-          "assertions": "unloaded/unsupported/validation and recorded limitations",
-          "command": null,
-          "fixture": null,
-          "status": "unqualified"
+          "status": "exercised scoped paths; not exhaustive native error oracle",
+          "command": "ctest --test-dir build --output-on-failure; bash tests/installed-qualification.sh",
+          "fixture": "same real profiles plus wrapper fault hosts",
+          "assertions": "unloaded/invalid arguments/compound bounds and wrapper lifetime/error containment; see m3_runtime"
         },
         "positive": {
-          "assertions": "real supported case with all response fields; defined strings fidelity exception applies",
-          "command": null,
-          "fixture": null,
-          "status": "unqualified"
+          "status": "real Lua/native supported paths exercised; field completeness additionally converter-tested, not every native field populated",
+          "command": "bash tests/installed-qualification.sh; ctest --test-dir build --output-on-failure",
+          "fixture": "authored ELF/analyzed project; native-seeded host or conditional fixture where cited",
+          "assertions": "tests/m3_core.lua; tests/m3_core_reproducer.lua; native profile limitations retained; docs/M3-CORE.md"
         },
         "python_oracle": "unqualified"
       },
@@ -21954,25 +22264,25 @@
         "facade": {
           "disposition": "complete response convenience/page",
           "extraction": null,
-          "grammar_status": "proposed; not approved for adapter implementation",
+          "grammar_status": "implemented M3 convenience or explicit native() escape hatch",
           "name": "write_bytes",
           "return": "complete response/error via convenience or native() as disposed"
         },
-        "implementation_status": "planned M0 contract only; not runtime-qualified",
-        "iterator": "not enabled; source identity/order alone is not runtime qualification",
+        "implementation_status": "implemented M3; runtime evidence and limitations below; independent review outstanding",
+        "iterator": "pages/lookup only; see m3_runtime iterator disposition",
         "lowlevel": {
           "call": "write_bytes(address, data)",
-          "call_status": "proposed; not approved for adapter implementation",
+          "call_status": "implemented checked native-local adapter",
           "grammar": {
-            "approved_call": null,
-            "authority": "inventory presentation only; docs/COVERAGE.md approves tier/disposition, not this syntax",
+            "approved_call": "write_bytes(address, data)",
+            "authority": "accepted M3 brief; docs/M3-CORE.md; src/owner.cpp",
             "default_rule": "only explicit binding defaults; model initializer is not proof of request optionality; preserve false, zero and empty",
             "native_argument_order": [
               "address",
               "data"
             ],
             "proposed_call": "write_bytes(address, data)",
-            "status": "proposed; not approved for adapter implementation",
+            "status": "implemented M3; src/owner.cpp is executable checked grammar",
             "unknown_keys": "reject before dispatch; validation-only rejection does not invalidate generation"
           },
           "name": "write_bytes",
@@ -21983,7 +22293,22 @@
           "return": "complete detached native response or nil,error"
         }
       },
-      "tier": "core"
+      "tier": "core",
+      "m3_runtime": {
+        "status": "real Lua/native supported paths exercised; field completeness additionally converter-tested, not every native field populated",
+        "positive": [
+          "tests/m3_core.lua",
+          "tests/m3_core_reproducer.lua"
+        ],
+        "negative": [
+          "tests/m3_core.lua (unloaded/argument/compound bounds)",
+          "tests/read_order_host.cpp (wrapper publication/copy faults)",
+          "tests/reentry_host.cpp (real loaded finalizer paths)"
+        ],
+        "iterator_disposition": "not an iterator family",
+        "limitations": "native profile limitations retained; docs/M3-CORE.md",
+        "review": "independent workflow review outstanding; not acceptance waiver"
+      }
     }
   ],
   "pin": "d51ca813ae1b6b59519551a9be8c0b1ad74d862d",
