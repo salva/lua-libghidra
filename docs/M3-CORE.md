@@ -95,18 +95,20 @@ No global snapshot, full M3 approval or release acceptance inferred.
 
 ## Serial iterator batch
 
-`lua/libghidra/iterator.lua` now owns bounded progression and failure handling for
-functions, symbols, memory blocks, basic blocks and xrefs. Session descriptors
-map exact native identity and serial comparison fields. No sorting or deduplication
-is applied. Symbols compare native traversal symbol_id (assigned before pagination),
-identity address + length-delimited name/namespace. Blocks compare function_entry,
-start/end; memory compares start/name; xrefs compare from_function_address,
-from_address,to_address,ref_type, identity source/destination/kind. These qualify
-the authored serial pool_size=1 paths, not arbitrary engines or snapshots; any
-non-advancing order/duplicate raises PAGINATION_STALLED rather than skipping data.
-Xrefs native producer emits call references before load/store references; a
-non-address-monotonic function therefore can stall safely. No global native
-ordering guarantee is claimed. Native pages remain available for such inputs.
+`lua/libghidra/iterator.lua` owns bounded progression and failure handling for
+**functions, symbols and memory blocks only**. Symbols compare native traversal
+symbol_id (assigned before pagination), identity address + length-delimited
+name/namespace; memory compares start/name; functions compare entry address.
+No sorting or deduplication is applied. Qualified authored serial pool_size=1
+paths are not arbitrary-engine snapshots; nonadvancing/duplicate pages fail.
+
+**R1 correction: blocks, CFG and xrefs are pages-only.** The block numeric tuple
+is disproved by actual conditional structural order; xrefs concatenate calls then
+load/store phases, with no qualified faithful comparator. Both public iterator
+descriptors were removed, not disguised as safe-stall traversal qualification.
+DESIGN requires qualifying order before enablement. No ordinals, history cache,
+sorting or engine patch is introduced. Repeated full/singleton/end native pages
+remain covered; block/CFG/xref iterator absence is asserted on real Sessions.
 
 The shared primitive checks generation at entry, after fetch publication and
 before buffered yield, including after identity/key allocations. It retains
@@ -234,11 +236,11 @@ broad native persistence or new Lua full-tier mutation support is claimed.
 four real blocks and four edges (TRUE/FALSE/FALL_THROUGH), repeated singleton
 pages in exact native serial order, including end offset. Native structured block
 order is 0x40110a, 0x401125, 0x401117, 0x401131, **not numeric address order**.
-The existing guarded basic-block iterator rejects the third singleton page as
-PAGINATION_STALLED and ends rather than silently dropping/reordering records.
-This is now an explicit practical iterator limitation even with pool_size=1.
-CFG remains pages-only: no native structural ordinal returned to establish a
-cross-page comparator. Repeated stable pages alone do not invent that comparator.
+The former enabled numeric comparator stalled after two singleton records, or
+before any full-page record: original reviewer R1 correctly rejected that as
+pre-enable qualification. Blocks and CFG now remain pages-only without a qualified
+structural comparator; tests preserve the counterexample and positive full and
+singleton repeatability. Xrefs likewise remain pages-only for call/load phase order.
 
 The seeded native host now tries union construction through public CreateType:
 locked profile returns NOT_SUPPORTED. Lua union page remains successful empty.
@@ -249,8 +251,8 @@ a table error printed as null; the host now prints structured message and explic
 asserts the observed native status instead of treating it as an unrelated failure.
 
 `reentry_host` now requires real allocation-triggered owner-closing/reconstructing
-finalizers during both empty and populated publication for all five enabled
-iterator families, ELF/project, on the same invocation. Configured SaveProgram
+finalizers during both empty and populated publication for all three currently enabled
+iterator families (functions, symbols, memory blocks), ELF/project, on the same invocation. Configured SaveProgram
 success is also included in loaded publication finalizers, asserts saved=true and
 generation=3, with disposable state removed on completion. Real full owner release
 and fresh-owner reuse are asserted; no mock substitutes for these runtime paths.
@@ -353,3 +355,15 @@ empty terminal page and no retry/dispatch after overflow. Prior installed source
 failed before first yield; repaired source passes in all three installed Lua hosts.
 Synthetic near-INT_MAX cursor cases test arithmetic without claiming a native
 collection of that size, which remains outside the supported profile.
+
+## Original reviewer R1 correction
+
+Public basic-block/xref iterator descriptors removed under DESIGN pages-only rule.
+Shared primitive stall/generation/finalizer regressions unchanged; loaded real
+publication finalizer loops now cover exactly the three remaining enabled families.
+Native list_basic_blocks/list_cfg_edges/list_xrefs response conversion and loaded
+publication tests remain intact. tests/m3_branch.lua preserves four-block/four-edge
+native-order reproducer, but replaces the rejected safe-stall acceptance with
+absence and repeated full/singleton page assertions. tests/m3_iterators.lua keeps
+positive block/xref pages on both ELF/project and generic stall/boundary tests.
+This correction is submitted for original reviewer re-review, not self-approval.

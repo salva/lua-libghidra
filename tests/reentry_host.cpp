@@ -199,7 +199,7 @@ int main() {
  // after its shared owner closes in an allocation-triggered finalizer.
  run(L,"package.path='" LLG_FIXTURE_ROOT "/lua/?.lua;" LLG_FIXTURE_ROOT "/lua/?/init.lua'; g=require('libghidra')");
  for(int project=0;project<2;++project) {
- for(const char* family:{"functions","symbols","memory_blocks","basic_blocks","xrefs"}) {
+ for(const char* family:{"functions","symbols","memory_blocks"}) {
  for(int empty=0;empty<2;++empty) {
   bool observed=false;
   for(int debt=1;debt<=8192 && !observed;debt*=2) {

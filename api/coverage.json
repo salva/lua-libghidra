@@ -7763,7 +7763,7 @@
           "status": "real Lua/native supported paths exercised; field completeness additionally converter-tested, not every native field populated",
           "command": "bash tests/installed-qualification.sh; ctest --test-dir build --output-on-failure",
           "fixture": "authored ELF/analyzed project; native-seeded host or conditional fixture where cited",
-          "assertions": "tests/m3_core.lua; tests/m3_core_reproducer.lua; real conditional structural traversal not address-monotone; iterator deliberately stalls rather than sorts/skips"
+          "assertions": "tests/m3_core.lua; tests/m3_core_reproducer.lua; real conditional structural traversal disproves numeric comparator; blocks pages-only, no iterator enabled"
         },
         "python_oracle": "unqualified"
       },
@@ -8026,7 +8026,7 @@
           "return": "complete response/error via convenience or native() as disposed"
         },
         "implementation_status": "implemented M3; runtime evidence and limitations below; independent review outstanding",
-        "iterator": "iter_basic_blocks (safe stall on structural nonmonotone order)",
+        "iterator": "pages-only: native structural order disproves numeric comparator; iter_basic_blocks absent (R1)",
         "lowlevel": {
           "call": "list_basic_blocks(options={})",
           "call_status": "implemented checked native-local adapter",
@@ -8056,16 +8056,15 @@
       },
       "tier": "core",
       "m3_iterator_batch": {
-        "identity": "function_entry,start_address,end_address",
-        "order": "function_entry,start_address,end_address",
-        "cursor": "returned records; actual count; empty page exhaustion",
-        "evidence": "tests/m3_iterators.lua; installed standalone/static/shared; ELF and analyzed project; sizes 1/2/100 repeated serial scans",
-        "limits": "pool_size=1; no universal order/snapshot; reject nonadvancing/duplicate pages; native xrefs call-before-load ordering can stall",
-        "status": "qualified authored serial paths; broader original M3 acceptance remains open"
+        "status": "pages-only; iterator absent under DESIGN pre-enable qualification (R1)",
+        "order": "native structural block order",
+        "cursor": "explicit native offset/limit pages; no automatic traversal",
+        "evidence": "tests/m3_iterators.lua repeated full/singleton/end pages and absence on ELF/project; tests/m3_branch.lua conditional block/CFG counterexample",
+        "limits": "no faithful comparator qualified; no sorting, invented ordinals or unbounded history"
       },
       "m3_followthrough": {
         "evidence": "tests/m3_branch.lua; authored branch ELF; installed native; four blocks/four edges, repeat singleton pages",
-        "iterator_limitation": "structural order not address monotone; iter_basic_blocks safely stalls on third singleton page; CFG pages-only absent structural ordinal/comparator"
+        "iterator_limitation": "blocks and CFG pages-only: structural order is not address monotone and no faithful comparator is qualified; full/singleton native pages retained; no block/CFG iterator"
       },
       "m3_runtime": {
         "status": "real Lua/native supported paths exercised; field completeness additionally converter-tested, not every native field populated",
@@ -8078,8 +8077,8 @@
           "tests/read_order_host.cpp (wrapper publication/copy faults)",
           "tests/reentry_host.cpp (real loaded finalizer paths)"
         ],
-        "iterator_disposition": "iter_basic_blocks (safe stall on structural nonmonotone order)",
-        "limitations": "real conditional structural traversal not address-monotone; iterator deliberately stalls rather than sorts/skips",
+        "iterator_disposition": "pages-only: native structural order disproves numeric comparator; iter_basic_blocks absent (R1)",
+        "limitations": "real conditional structural traversal disproves numeric comparator; blocks pages-only, no iterator enabled",
         "review": "independent workflow review outstanding; not acceptance waiver"
       }
     },
@@ -8718,7 +8717,7 @@
       "tier": "core",
       "m3_followthrough": {
         "evidence": "tests/m3_branch.lua; authored branch ELF; installed native; four blocks/four edges, repeat singleton pages",
-        "iterator_limitation": "structural order not address monotone; iter_basic_blocks safely stalls on third singleton page; CFG pages-only absent structural ordinal/comparator"
+        "iterator_limitation": "blocks and CFG pages-only: structural order is not address monotone and no faithful comparator is qualified; full/singleton native pages retained; no block/CFG iterator"
       },
       "m3_runtime": {
         "status": "real Lua/native supported paths exercised; field completeness additionally converter-tested, not every native field populated",
@@ -11277,7 +11276,7 @@
         "order": "entry_address",
         "cursor": "returned records; actual count; empty page exhaustion",
         "evidence": "tests/m3_iterators.lua; installed standalone/static/shared; ELF and analyzed project; sizes 1/2/100 repeated serial scans",
-        "limits": "pool_size=1; no universal order/snapshot; reject nonadvancing/duplicate pages; native xrefs call-before-load ordering can stall",
+        "limits": "pool_size=1; no universal order/snapshot; reject nonadvancing/duplicate pages; blocks/xrefs pages-only: native-order comparators unqualified",
         "status": "qualified authored serial paths; broader original M3 acceptance remains open"
       }
     },
@@ -12701,7 +12700,7 @@
         "order": "start_address,name",
         "cursor": "returned records; actual count; empty page exhaustion",
         "evidence": "tests/m3_iterators.lua; installed standalone/static/shared; ELF and analyzed project; sizes 1/2/100 repeated serial scans",
-        "limits": "pool_size=1; no universal order/snapshot; reject nonadvancing/duplicate pages; native xrefs call-before-load ordering can stall",
+        "limits": "pool_size=1; no universal order/snapshot; reject nonadvancing/duplicate pages; blocks/xrefs pages-only: native-order comparators unqualified",
         "status": "qualified authored serial paths; broader original M3 acceptance remains open"
       },
       "m3_runtime": {
@@ -14004,7 +14003,7 @@
         "order": "symbol_id native traversal counter",
         "cursor": "returned records; actual count; empty page exhaustion",
         "evidence": "tests/m3_iterators.lua; installed standalone/static/shared; ELF and analyzed project; sizes 1/2/100 repeated serial scans",
-        "limits": "pool_size=1; no universal order/snapshot; reject nonadvancing/duplicate pages; native xrefs call-before-load ordering can stall",
+        "limits": "pool_size=1; no universal order/snapshot; reject nonadvancing/duplicate pages; blocks/xrefs pages-only: native-order comparators unqualified",
         "status": "qualified authored serial paths; broader original M3 acceptance remains open"
       },
       "m3_runtime": {
@@ -16579,7 +16578,7 @@
           "return": "complete response/error via convenience or native() as disposed"
         },
         "implementation_status": "implemented M3; runtime evidence and limitations below; independent review outstanding",
-        "iterator": "iter_xrefs (safe stall on native call/load order)",
+        "iterator": "pages-only: native call/load/store phase order comparator unqualified; iter_xrefs absent (R1)",
         "lowlevel": {
           "call": "list_xrefs(options={})",
           "call_status": "implemented checked native-local adapter",
@@ -16610,12 +16609,11 @@
       "tier": "core",
       "xref_population_limits": "calls then constant LOAD then constant STORE, not all native references; missing call specs/op or nonconstant address skipped; no dedup; caught errors may yield partial successful vector; helper performs and clears same-instance analysis, no preceding decompileAt; function/address-space metadata remain defaults",
       "m3_iterator_batch": {
-        "identity": "from_address,to_address,ref_type",
-        "order": "from_function_address,from_address,to_address,ref_type",
-        "cursor": "returned records; actual count; empty page exhaustion",
-        "evidence": "tests/m3_iterators.lua; installed standalone/static/shared; ELF and analyzed project; sizes 1/2/100 repeated serial scans",
-        "limits": "pool_size=1; no universal order/snapshot; reject nonadvancing/duplicate pages; native xrefs call-before-load ordering can stall",
-        "status": "qualified authored serial paths; broader original M3 acceptance remains open"
+        "status": "pages-only; iterator absent under DESIGN pre-enable qualification (R1)",
+        "order": "native call/load/store phase order",
+        "cursor": "explicit native offset/limit pages; no automatic traversal",
+        "evidence": "tests/m3_iterators.lua repeated full/singleton/end pages and absence on ELF/project; tests/m3_branch.lua conditional block/CFG counterexample",
+        "limits": "no faithful comparator qualified; no sorting, invented ordinals or unbounded history"
       },
       "m3_runtime": {
         "status": "real Lua/native supported paths exercised; field completeness additionally converter-tested, not every native field populated",
@@ -16628,7 +16626,7 @@
           "tests/read_order_host.cpp (wrapper publication/copy faults)",
           "tests/reentry_host.cpp (real loaded finalizer paths)"
         ],
-        "iterator_disposition": "iter_xrefs (safe stall on native call/load order)",
+        "iterator_disposition": "pages-only: native call/load/store phase order comparator unqualified; iter_xrefs absent (R1)",
         "limitations": "native profile limitations retained; docs/M3-CORE.md",
         "review": "independent workflow review outstanding; not acceptance waiver"
       }

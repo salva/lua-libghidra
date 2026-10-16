@@ -56,6 +56,7 @@ function Session:get_decompilation(address, options)
 end
 local iterate=require('libghidra.iterator')
 local function textkey(s) return #s..':'..s end
+-- Blocks/CFG/xrefs are pages-only: no qualified native structural/phase comparator.
 local families={
   functions={field='functions', id=function(r) return r.entry_address:hex() end,
     order=function(r) return {r.entry_address:hex()} end},
@@ -63,10 +64,7 @@ local families={
     order=function(r) return {r.symbol_id:hex()} end},
   memory_blocks={field='blocks', counts=true, id=function(r) return r.start_address:hex()..textkey(r.name) end,
     order=function(r) return {r.start_address:hex(),r.name} end},
-  basic_blocks={field='blocks', id=function(r) return r.function_entry:hex()..r.start_address:hex()..r.end_address:hex() end,
-    order=function(r) return {r.function_entry:hex(),r.start_address:hex(),r.end_address:hex()} end},
-  xrefs={field='xrefs', id=function(r) return r.from_address:hex()..r.to_address:hex()..textkey(r.ref_type) end,
-    order=function(r) return {r.from_function_address:hex(),r.from_address:hex(),r.to_address:hex(),r.ref_type} end},
+
 }
 for family,descriptor in pairs(families) do
   Session['iter_'..family]=function(self,first,second)

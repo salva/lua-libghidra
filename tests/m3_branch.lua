@@ -17,6 +17,8 @@ local function edgekey(r) return r.function_entry:hex()..r.src_block_start:hex()
 for _,row in ipairs{{'list_basic_blocks','blocks',blocks,blockkey},{'list_cfg_edges','edges',edges,edgekey}} do
  local method,field,all,key=table.unpack(row)
  for pass=1,2 do
+  local repeated=page(method,100,0)[field]; assert(#repeated==#all)
+  for i,r in ipairs(repeated) do assert(key(r)==key(all[i])) end
   for offset=0,#all do
    local records=page(method,1,offset)[field]
    assert(#records==(offset==#all and 0 or 1))
@@ -27,11 +29,7 @@ end
 local kinds={}
 for _,e in ipairs(edges) do assert(e.function_entry:to_integer()==0x401106); kinds[e.edge_kind]=true end
 assert(kinds.TRUE and kinds.FALSE and kinds.FALL_THROUGH)
--- Serial producer order is structural, not numeric. Existing iterator must
--- reject non-advancing pages, never silently sort/skip a branch.
+-- Preserve the actual native-order counterexample; do not sort or invent ordinals.
 assert(blocks[2].start_address:hex()>blocks[3].start_address:hex())
-local it=s:iter_basic_blocks{range_start=0x401106,range_end=0x401106,page_size=1}
-assert(blockkey(it())==blockkey(blocks[1])); assert(blockkey(it())==blockkey(blocks[2]))
-local ok,e=pcall(it);assert(not ok and e.code=='PAGINATION_STALLED');assert(it()==nil)
-assert(s.iter_cfg_edges==nil) -- pages-only until a native structural comparator exists
-print('M3 installed conditional CFG serial pages/order/fields and safe iterator stall PASS')
+assert(s.iter_basic_blocks==nil and s.iter_cfg_edges==nil and s.iter_xrefs==nil)
+print('M3 installed conditional CFG/block serial pages/fields and pages-only contract PASS')

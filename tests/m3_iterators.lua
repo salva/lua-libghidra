@@ -9,8 +9,7 @@ for _,project in ipairs{false,true} do
  local s <close> =check(gh.open{program=program})
  for _,a in ipairs{0x401106,0x40111f,0x40113c} do assert(check(s:get_decompilation(a)).completed) end
  for _,row in ipairs{{'functions','functions','entry_address'},{'symbols','symbols','address'},
-  {'memory_blocks','blocks','start_address'},
-  {'basic_blocks','blocks','start_address'},{'xrefs','xrefs','from_address'}} do
+  {'memory_blocks','blocks','start_address'}} do
   local family,field,key=table.unpack(row)
   local function page(opts)
    if family=='types' then return check(s:list_types('',opts))[field] end
@@ -38,6 +37,26 @@ for _,project in ipairs{false,true} do
   assert(check(s:native():discard_program()).discarded)
   local ok,e=pcall(it); assert(not ok and e.code=='ITERATOR_INVALIDATED')
   print((project and 'project' or 'ELF')..' serial '..family..' PASS records='..#all)
+ end
+ -- Pages-only graph families still expose faithful repeatable native pages.
+ assert(s.iter_basic_blocks==nil and s.iter_cfg_edges==nil and s.iter_xrefs==nil)
+ local function blockkey(r) return r.function_entry:hex()..r.start_address:hex()..r.end_address:hex() end
+ local function edgekey(r) return r.function_entry:hex()..r.src_block_start:hex()..r.dst_block_start:hex()..r.edge_kind end
+ local function xrefkey(r) return r.from_address:hex()..r.to_address:hex()..#r.ref_type..':'..r.ref_type end
+ for _,row in ipairs{{'basic_blocks','blocks',blockkey},{'cfg_edges','edges',edgekey},{'xrefs','xrefs',xrefkey}} do
+  local family,field,key=table.unpack(row)
+  local function page(limit,offset) return check(s['list_'..family](s,{limit=limit,offset=offset}))[field] end
+  local all=page(100,0)
+  if family~='cfg_edges' then assert(#all>0) end
+  for pass=1,2 do
+   local repeated=page(100,0);assert(#repeated==#all)
+   for i,r in ipairs(repeated) do assert(key(r)==key(all[i])) end
+   for offset=0,#all do
+    local one=page(1,offset);assert(#one==(offset==#all and 0 or 1))
+    if one[1] then assert(key(one[1])==key(all[offset+1])) end
+   end
+  end
+  print((project and 'project' or 'ELF')..' pages-only '..family..' PASS records='..#all)
  end
  -- Native anonymous types collide at path_name='/'; no fabricated identity.
  local types=check(s:list_types('',{limit=100})).types

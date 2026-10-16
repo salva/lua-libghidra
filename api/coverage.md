@@ -985,7 +985,7 @@ this evidence is a request for original-review re-review, not self-approval.
 
 `tests/m3_branch.lua` provides installed real conditional CFG/block records,
 repeatable serial singleton/full pages and edge kinds. Structural block traversal
-is not address-monotone; guarded iter_basic_blocks safely stalls and CFG remains
+is not address-monotone; basic blocks and CFG remain
 pages-only without structural ordinal/comparator. `tests/m3_seeded_host.cpp`
 observes CreateType union NOT_SUPPORTED; ListTypeUnions success-empty is not a
 populated positive. `tests/reentry_host.cpp` now observes actual allocation-driven
@@ -1005,8 +1005,21 @@ signature filtering positive. Native category loss is not repaired by saved=true
 
 Alias/enum/member/comment pages remain pages-only: singleton seeded records do not
 qualify a multi-record cross-page ordering comparator. Types have canonical-path
-collisions; CFG lacks structural ordinal; basic-block numeric comparator stalls on
-real structured traversal; xref call/load phases can also stall. These are explicit
+collisions; CFG lacks structural ordinal; basic-block numeric comparator is disproved by
+real structured traversal; xref call/load phase comparator is unqualified. Both
+iter_basic_blocks and iter_xrefs are absent (R1 correction), pages-only. These are explicit
 limitations, not hidden full traversal or snapshot claims. Other full-tier/M2 row
 historical source reviews are retained; this reconciliation does not upgrade their
 runtime or grant distribution rights or independent review approval.
+
+
+### Original M3 review R1 correction
+
+Only functions, symbols and memory blocks expose qualified iterators. Basic blocks,
+CFG and xrefs are pages-only: structural block order disproves address comparison;
+xrefs concatenate call/load/store phases without a qualified comparator. Safe stall
+is not pre-enable qualification. Repeated positive full/singleton native pages and
+explicit iterator absence are asserted; remaining enabled families retain loaded
+publication finalizer coverage and shared primitive stall/generation checks.
+See tests/m3_branch.lua, tests/m3_iterators.lua and docs/M3-CORE.md. Original reviewer
+re-review outstanding; accepted union/signature/persistence limitations unchanged.
