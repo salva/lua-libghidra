@@ -20,6 +20,9 @@ inline void value(lua_State*,const c::ParameterRecord&);
 inline void value(lua_State*,const c::FunctionSignatureRecord&);
 inline void value(lua_State*,const c::CommentRecord&);
 inline void value(lua_State*,const c::DefinedStringRecord&);
+inline void value(lua_State*,const c::DataItemRecord&);
+inline void value(lua_State*,const c::DecompilationRecord&);
+inline void value(lua_State*,const c::PerfBenchmarkRecord&);
 
 inline void value(lua_State* L,const c::FunctionRecord& v) {
  lua_createtable(L,0,10);

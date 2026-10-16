@@ -312,7 +312,16 @@ int main() {
   "return c:list_type_enums('',{limit=2})", "return c:list_type_enum_members('missing',{limit=2})",
   "return c:list_type_members('missing',{limit=2})", "return c:get_function_signature(0x401106)",
   "return c:list_function_signatures{limit=2}", "return c:get_comments{limit=2}",
-  "return c:list_defined_strings{limit=2}"};
+  "return c:list_defined_strings{limit=2}",
+  "return c:list_decompilations{range_start=0x401106,range_end=0x401106,limit=1}",
+  "return c:list_leaf_functions{limit=2}",
+  "return c:create_type('M4Boundary','struct',0)",
+  "return c:create_type_enum('M4BoundaryEnum',0,false)",
+  "return c:set_comment(0x401106,'eol','boundary')",
+  "return c:list_data_items{limit=2}",
+  "return c:add_perf_benchmark{bench_id='boundary',warm_ms_p50=1.5}",
+  "return c:list_perf_benchmarks()",
+  "return c:patch_bytes_batch{{address=0x404010,data='a\\0b'}}"};
  for(const char* source:paths) {
   unsigned refused=0; bool tail=false;
   for(size_t point=1;point<=512;++point) {
@@ -320,7 +329,7 @@ int main() {
    allocator.calls=allocator.refused=0; allocator.fail=point;
    int rc=lua_pcall(L,0,2,0); allocator.fail=SIZE_MAX;
    if(allocator.refused) { assert(rc==LUA_ERRMEM); ++refused; lua_pop(L,1); }
-   else { assert(rc==LUA_OK && lua_istable(L,-2)); lua_pop(L,2); tail=true; }
+   else { assert(rc==LUA_OK && (lua_istable(L,-2) || (lua_isnil(L,-2) && lua_istable(L,-1)))); lua_pop(L,2); tail=true; }
    assert(luaL_dostring(L,source)==LUA_OK); lua_settop(L,owner);
    if(tail) break;
   }
@@ -345,7 +354,10 @@ int main() {
   "return c:write_bytes(0x404010,payload)", "return c:get_type(payload)",
   "return c:list_types(payload,{limit=1})", "return c:list_type_aliases(payload,{limit=1})",
   "return c:list_type_unions(payload,{limit=1})", "return c:list_type_enums(payload,{limit=1})",
-  "return c:list_type_enum_members(payload,{limit=1})", "return c:list_type_members(payload,{limit=1})"};
+  "return c:list_type_enum_members(payload,{limit=1})", "return c:list_type_members(payload,{limit=1})",
+  "return c:create_type(payload,'struct',0)",
+  "return c:add_perf_benchmark{bench_id=payload}",
+  "return c:patch_bytes_batch{{address=0x404010,data=payload}}"};
  assert(luaL_dostring(L,"payload=string.rep('wrapper_owned_',16)")==LUA_OK);
  for(const char* source:copy_paths) {
   unsigned hits=0; bool tail=false;
