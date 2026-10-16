@@ -205,7 +205,10 @@ success conditions after showing the available output.
 ## Run the supplied task and continue
 
 The downloadable [decompile.lua](../examples/decompile.lua) adds CLI validation
-and consistent result/exit reporting around the same task:
+and consistent result/exit reporting around the same task. Run this command from
+the checkout root, or use the script's absolute path if you are still in the
+tutorial working directory. If you installed with a custom Lua executable, use
+that executable in place of `lua5.4`:
 
 ```sh
 lua5.4 examples/decompile.lua "$BINARY" "$ADDRESS" x86:LE:64:default gcc
