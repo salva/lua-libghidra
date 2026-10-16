@@ -3,6 +3,10 @@
 #include <cassert>
 #include <cstdio>
 #include <cstring>
+#include <initializer_list>
+#include <cstdlib>
+#include <string>
+#include <filesystem>
 extern "C" int luaopen_libghidra__native(lua_State*);
 static bool natural=false;
 static unsigned natural_phase=0, natural_hits=0;
@@ -41,6 +45,11 @@ static int natural_call(lua_State* L) {
 }
 int main() {
  lua_State* L=luaL_newstate(); assert(L); luaL_openlibs(L);
+ const char* work=std::getenv("SAIVAGE_CARD_WORK_ROOT");
+ // CTest outside card runs uses build cwd; card runs keep disposable state scoped.
+ if(work) std::filesystem::create_directories(std::string(work)+"/m3-branch");
+ std::string save_path=work?std::string(work)+"/m3-branch/save-finalizer.xml":"save-finalizer.xml";
+ lua_pushstring(L,save_path.c_str()); lua_setglobal(L,"save_path");
  luaL_requiref(L,"libghidra._native",luaopen_libghidra__native,1); lua_setglobal(L,"n");
  const char* recheck_calls[]={
  "local v,e=c:read_bytes(0,0)", "local v,e=c:open_program{program_path='absent'}",
@@ -116,7 +125,7 @@ int main() {
  "get_symbol","list_symbols","list_memory_blocks","get_type","list_types","list_type_aliases",
  "list_type_unions","list_type_enums","list_type_enum_members","list_type_members",
  "get_function_signature","list_function_signatures","list_basic_blocks","list_cfg_edges",
- "list_xrefs","get_comments","list_defined_strings","rename_function","rename_symbol","write_bytes","discard_program"};
+ "list_xrefs","get_comments","list_defined_strings","rename_function","rename_symbol","write_bytes","discard_program","save_program"};
  for(int project=0;project<2;++project) {
  for(const char* method:loaded_methods) {
   bool observed=false;
@@ -124,7 +133,7 @@ int main() {
    natural_phase=0;
    lua_pushboolean(L,project); lua_setglobal(L,"project_profile");
    run(L,"result=nil; result_error=nil; c=nil; collectgarbage('collect'); "
-         "collectgarbage('incremental',100,1000,0); c=assert(n.local_client()); "
+         "collectgarbage('incremental',100,1000,0); c=assert(n.local_client{state_path=save_path}); "
          "local p={program_path='" LLG_FIXTURE_ROOT "/tests/fixtures/inputs/authored.elf',language_id='x86:LE:64:default',compiler_spec_id='gcc'}; "
          "if project_profile then p.project_path='" LLG_FIXTURE_ROOT "/tests/fixtures/project/authored.gpr' end; "
          "assert(c:open_program(p)); assert(c:get_decompilation(0x401106).decompilation.completed); "
@@ -138,7 +147,7 @@ int main() {
    const bool page=method[0]=='l' || !std::strcmp(method,"get_comments");
    const bool text=!std::strcmp(method,"get_type") || !std::strncmp(method,"list_type",9);
    const bool no_range=!std::strcmp(method,"list_memory_blocks");
-   const bool mutation=!std::strcmp(method,"rename_function") || !std::strcmp(method,"rename_symbol") || !std::strcmp(method,"write_bytes") || !std::strcmp(method,"discard_program");
+   const bool mutation=!std::strcmp(method,"rename_function") || !std::strcmp(method,"rename_symbol") || !std::strcmp(method,"write_bytes") || !std::strcmp(method,"discard_program") || !std::strcmp(method,"save_program");
    if(text) run(L,"request='int'; request2={limit=2}");
    else if(no_range) run(L,"request={limit=2}");
    else if(page) run(L,"request={range_start=0x401106,range_end=0x401106,limit=2}");
@@ -148,7 +157,7 @@ int main() {
    lua_getfield(L,-1,method); lua_insert(L,-2); lua_getglobal(L,"request");
    int args=3;
    if(text && page) { lua_getglobal(L,"request2"); ++args; }
-   if(mutation && std::strcmp(method,"discard_program")) {
+   if(mutation && std::strcmp(method,"discard_program") && std::strcmp(method,"save_program")) {
     lua_pushstring(L,!std::strcmp(method,"write_bytes")?"abc":"loaded_m3_finalizer"); ++args;
    }
    int rc=lua_pcall(L,args,2,0); natural_phase=2;
@@ -170,6 +179,8 @@ int main() {
      run(L,"local i=result.instruction or result.instructions[1]; "
            "assert(i.address:hex()=='0x0000000000401106' and i.length==4); "
            "assert(i.mnemonic:lower()=='endbr64' and type(i.disassembly)=='string')");
+    } else if(!std::strcmp(method,"save_program")) {
+     run(L,"assert(result.saved==true)");
     } else if(!std::strcmp(method,"get_decompilation")) {
      run(L,"local d=result.decompilation; assert(d.completed and not d.is_fallback); "
            "assert(d.function_entry_address:hex()=='0x0000000000401106'); "
@@ -188,20 +199,24 @@ int main() {
  // after its shared owner closes in an allocation-triggered finalizer.
  run(L,"package.path='" LLG_FIXTURE_ROOT "/lua/?.lua;" LLG_FIXTURE_ROOT "/lua/?/init.lua'; g=require('libghidra')");
  for(int project=0;project<2;++project) {
+ for(const char* family:{"functions","symbols","memory_blocks","basic_blocks","xrefs"}) {
  for(int empty=0;empty<2;++empty) {
   bool observed=false;
   for(int debt=1;debt<=8192 && !observed;debt*=2) {
    natural_phase=0;
    lua_pushboolean(L,project); lua_setglobal(L,"project_profile");
    lua_pushboolean(L,empty); lua_setglobal(L,"empty_page");
+   lua_pushstring(L,family); lua_setglobal(L,"iterator_family");
    run(L,"result=nil; result_error=nil; iterator=nil; session=nil; c=nil; collectgarbage('collect'); "
          "collectgarbage('incremental',100,1000,0); "
          "local p={program_path='" LLG_FIXTURE_ROOT "/tests/fixtures/inputs/authored.elf',language_id='x86:LE:64:default',compiler_spec_id='gcc'}; "
          "if project_profile then p.project_path='" LLG_FIXTURE_ROOT "/tests/fixtures/project/authored.gpr' end; "
          "session=assert(g.open{program=p}); c=session:native(); "
-         "assert(c:get_decompilation(0x401106).decompilation.completed); "
+         "assert(c:get_decompilation(0x401106).decompilation.completed); assert(c:get_decompilation(0x40111f).decompilation.completed); "
          "local start=empty_page and 0x700000 or 0x401106; "
-         "iterator=session:iter_functions{range_start=start,range_end=start,page_size=2}; "
+         "local opts={range_start=start,range_end=start,page_size=2}; "
+         "if iterator_family=='memory_blocks' then opts={offset=empty_page and 100 or 0,page_size=2} end; "
+         "iterator=session['iter_'..iterator_family](session,opts); "
          "collectgarbage('stop'); hits=0; completed=0; finalizer_phase=0; "
          "do local owner=c; local f=setmetatable({}, {__gc=function() "
          "finalizer_phase=mark_finalizer(); hits=hits+1; "
@@ -228,7 +243,8 @@ int main() {
    run(L,"c:close(); c=nil; session=nil; iterator=nil; collectgarbage('collect'); local r=assert(n.local_client()); assert(r:close())");
   }
   assert(observed);
-  std::printf("R1 %s %s iterator same-invocation invalidation PASS\n",project?"project":"ELF",empty?"empty-page":"populated-page");
+  std::printf("R1 %s %s %s iterator same-invocation invalidation PASS\n",project?"project":"ELF",family,empty?"empty-page":"populated-page");
+ }
  }
  }
  // Invalid option paths allocate structured errors before receiver lookup.
@@ -312,6 +328,7 @@ int main() {
  }
  assert(factory_observed && natural_hits>=5);
  std::puts("allocation-driven factory prepublication finalizer: competing owner close, publication/exclusion/reuse PASS");
+ std::remove(save_path.c_str());
  lua_close(L);
  std::puts("deterministic pre-recheck real GC: close/reconstruct finalizer and CLOSED revalidation PASS");
 }

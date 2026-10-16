@@ -46,3 +46,9 @@ LIBGHIDRA_FIXTURE_ROOT="$root" \
 LUA_PATH="$prefix/share/lua/5.4/?.lua;$prefix/share/lua/5.4/?/init.lua;$prefix/share/libghidra/examples/?.lua" \
 LUA_CPATH="$prefix/lib/lua/5.4/?.so" \
 lua5.4 "$prefix/share/libghidra/examples/core_mutation.lua"
+if [[ -n "${SAIVAGE_CARD_WORK_ROOT:-}" ]]; then
+  branch="$SAIVAGE_CARD_WORK_ROOT/m3-branch"
+  mkdir -p "$branch"
+  cc -O0 -g -fno-pie -no-pie -fcf-protection=branch "$root/tests/fixtures/branch.c" -o "$branch/branch.elf"
+  lua5.4 "$root/tests/m3_branch.lua" "$prefix" "$branch/branch.elf"
+fi

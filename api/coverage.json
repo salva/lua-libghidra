@@ -7973,6 +7973,10 @@
         "evidence": "tests/m3_iterators.lua; installed standalone/static/shared; ELF and analyzed project; sizes 1/2/100 repeated serial scans",
         "limits": "pool_size=1; no universal order/snapshot; reject nonadvancing/duplicate pages; native xrefs call-before-load ordering can stall",
         "status": "qualified authored serial paths; broader original M3 acceptance remains open"
+      },
+      "m3_followthrough": {
+        "evidence": "tests/m3_branch.lua; authored branch ELF; installed native; four blocks/four edges, repeat singleton pages",
+        "iterator_limitation": "structural order not address monotone; iter_basic_blocks safely stalls on third singleton page; CFG pages-only absent structural ordinal/comparator"
       }
     },
     {
@@ -8607,7 +8611,11 @@
           "return": "complete detached native response or nil,error"
         }
       },
-      "tier": "core"
+      "tier": "core",
+      "m3_followthrough": {
+        "evidence": "tests/m3_branch.lua; authored branch ELF; installed native; four blocks/four edges, repeat singleton pages",
+        "iterator_limitation": "structural order not address monotone; iter_basic_blocks safely stalls on third singleton page; CFG pages-only absent structural ordinal/comparator"
+      }
     },
     {
       "container_result_review": {
@@ -15480,7 +15488,11 @@
           "return": "complete detached native response or nil,error"
         }
       },
-      "tier": "core"
+      "tier": "core",
+      "m3_followthrough": {
+        "evidence": "tests/m3_seeded_host.cpp public CreateType union returns NOT_SUPPORTED; real Lua success-empty union page",
+        "limitation": "no populated union claim; imported union capability unknown; no upstream repair gate"
+      }
     },
     {
       "container_result_review": {

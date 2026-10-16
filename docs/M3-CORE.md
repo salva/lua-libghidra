@@ -226,3 +226,31 @@ Still open: populated union and nonempty CFG, missing-signature filtering,
 remaining iterator family dispositions, category-specific signature persistence,
 configured save-success finalizer and final runtime ledger/review closure. No
 broad native persistence or new Lua full-tier mutation support is claimed.
+
+## Conditional CFG and real iterator/save publication follow-through
+
+`tests/fixtures/branch.c` builds only in a purpose-named disposable work child.
+`tests/m3_branch.lua` exercises the installed module on this authored x86 ELF:
+four real blocks and four edges (TRUE/FALSE/FALL_THROUGH), repeated singleton
+pages in exact native serial order, including end offset. Native structured block
+order is 0x40110a, 0x401125, 0x401117, 0x401131, **not numeric address order**.
+The existing guarded basic-block iterator rejects the third singleton page as
+PAGINATION_STALLED and ends rather than silently dropping/reordering records.
+This is now an explicit practical iterator limitation even with pool_size=1.
+CFG remains pages-only: no native structural ordinal returned to establish a
+cross-page comparator. Repeated stable pages alone do not invent that comparator.
+
+The seeded native host now tries union construction through public CreateType:
+locked profile returns NOT_SUPPORTED. Lua union page remains successful empty.
+This is a proportionate producer-input limitation, **not populated union evidence**
+or a claim that no imported union can exist. No alternate engine/private factory
+or upstream change is needed to document this limitation. Initial trial returned
+a table error printed as null; the host now prints structured message and explicitly
+asserts the observed native status instead of treating it as an unrelated failure.
+
+`reentry_host` now requires real allocation-triggered owner-closing/reconstructing
+finalizers during both empty and populated publication for all five enabled
+iterator families, ELF/project, on the same invocation. Configured SaveProgram
+success is also included in loaded publication finalizers, asserts saved=true and
+generation=3, with disposable state removed on completion. Real full owner release
+and fresh-owner reuse are asserted; no mock substitutes for these runtime paths.

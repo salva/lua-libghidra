@@ -7,6 +7,8 @@ for _,project in ipairs{false,true} do
  local p={program_path=root..'/tests/fixtures/inputs/authored.elf',language_id='x86:LE:64:default',compiler_spec_id='gcc'}
  if project then p.project_path=root..'/tests/fixtures/project/authored.gpr' end
  local s <close> =check(gh.open{program=p})
+ local u=check(s:list_type_unions('M3',{limit=2})).unions
+ assert(#u==0) -- native CreateType union is NOT_SUPPORTED (host asserts it)
  local a=check(s:list_type_aliases('M3',{limit=2})).aliases
  assert(#a==1 and a[1].name=='M3Alias' and a[1].path_name=='/M3Alias' and a[1].type_id:hex())
  local e=check(s:list_type_enums('M3',{limit=2})).enums

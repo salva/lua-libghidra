@@ -980,3 +980,15 @@ ITERATOR_INVALIDATED; installed serial buffered/exhausted/empty reopen checks
 remain permanently invalid. Detached lowlevel success evidence is preserved.
 See M2-SLICE and [[card:card-c-a]] for original red and current primary captures;
 this evidence is a request for original-review re-review, not self-approval.
+
+### M3 follow-through evidence (scoped, not complete acceptance)
+
+`tests/m3_branch.lua` provides installed real conditional CFG/block records,
+repeatable serial singleton/full pages and edge kinds. Structural block traversal
+is not address-monotone; guarded iter_basic_blocks safely stalls and CFG remains
+pages-only without structural ordinal/comparator. `tests/m3_seeded_host.cpp`
+observes CreateType union NOT_SUPPORTED; ListTypeUnions success-empty is not a
+populated positive. `tests/reentry_host.cpp` now observes actual allocation-driven
+publication finalizers for every enabled iterator family (empty/populated,
+ELF/project) and configured SaveProgram saved=true. These supersede the earlier
+function-only publication qualification, not the unresolved total-order limitations.

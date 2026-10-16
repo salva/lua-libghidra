@@ -16,6 +16,8 @@ void seed_core_fixture(libghidra::client::IClient* c) {
  assert(fixture_result(c->GetDecompilation(0x401106,30000)).decompilation->completed);
  assert(fixture_result(c->CreateType("M3Struct","struct",16)).updated);
  assert(fixture_result(c->AddTypeMember("M3Struct","field","int",4)).updated);
+ auto unsupported_union=c->CreateType("M3Union","union",8);
+ assert(!unsupported_union.status.ok() && unsupported_union.status.code=="NOT_SUPPORTED");
  assert(fixture_result(c->CreateTypeAlias("M3Alias","int")).updated);
  assert(fixture_result(c->CreateTypeEnum("M3Enum",4,true)).updated);
  assert(fixture_result(c->AddTypeEnumMember("M3Enum","ONE",1)).updated);
@@ -29,6 +31,6 @@ int main(int argc,char** argv) {
  luaL_requiref(L,"libghidra._native",luaopen_libghidra__native,0);lua_pop(L,1);
  lua_newtable(L);lua_pushstring(L,argv[2]);lua_rawseti(L,-2,1);lua_setglobal(L,"arg");
  int rc=luaL_dofile(L,argv[1]);
- if(rc) std::fprintf(stderr,"seeded Lua error: %s\n",lua_tostring(L,-1));
+ if(rc) { if(lua_istable(L,-1)) lua_getfield(L,-1,"message"); std::fprintf(stderr,"seeded Lua error: %s\n",lua_tostring(L,-1)); }
  lua_close(L);return rc?1:0;
 }
