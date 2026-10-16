@@ -25,7 +25,7 @@ repair campaign. Prior milestone approval does not replace fresh inspection.
 - [x] Native boundary, ownership, GC/reentrancy, process lifetime.
 - [x] API semantics, Lua ergonomics, conversions, iteration and persistence.
 - [x] Build/install/package reproducibility and dependency/VM closure.
-- [ ] User documentation, navigation and historical separation.
+- [x] User documentation, navigation and historical separation.
 - [ ] Test quality, blind spots and reproducibility of qualification claims.
 - [ ] Dependency integrity, license/notices and source/shipping claims (not legal clearance).
 - [ ] Reconcile overlapping/unsupported findings and perform bounded validation.
@@ -59,5 +59,10 @@ Dimension reports and consolidated findings are added as they complete.
 - [Packaging](03-PACKAGING.md): three medium findings concerning Lua host/header
   ABI rejection, installed-document link closure and harness-dependent user install
   recipes. Ordinary retained installations were not found broken by this review.
+- [Documentation](04-DOCUMENTATION.md): no coherent fresh-user installation and
+  own-binary journey; fixture/prose mismatch, obsolete commands, stale status and
+  field/surface claims, and insufficient user/developer/history separation. The
+  report proposes an audience tree and document disposition map without moving
+  files. Packaging/documentation overlaps will be consolidated, not counted twice.
 - [Baseline execution](07-BASELINE-VALIDATION.md): existing configured build and
   registered tests passed 18/18; broader qualification was not rerun.
