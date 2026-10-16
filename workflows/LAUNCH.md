@@ -68,14 +68,29 @@ Owners must reconcile obsolete acceptance through supported lifecycle/activation
 mechanisms, preserving history; notifications do not rewrite immutable briefs.
 Do not reset/restart, create new upstream-fix work or change unrelated scope.
 
+## Operator decision — upstream build-time spec generator approved
+
+The operator explicitly approved retaining the unchanged pinned upstream
+`cpp/embed_specs.py` generator invoked by `cpp/cmake/EmbedSpecs.cmake`, using
+Python >=3.10 with standard-library zlib/XML during native source configuration.
+This narrow exception avoids replacing upstream machinery merely to remove a
+build tool. It excludes project-owned tooling/tests, Python-binding dependencies,
+mandatory parity/oracles, SDK-consumer builds and the installed Lua runtime.
+Record interpreter/module identities in source-build qualification as designed.
+
+This resolves the specific external policy blocker reported by card-e-a/card-e.
+Owners should resume their existing review/qualification work through supported
+lifecycle controls without reset or duplicated tasks. Do not claim approval itself
+passes unrun tests, grants new distribution rights or permits other Python use.
+
 ## Operator update — Lua-based deliverable, no Python-binding dependency
 
 Python is allowed during initial development. The finished project must not
 depend on upstream Python bindings for build, runtime or required acceptance.
 Use Lua for project-owned tooling, generators and acceptance tests by release;
 retain Python only for a documented compelling reason with operator acceptance.
-Assess the pinned upstream spec-embedding generator as a potential exception,
-not as blanket approval to retain Python. Native C++ probes/adapter and ordinary
+The pinned upstream spec-embedding generator has the narrow explicit exception
+above, not blanket approval to retain Python. Native C++ probes/adapter and ordinary
 CMake/LuaRocks/compiler tooling remain appropriate.
 
 This supersedes earlier mandatory Python-oracle/comparison gates. For card-a-c,

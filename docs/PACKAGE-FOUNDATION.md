@@ -45,11 +45,11 @@ must be prepared separately under `native-inputs.lock.json` and the authorized
 `native-patched.lock.json` profile. No configure downloads are allowed.
 Source overrides remain CMake's `NATIVE_{LIBGHIDRA,ENGINE,PROTOBUF,ABSEIL,HTTPLIB}_SOURCE`.
 An installed SDK path does not run the source embedding generator. Source mode
-still requires upstream Python >=3.10 with zlib; its policy decision is **open**,
-not implicitly approved by this rockspec. See the retained-generator assessment
+still requires upstream Python >=3.10 with stdlib/zlib/XML; the operator has
+explicitly approved this narrow source-build-only exception. See the assessment
 below. No project-owned Python qualification oracle is authorized by this file.
 
-## Retained upstream generator: decision request, not an exception approval
+## Retained upstream generator: narrow operator-approved exception
 
 The exact pinned `cpp/cmake/EmbedSpecs.cmake` unconditionally invokes
 `cpp/embed_specs.py` at configure time, even with `LIBGHIDRA_BUILD_PYTHON=OFF`.
@@ -69,15 +69,17 @@ Alternatives:
   an authorized integration point: feasible engineering, but replacing upstream
   generator behavior/integration requires a separately justified approach under
   DESIGN, not a new unapproved dependency patch or modified libghidra checkout.
-- Request an explicit **build-time only** exception for the exact pinned upstream
+- Retain the explicitly approved **build-time only** exception for the exact pinned upstream
   generator, Python >=3.10 with importable zlib. Reason: preserves unchanged
   upstream integration and compiled-in spec behavior with no binding dependency;
   excludes project-owned tooling, mandatory parity, installed runtime and SDK
-  builds. If accepted, record Python/zlib identities per source qualification.
+  builds. Record Python/zlib identities per source qualification.
 
-Operator decision requested: accept that narrow upstream source-build exception,
-or authorize the separately qualified replacement approach. No option is
-preapproved. Continue independent owned-tooling and package work meanwhile.
+Operator decision: **accepted** for the unchanged pinned upstream generator only.
+The alternatives above explain the retained dependency; no replacement or new
+upstream patch is authorized or required. Resume source/package qualification and
+independent review. This is a policy decision, not a retroactive test pass, new
+distribution permission or exemption for project-owned Python tooling.
 
 ## Lua input preparation
 

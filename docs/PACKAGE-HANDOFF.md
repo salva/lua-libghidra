@@ -62,11 +62,12 @@ CFG/xref/type families, union/signature practical producer limits, category-spec
 persistence, and no rollback/general restoration guarantee. Source inventory,
 converter tests or positive acknowledgements do not override those facts.
 
-## Remaining decision
+## Upstream generator decision — resolved
 
 Unchanged pinned upstream `EmbedSpecs.cmake` invokes Python >=3.10 + stdlib/zlib
 at source configure, even with bindings off. SDK/runtime paths do not need it.
-The exact alternatives and narrow operator decision request remain in
-`PACKAGE-FOUNDATION.md`: approve that upstream build-time-only exception or
-provide authority for a qualified integration/replacement. Neither is preapproved;
-no unauthorized dependency changes are a valid workaround. No new rights inferred.
+The operator approved this unchanged pinned generator's build-time-only Python
+use; alternatives and rationale remain in `PACKAGE-FOUNDATION.md`. No Python
+bindings, project-owned Python tooling/test oracle, SDK-consumer dependency or
+installed-runtime Python requirement is authorized. Resume the existing package
+qualification/review; approval is not a test pass or new distribution permission.
