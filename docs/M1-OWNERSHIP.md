@@ -432,3 +432,26 @@ engine subobject destructor accounting, exhaustive factory exception injection,
 all-operation lock proof or universal scheduler/loader qualification. It uses
 instrumented real owner code linked to the unchanged SDK in an existing Lua VM;
 production DSO loading remains covered separately by contention/copy tests.
+
+### Deeper native factory fault sweep — failing lifetime gate
+
+The read-order host now sweeps persistent ordinary C++ refusal beyond sixteen
+thresholds through a measured success tail (ceiling 4096). After EACH attempted
+factory, all Lua results are removed and full collection runs, then ordinary
+new/new[] live blocks/bytes must equal that attempt's baseline. Actual refusal
+must return NATIVE_EXCEPTION/local_client; restored fresh construction/status/
+close is required. Successful retries can retain upstream process state, so their
+post-retry balance is not asserted against the preceding baseline; each next
+fault uses its own baseline. Such retained state is not declared benign or waived.
+
+This coverage currently FAILS reproducibly: threshold 602 actually refuses one
+allocation and leaves one extra 91-byte ordinary C++ block after result removal
+and collection (23957 -> 23958 blocks; 5372078 -> 5372169 bytes). Three final
+executions reproduce the same delta. Earlier threshold-one failure after the
+successful recovery was an overbroad baseline oracle and is recorded separately;
+the threshold-602 failure occurs BEFORE recovery. No production/SDK repair was
+made here. Determine allocation identity/stack and ownership at the repair route
+before calling this an engine leak rather than retained process state. This is
+not semantic destructor accounting or an exhaustive sweep: the first failing
+gate stops before measured success tail. Reproduce with
+`cmake --build build --target read_order_host -j4 && ctest --test-dir build -R '^read_bytes_dispatch_order$' -V`.

@@ -71,17 +71,38 @@ int main() {
  lua_State* L=lua_newstate(lua_allocate,&allocator); assert(L); luaL_openlibs(L);
  luaL_requiref(L,"libghidra._native",luaopen_libghidra__native,0);
  lua_getfield(L,-1,"local_client");
- // Exercise real native factory partial construction, before any live owner.
- for(unsigned point=1;point<=16;++point) {
+ // Warm the real SDK once so lazy global caches are outside per-factory balance.
+ lua_pushcfunction(L,factory); lua_pushvalue(L,1);
+ assert(lua_pcall(L,1,2,0)==LUA_OK && lua_isuserdata(L,-2));
+ lua_getfield(L,-2,"get_status"); lua_pushvalue(L,-3);
+ assert(lua_pcall(L,1,2,0)==LUA_OK); lua_pop(L,2);
+ lua_getfield(L,-2,"close"); lua_pushvalue(L,-3);
+ assert(lua_pcall(L,1,1,0)==LUA_OK); lua_pop(L,3); lua_gc(L,LUA_GCCOLLECT);
+ unsigned factory_native_faults=0, factory_native_tail=0;
+ // Persistent refusal through catch/error conversion; measured tail, not 16 sites.
+ for(unsigned point=1;point<=4096;++point) {
+  const size_t blocks=live_blocks, bytes=live_bytes;
   lua_pushcfunction(L,factory); lua_pushvalue(L,1);
   attempts=denied=0; deny_after=point; watching=deny=true;
   int result=lua_pcall(L,1,2,0); watching=deny=false;
-  assert(denied>0 && result==LUA_OK && lua_isnil(L,-2) && lua_istable(L,-1));
-  lua_getfield(L,-1,"code");
-  assert(std::string_view(lua_tostring(L,-1))=="NATIVE_EXCEPTION"); lua_pop(L,1);
-  lua_getfield(L,-1,"operation");
-  assert(std::string_view(lua_tostring(L,-1))=="local_client"); lua_pop(L,1);
-  lua_pop(L,2);
+  assert(result==LUA_OK);
+  if(denied) {
+   ++factory_native_faults;
+   assert(lua_isnil(L,-2) && lua_istable(L,-1));
+   lua_getfield(L,-1,"code");
+   assert(std::string_view(lua_tostring(L,-1))=="NATIVE_EXCEPTION"); lua_pop(L,1);
+   lua_getfield(L,-1,"operation");
+   assert(std::string_view(lua_tostring(L,-1))=="local_client"); lua_pop(L,1);
+   lua_pop(L,2);
+  } else {
+   ++factory_native_tail;
+   assert(attempts<point && lua_isuserdata(L,-2));
+   lua_getfield(L,-2,"close"); lua_pushvalue(L,-3);
+   assert(lua_pcall(L,1,1,0)==LUA_OK); lua_pop(L,3);
+  }
+  lua_gc(L,LUA_GCCOLLECT);
+  if(live_blocks!=blocks || live_bytes!=bytes) std::fprintf(stderr,"factory point=%u denied=%u attempts=%u blocks=%zu->%zu bytes=%zu->%zu\n",point,denied,attempts,blocks,live_blocks,bytes,live_bytes);
+  assert(live_blocks==blocks && live_bytes==bytes);
   // Failed factory must not retain the process slot or poison native init.
   lua_pushcfunction(L,factory); lua_pushvalue(L,1);
   assert(lua_pcall(L,1,2,0)==LUA_OK && lua_isuserdata(L,-2));
@@ -90,8 +111,12 @@ int main() {
   lua_getfield(L,-2,"close"); lua_pushvalue(L,-3);
   assert(lua_pcall(L,1,1,0)==LUA_OK && lua_toboolean(L,-1)); lua_pop(L,3);
   lua_gc(L,LUA_GCCOLLECT);
+  // Successful retry may populate upstream process caches; each following
+  // fault gets a fresh baseline. Failure cleanup itself must still balance.
+  if(factory_native_tail) break;
  }
- std::puts("Native factory first 16 allocation faults: structured exception and fresh-owner recovery PASS");
+ assert(factory_native_faults>16 && factory_native_tail==1);
+ std::printf("Native factory sweep: %u actual faults then measured success tail; block/byte balance and recovery PASS\n",factory_native_faults);
  // Sweep Lua setup/publication/error exits of the real factory. An owner may
  // already have been published when pcall's result adjustment allocates.
  unsigned factory_oom=0,factory_tail=0;
