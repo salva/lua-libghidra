@@ -7,9 +7,14 @@ local content=require('content')
 local json=require('tool_json')
 local config=json.decode(content.read(assert(os.getenv('LLG_SITE_CONFIG'))))
 local policy=dofile(source_root..'/scripts/package-documents.lua')
-assert(type(policy.heading_ids)=='function',
+assert(type(policy.heading_ids)=='function' and type(policy.heading_texts)=='function',
   'shared-heading-api: package owner must export heading_ids allocator before site rendering')
 local next_id=policy.heading_ids()
+local source_ids={}
+for _,raw in ipairs(policy.heading_texts(content.read(source_root..'/'..config.source))) do
+  source_ids[#source_ids+1]=next_id(raw)
+end
+local header_index=0
 local route=assert(config.routes[config.source])
 local external={}
 -- Generated C++ type notation is text, not an HTML extension. Permit only
@@ -44,8 +49,8 @@ local function target(el)
 end
 return {
   { Header=function(el)
-      assert(el.identifier=='' or el.identifier~=nil,'invalid heading')
-      el.identifier=next_id(pandoc.utils.stringify(el.content))
+      header_index=header_index+1
+      el.identifier=assert(source_ids[header_index], 'heading-count: extra AST Header')
       return el
     end,
     Link=target, Image=target,
@@ -58,6 +63,7 @@ return {
     CodeBlock=function(el) el.attributes.tabindex='0'; return el end,
   },
   { Pandoc=function(doc)
+      assert(header_index==#source_ids, 'heading-count: missing AST Header')
       -- Full example display comes from the exported exact download bytes.
       if config.source=='docs/EXAMPLES.md' then
         for _,path in ipairs(config.examples) do
