@@ -18,18 +18,6 @@ execute_process(COMMAND "${Python3_EXECUTABLE}" -c "import zlib" RESULT_VARIABLE
 if(NOT zlib_status EQUAL 0)
   message(FATAL_ERROR "Source build requires Python >=3.10 with zlib (not a runtime dependency)")
 endif()
-find_package(PkgConfig REQUIRED)
-pkg_check_modules(LUA REQUIRED lua5.4)
-include(CheckCXXSourceCompiles)
-set(CMAKE_REQUIRED_INCLUDES ${LUA_INCLUDE_DIRS})
-check_cxx_source_compiles("#include <lua.h>
-static_assert(LUA_VERSION_NUM == 504);
-static_assert(sizeof(lua_Integer) == 8);
-int main() { return 0; }" NATIVE_LUA_ABI_OK)
-if(NOT NATIVE_LUA_ABI_OK)
-  message(FATAL_ERROR "Requires Lua 5.4 with 64-bit lua_Integer")
-endif()
-unset(CMAKE_REQUIRED_INCLUDES)
 set(NATIVE_INPUT_ROOT "${CMAKE_SOURCE_DIR}/.cache/native-inputs" CACHE PATH "Prepared pinned native inputs")
 foreach(pair IN ITEMS "libghidra;libghidra-d51ca813ae1b6b59519551a9be8c0b1ad74d862d" "engine;engine" "protobuf;protobuf" "abseil;abseil" "httplib;httplib")
   list(GET pair 0 name)

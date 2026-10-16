@@ -1,6 +1,16 @@
 # MIT Copyright 2026 Salvador Fandiño.
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(LUA REQUIRED lua5.4)
+include(CheckCXXSourceCompiles)
+set(CMAKE_REQUIRED_INCLUDES ${LUA_INCLUDE_DIRS})
+check_cxx_source_compiles("#include <lua.h>
+static_assert(LUA_VERSION_NUM == 504);
+static_assert(sizeof(lua_Integer) == 8);
+int main() { return 0; }" NATIVE_LUA_ABI_OK)
+if(NOT NATIVE_LUA_ABI_OK)
+  message(FATAL_ERROR "Requires Lua 5.4 with 64-bit lua_Integer")
+endif()
+unset(CMAKE_REQUIRED_INCLUDES)
 add_library(lua_ghidra MODULE ${PROJECT_SOURCE_DIR}/src/boundary.cpp ${PROJECT_SOURCE_DIR}/src/owner.cpp)
 target_compile_definitions(lua_ghidra PRIVATE LLG_OWNER)
 target_include_directories(lua_ghidra PRIVATE ${LUA_INCLUDE_DIRS})
@@ -15,8 +25,10 @@ install(TARGETS lua_ghidra LIBRARY DESTINATION "${LUA_MODULE_DIR}/libghidra")
 add_library(llg_process_guard SHARED ${PROJECT_SOURCE_DIR}/src/process_guard.cpp)
 # A DT_NEEDED dependency, not an inline/weak symbol: RTLD_LOCAL copies must
 # resolve the same SONAME and therefore the same mutex and occupied flag.
-set_target_properties(llg_process_guard PROPERTIES VERSION 1.0 SOVERSION 1)
-install(TARGETS llg_process_guard LIBRARY DESTINATION "${LUA_MODULE_DIR}/libghidra")
+set_target_properties(llg_process_guard PROPERTIES SOVERSION 1)
+# Install only the real SONAME file. LuaRocks deploys files individually and
+# cannot preserve a versioned symlink chain while moving its targets.
+install(TARGETS llg_process_guard LIBRARY DESTINATION "${LUA_MODULE_DIR}/libghidra" NAMELINK_SKIP)
 set_target_properties(lua_ghidra PROPERTIES INSTALL_RPATH "$ORIGIN")
 target_link_libraries(binding_local_whole INTERFACE llg_process_guard)
 install(DIRECTORY "${PROJECT_SOURCE_DIR}/lua/libghidra" DESTINATION "${LUA_SOURCE_DIR}")
