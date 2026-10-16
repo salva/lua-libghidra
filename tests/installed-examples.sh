@@ -62,6 +62,8 @@ if arg[2]=='decompile' then
 else
  assert(text:find('function_name="func_0x00401106"\n',1,true))
  assert(text:find('function_entry_address=0x0000000000401106\n',1,true))
+ assert(text:find('function_start_address=0x0000000000401106\n',1,true))
+ assert(text:find('function_end_address=0x000000000040111e\n',1,true))
  assert(text:find('bytes_hex=f30f1efa\n',1,true))
  local addresses={};for address in text:gmatch('\ninstruction_address=([^\n]+)') do addresses[#addresses+1]=address end
  assert(#addresses==1 and addresses[1]=='0x0000000000401106')
