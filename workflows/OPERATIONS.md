@@ -38,14 +38,21 @@ Current-instructions API verified batching policy in all four inspected bindings
 (root Planner, M1 Planner, qualification Executor, Analyst), with current record
 and historical conversation/catalog access intact. Three normal notices to
 `project`, `card-b` and `card-b-c` reported `interruption: not_requested`.
-Supported `start_project` succeeded at 00:17 UTC. Fresh child execution is verified
-separately below; startup/Run alone does not establish adoption or M1 acceptance.
+Supported `start_project` succeeded at 00:17 UTC. Root recovery activated the same
+M1 owner at 00:18:26 with explicit batching direction. At 00:19:08 that Planner
+activated the same `card-b-c`, consolidating the remaining qualification groups
+and explicitly leaving tactics/batch size to Executor without weakening gates.
+The Executor's **current compacted segment, version 4**, contains fresh returned
+read, run_command and wait_process calls through 00:19:30 and the new direction.
+Historical version 1 alone would miss that execution. This verifies child resume
+and guidance delivery, not sustained batching compliance or complete M1 acceptance.
 
 Evidence and full backup/candidate/displaced prompts:
 `/home/salva/g/ml/tmp/lua-libghidra-batched-guidance-2026-10-16/`.
 Key files: `source-check/guidance-validation.json`, `source-validation.json`,
 `candidate-validation.json`, `tree-validation.json`, `publication.json`,
-`live-bindings-and-history.json`, `stop-receipt.json`, `notify-resume-receipt.json`.
+`live-bindings-and-history.json`, `stop-receipt.json`, `notify-resume-receipt.json`,
+`verified-child-resume.json`, `verified-executor-resume.json`, `editorial-review.md`.
 These secret-bearing full copies stay outside Git. Rollback is prompt-only under
 fresh exclusion; do not restore historical state over new execution. No push.
 
