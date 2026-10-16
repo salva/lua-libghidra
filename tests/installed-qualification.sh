@@ -35,3 +35,14 @@ LUA_PATH="$prefix/share/lua/5.4/?.lua;$prefix/share/lua/5.4/?/init.lua;$prefix/s
 LUA_CPATH="$prefix/lib/lua/5.4/?.so" \
 lua5.4 "$prefix/share/libghidra/examples/first_slice.lua"
 printf 'installed standalone/static/shared owner+Session and VM closure PASS\n'
+
+# Persistence artifacts are disposable and must remain in the active card work root.
+if [[ -n "${SAIVAGE_CARD_WORK_ROOT:-}" ]]; then
+  persistence="$SAIVAGE_CARD_WORK_ROOT/m3-installed-persistence"
+  mkdir -p "$persistence"
+  lua5.4 "$root/tests/m3_persistence.lua" "$prefix" "$root" "$persistence"
+fi
+LIBGHIDRA_FIXTURE_ROOT="$root" \
+LUA_PATH="$prefix/share/lua/5.4/?.lua;$prefix/share/lua/5.4/?/init.lua;$prefix/share/libghidra/examples/?.lua" \
+LUA_CPATH="$prefix/lib/lua/5.4/?.so" \
+lua5.4 "$prefix/share/libghidra/examples/core_mutation.lua"

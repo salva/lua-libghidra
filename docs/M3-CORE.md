@@ -133,3 +133,23 @@ duplicate/reversed/oversized pages, no retry after error, structured native erro
 and actual Lua finalizers mutating generation during publication/key/buffer phases.
 These primitive fixtures are not real-backend operation positives. Installed
 qualification executes the test with standalone and shared/static existing VMs.
+
+## Persistence/signature/string follow-through
+
+`tests/m3_persistence.lua` requires a caller-supplied disposable directory for
+state, never writes fixture state. Real save/reopen restores renamed function
+symbol; separately, a NUL byte overlay survives DiscardProgram but does not survive
+owner destruction/reopen even after saved=true. An unsaved subsequent rename is
+not autosaved by destructor. Positive configured facade save-close is exercised.
+This is **function-symbol category evidence only**, not proof all categories
+persist. Type/comment/signature/data/benchmark category probes remain outstanding.
+The installed qualification script executes it when the active card work root is
+provided. `examples/core_mutation.lua` is now installed/executed and asserts the
+native renamed flag and buffered function-iterator invalidation.
+
+`tests/m3_core.lua` now asserts actual .interp bytes at 0x400318 equal
+"/lib64/ld-linux-x86-64.so.2" + NUL on both real fixture routes before asserting
+DefinedStrings empty success. This is a known loaded string, no discovery claim.
+Signature singleton pages are compared with candidate-function offsets, including
+past-end emptiness. Missing-signature filter cases remain unqualified; all exercised
+candidates produce signatures, not evidence the producer never filters.

@@ -22,7 +22,19 @@ for _,project in ipairs{false,true} do
   assert(#check(n[method](n,{offset=1000000,limit=1}))[key]==0)
   print((project and 'project' or 'ELF')..' '..method..' records='..#page[key])
  end
+ -- ELF .interp contains a known actual string even though native discovery is a stub.
+ assert(check(s:read_bytes(0x400318,28))=='/lib64/ld-linux-x86-64.so.2\0')
  assert(#check(n:list_defined_strings{}).strings==0)
+ -- Candidate offsets match function pages; never advance by filtered response count.
+ local candidates=check(n:list_functions{limit=100}).functions
+ for offset=0,#candidates do
+  local sigs=check(n:list_function_signatures{limit=1,offset=offset}).signatures
+  if offset==#candidates then assert(#sigs==0)
+  else
+   assert(#sigs<=1)
+   if sigs[1] then assert(sigs[1].function_entry_address==candidates[offset+1].entry_address) end
+  end
+ end
  local blocks=check(s:list_basic_blocks{limit=100}).blocks
  assert(#blocks>0 and blocks[1].function_entry:hex() and blocks[1].in_degree>=0)
  local symbols=check(s:list_symbols{limit=100}).symbols

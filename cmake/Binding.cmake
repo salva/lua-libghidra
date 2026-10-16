@@ -115,5 +115,6 @@ if(BUILD_TESTING)
 endif()
 # Runnable first-slice example plus explicit fixture test data, not module APIs.
 install(FILES ${PROJECT_SOURCE_DIR}/examples/first_slice.lua
+              ${PROJECT_SOURCE_DIR}/examples/core_mutation.lua
               ${PROJECT_SOURCE_DIR}/examples/fixture_manifest.lua
         DESTINATION share/libghidra/examples)
