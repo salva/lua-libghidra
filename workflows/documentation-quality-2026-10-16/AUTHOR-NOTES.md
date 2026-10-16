@@ -54,8 +54,12 @@ no deployment/lifecycle operations or native rebuilds.
   this is document staging, not a new package installation qualification.
 - `tests/package_documents.lua` and `tests/installed-documents.sh`: passed,
   including new negative probes below. Logs in temporary evidence directory.
-- Full `scripts/check-tooling.lua` rerun is recorded in `source-tooling.log`;
-  first foreground attempt timed out at 120 seconds after lookup checks.
+- Full `lua5.4 scripts/check-tooling.lua "$PINNED_SOURCE" "$FRESH_WORK"` rerun
+  passed all native Lua inventory suites, both fresh CLI modes, JSON consumers,
+  source mutation/producer checks and package-document checks. Complete output is
+  `source-tooling.log`; the first foreground attempt timed out at 120 seconds
+  after lookup checks. Final staged-document byte/membership check also passed
+  against committed `67b5509`.
 
 ## Bounded policy relocation
 
