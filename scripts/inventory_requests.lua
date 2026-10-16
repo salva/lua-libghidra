@@ -97,6 +97,8 @@ function M.review(raw,adapter,data,fingerprint)
  result.related_response_reviews=direct.responses
  -- Native implementation calls this new_type; service declaration calls it data_type.
  if direct.requests.SetFunctionParameterType then result.reviewed.SetFunctionParameterType.data_type=result.reviewed.SetFunctionParameterType.new_type; result.reviewed.SetFunctionParameterType.new_type=nil; direct.requests.SetFunctionParameterType.data_type=direct.requests.SetFunctionParameterType.new_type end
+ local extra=require("inventory_remaining_inputs").review(raw,adapter,fingerprint)
+ for name,args in pairs(extra) do direct.requests[name]=direct.requests[name] or {}; result.reviewed[name]=result.reviewed[name] or {}; for arg,r in pairs(args) do assert(not result.reviewed[name][arg],"duplicate extra request"); direct.requests[name][arg]=r; result.reviewed[name][arg]=r end end
  local remaining={}; for _,r in ipairs(result.unreviewed) do if not (direct.requests[r.operation] and direct.requests[r.operation][r.argument]) then remaining[#remaining+1]=r end end; result.unreviewed=remaining
  table.sort(result.unreviewed,function(a,b) return a.operation..'.'..a.argument<b.operation..'.'..b.argument end)
  return result

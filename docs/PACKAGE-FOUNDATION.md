@@ -217,3 +217,14 @@ uint32 representation alone is insufficient. Lookup assigned/default field audit
 matches the exact `rec` identifier, not nested `prec` parameter records. Successful
 absent optional, present failed decompilation, constant-empty strings and reported
 write input size must not be upgraded into native error/producer guarantees.
+
+The next migrated batch adds **32 mutation result producers** and 14 related
+string/local/comment/lifecycle inputs (`tests/tooling_mutations.lua` and
+`tests/tooling_remaining_inputs.lua`). Mutation assignment and error/side-map
+branches are source-corruption tested. All 32 result body hashes match the retained
+review artifact. CloseProgram's loaded check is in closeProgramLocked, not the
+public forwarding method; Shutdown already-unloaded handling stays distinct.
+Remaining direct arguments are now **43** (superseding earlier progress counts),
+primarily type/member/enum and benchmark consumers. This is not full migration or
+runtime approval: request echoes/side-map flags are not readback or persistence,
+failed all-slot mutations can be partial, and signature function_name stays default.

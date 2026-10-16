@@ -24,3 +24,14 @@ for name,r in pairs(artifact.adapter_page_reviews or {}) do
  end
 end
 print('Additional status and adapter page body fingerprints match retained source reviews PASS')
+local mutation_count=0
+for name,r in pairs(artifact.mutation_reviews or {}) do
+ mutation_count=mutation_count+1
+ local old=assert(ops[name].mutation_result_review,'missing retained mutation review '..name)
+ assert(r.body_sha256==old.body_sha256,'mutation result fingerprint mismatch '..name)
+end
+assert(mutation_count==32,'mutation artifact coverage incomplete')
+local req=artifact.request_reviews
+assert(req.reviewed.SetFunctionLocalType.data_type and req.reviewed.CloseProgram.policy and req.reviewed.Shutdown.policy)
+assert(#req.unreviewed==43,'remaining request ledger changed')
+print('32 mutation fingerprints and reconciled 43 outstanding direct-input ledger PASS')
