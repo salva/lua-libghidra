@@ -388,3 +388,20 @@ This tests protected conversion/rethrow on a failed factory (separate from the
 GetCapabilities dual fault). First native allocation refusal does not demonstrate
 deep engine initialization, semantic destructor counting or heap balance; those
 remain open. Reproduce via the read_bytes_dispatch_order focused command above.
+
+### Shared native guard contention
+
+`ownership_guard_contention` links the same versioned process-guard DSO as the
+production module. A worker-confined C-built Lua state loads that module, then
+barriers let the host hold the shared engine mutex before releasing a factory,
+status or close operation. Completion must remain pending for 50ms while held,
+then finish within 10 seconds after unlock; worker cleanup must leave occupancy
+false. Five focused repetitions passed (0.83s). Reproduce with
+`cmake --build build -j4 && ctest --test-dir build -R '^ownership_guard_contention$' --repeat until-fail:5 -V`.
+
+This adds empirical contention evidence for construction, dispatch and explicit
+native destruction through the shared support primitive without modifying product
+or SDK code. It is bounded: a worker could be descheduled during the observation
+window, and no SDK phase entry/exit counters are present. It therefore does not
+replace native phase-overlap/destruction-vs-construction instrumentation or prove
+all lock coverage or absence of locks across arbitrary Lua callbacks.
