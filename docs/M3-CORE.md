@@ -323,3 +323,18 @@ than the top-level types dictionary (BasicBlockRecord indentation appeared twice
 The failed assertion prevented file writes. Scoped comparison/insertion to the
 actual types section, then JSON parse and exact field comparison passed; no
 successful suite status is used to erase those earlier tooling assertion failures.
+
+## Descriptor-finalizer error precedence repair
+
+A targeted author check found that a finalizer during identity/order construction
+could invalidate the owner, then a duplicate/nonadvancing record would raise
+PAGINATION_STALLED before the final pre-yield generation guard. No stale record
+was yielded, but the invocation reported stale-page diagnostics rather than the
+required ITERATOR_INVALIDATED. The shared iterator primitive now checks its
+nonallocating generation predicate immediately after each descriptor call, before
+using the result in page validation. tests/m3_iterators.lua reproduces both
+identity and ordering finalizer mutation combined with duplicate records; both
+must report invalidation. The new test failed on prior installed source, passes
+with the owning primitive fix, and runs in installed standalone/static/shared
+qualification. This does not upgrade synthetic descriptor cases to new native
+operation positives; existing actual native publication coverage remains.

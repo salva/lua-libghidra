@@ -86,3 +86,17 @@ for _,phase in ipairs{'publication','key','buffer'} do
  local ok,e=pcall(it); assert(not ok and e.code=='ITERATOR_INVALIDATED')
 end
 print('M3 iterator primitive bounds/caps/stalls/errors/early exit/finalizers PASS')
+-- Reentrant descriptor allocations must not mask invalidation as a stale-page
+-- error. Identity and ordering callbacks model allocation-triggered finalizers.
+for _,phase in ipairs{'identity','order'} do
+ owner.generation=1
+ local function mutate()
+  local finalizer=setmetatable({},{__gc=function() owner.generation=2 end})
+  finalizer=nil; collectgarbage()
+ end
+ local it=iterate(owner,'test',function() return {{id=1},{id=1}} end,
+  function(r) if phase=='identity' then mutate() end; return id(r) end,
+  function(r) if phase=='order' then mutate() end; return key(r) end,{page_size=2})
+ local ok,e=pcall(it)
+ assert(not ok and e.code=='ITERATOR_INVALIDATED','descriptor finalizer must precede stale-page diagnosis')
+end

@@ -38,7 +38,10 @@ return function(owner, operation, fetch, identity, order, options, counts_only)
       if #records>page.limit then raise('PAGINATION_STALLED','oversized page') end
       local seen={}
       for _,record in ipairs(records) do
-        local id,key=identity(record),order(record)
+        local id=identity(record)
+        valid() -- identity construction may collect owner-mutating finalizers
+        local key=order(record)
+        valid() -- invalidation takes precedence over stale-page diagnostics
         if seen[id] or previous[id] or (last and not less(last,key)) then
           raise('PAGINATION_STALLED','duplicate or non-advancing page')
         end
