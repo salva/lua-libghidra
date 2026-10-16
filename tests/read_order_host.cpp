@@ -7,6 +7,7 @@
 #include <cstdint>
 #include <string_view>
 #include <cstddef>
+#include <stdexcept>
 extern "C" int luaopen_libghidra__native(lua_State*);
 static unsigned phases[2];
 static uint32_t observed[2];
@@ -39,7 +40,21 @@ void operator delete(void* p) noexcept { free_allocation(p); }
 void operator delete[](void* p) noexcept { free_allocation(p); }
 void operator delete(void* p,size_t) noexcept { free_allocation(p); }
 void operator delete[](void* p,size_t) noexcept { free_allocation(p); }
+static int boundary_fault=0;
+// Dependency uses nothrow new too: pair it with this host's header allocator.
+// Otherwise ASan's nothrow allocator and our ordinary delete disagree.
+void* operator new(size_t n,const std::nothrow_t&) noexcept { try { return ::operator new(n); } catch(...) { return nullptr; } }
+void* operator new[](size_t n,const std::nothrow_t&) noexcept { try { return ::operator new(n); } catch(...) { return nullptr; } }
+void operator delete(void* p,const std::nothrow_t&) noexcept { free_allocation(p); }
+void operator delete[](void* p,const std::nothrow_t&) noexcept { free_allocation(p); }
 namespace llg {
+void before_adapter_dispatch(int kind) {
+ if(kind<7 || !boundary_fault) return;
+ if(boundary_fault==1) throw std::bad_alloc();
+ if(boundary_fault==2) throw std::runtime_error("adapter boundary test");
+ throw 7;
+}
+
 void observe_read_phase(int phase,uint32_t size) noexcept {
  assert(phase==0 || phase==1);
  if(phase==1) assert(phases[0]==1); // validated before SDK
@@ -274,6 +289,40 @@ int main() {
  assert(lua_reached>1 && lua_tail==1);
  std::printf("GetCapabilities Lua conversion OOM: %u reached, success tail, native block/byte balance PASS\n",lua_reached);
  lua_gc(L,LUA_GCRESTART);
+ }
+ // New adapters have only scalar/Page requests, no allocating request copies.
+ // Warm dependencies normally, then sweep ONLY Lua result/error allocations.
+ lua_pushvalue(L,owner); lua_setglobal(L,"c");
+ assert(luaL_dostring(L,
+  "assert(c:open_program{program_path='" LLG_FIXTURE_ROOT "/tests/fixtures/inputs/authored.elf',language_id='x86:LE:64:default',compiler_spec_id='gcc'}); "
+  "assert(c:get_decompilation(0x401106).decompilation.completed)")==LUA_OK);
+ const char* paths[]={
+  "return c:get_function(0x401106)", "return c:list_functions{limit=2}",
+  "return c:get_instruction(0x401106)", "return c:list_instructions{range_start=0x401106,limit=2}",
+  "return c:get_decompilation(0x401106)"};
+ for(const char* source:paths) {
+  unsigned refused=0; bool tail=false;
+  for(size_t point=1;point<=512;++point) {
+   assert(luaL_loadstring(L,source)==LUA_OK);
+   allocator.calls=allocator.refused=0; allocator.fail=point;
+   int rc=lua_pcall(L,0,2,0); allocator.fail=SIZE_MAX;
+   if(allocator.refused) { assert(rc==LUA_ERRMEM); ++refused; lua_pop(L,1); }
+   else { assert(rc==LUA_OK && lua_istable(L,-2)); lua_pop(L,2); tail=true; }
+   assert(luaL_dostring(L,source)==LUA_OK); lua_settop(L,owner);
+   if(tail) break;
+  }
+  assert(tail && refused>0);
+  // bad_alloc, standard and unknown exceptions are injected at the no-Lua SDK
+  // boundary, never by sweeping allocations inside the dependency.
+  for(int fault=1;fault<=3;++fault) {
+   boundary_fault=fault;
+   assert(luaL_dostring(L,source)==LUA_OK && lua_isnil(L,-2));
+   lua_getfield(L,-1,"code"); assert(std::string_view(lua_tostring(L,-1))=="NATIVE_EXCEPTION"); lua_pop(L,1);
+   lua_getfield(L,-1,"backend"); assert(std::string_view(lua_tostring(L,-1))=="binding"); lua_pop(L,3);
+   boundary_fault=0;
+   assert(luaL_dostring(L,source)==LUA_OK); lua_settop(L,owner);
+  }
+  std::printf("M2 adapter Lua result refusal (%u points), three boundary exceptions and retry PASS: %s\n",refused,source);
  }
  lua_close(L); assert(allocator.bytes==0);
 }

@@ -12,6 +12,9 @@
 #include <cstdio>
 #include <stdexcept>
 namespace llg {
+#ifdef LLG_ADAPTER_OBSERVER
+void before_adapter_dispatch(int);
+#endif
 #ifdef LLG_REENTRY_OBSERVER
 void before_owner_recheck(lua_State*);
 #endif
@@ -200,6 +203,9 @@ int dispatch(lua_State* L) {
     LLG_NATIVE_PHASE(1);
     c::IClient* client=s->p->client.get();
     if(kind==1 || kind==2 || kind==3) ++s->p->generation;
+#ifdef LLG_ADAPTER_OBSERVER
+    before_adapter_dispatch(kind); // test-only: exception across native boundary
+#endif
     switch(kind) {
      case 7: take(p,client->GetFunction(address),p.function); break;
      case 8: take(p,client->ListFunctions(page.start,page.end,page.limit,page.offset),p.functions); break;

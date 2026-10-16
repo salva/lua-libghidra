@@ -43,6 +43,11 @@ for _,project in ipairs{false,true} do
   end
   assert(#check(view:list_instructions{range_start=address,range_end=address,limit=2}).instructions==1)
   assert(#check(view:list_instructions{range_start=0,limit=2}).instructions==0)
+  -- Deliberately unaligned authored bytes: one decodable instruction then a
+  -- genuine constructor gap; code still exists after it (not region scanning).
+  local gap=check(view:list_instructions{range_start=0x40112b,limit=8}).instructions
+  assert(#gap==1 and gap[1].address==check(u(0x40112b)) and gap[1].length==2)
+  assert(#check(view:list_instructions{range_start=0x401131,limit=1}).instructions==1)
   assert(#check(view:list_functions{range_start=address,range_end=address}).functions==1)
   assert(#check(view:list_functions{range_start=address,limit=2}).functions==2)
   for _,size in ipairs{2147483648,4294967295} do
@@ -58,6 +63,18 @@ for _,project in ipairs{false,true} do
   for _,v in ipairs(dec.locals) do assert(math.type(v.ordinal)=='integer' and type(v.kind)=='string') end
   for _,v in ipairs(dec.tokens) do assert(math.type(v.line_number)=='integer' and math.type(v.column_offset)=='integer') end
  end
+ -- A finite unmapped address returns a present incomplete record, not NOT_FOUND.
+ for index,view in ipairs{owner,session} do
+  local error_address=0x400000+index*0x100000
+  local result,err,envelope=view:get_decompilation(error_address)
+  assert(result and err==nil)
+  local d=view==owner and result.decompilation or result
+  assert(d.completed==false and d.is_fallback==false and #d.error_message>0)
+  assert(d.function_entry_address==check(u(error_address)))
+  if view==session then assert(envelope.decompilation==d) end
+ end
+ local absent,err,env=session:get_instruction(0)
+ rejects(absent,err,'NOT_FOUND'); assert(env.instruction==nil)
  local fn,_,env=session:get_function(address); assert(fn==env['function'])
  local missing,e,response=session:get_function(check(u('18446744073709551615')))
  rejects(missing,e,'NOT_FOUND'); assert(response['function']==nil)

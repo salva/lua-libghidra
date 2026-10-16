@@ -85,7 +85,8 @@ endif()
 if(BUILD_TESTING)
   add_executable(read_order_host ${PROJECT_SOURCE_DIR}/tests/read_order_host.cpp
     ${PROJECT_SOURCE_DIR}/src/boundary.cpp ${PROJECT_SOURCE_DIR}/src/owner.cpp)
-  target_compile_definitions(read_order_host PRIVATE LLG_OWNER LLG_READ_OBSERVER)
+  target_compile_definitions(read_order_host PRIVATE LLG_OWNER LLG_READ_OBSERVER LLG_ADAPTER_OBSERVER
+    LLG_FIXTURE_ROOT="${PROJECT_SOURCE_DIR}")
   target_include_directories(read_order_host PRIVATE ${LUA_INCLUDE_DIRS})
   target_compile_options(read_order_host PRIVATE -UNDEBUG)
   target_link_libraries(read_order_host PRIVATE ${LUA_LIBRARIES} binding_local_whole)

@@ -40,15 +40,22 @@ static int natural_call(lua_State* L) {
 int main() {
  lua_State* L=luaL_newstate(); assert(L); luaL_openlibs(L);
  luaL_requiref(L,"libghidra._native",luaopen_libghidra__native,1); lua_setglobal(L,"n");
- for(int mode=0;mode<2;++mode) {
+ const char* recheck_calls[]={
+ "local v,e=c:read_bytes(0,0)", "local v,e=c:open_program{program_path='absent'}",
+ "local v,e=c:get_function(0)", "local v,e=c:list_functions{limit=2}",
+ "local v,e=c:get_instruction(0)", "local v,e=c:list_instructions{limit=2}",
+ "local v,e=c:get_decompilation(0)"};
+ const char* recheck_names[]={"read_bytes","open_program","get_function","list_functions","get_instruction","list_instructions","get_decompilation"};
+ for(int mode=0;mode<7;++mode) {
   run(L,"c=assert(n.local_client()); collectgarbage('stop'); hits=0; completed=0; finalizer_ok=false; finalizer_error=nil; "
         "do local owner=c; local f=setmetatable({}, {__gc=function() "
         "hits=hits+1; finalizer_ok,finalizer_error=pcall(function() "
         "assert(owner:close()); local replacement=assert(n.local_client()); "
         "assert(replacement:close()); completed=completed+1 end) end}) end");
   armed=true;
-  if(mode==0) run(L,"local v,e=c:read_bytes(0,0); assert(v==nil and e.code=='CLOSED' and e.backend=='binding' and e.operation=='read_bytes')");
-  else run(L,"local v,e=c:open_program{program_path='absent'}; assert(v==nil and e.code=='CLOSED' and e.backend=='binding' and e.operation=='open_program')");
+  char source[512];
+  std::snprintf(source,sizeof(source),"%s; assert(v==nil and e.code=='CLOSED' and e.backend=='binding' and e.operation=='%s')",recheck_calls[mode],recheck_names[mode]);
+  run(L,source);
   assert(!armed && edges==unsigned(mode+1));
   run(L,"assert(hits==1); assert(finalizer_ok,finalizer_error); assert(finalizer_error==nil and completed==1); "
         "assert(c:close()); c=nil; collectgarbage('restart'); collectgarbage('collect'); "
@@ -57,7 +64,7 @@ int main() {
  lua_pushcfunction(L,mark_finalizer); lua_setglobal(L,"mark_finalizer");
  // Real allocating conversion edges across every no-argument dispatch plus
  // generation. Sweep GC debt by unreachable userdata/table allocation volume.
- const char* methods[]={"get_status","get_revision","get_capabilities","_generation"};
+ const char* methods[]={"get_status","get_revision","get_capabilities","_generation","get_function","list_functions","get_instruction","list_instructions","get_decompilation"};
  natural=true;
  for(const char* method:methods) {
   bool observed=false;
@@ -72,7 +79,9 @@ int main() {
    for(int i=0;i<debt;++i) { lua_newtable(L); lua_pop(L,1); }
    lua_pushcfunction(L,natural_call);
    lua_getglobal(L,"c"); lua_getfield(L,-1,method); lua_insert(L,-2);
-   int rc=lua_pcall(L,2,2,0); natural_phase=2;
+   const bool adapter=!std::strcmp(method,"get_function") || !std::strcmp(method,"get_instruction") || !std::strcmp(method,"get_decompilation") || !std::strcmp(method,"list_functions") || !std::strcmp(method,"list_instructions");
+   if(adapter && method[0]=='g') lua_pushinteger(L,0);
+   int rc=lua_pcall(L,adapter && method[0]=='g'?3:2,2,0); natural_phase=2;
    if(rc) std::fprintf(stderr,"natural GC %s: %s\n",method,lua_tostring(L,-1));
    assert(rc==LUA_OK);
    // Keep actual detached result rooted while checking finalizer completion.
@@ -81,14 +90,17 @@ int main() {
    lua_pop(L,2);
    lua_getglobal(L,"finalizer_phase"); observed=lua_tointeger(L,-1)==(method[0]=='_'?1:3); lua_pop(L,1);
    if(observed) {
-    run(L,"assert(hits==1 and completed==1); assert(finalizer_ok,finalizer_error); assert(result_error==nil)");
-    if(method[0]=='_') run(L,"assert(result:decimal()=='0')");
+    run(L,"assert(hits==1 and completed==1); assert(finalizer_ok,finalizer_error)");
+    if(adapter) run(L,"assert(result==nil and result_error.code=='NO_PROGRAM' and result_error.backend=='local')");
+    else run(L,"assert(result_error==nil)");
+    if(adapter) {}
+    else if(method[0]=='_') run(L,"assert(result:decimal()=='0')");
     else if(!std::strcmp(method,"get_status")) run(L,"assert(result.ok==true and result.host_mode=='local'); assert(type(result.service_name)=='string')");
     else if(!std::strcmp(method,"get_revision")) run(L,"assert(result.modification_number:decimal()=='0')");
     else run(L,"assert(type(result)=='table' and #result>0); for _,v in ipairs(result) do assert(type(v.id)=='string' and type(v.status)=='string') end");
     run(L,"local v,e=c:get_status(); assert(v==nil and e.code=='CLOSED'); "
           "assert(c:_generation():decimal()=='1'); local fresh=assert(n.local_client()); assert(fresh:close()); "
-          "collectgarbage('collect'); assert(result~=nil)");
+          "collectgarbage('collect'); assert(result~=nil or result_error~=nil)");
    }
    run(L,"c:close(); c=nil; collectgarbage('collect')");
    if(observed) std::printf("allocation-driven real finalizer during %s: close/reconstruct completed PASS\n",method);

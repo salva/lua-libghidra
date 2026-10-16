@@ -948,3 +948,24 @@ blanket acceptance of all remaining prose. Final unknown/stale-unresolved
 classification remains open. The gate initially assumed excluded surfaces were
 null and counted nested container arguments as direct scalar fields; actual
 schema inspection corrected those hypotheses without suppressing omissions.
+
+## M2 runtime evidence overlay (not a full-ledger qualification)
+
+Source field definitions/defaults remain `coverage.json`. The following current
+adapter evidence supplements, rather than retroactively changes, M0's historical
+unqualified slots. See [M2-SLICE](../docs/M2-SLICE.md) for commands, limits and
+failed hypotheses; `tests/m2_slice.lua`, boundary_host and installed qualification
+are the executable owners.
+
+| Fields / operation | Evidence and current limits |
+| --- | --- |
+| Factory, health/capabilities, OpenProgram all metadata fields, CloseProgram.closed | Real installed ELF/project through both views; exact open third envelope, false/zero history, lifecycle/alias/slot/error checks. Approved M1 wrapper option/publication/close evidence reused. |
+| FunctionRecord entry/start/end/size (UInt64), name/namespace/prototype, is_thunk bool, parameter_count uint32 integer; optional and vector envelopes | Real populated lookup/pages/iterator after explicit binary decompilation warmup; initial binary absent/empty preserved. Synthetic uint64 max/false/zero and converter Lua refusal. Missing function vs native failure is distinguished. |
+| InstructionRecord address UInt64, mnemonic/operand_text/disassembly strings, length uint32 integer; optional/vector envelopes | Real ENDBR64/address/length, inclusive ranges/sentinels, unmapped absence, actual decode-gap stop and known code beyond. Lua allocation refusal and boundary exceptions for both adapters. |
+| DecompilationRecord address UInt64, name/prototype/pseudocode/error strings, completed/is_fallback bool, locals/tokens vectors | Real arithmetic and present incomplete diagnostics; local producer leaves name/prototype/tokens default and does not produce fallback=true. Synthetic fallback/diagnostic/NUL plus detached nested coverage. UINT64_MAX direct-native engine SIGSEGV is an explicit unsupported-safety limitation, not a passing edge. |
+| DecompileLocalRecord local_id/name/data_type/storage strings, kind enum, ordinal int; DecompileTokenRecord text/var_name/var_type/var_storage strings, kind enum, line_number/column_offset int | Explicit converters preserve all fields. Real locals when emitted; synthetic parameter ordinal zero, unknown token enum 99, negative line/zero column, empty/default fields and refusal. Token vector remains empty in pinned local producer; no claim of real populated tokens. |
+| New adapter requests/dispatch/publication | Address/Page/timeout trivial requests introduce no wrapper C++ allocation sites. Five real Lua result refusal sweeps with retry and all three native boundary exception classes. Pre-dispatch finalizer and naturally scheduled error-conversion reentry covered; successful nested-result natural reentry still open. |
+
+This overlay does not qualify M3/M4 operations, mark all field slots green or
+satisfy independent review. It does not promise recovery from dependency faults,
+internal OOM or SIGSEGV. No Python binding is an oracle or dependency.
