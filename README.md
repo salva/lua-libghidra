@@ -68,7 +68,7 @@ open an issue first to discuss it. The source-only development guide is in
 
 ## Dependencies and license
 
-Original wrapper and documentation: Copyright 2026 Salvador Fandiño,
+Original Lua wrapper and documentation: Copyright 2026 Salvador Fandiño,
 [MIT License](LICENSE). Dependencies retain their own licenses, including
 libghidra's Human-Origin Source License v1.0. MIT does not replace applicable
 upstream conditions for wrappers.

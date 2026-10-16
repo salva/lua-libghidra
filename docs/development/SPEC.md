@@ -79,7 +79,7 @@ honestly; do not fabricate success or silently expand engine support.
 
 ## Licensing
 
-Original wrapper work is [MIT](../../LICENSE), Copyright 2026 Salvador Fandiño.
+Original Lua wrapper work is [MIT](../../LICENSE), Copyright 2026 Salvador Fandiño.
 Third-party terms remain applicable. [NOTICES](../NOTICES.md) retains exact
 attribution, source obligations and current pins. This contract grants no new
 redistribution permission or combined-license compatibility finding.

@@ -16,7 +16,7 @@ systems and modern Lua; current tooling targets Linux and requires ordinary PUC
 Lua 5.4: signed 64-bit integers and eight-byte double numbers. Ubuntu 24.04 x86-64
 with Lua 5.4.6 is tested. Lua 5.3 is rejected by the current ABI check.
 The module uses the existing Lua VM. Do not mix independently managed engines
-in the same process. Original wrapper Copyright 2026 Salvador Fandiño, MIT;
+in the same process. Original Lua wrapper Copyright 2026 Salvador Fandiño, MIT;
 dependency terms are in [NOTICES](NOTICES.md).
 
 ## Method index
