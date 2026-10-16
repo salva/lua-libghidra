@@ -25,8 +25,24 @@ commands asserted to have passed.
 
 ### D1 — explicit rendering and toolchain
 
+The renderer comparison is resolved in favor of Pandoc/Lua for the five existing
+Markdown pages. LDoc annotations and topics-only rendering are feasible without
+rewriting native dispatch; neither is dismissed as inherently duplicate API
+generation. Their metadata/backend/reference adaptations and explicit locked
+Jekyll's Ruby/gem/staging costs do not warrant changing B's authority or this
+small site's selected renderer. No prototype, benchmark or framework migration
+is required or authorized. D1 proceeds with Pandoc only after this design and B's
+integration contract are accepted. If actual pinned-version validation exposes
+an unbounded adaptation requirement, stop and report it for a revised renderer
+decision; do not silently implement a fallback framework or new field generator.
+
 Implement the exact layout and source/output map in the design. Export B's list
-with script-mode CMake, validate path containment/symlinks, stage only individually
+as the site work directory's `package-documents.txt` with script-mode CMake. Use
+B's exact `tests/installed_documents.lua source SOURCE_ROOT MANIFEST` interface
+with explicit absolute arguments and that export, after B confirms script-mode
+compatibility. Keep B's installed/probe calls for package validation; HTML checks
+use D's checker. Reconcile any future accepted B interface changes sequentially.
+Validate path containment/symlinks, stage only individually
 approved inputs, pin/verify a real Pandoc release and document offline provisioning.
 Use the existing Lua tooling conventions and JSON helper where appropriate.
 Add the single template, stylesheet, AST link/heading filter and render the entire

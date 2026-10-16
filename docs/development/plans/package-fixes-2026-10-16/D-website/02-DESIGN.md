@@ -3,6 +3,23 @@
 Planning only, 2026-10-16; baseline `4903eb7`. Implement after accepted batch B.
 No implementation, settings change, push or deployment is authorized by this file.
 
+## Renderer decision
+
+Use **Pandoc with bounded Lua presentation filters**. The analysis compares
+annotated LDoc, LDoc topics-only, explicitly locked Jekyll in Actions and Pandoc.
+LDoc can document this C/C++ binding using comments or standalone `.luadoc`
+without rewriting dispatch loops; it can also render existing topics/examples
+without becoming a second API generator. Its topics mode would still require
+pinned table-backend/dependency provisioning, suppression of backtick reference
+expansion and adaptation of topic routes, section IDs and code prettification.
+Locked Jekyll also preserves B's authority and controlled Actions artifacts, but
+adds Ruby/gem and staging/front-matter integration. Pandoc's GFM parser and Lua AST
+interface are the smallest coherent fit selected for these five maintained pages.
+No annotation migration, new schema generator or replacement of B's field tooling
+is part of this design. The choice is settled at planning level, conditional only
+on the selected pinned release meeting the stated validation contract later; a
+failure requires reporting a bounded blocker, not an automatic framework switch.
+
 ## 1. Single source and exact layout
 
 B remains owner of maintained content, package selection, generated field schema,
@@ -37,7 +54,8 @@ inputs; no generated HTML is committed. No recursively copied source directories
 | `docs/NOTICES.md` | `docs/NOTICES.html` |
 | `api/FIELDS.md` | `api/FIELDS.html` |
 
-The exporter includes only B's manifest, writes a newline list, and does not run
+The exporter includes only B's manifest, writes `package-documents.txt` in its
+explicit site-build work directory using B's newline-list format, and does not run
 the top-level CMake project. D reads that list rather than maintaining a second
 package-document inventory. Every entry must be either one of the five rendered
 pages or an explicitly recognized passthrough class: `LICENSE`, the three named
@@ -93,6 +111,17 @@ required checks. B's optional exact-revision developer-source link may remain a
 secondary external link; it must not cause any developer material to be staged.
 
 ## 3. Content and freshness gates
+
+Use B's exact source-check interface:
+`lua5.4 tests/installed_documents.lua source SOURCE_ROOT MANIFEST`, with absolute
+SOURCE_ROOT and the site export's absolute `package-documents.txt` path. B owns
+this interface and the shared graph/content helper; source mode checks only
+selected files, not absence of other checkout material. Agree script-mode export
+compatibility sequentially with B; never guess another build's manifest. B's
+`installed DOCUMENT_ROOT SOURCE_ROOT MANIFEST` and shell mutation-probe contracts
+remain native-package checks, not an HTML-checker interface. Consume the future
+accepted B contract if refined, with explicit reconciliation rather than fallback
+to obsolete signatures.
 
 Use B's shared final-doc scanner on selected source bytes and decoded rendered
 text, attributes, comments and downloadable bytes. Case-insensitive Saivage,
