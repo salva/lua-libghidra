@@ -184,3 +184,24 @@ publication/lifetime safety only, not populated subtype acceptance. Initial
 GetComments trial incorrectly supplied address scalar instead of range options,
 so never reached native conversion; corrected grammar then observed phase 3.
 Save success/finalizer publication with configured state still needs extension.
+
+## Direct native category persistence limitation probe
+
+`tests/m3_category_probe.cpp` (installed-SDK consumer target) isolates categories
+whose mutation adapters are full-tier, without shipping new M4 Lua mutations.
+On the locked x86 ELF profile, actual native outcome flags are true for struct,
+member, alias, enum/member, signature, comment, data and benchmark edits. Before
+save: aliases/enums/struct-members/enum-members/comments/data/benchmarks each have
+one record. SaveProgram returns saved=true. After owner release/new owner/open with
+the same state path: every counted category is empty. State XML exists; OpenProgram
+calls pool loadState best-effort without propagating reload failure. This directly
+reproduces loss without Lua/wrapper and is a practical persistence limitation of
+this exercised native profile, not proof of all causes or that every signature
+field is lost. Function-symbol restoration separately passes the Lua regression.
+No upstream repair or blanket category-persistence promise follows. Real Lua
+populated subtype/comment evidence still requires a seeded input route that
+survives load or an in-process fixture host; this native-only probe does not satisfy
+that gate. Missing signature-filter, union/CFG and remaining Lua evidence stay open.
+Build/run with tests/installed-sdk and a caller-supplied disposable state path;
+never use fixture directories for mutable state. Initial generated flag assertions
+had a parenthesis compile error; corrected before running, no ignored build failure.
