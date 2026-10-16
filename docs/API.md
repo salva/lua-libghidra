@@ -11,8 +11,10 @@ that same client with `session:native()`; this does not create another engine.
 Only one client may be live in a process.
 
 This reference describes libghidra at
-`d51ca813ae1b6b59519551a9be8c0b1ad74d862d` on Linux x86-64 with ordinary PUC
-Lua 5.4: signed 64-bit integers and eight-byte double numbers, tested with 5.4.6.
+`d51ca813ae1b6b59519551a9be8c0b1ad74d862d`. The portability aim is most UNIX/Linux
+systems and modern Lua; current tooling targets Linux and requires ordinary PUC
+Lua 5.4: signed 64-bit integers and eight-byte double numbers. Ubuntu 24.04 x86-64
+with Lua 5.4.6 is tested. Lua 5.3 is rejected by the current ABI check.
 The module uses the existing Lua VM. Do not mix independently managed engines
 in the same process. Original wrapper Copyright 2026 Salvador Fandiño, MIT;
 dependency terms are in [NOTICES](NOTICES.md).
@@ -69,6 +71,15 @@ The Session program options are `program_path`, `project_path`, `language_id`,
 (exact uint64, default zero). At least one path must be nonempty. A nonempty
 `project_path` selects project loading.
 
+For an ordinary binary use `program_path`; `project_path` is an analyzed-project
+input, not the separate `client.state_path` used to save edits. With no explicit
+`language_id`, the engine uses `default_arch`; otherwise it combines the language
+and compiler IDs. The [tutorial](TUTORIAL.md#3-choose-the-processor-and-compiler-conventions)
+shows how to find these IDs. Leave `format` and `base_address` at defaults for
+ordinary ELF: loader selection is detected from the file. `format="raw"` affects
+raw-loader PE preparation, not general format selection; `base_address` rebases
+raw loading but does not shift structured ELF VMAs.
+
 Supply explicit supported language and compiler hints. The open response echoes
 the requested or default values; it does not confirm automatic detection.
 Lowlevel `owner:open_program(program_options)` also accepts `project_name`
@@ -109,6 +120,63 @@ and `NO_STATE_PATH` describe different conditions, as do native resource errors.
 C++ exceptions are caught at the binding boundary. Lua allocation and runtime
 errors still raise normally; iterators raise structured errors.
 
+### Using records, pages and envelopes
+
+Inside an open Session, with `address` independently verified and discovered as in
+the tutorial, these three calls illustrate different return shapes:
+
+```lua
+local fn, err, response = session:get_function(address)
+if fn then
+    print(fn.name, fn.entry_address:hex())
+    assert(response['function'].name == fn.name) -- 'function' is a Lua keyword
+elseif err.code == 'NOT_FOUND' then
+    print('No function record yet; discovery may be needed')
+else
+    error(err)
+end
+local page = gh.check(session:list_functions{
+    range_start = address, range_end = address, limit = 10, offset = 0,
+})
+for _, item in ipairs(page.functions) do print(item.name) end
+local envelope = gh.check(session:native():get_function(address))
+if envelope['function'] then print(envelope['function'].name) end
+```
+
+Lowlevel does not turn an absent optional record into Session's `NOT_FOUND`.
+Use explicit `value,err` handling for optional observations, and `check` where
+absence should stop your task. False, zero and empty strings/tables remain values.
+
+### Recovering from errors
+
+| Code | Next step |
+| --- | --- |
+| `CLIENT_IN_USE` | Reuse the existing owner, or close it before creating another. |
+| `NO_PROGRAM` | Open a program on the live owner. |
+| `CLOSED` | Create a new owner; a closed alias cannot be reopened. |
+| `NO_STATE_PATH` | Choose a state filename at client construction if you need saving. |
+| `NOT_FOUND` | Treat an optional observation as absent; lazy discovery may explain it. It is not proof of no code. |
+| `INVALID_ARGUMENT` | Correct the shape, type or bounds before retrying. |
+| `NOT_SUPPORTED` | Consult the method/input limitation; an unchanged retry will not add support. |
+
+Use `pcall` around a task if its caller must recover from raised errors. For example,
+wrap your tutorial body in `run`; keep its `<close>` variable inside that function:
+
+```lua
+local ok, failure = pcall(run)
+if not ok then
+    if type(failure) == 'table' then
+        io.stderr:write(tostring(failure.code), ': ', tostring(failure.message), '\n')
+    else
+        io.stderr:write(tostring(failure), '\n') -- ordinary Lua error value
+    end
+end
+```
+
+`pcall` catches raised errors, not a returned `nil,error` unless you raise it with
+`check` or `error`. It cannot catch a native process crash. A dispatched mutation
+can have partial effects even on failure: inspect before deciding whether to retry.
+
 ## Values and validation
 
 **Addresses and other unsigned 64-bit values.** Every native uint64 output is an
@@ -133,6 +201,18 @@ Ordered comparisons require two UInt64 operands and raise on other types.
 Arithmetic operators are not provided. For table keys, use `hex()` or `decimal()`:
 distinct UInt64 objects do not become the same key merely because their values
 are equal.
+
+```lua
+local entry = gh.check(gh.u64(address))
+local names = {[entry:hex()] = 'selected function'}
+print(names[gh.check(gh.u64(entry:hex())):hex()])
+local next_byte, overflow = entry:add(1)
+if next_byte then print(next_byte:hex()) else print(overflow.code) end
+local integer, too_large = entry:to_integer()
+if integer then print(integer) else print(too_large.code) end
+```
+
+Arithmetic here proves only numeric bounds, not that `next_byte` is mapped.
 
 **Other values.** Signed and narrower integers are range-checked Lua integers;
 finite double fields are Lua numbers. Arrays are dense tables indexed from 1,
@@ -364,6 +444,21 @@ acknowledgment: it does not undo edits or byte overlays. **No rollback is provid
 
 ## Functions and decompilation
 
+Use a verified function **entry address** to connect `get_function`,
+`get_decompilation` and `get_function_signature`. Decompilation can discover a
+function that was absent from earlier queries; an open program is not a fully
+analyzed inventory. Function records describe identity/bounds, signature records
+describe return and parameter types, and decompilation records contain reconstructed
+pseudocode and locals. Tokens can remain empty; do not depend on token-driven output.
+
+Within decompilation locals, `kind` distinguishes `param`, `local` and `temp`.
+`local_id` is the engine's string selector derived from parameter/storage identity;
+pass the returned string to local-edit methods rather than inventing it from a
+name or Lua array index. Parameter `ordinal` is zero-based; true locals have
+ordinal -1. Signature parameters also use zero-based ordinals, while their Lua
+array positions start at 1. Re-query after edits; these are observations, not
+permanent cross-reload object handles.
+
 ### get_function
 
 **both** · read — `get_function(address)`.
@@ -502,6 +597,25 @@ result therefore does not tell you that you have reached the last candidate.
 
 Sets the function's prototype. Returns [SetFunctionSignatureResponse](../api/FIELDS.md#setfunctionsignatureresponse),
 with boolean `updated` and strings `function_name` and `prototype`.
+
+`prototype` is a C-style declaration parsed by the engine, not arbitrary C source.
+For the tutorial's one-int-argument function, inside its open Session:
+
+```lua
+local native = session:native()
+assert(gh.check(native:set_function_signature(address,
+    'int lesson_adjust(int value)')).updated)
+assert(gh.check(native:rename_function_parameter(address, 0, 'input')).updated)
+local signature = gh.check(session:get_function_signature(address))
+for _, parameter in ipairs(signature.parameters) do
+    print(parameter.ordinal, parameter.name, parameter.data_type)
+end
+```
+
+Here `int` is an engine-recognized C type spelling, also usable as `data_type`
+for a parameter type edit. Type strings must resolve in the engine's type system;
+they are not numeric type IDs. Parameter success does not establish true-local
+retyping support: see [set_function_local_type](#set_function_local_type).
 
 
 ### rename_function_parameter
@@ -654,6 +768,16 @@ Deletes the data item at `address`. Returns
 
 ## Symbols and cross references
 
+Symbols label addresses; they need not be functions. Cross references describe
+relationships extracted from analysis. `list_xrefs` first selects discovered
+functions whose **entry addresses** are in the inclusive range, then decompiles
+those functions and gathers their references. It is not a destination-address
+filter or a scan of every instruction in the interval. `from_address` identifies
+the referring instruction and `to_address` its target. The current producer emits
+call references and constant-address LOAD/STORE data references; an empty result
+does not prove there are no other references. See [XrefRecord](../api/FIELDS.md#xrefrecord)
+for flags and reference-type fields.
+
 ### get_symbol
 
 **both** · read — `get_symbol(address)`.
@@ -765,6 +889,41 @@ writes. See [persistence limits](#ownership-persistence-and-effective-limits).
 
 
 ## Types aliases enums and members
+
+Start by listing types with a name substring, then look up a chosen name.
+For `list_types`, `list_type_aliases`, `list_type_unions` and `list_type_enums`,
+`query=""` means no name filter; a nonempty query is a case-sensitive substring,
+not a regular expression. Results describe types currently known to the engine.
+
+`get_type` looks up the **name**, for example `int` or `LessonPair`, not `/LessonPair`.
+The operations named `type_id_or_path` (and parent equivalents) strip one leading
+slash and resolve the remaining name. Use the returned name or `/name` path for
+those selectors, not the decimal `type_id`: list IDs are enumeration counters,
+not durable type handles. Member-edit ordinals are zero-based positions returned
+by member queries, not Lua array indexes. Type spellings such as `int` used by
+members and aliases must resolve through the engine's type parser.
+
+This task runs within the tutorial's open Session; use a fresh name for the struct:
+
+```lua
+local native = session:native()
+local known = gh.check(session:list_types('int', {limit = 20, offset = 0}))
+for _, t in ipairs(known.types) do print(t.name, t.path_name) end
+print(gh.check(session:get_type('int')).name)
+assert(gh.check(native:create_type('LessonPair', 'struct', 0)).updated)
+assert(gh.check(native:add_type_member('/LessonPair', 'value', 'int', 0)).updated)
+local members = gh.check(session:list_type_members('/LessonPair', {limit = 20, offset = 0}))
+for _, member in ipairs(members.members) do
+    print(member.ordinal, member.name, member.member_type, member.offset, member.size)
+end
+```
+
+Expect an `int` member called `value`; inspect its actual offset/size. The required
+`size` arguments above are ignored: creation makes a struct shell and adding a
+member uses its referenced type's size. Only struct creation is supported through
+`create_type`. Enum creation's `width` and `is_signed` settings are likewise not
+honored; see [create_type_enum](#create_type_enum). These edits are not promises
+of complete save/reload persistence.
 
 ### add_type_enum_member
 
@@ -989,6 +1148,14 @@ Changes the type of the parent type's member at the zero-based `ordinal`. Return
 
 ## Performance records
 
+These methods store **caller-supplied measurements**, not run or time a benchmark.
+`add_perf_benchmark` requires a nonempty `bench_id` and replaces any stored record
+with that ID; list returns the current records, delete removes one ID and clear
+removes all. The store belongs to the loaded program's in-memory session and is
+cleared on program closure. Choose meaningful units and measurement context in
+your application using the [record fields](../api/FIELDS.md#perfbenchmarkrecord);
+adding a record does not certify performance or make it durable.
+
 ### add_perf_benchmark
 
 **lowlevel** · change — `add_perf_benchmark(record)`.
@@ -1066,8 +1233,9 @@ snapshots: changing them does not edit the native program.
 For Session `close_program` and `shutdown`, `policy='save'` requires a `state_path`
 set at construction. Otherwise Session returns `NO_STATE_PATH` before calling the
 engine. Lowlevel preserves the native behavior: an empty-path save-close can
-close without saving. Closing does not imply automatic save, rollback or engine
-unloading.
+close without saving. There is no autosave; closing does not imply rollback or
+engine unloading. See the [save/reopen walkthrough](EXAMPLES.md#rename-save-close-and-reopen)
+for separate state storage and an explicitly checked function-name edit.
 
 Any mutation or lifecycle call that reaches the engine changes the shared
 generation used to validate iterators, **even if the call fails or has only a

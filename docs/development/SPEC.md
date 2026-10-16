@@ -1,10 +1,12 @@
 # Binding contract
 
 The native-local Lua/C++ binding wraps libghidra at
-`d51ca813ae1b6b59519551a9be8c0b1ad74d862d`. Supported environment: Linux x86-64,
-ordinary PUC Lua 5.4 with signed int64 integers and eight-byte double numbers
-(qualified host 5.4.6), C++20 and CMake >=3.26. Lua 5.3 and other platforms need
-independent qualification. No HTTP, SWIG or upstream Python-binding dependency.
+`d51ca813ae1b6b59519551a9be8c0b1ad74d862d`. Portability aims at most UNIX/Linux
+systems at least as broadly as libghidra, and modern Lua. Current build tooling
+targets Linux and requires ordinary PUC Lua 5.4 with signed int64 integers and
+eight-byte double numbers, C++20 and CMake >=3.26. Ubuntu 24.04 x86-64 with Lua
+5.4.6 is tested; Lua 5.3 is rejected by the current ABI check. Other platforms
+are unvalidated, not delivered portability. No HTTP, SWIG or upstream Python-binding dependency.
 
 [API](../API.md) owns exact signatures, defaults, surfaces, return envelopes and
 limits. [DESIGN](DESIGN.md) owns implementation architecture;

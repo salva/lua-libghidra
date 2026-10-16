@@ -251,12 +251,13 @@ function M.check(mode, root, source, manifest)
       if not files[path] then fail('missing-policy',path,'required product member') end
     end
     require_facts('README.md', {'no HTTP, SWIG', 'upstream Python-binding dependency',
-      'signed', 'eight-byte double', 'Native SOURCE builds alone', 'cpp/embed_specs.py',
-      'Python >=3.10', 'zlib/XML', 'SDK-consumer or runtime Python'})
+      'signed', 'eight-byte double'})
     require_facts('docs/INSTALL.md', {'Python >=3.10', 'zlib/XML', 'Protobuf', 'PIC', '$ORIGIN', 'LUA_MODULE_DIR', 'deploy_lua_dir'})
-    require_facts('docs/TUTORIAL.md', {'native process crash', 'one binding-owned client', 'no autosave', 'FileBytes', 'True-local'})
+    -- Beginner safety stays at the first call; advanced limits live in API.
+    require_facts('docs/TUTORIAL.md', {'crash the process', 'Only one owner', 'synchronous'})
     require_facts('docs/EXAMPLES.md', {'BYTE_COUNT', 'INSTRUCTION_END', 'INSTRUCTION_COUNT', 'NOT_FOUND', 'Close scopes'})
-    require_facts('docs/API.md', {'CLIENT_IN_USE', 'pages-only', 'native process crash'})
+    require_facts('docs/API.md', {'CLIENT_IN_USE', 'pages-only', 'native process crash',
+      'FileBytes', 'True-local retyping', 'no autosave'})
     require_facts('docs/NOTICES.md', {'Elias Bachaalany', 'redistribution clearance',
       'SOURCE builds only', 'cpp/embed_specs.py', 'Python >=3.10', 'zlib/XML',
       'SDK consumers and Lua runtime'})

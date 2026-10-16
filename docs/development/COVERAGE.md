@@ -58,7 +58,10 @@ Historical test-consumed JSON remains source-only and is never generation input.
 
 ## Effective supported-profile limits
 
-The qualified engine profile is Linux x86-64 ELF with explicit architecture hints
+The portability aim is most UNIX/Linux systems and modern Lua; current tooling
+is Linux-oriented and requires the Lua 5.4 ABI. The tested host is Ubuntu 24.04
+x86-64 with Lua 5.4.6. Host portability is distinct from input architecture.
+The qualified input route is x86-64 ELF with explicit architecture hints
 and the locked BFD/Sleigh target profile. Raw/reconstructed FileBytes loading is
 not supported by that profile. Do not generalize to all architectures or loaders.
 Only function/symbol/memory-block iterators are exposed. Structural CFG/xref and

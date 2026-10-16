@@ -30,6 +30,19 @@ reject() {
 # These are probe cases, not a second shipping inventory.
 for path in README.md docs/API.md; do grep -Fx "$path" "$manifest"; done
 check
+# Facts belong to their reader-facing authority, not duplicated README prose.
+# Removal must still fail policy before the installed/source byte comparison.
+for fact in generator native-safety single-owner persistence filebytes local-types; do
+ case $fact in
+  generator) path=docs/NOTICES.md; sed -i 's/cpp\/embed_specs.py/removed-generator/g' "$work/documents/$path";;
+  native-safety) path=docs/TUTORIAL.md; sed -i 's/crash the process/stop execution/g' "$work/documents/$path";;
+  single-owner) path=docs/TUTORIAL.md; sed -i 's/Only one owner/A client/g' "$work/documents/$path";;
+  persistence) path=docs/API.md; sed -i 's/no autosave/no implicit saving/g' "$work/documents/$path";;
+  filebytes) path=docs/API.md; sed -i 's/FileBytes/raw bytes/g' "$work/documents/$path";;
+  local-types) path=docs/API.md; sed -i 's/True-local retyping/Local type changes/g' "$work/documents/$path";;
+ esac
+ reject missing-policy "$path"
+done
 for path in docs/INSTALL.md docs/TUTORIAL.md examples/decompile.lua examples/inspect_function.lua; do
  rm "$work/documents/$path"
  reject missing-member "$path"

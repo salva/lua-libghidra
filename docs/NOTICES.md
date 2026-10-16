@@ -1,7 +1,7 @@
 # Licenses, notices and distribution requirements
 
 Original Lua/C++ wrapper and documentation: Copyright 2026 Salvador Fandiño,
-[MIT](../LICENSE). Native integration uses **libghidra by Elias Bachaalany**,
+[MIT](../LICENSE). Native integration uses libghidra by Elias Bachaalany,
 [upstream](https://github.com/0xeb/libghidra), pinned at
 `d51ca813ae1b6b59519551a9be8c0b1ad74d862d`. This revision reports version 0.0.9;
 that does not establish equivalence to a release tag. No endorsement is implied.
@@ -103,8 +103,7 @@ No new permission to distribute linked dependencies is granted.
 
 Native SOURCE builds only run the unchanged pinned `cpp/embed_specs.py` through
 `cpp/cmake/EmbedSpecs.cmake`, using Python >=3.10 with standard-library zlib/XML
-support. This use is limited to the upstream generator: it excludes upstream
-Python bindings and project-owned Python tools, tests or comparison oracles.
-SDK consumers and Lua runtime do not need Python. The generator is neither
-replaced nor patched, and its use grants no new distribution rights. The
+support. This is a source-build dependency, not a Python binding dependency.
+SDK consumers and Lua runtime do not need Python. Its use grants no new
+distribution rights. The
 obligations above still apply; a source URL is not source delivery.

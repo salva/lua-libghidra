@@ -5,9 +5,143 @@ reports its metadata, bytes and instruction addresses. Both read your binary
 without modifying or saving it. If this is your first run, follow the
 [installation guide](INSTALL.md) and [decompilation tutorial](TUTORIAL.md) first.
 
-Use the linked scripts directly. Each expects a function address you have verified
+The inline tasks below build on the tutorial's `lesson.elf`; the two downloadable
+scripts remain useful for command-line work. Each expects an address you have verified
 in the loaded binary, plus explicit processor and compiler specifications. Each
 opens one native client and releases it before exiting.
+
+## Read bytes and instructions in Lua
+
+Continue inside `lesson.lua`, before its Session goes out of scope. After the
+tutorial's external disassembly, choose the first complete instruction only.
+On the illustrative build it is a four-byte `endbr64`; your compiler may instead
+emit, for example, a one-byte `push`. Set `FIRST_LENGTH` from **your**
+disassembly, and verify all those bytes are file-backed in the executable segment.
+Pass that length as the third argument to `lesson.lua`:
+
+```sh
+# Set FIRST_LENGTH to your observed first-instruction byte length before running.
+lua5.4 lesson.lua "$BINARY" "$ADDRESS" "$FIRST_LENGTH"
+```
+
+Append this code to the tutorial program:
+
+```lua
+local length = assert(math.tointeger(tonumber(arg[3])), 'instruction length required')
+assert(length >= 1 and length <= 15, 'x86 instruction length required')
+local last = check(address:add(length - 1))
+local data, bytes_response = check(session:read_bytes(address, length))
+assert(#data == length, 'short byte read')
+local hex = {}
+for i = 1, #data do hex[i] = string.format('%02x', data:byte(i)) end
+print('bytes=' .. table.concat(hex, ' '))
+
+local page = check(session:list_instructions{
+    range_start = address, range_end = last, limit = 1, offset = 0,
+})
+for _, insn in ipairs(page.instructions) do
+    print(insn.address:hex(), insn.length, insn.disassembly)
+end
+```
+
+`data` is a binary string, possibly containing NUL; print its length or hex bytes,
+not assumed text. The optional second result from `check` above is the full byte
+response. Instruction queries return a full page whose `instructions` array
+contains address, length and disassembly records. An empty page is an unavailable
+observation, not proof that no code exists.
+
+The end bound is inclusive. `limit=1` counts instructions, not bytes; the byte
+read does not constrain decoding. Decode only where a complete instruction and
+sufficient mapped bytes are already verified. Assertions after a native read
+cannot prevent a crash during that read. For a larger page, independently verify
+the complete bytes of every requested instruction first.
+
+## Traverse discovered functions, then edit
+
+After successful decompilation, the entry address joins the function record,
+decompilation and signature queries. A function record gives identity and bounds;
+the decompilation provides reconstructed text and local observations. Opening
+alone does not populate a complete function inventory.
+
+This snippet, also inside the tutorial Session, restricts traversal to the known
+entry. Broaden the range only after establishing the other functions you want:
+
+```lua
+local pending = {}
+for fn in session:iter_functions{
+    range_start = address, range_end = address, page_size = 16,
+} do
+    print(fn.entry_address:hex(), fn.name)
+    pending[#pending + 1] = {address = fn.entry_address, name = 'lesson_named'}
+end
+-- Mutation happens only after traversal has ended.
+for _, edit in ipairs(pending) do
+    assert(check(session:rename_function(edit.address, edit.name)).renamed)
+end
+```
+
+The iterator handles paging: a short page alone is not exhaustion. Only functions,
+symbols and memory blocks have iterators. Signature pages have a separate
+[candidate-filtering rule](API.md#list_function_signatures).
+
+Records and addresses are detached, so collecting them first is safe. Changing
+their Lua tables alone does not edit the engine. Native mutations and lifecycle
+calls invalidate an active iterator, even through `session:native()` and even
+when a dispatched change fails. Replace an invalidated iterator; do not resume it.
+Validation failures before dispatch do not invalidate it.
+
+## Rename, save, close and reopen
+
+Run the following as a **separate program**, `save-name.lua`. Supply the same
+verified binary and entry, and an absolute state filename in a disposable writable
+directory. Start with a filename that does not already exist. The state is separate
+from your executable: it is neither a patched binary nor an exported Ghidra project.
+
+```lua
+local gh = require('libghidra')
+local check = gh.check
+local address = check(gh.u64(assert(arg[2])))
+local program = {
+    program_path = assert(arg[1]),
+    language_id = 'x86:LE:64:default', compiler_spec_id = 'gcc',
+}
+local session <close> = check(gh.open{
+    client = {state_path = assert(arg[3])}, program = program,
+})
+local d = check(session:get_decompilation(address))
+assert(d.completed and not d.is_fallback
+       and (not d.error_message or d.error_message == ''))
+assert(check(session:rename_function(address, 'lesson_saved')).renamed)
+print('edited=' .. check(session:get_function(address)).name)
+assert(check(session:save_program()).saved)
+assert(check(session:close_program{policy = 'discard'}).closed)
+-- Logical program closure keeps the owner; reuse it rather than open a second.
+check(session:open_program(program))
+local restored = check(session:get_function(address))
+print('reopened=' .. restored.name)
+assert(restored.name == 'lesson_saved')
+```
+
+```sh
+STATE_DIR=$(mktemp -d "$HOME/lesson-state.XXXXXX")
+lua5.4 save-name.lua "$BINARY" "$ADDRESS" "$STATE_DIR/names.xml"
+```
+
+The explicit save happens before closing; `policy='discard'` then closes without
+another save, not by undoing changes. Expect `edited=lesson_saved` and
+`reopened=lesson_saved`. Inspecting the name after
+reload demonstrates this particular persisted edit; `saved=true` by itself does
+not prove every category survived. The engine reloads configured state best-effort
+when opening. Use the same input and state path; this is not a general cross-input
+database. At scope exit `close()` releases the owner and permanently closes all
+aliases. There is no autosave or rollback; `discard_program` does not undo edits.
+
+Function-name persistence does **not** imply persistence of signatures, locals,
+comments, types as a whole or patches. See the
+[category-by-category persistence table](API.md#what-survives-saving-and-reloading).
+Byte writes are copy-on-write overlays in the engine's view, not modifications to
+the source file; save/reopen is not patch export. Read back edits you depend on,
+and inspect state after reopening rather than assuming restoration.
 
 ## Decompile a known function
 
