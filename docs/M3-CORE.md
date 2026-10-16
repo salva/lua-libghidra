@@ -295,3 +295,31 @@ coverage limitation, not a requirement to inject an impossible mock into the
 real operation or repair upstream. The wrapper forwards offset/limit unchanged,
 never treats output length/empty page as candidate exhaustion, and exposes no
 signature iterator. This preserves filter semantics without a fake positive.
+
+## Complete-field author qualification (not independent approval)
+
+Compared each of 15 core record converters field-for-field against the locked
+native models.hpp and manifest types fields: all 108 members match, none omitted
+or extra. Owning protected response branches reviewed for saved/discarded/renamed/
+name/bytes_written, optional symbol/type/signature and all page extraction fields.
+`tests/boundary_host.cpp` now explicitly initializes and asserts **every scalar or
+text field**, not merely representative records: UInt64 max, uint32 max, signed
+-1/INT64_MIN, false, embedded NUL, nested parameter vector, all six known comment
+names and unknown numeric value. Fixture ownership remains outside the protected
+conversion frame; no owning locals added to Lua-longjmp frames. Persistent Lua
+allocation refusal and same-VM retries still run. This is synthetic full detached
+fidelity, not invented native field population or independent review.
+
+The field/row audit found one ledger omission in d72275a: ListDefinedStrings is
+classified `core compatibility`, not exactly `core`, so the 22-row update had left
+its implemented surface/runtime evidence stale. Reconciled that explicit row too,
+with verified real known-string empty fidelity and no discovery/populated claim.
+The other full-tier/M2 classifications remain unchanged. One edit initially
+inserted comment-kind fixture initialization into SliceOwned instead of CoreOwned;
+build failed, initialization moved to its actual owner, build/focused sweep pass.
+
+Audit tooling attempts initially matched a nested response-model object rather
+than the top-level types dictionary (BasicBlockRecord indentation appeared twice).
+The failed assertion prevented file writes. Scoped comparison/insertion to the
+actual types section, then JSON parse and exact field comparison passed; no
+successful suite status is used to erase those earlier tooling assertion failures.

@@ -52,7 +52,8 @@ struct SliceOwned {
  libghidra::client::FunctionRecord fn;
  libghidra::client::InstructionRecord ins;
  SliceOwned() {
-  ++live; fn.entry_address=UINT64_MAX; fn.is_thunk=false; fn.parameter_count=0;
+  ++live;
+ fn.entry_address=UINT64_MAX; fn.is_thunk=false; fn.parameter_count=0;
   dec.function_entry_address=UINT64_MAX; dec.completed=false; dec.is_fallback=true;
   dec.pseudocode=std::string("a\0b",3); dec.error_message="diagnostic";
   libghidra::client::DecompileLocalRecord local;
@@ -96,10 +97,118 @@ struct CoreOwned {
  libghidra::client::FunctionSignatureRecord r12;
  libghidra::client::CommentRecord r13;
  libghidra::client::DefinedStringRecord r14;
+ libghidra::client::CommentRecord comment_kinds[6];
  CoreOwned() {
-  ++live; r0.function_entry=UINT64_MAX; r2.name=std::string("a\0b",3);
-  r9.ordinal=UINT64_MAX; r9.value=INT64_MIN; r10.offset=-1;
-  r12.parameters.push_back(r11); r13.kind=static_cast<libghidra::client::CommentKind>(99);
+  ++live;
+  for(int i=0;i<6;++i) comment_kinds[i].kind=static_cast<libghidra::client::CommentKind>(i);
+  r0.function_entry=UINT64_MAX;
+  r0.start_address=UINT64_MAX;
+  r0.end_address=UINT64_MAX;
+  r0.in_degree=UINT32_MAX;
+  r0.out_degree=UINT32_MAX;
+  r1.function_entry=UINT64_MAX;
+  r1.src_block_start=UINT64_MAX;
+  r1.dst_block_start=UINT64_MAX;
+  r1.edge_kind=std::string("a\0b",3);
+  r2.symbol_id=UINT64_MAX;
+  r2.address=UINT64_MAX;
+  r2.name=std::string("a\0b",3);
+  r2.full_name=std::string("a\0b",3);
+  r2.type=std::string("a\0b",3);
+  r2.namespace_name=std::string("a\0b",3);
+  r2.source=std::string("a\0b",3);
+  r2.is_primary=false;
+  r2.is_external=false;
+  r2.is_dynamic=false;
+  r2.is_external_entry_point=false;
+  r3.from_address=UINT64_MAX;
+  r3.to_address=UINT64_MAX;
+  r3.operand_index=-1;
+  r3.ref_type=std::string("a\0b",3);
+  r3.is_primary=false;
+  r3.source=std::string("a\0b",3);
+  r3.symbol_id=INT64_MIN;
+  r3.is_external=false;
+  r3.is_memory=false;
+  r3.is_flow=false;
+  r3.from_function_address=UINT64_MAX;
+  r3.from_function_name=std::string("a\0b",3);
+  r3.to_function_address=UINT64_MAX;
+  r3.to_function_name=std::string("a\0b",3);
+  r4.name=std::string("a\0b",3);
+  r4.start_address=UINT64_MAX;
+  r4.end_address=UINT64_MAX;
+  r4.size=UINT64_MAX;
+  r4.is_read=false;
+  r4.is_write=false;
+  r4.is_execute=false;
+  r4.is_volatile=false;
+  r4.is_initialized=false;
+  r4.source_name=std::string("a\0b",3);
+  r4.comment=std::string("a\0b",3);
+  r5.type_id=UINT64_MAX;
+  r5.name=std::string("a\0b",3);
+  r5.path_name=std::string("a\0b",3);
+  r5.category_path=std::string("a\0b",3);
+  r5.display_name=std::string("a\0b",3);
+  r5.kind=std::string("a\0b",3);
+  r5.length=-1;
+  r5.is_not_yet_defined=false;
+  r5.source_archive=std::string("a\0b",3);
+  r5.universal_id=std::string("a\0b",3);
+  r6.type_id=UINT64_MAX;
+  r6.path_name=std::string("a\0b",3);
+  r6.name=std::string("a\0b",3);
+  r6.target_type=std::string("a\0b",3);
+  r6.declaration=std::string("a\0b",3);
+  r7.type_id=UINT64_MAX;
+  r7.path_name=std::string("a\0b",3);
+  r7.name=std::string("a\0b",3);
+  r7.size=UINT64_MAX;
+  r7.declaration=std::string("a\0b",3);
+  r8.type_id=UINT64_MAX;
+  r8.path_name=std::string("a\0b",3);
+  r8.name=std::string("a\0b",3);
+  r8.width=UINT64_MAX;
+  r8.is_signed=false;
+  r8.declaration=std::string("a\0b",3);
+  r9.type_id=UINT64_MAX;
+  r9.type_path_name=std::string("a\0b",3);
+  r9.type_name=std::string("a\0b",3);
+  r9.ordinal=UINT64_MAX;
+  r9.name=std::string("a\0b",3);
+  r9.value=INT64_MIN;
+  r9.comment=std::string("a\0b",3);
+  r10.parent_type_id=UINT64_MAX;
+  r10.parent_type_path_name=std::string("a\0b",3);
+  r10.parent_type_name=std::string("a\0b",3);
+  r10.ordinal=UINT64_MAX;
+  r10.name=std::string("a\0b",3);
+  r10.member_type=std::string("a\0b",3);
+  r10.offset=INT64_MIN;
+  r10.size=UINT64_MAX;
+  r10.comment=std::string("a\0b",3);
+  r11.ordinal=-1;
+  r11.name=std::string("a\0b",3);
+  r11.data_type=std::string("a\0b",3);
+  r11.formal_data_type=std::string("a\0b",3);
+  r11.is_auto_parameter=false;
+  r11.is_forced_indirect=false;
+  r12.function_entry_address=UINT64_MAX;
+  r12.function_name=std::string("a\0b",3);
+  r12.prototype=std::string("a\0b",3);
+  r12.return_type=std::string("a\0b",3);
+  r12.has_var_args=false;
+  r12.calling_convention=std::string("a\0b",3);
+  r13.address=UINT64_MAX;
+  r13.kind=static_cast<libghidra::client::CommentKind>(99);
+  r13.text=std::string("a\0b",3);
+  r14.address=UINT64_MAX;
+  r14.value=std::string("a\0b",3);
+  r14.length=UINT32_MAX;
+  r14.data_type=std::string("a\0b",3);
+  r14.encoding=std::string("a\0b",3);
+  r12.parameters.push_back(r11);
  }
  ~CoreOwned() { --live; }
 };
@@ -121,6 +230,11 @@ static int core_convert(lua_State* L) {
  llg::slice::value(L,p->r12); lua_setfield(L,-2,"r12");
  llg::slice::value(L,p->r13); lua_setfield(L,-2,"r13");
  llg::slice::value(L,p->r14); lua_setfield(L,-2,"r14");
+ lua_createtable(L,6,0);
+ for(int i=0;i<6;++i) {
+  llg::slice::value(L,p->comment_kinds[i]); lua_rawseti(L,-2,i+1);
+ }
+ lua_setfield(L,-2,"comment_kinds");
  return 1;
 }
 static int core_detached(lua_State* L) {
@@ -166,11 +280,118 @@ static void edge_sweeps() {
   "return n._validate_page{range_start='0xffffffffffffffff',range_end=0,limit=1,offset=0}",
   "local x,e=n._validate_read_size(-1); assert(x==nil and e.operation=='read_bytes')",
   "return detached()",
-  "local v=core_detached(); collectgarbage(); assert(v.r0.function_entry==u); "
-  "assert(v.r2.name=='a\\0b' and v.r2.is_primary==false); "
-  "assert(v.r9.ordinal==u and v.r9.value==math.mininteger and v.r10.offset==-1); "
-  "assert(v.r12.has_var_args==false and v.r12.parameters[1].ordinal==0); "
-  "assert(v.r13.kind==99 and v.r14.length==0)",
+  R"LUA(
+local v=core_detached(); collectgarbage()
+for i,name in ipairs{'unspecified','eol','pre','post','plate','repeatable'} do assert(v.comment_kinds[i].kind==name) end
+assert(v.r0.function_entry:decimal()=='18446744073709551615')
+assert(v.r0.start_address:decimal()=='18446744073709551615')
+assert(v.r0.end_address:decimal()=='18446744073709551615')
+assert(math.type(v.r0.in_degree)=='integer' and v.r0.in_degree==4294967295)
+assert(math.type(v.r0.out_degree)=='integer' and v.r0.out_degree==4294967295)
+assert(v.r1.function_entry:decimal()=='18446744073709551615')
+assert(v.r1.src_block_start:decimal()=='18446744073709551615')
+assert(v.r1.dst_block_start:decimal()=='18446744073709551615')
+assert(v.r1.edge_kind=='a\0b')
+assert(v.r2.symbol_id:decimal()=='18446744073709551615')
+assert(v.r2.address:decimal()=='18446744073709551615')
+assert(v.r2.name=='a\0b')
+assert(v.r2.full_name=='a\0b')
+assert(v.r2.type=='a\0b')
+assert(v.r2.namespace_name=='a\0b')
+assert(v.r2.source=='a\0b')
+assert(v.r2.is_primary==false)
+assert(v.r2.is_external==false)
+assert(v.r2.is_dynamic==false)
+assert(v.r2.is_external_entry_point==false)
+assert(v.r3.from_address:decimal()=='18446744073709551615')
+assert(v.r3.to_address:decimal()=='18446744073709551615')
+assert(math.type(v.r3.operand_index)=='integer' and v.r3.operand_index==-1)
+assert(v.r3.ref_type=='a\0b')
+assert(v.r3.is_primary==false)
+assert(v.r3.source=='a\0b')
+assert(math.type(v.r3.symbol_id)=='integer' and v.r3.symbol_id==math.mininteger)
+assert(v.r3.is_external==false)
+assert(v.r3.is_memory==false)
+assert(v.r3.is_flow==false)
+assert(v.r3.from_function_address:decimal()=='18446744073709551615')
+assert(v.r3.from_function_name=='a\0b')
+assert(v.r3.to_function_address:decimal()=='18446744073709551615')
+assert(v.r3.to_function_name=='a\0b')
+assert(v.r4.name=='a\0b')
+assert(v.r4.start_address:decimal()=='18446744073709551615')
+assert(v.r4.end_address:decimal()=='18446744073709551615')
+assert(v.r4.size:decimal()=='18446744073709551615')
+assert(v.r4.is_read==false)
+assert(v.r4.is_write==false)
+assert(v.r4.is_execute==false)
+assert(v.r4.is_volatile==false)
+assert(v.r4.is_initialized==false)
+assert(v.r4.source_name=='a\0b')
+assert(v.r4.comment=='a\0b')
+assert(v.r5.type_id:decimal()=='18446744073709551615')
+assert(v.r5.name=='a\0b')
+assert(v.r5.path_name=='a\0b')
+assert(v.r5.category_path=='a\0b')
+assert(v.r5.display_name=='a\0b')
+assert(v.r5.kind=='a\0b')
+assert(math.type(v.r5.length)=='integer' and v.r5.length==-1)
+assert(v.r5.is_not_yet_defined==false)
+assert(v.r5.source_archive=='a\0b')
+assert(v.r5.universal_id=='a\0b')
+assert(v.r6.type_id:decimal()=='18446744073709551615')
+assert(v.r6.path_name=='a\0b')
+assert(v.r6.name=='a\0b')
+assert(v.r6.target_type=='a\0b')
+assert(v.r6.declaration=='a\0b')
+assert(v.r7.type_id:decimal()=='18446744073709551615')
+assert(v.r7.path_name=='a\0b')
+assert(v.r7.name=='a\0b')
+assert(v.r7.size:decimal()=='18446744073709551615')
+assert(v.r7.declaration=='a\0b')
+assert(v.r8.type_id:decimal()=='18446744073709551615')
+assert(v.r8.path_name=='a\0b')
+assert(v.r8.name=='a\0b')
+assert(v.r8.width:decimal()=='18446744073709551615')
+assert(v.r8.is_signed==false)
+assert(v.r8.declaration=='a\0b')
+assert(v.r9.type_id:decimal()=='18446744073709551615')
+assert(v.r9.type_path_name=='a\0b')
+assert(v.r9.type_name=='a\0b')
+assert(v.r9.ordinal:decimal()=='18446744073709551615')
+assert(v.r9.name=='a\0b')
+assert(math.type(v.r9.value)=='integer' and v.r9.value==math.mininteger)
+assert(v.r9.comment=='a\0b')
+assert(v.r10.parent_type_id:decimal()=='18446744073709551615')
+assert(v.r10.parent_type_path_name=='a\0b')
+assert(v.r10.parent_type_name=='a\0b')
+assert(v.r10.ordinal:decimal()=='18446744073709551615')
+assert(v.r10.name=='a\0b')
+assert(v.r10.member_type=='a\0b')
+assert(math.type(v.r10.offset)=='integer' and v.r10.offset==math.mininteger)
+assert(v.r10.size:decimal()=='18446744073709551615')
+assert(v.r10.comment=='a\0b')
+assert(math.type(v.r11.ordinal)=='integer' and v.r11.ordinal==-1)
+assert(v.r11.name=='a\0b')
+assert(v.r11.data_type=='a\0b')
+assert(v.r11.formal_data_type=='a\0b')
+assert(v.r11.is_auto_parameter==false)
+assert(v.r11.is_forced_indirect==false)
+assert(v.r12.function_entry_address:decimal()=='18446744073709551615')
+assert(v.r12.function_name=='a\0b')
+assert(v.r12.prototype=='a\0b')
+assert(v.r12.return_type=='a\0b')
+assert(v.r12.has_var_args==false)
+assert(v.r12.calling_convention=='a\0b')
+assert(v.r13.address:decimal()=='18446744073709551615')
+assert(v.r13.kind==99)
+assert(v.r13.text=='a\0b')
+assert(v.r14.address:decimal()=='18446744073709551615')
+assert(v.r14.value=='a\0b')
+assert(math.type(v.r14.length)=='integer' and v.r14.length==4294967295)
+assert(v.r14.data_type=='a\0b')
+assert(v.r14.encoding=='a\0b')
+assert(#v.r12.parameters==1 and v.r12.parameters[1].name=='a\0b' and v.r12.parameters[1].ordinal==-1)
+)LUA",
   "local v=slice_detached(); assert(v.dec.completed==false and v.dec.is_fallback==true); "
   "assert(v.dec.pseudocode=='a\\0b' and v.dec.error_message=='diagnostic'); "
   "assert(v.fn.entry_address:decimal()=='18446744073709551615' and v.fn.is_thunk==false and v.fn.parameter_count==0); "

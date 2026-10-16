@@ -9822,11 +9822,11 @@
           "name": null,
           "return": "complete response/error via convenience or native() as disposed"
         },
-        "implementation_status": "planned M0 contract only; not runtime-qualified",
+        "implementation_status": "implemented M3 compatibility; real known-string empty fidelity in tests/m3_core.lua; independent review outstanding",
         "iterator": "not enabled; source identity/order alone is not runtime qualification",
         "lowlevel": {
           "call": "list_defined_strings(options={})",
-          "call_status": "proposed; not approved for adapter implementation",
+          "call_status": "implemented checked M3 compatibility adapter",
           "grammar": {
             "approved_call": null,
             "authority": "inventory presentation only; docs/COVERAGE.md approves tier/disposition, not this syntax",
@@ -9838,7 +9838,7 @@
               "offset"
             ],
             "proposed_call": "list_defined_strings(options={})",
-            "status": "proposed; not approved for adapter implementation",
+            "status": "implemented checked M3 compatibility adapter",
             "unknown_keys": "reject before dispatch; validation-only rejection does not invalidate generation"
           },
           "name": "list_defined_strings",
@@ -34434,6 +34434,7 @@
       }
     },
     "BasicBlockRecord": {
+      "m3_converter_audit": {"evidence": "tests/boundary_host.cpp: every scalar/text field, nested parameters, all known/unknown comment kinds; persistent Lua OOM and retry", "scope": "author native/converter/manifest field equality; synthetic fidelity not native populated evidence; independent review outstanding"},
       "fields": [
         {
           "lua": "exact UInt64",
@@ -34602,6 +34603,7 @@
       }
     },
     "CFGEdgeRecord": {
+      "m3_converter_audit": {"evidence": "tests/boundary_host.cpp: every scalar/text field, nested parameters, all known/unknown comment kinds; persistent Lua OOM and retry", "scope": "author native/converter/manifest field equality; synthetic fidelity not native populated evidence; independent review outstanding"},
       "fields": [
         {
           "lua": "exact UInt64",
@@ -34746,6 +34748,7 @@
       }
     },
     "CommentRecord": {
+      "m3_converter_audit": {"evidence": "tests/boundary_host.cpp: every scalar/text field, nested parameters, all known/unknown comment kinds; persistent Lua OOM and retry", "scope": "author native/converter/manifest field equality; synthetic fidelity not native populated evidence; independent review outstanding"},
       "fields": [
         {
           "lua": "exact UInt64",
@@ -35194,6 +35197,7 @@
       }
     },
     "DefinedStringRecord": {
+      "m3_converter_audit": {"evidence": "tests/boundary_host.cpp: every scalar/text field, nested parameters, all known/unknown comment kinds; persistent Lua OOM and retry", "scope": "author native/converter/manifest field equality; synthetic fidelity not native populated evidence; independent review outstanding"},
       "fields": [
         {
           "lua": "exact UInt64",
@@ -35666,6 +35670,7 @@
       }
     },
     "FunctionSignatureRecord": {
+      "m3_converter_audit": {"evidence": "tests/boundary_host.cpp: every scalar/text field, nested parameters, all known/unknown comment kinds; persistent Lua OOM and retry", "scope": "author native/converter/manifest field equality; synthetic fidelity not native populated evidence; independent review outstanding"},
       "fields": [
         {
           "lua": "exact UInt64",
@@ -36842,6 +36847,7 @@
       }
     },
     "MemoryBlockRecord": {
+      "m3_converter_audit": {"evidence": "tests/boundary_host.cpp: every scalar/text field, nested parameters, all known/unknown comment kinds; persistent Lua OOM and retry", "scope": "author native/converter/manifest field equality; synthetic fidelity not native populated evidence; independent review outstanding"},
       "fields": [
         {
           "lua": "Lua string (no transcoding)",
@@ -37186,6 +37192,7 @@
       }
     },
     "ParameterRecord": {
+      "m3_converter_audit": {"evidence": "tests/boundary_host.cpp: every scalar/text field, nested parameters, all known/unknown comment kinds; persistent Lua OOM and retry", "scope": "author native/converter/manifest field equality; synthetic fidelity not native populated evidence; independent review outstanding"},
       "fields": [
         {
           "lua": "checked Lua integer (int)",
@@ -38514,6 +38521,7 @@
       }
     },
     "SymbolRecord": {
+      "m3_converter_audit": {"evidence": "tests/boundary_host.cpp: every scalar/text field, nested parameters, all known/unknown comment kinds; persistent Lua OOM and retry", "scope": "author native/converter/manifest field equality; synthetic fidelity not native populated evidence; independent review outstanding"},
       "fields": [
         {
           "lua": "exact UInt64",
@@ -38666,6 +38674,7 @@
       }
     },
     "TypeAliasRecord": {
+      "m3_converter_audit": {"evidence": "tests/boundary_host.cpp: every scalar/text field, nested parameters, all known/unknown comment kinds; persistent Lua OOM and retry", "scope": "author native/converter/manifest field equality; synthetic fidelity not native populated evidence; independent review outstanding"},
       "fields": [
         {
           "lua": "exact UInt64",
@@ -38714,6 +38723,7 @@
       }
     },
     "TypeEnumMemberRecord": {
+      "m3_converter_audit": {"evidence": "tests/boundary_host.cpp: every scalar/text field, nested parameters, all known/unknown comment kinds; persistent Lua OOM and retry", "scope": "author native/converter/manifest field equality; synthetic fidelity not native populated evidence; independent review outstanding"},
       "fields": [
         {
           "lua": "exact UInt64",
@@ -38778,6 +38788,7 @@
       }
     },
     "TypeEnumRecord": {
+      "m3_converter_audit": {"evidence": "tests/boundary_host.cpp: every scalar/text field, nested parameters, all known/unknown comment kinds; persistent Lua OOM and retry", "scope": "author native/converter/manifest field equality; synthetic fidelity not native populated evidence; independent review outstanding"},
       "fields": [
         {
           "lua": "exact UInt64",
@@ -38834,6 +38845,7 @@
       }
     },
     "TypeMemberRecord": {
+      "m3_converter_audit": {"evidence": "tests/boundary_host.cpp: every scalar/text field, nested parameters, all known/unknown comment kinds; persistent Lua OOM and retry", "scope": "author native/converter/manifest field equality; synthetic fidelity not native populated evidence; independent review outstanding"},
       "fields": [
         {
           "lua": "exact UInt64",
@@ -38914,6 +38926,7 @@
       }
     },
     "TypeRecord": {
+      "m3_converter_audit": {"evidence": "tests/boundary_host.cpp: every scalar/text field, nested parameters, all known/unknown comment kinds; persistent Lua OOM and retry", "scope": "author native/converter/manifest field equality; synthetic fidelity not native populated evidence; independent review outstanding"},
       "fields": [
         {
           "lua": "exact UInt64",
@@ -39002,6 +39015,7 @@
       }
     },
     "TypeUnionRecord": {
+      "m3_converter_audit": {"evidence": "tests/boundary_host.cpp: every scalar/text field, nested parameters, all known/unknown comment kinds; persistent Lua OOM and retry", "scope": "author native/converter/manifest field equality; synthetic fidelity not native populated evidence; independent review outstanding"},
       "fields": [
         {
           "lua": "exact UInt64",
@@ -39122,6 +39136,7 @@
       }
     },
     "XrefRecord": {
+      "m3_converter_audit": {"evidence": "tests/boundary_host.cpp: every scalar/text field, nested parameters, all known/unknown comment kinds; persistent Lua OOM and retry", "scope": "author native/converter/manifest field equality; synthetic fidelity not native populated evidence; independent review outstanding"},
       "fields": [
         {
           "lua": "exact UInt64",
