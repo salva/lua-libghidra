@@ -284,6 +284,33 @@ NULs, nested optionals, ordinals, compound pagination limits, stale iterators,
 serial order, allocator failures and repeated independent-state lifecycles.
 Standalone and shared/static embedded Lua hosts must use the existing VM.
 
+### Upstream defects and wrapper responsibility
+
+The deliverable is a Lua binding, not a repaired libghidra/Ghidra distribution.
+Investigate a failure only far enough to distinguish a wrapper defect from an
+upstream limitation and describe its practical impact; exhaustive upstream root
+cause analysis is not required. Record the affected operation/profile, observed
+behavior, available evidence and user-visible limitation in the owning coverage
+or qualification document, then continue independent wrapper delivery. Upstream
+defects are not wrapper qualification blockers solely because they remain unfixed.
+Do not add an upstream repair campaign to milestone acceptance.
+
+A small, well-understood wrapper-side workaround is permitted when its delivery
+benefit justifies its implementation, tests and maintenance. Keep it isolated,
+test the affected real-backend path, document the behavior and preserve public
+contracts; do not invent results, hide corruption or claim the dependency fixed.
+Workarounds are optional, not a new prerequisite or reason to defer the binding.
+Dependency source changes remain subject to the separately authorized patch policy.
+
+Wrapper defects, unsafe boundary handling and incorrect claims remain our
+responsibility. A known upstream limitation must be labelled as such, not passed
+off as supported functionality or a successful test. Ordinary positive tests still
+apply where upstream provides the operation; preserve upstream-limited outcomes
+and reconcile incompatible delegated expectations with their owner instead of
+silently weakening tests or insisting on an upstream fix.
+
+### Allocation-failure application
+
 Operator scope clarification: allocation-failure qualification covers wrapper-owned
 storage, ownership transfer, Lua allocation/longjmp safety, conversion/publication,
 and wrapper handling of exceptions returned across the native boundary. Allocation

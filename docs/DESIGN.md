@@ -39,6 +39,13 @@ LocalClient's per-instance mutex proves no cross-client safety.
 
 ## 2. C-Lua error boundary
 
+Apply SPEC's upstream-defect policy throughout the adapter, not just to memory
+failures. Diagnose enough to attribute the issue, document dependency limitations
+and prioritize wrapper delivery. A justified small wrapper-side workaround belongs
+at the owning adapter with real regression coverage, not a parallel engine fork
+or an expanding investigation. Preserve the public contract and honest limitation
+reporting; no new dependency patch is authorized by this design guidance.
+
 A protected trampoline alone does **not** protect destructors in jumped frames.
 All frames between an allocating/raising Lua API and its protected boundary
 must have only trivial automatic storage. No sol2 temporary, std::string,

@@ -29,6 +29,26 @@ guest-local sudo as needed; preserve project-local credentials. Source/dependenc
 caches and temporary build outputs must be ignored by Git. Commit implemented
 changes promptly and do not push or publish without operator permission.
 
+## Operator update — prioritize the wrapper, not upstream repairs
+
+The operator generalized the allocation-failure disposition to all upstream bugs.
+We are here to deliver the Lua binding, not fix libghidra/Ghidra/dependencies.
+Attribute a failure enough to document the upstream limitation and its practical
+impact using available evidence, then move on to wrapper work. Do not require
+exhaustive upstream diagnosis, repair, new fault campaigns or upstream fixes as
+qualification deliverables. Preserve historical evidence and truthful capabilities.
+
+When a useful workaround is already understood, a small tested wrapper-side
+change may be appropriate if its delivery benefit justifies the effort. It is not
+a new priority, mandatory investigation or upstream patch authorization. Keep the
+public contract and boundary safety; do not fabricate success or hide corruption.
+Normal real-backend tests and wrapper defects remain our responsibility.
+
+Owners should remove upstream-repair expectations from downstream planning using
+supported lifecycle/activation direction, preserving immutable history and honest
+upstream-limited outcomes. Do not reset/restart or create a new upstream-fix task.
+This broad policy extends, rather than reopens, the specific OOM disposition below.
+
 ## Operator update — allocation failures limited to wrapper qualification
 
 The operator explicitly narrowed allocation-failure work to wrapper issues.

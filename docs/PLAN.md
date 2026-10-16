@@ -54,6 +54,16 @@ later obligations without waiver. Publication still requires operator direction.
 
 ## M1 — Build, ownership and value boundary
 
+For M1 and all later milestones, dependency bugs are documented limitations, not
+a parallel upstream-fix deliverable or a requirement for exhaustive diagnosis.
+Attribute failures sufficiently to separate wrapper responsibility, preserve
+evidence and practical limitations, then continue useful binding work. Small,
+understood, tested wrapper-side workarounds may be worthwhile when they directly
+enable delivery, but are not the priority or a prerequisite. No new upstream
+patch/fork work is authorized. Reconcile upstream-limited acceptance honestly at
+its owner; never claim unsupported functionality, waive wrapper safety or erase
+historical failures. See SPEC's upstream-defect policy.
+
 Build source/installed-SDK whole-archive paths with PIC; test standalone and
 shared/static embedded C-built Lua. Implement exact values, errors and shared
 handle. Qualify every-frame longjmp safety, allocation-failure publication and

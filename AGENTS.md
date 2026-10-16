@@ -14,6 +14,12 @@
 - Validate against the real supported upstream library and Lua runtimes; mocks
   alone do not demonstrate a working native binding. Cover ownership, lifetimes,
   errors and boundary conversions explicitly in design and tests.
+- Deliver the Lua wrapper, not an upstream repair campaign. Document upstream
+  bugs with existing evidence and limitations, then move on. Small, understood,
+  tested wrapper-side workarounds are allowed when useful for delivery; upstream
+  debugging, fixes and speculative workarounds are not the priority. Preserve
+  wrapper safety and honest capability claims; dependency patches still require
+  their existing separate authorization.
 - Keep credentials, generated runtime state and build output out of Git.
   Keep Saivage state project-local in `.saivage/` and `.saivage-work/`.
 - Do not modify sibling projects or start autonomous work without operator approval.
