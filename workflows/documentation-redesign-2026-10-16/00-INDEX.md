@@ -7,8 +7,8 @@ All files here are working documents, excluded from main docs/package/site.
 
 - [x] Confirm clean stable baseline and stopped runtime; resolve Astra model.
 - [x] Record owner conditions and subsystem/issue map.
-- [ ] Astra author: current-state analysis, design alternatives and selected design.
-- [ ] Separate Astra analyst: bounded example-origin assessment for the designer.
+- [x] Astra author: current-state analysis, design alternatives and selected design.
+- [x] Separate Astra analyst: bounded example-origin assessment for the designer.
 - [ ] Fresh independent Astra design/analysis review and bounded corrections.
 - [ ] Astra author: self-contained sequenced replacement plan and planner handoff.
 - [ ] Fresh independent Astra plan/handoff review and bounded corrections.
@@ -31,3 +31,10 @@ planning, push, publish, alter deployment/config/prompts or change runtime files
 These are redesign dimensions, not a new claim that each current component is
 broken. They form one coherent design with an ordered plan, not four independent
 implementations of overlapping document trees.
+
+## Current artifacts
+
+- [Analysis](01-ANALYSIS.md) and [design](02-DESIGN.md): independent review underway.
+- [Example assessment](03-EXAMPLE-ASSESSMENT.md): no distinctive upstream adaptation
+  established, composition origin unknown; public fixture-demo selection must be
+  addressed separately from correctness of ordinary API syntax.
