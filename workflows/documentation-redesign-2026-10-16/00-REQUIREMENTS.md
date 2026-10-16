@@ -3,8 +3,11 @@
 This is a working brief, not package documentation. The operator authorized a new
 Astra-authored design, independent Astra review, an updated or replacement plan,
 and then a request to the main planner to use it. Do not implement the redesign
-during planning. Keep runtime execution stopped until separately authorized Run;
-the latest explicit Stop remains effective. No push or publication is authorized.
+during planning. The operator subsequently authorized notifying the main planner
+about the changes and resuming Saivage once both the new design and plan are
+accepted. Keep runtime stopped until that gate is met, accepted artifacts are
+committed and the owning planner has been notified. No push, Pages publication,
+repository-settings or deployment changes are authorized.
 
 ## Outcomes and conditions
 

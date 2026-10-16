@@ -13,11 +13,17 @@ All files here are working documents, excluded from main docs/package/site.
 - [ ] Astra author: self-contained sequenced replacement plan and planner handoff.
 - [ ] Fresh independent Astra plan/handoff review and bounded corrections.
 - [ ] Commit accepted artifacts and notify the main planner through Analyst.
-- [ ] Report adoption receipt; leave execution stopped unless Run is authorized.
+- [ ] After accepted design/plan and planner notice, use operator-authorized Run.
+- [ ] Verify fresh owning-chain execution and report adoption/resume receipts.
 
 Use up to two correction rounds per reviewed document group. Unresolved required
 changes are explicit blockers, not implicit approval. Do not implement during
 planning, push, publish, alter deployment/config/prompts or change runtime files.
+
+The operator explicitly authorized resume after the new design and plan are
+accepted and the main planner has been told about the changes. The earlier Stop
+remains effective until those conditions hold; no additional Run permission is
+needed at that point. This does not authorize push or website publication.
 
 ## Issues and dimensions
 
