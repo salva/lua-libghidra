@@ -8,80 +8,183 @@ factory, not a populated producer or independently qualified runtime result.
 Native-only models/enums have no supported Lua conversion claim. Defaults
 do not imply optional positional arguments. UInt64 never uses floats.
 
-## AddBookmarkResponse
+## Index
 
-Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
+- [Records and result values](#records-and-result-values)
+  - [BasicBlockRecord](#basicblockrecord)
+  - [CFGEdgeRecord](#cfgedgerecord)
+  - [Capability](#capability)
+  - [CommentRecord](#commentrecord)
+  - [DataItemRecord](#dataitemrecord)
+  - [DecompilationRecord](#decompilationrecord)
+  - [DecompileLocalRecord](#decompilelocalrecord)
+  - [DecompileTokenRecord](#decompiletokenrecord)
+  - [DefinedStringRecord](#definedstringrecord)
+  - [FunctionRecord](#functionrecord)
+  - [FunctionSignatureRecord](#functionsignaturerecord)
+  - [HealthStatus](#healthstatus)
+  - [InstructionRecord](#instructionrecord)
+  - [MemoryBlockRecord](#memoryblockrecord)
+  - [ParameterRecord](#parameterrecord)
+  - [PerfBenchmarkRecord](#perfbenchmarkrecord)
+  - [SymbolRecord](#symbolrecord)
+  - [TypeAliasRecord](#typealiasrecord)
+  - [TypeEnumMemberRecord](#typeenummemberrecord)
+  - [TypeEnumRecord](#typeenumrecord)
+  - [TypeMemberRecord](#typememberrecord)
+  - [TypeRecord](#typerecord)
+  - [TypeUnionRecord](#typeunionrecord)
+  - [XrefRecord](#xrefrecord)
+- [Requests options and input items](#requests-options-and-input-items)
+  - [BytePatch](#bytepatch)
+  - [LocalClientOptions](#localclientoptions)
+  - [OpenProgramRequest](#openprogramrequest)
+- [Response envelopes](#response-envelopes)
+  - [AddPerfBenchmarkResponse](#addperfbenchmarkresponse)
+  - [AddTypeEnumMemberResponse](#addtypeenummemberresponse)
+  - [AddTypeMemberResponse](#addtypememberresponse)
+  - [ApplyDataTypeResponse](#applydatatyperesponse)
+  - [ClearPerfBenchmarksResponse](#clearperfbenchmarksresponse)
+  - [CloseProgramResponse](#closeprogramresponse)
+  - [CreateTypeAliasResponse](#createtypealiasresponse)
+  - [CreateTypeEnumResponse](#createtypeenumresponse)
+  - [CreateTypeResponse](#createtyperesponse)
+  - [DeleteCommentResponse](#deletecommentresponse)
+  - [DeleteDataItemResponse](#deletedataitemresponse)
+  - [DeletePerfBenchmarkResponse](#deleteperfbenchmarkresponse)
+  - [DeleteSymbolResponse](#deletesymbolresponse)
+  - [DeleteTypeAliasResponse](#deletetypealiasresponse)
+  - [DeleteTypeEnumMemberResponse](#deletetypeenummemberresponse)
+  - [DeleteTypeMemberResponse](#deletetypememberresponse)
+  - [DeleteTypeResponse](#deletetyperesponse)
+  - [DiscardProgramResponse](#discardprogramresponse)
+  - [GetCommentsResponse](#getcommentsresponse)
+  - [GetDecompilationResponse](#getdecompilationresponse)
+  - [GetFunctionResponse](#getfunctionresponse)
+  - [GetFunctionSignatureResponse](#getfunctionsignatureresponse)
+  - [GetInstructionResponse](#getinstructionresponse)
+  - [GetSymbolResponse](#getsymbolresponse)
+  - [GetTypeResponse](#gettyperesponse)
+  - [ListBasicBlocksResponse](#listbasicblocksresponse)
+  - [ListCFGEdgesResponse](#listcfgedgesresponse)
+  - [ListDataItemsResponse](#listdataitemsresponse)
+  - [ListDecompilationsResponse](#listdecompilationsresponse)
+  - [ListDefinedStringsResponse](#listdefinedstringsresponse)
+  - [ListFunctionSignaturesResponse](#listfunctionsignaturesresponse)
+  - [ListFunctionsResponse](#listfunctionsresponse)
+  - [ListInstructionsResponse](#listinstructionsresponse)
+  - [ListMemoryBlocksResponse](#listmemoryblocksresponse)
+  - [ListPerfBenchmarksResponse](#listperfbenchmarksresponse)
+  - [ListSymbolsResponse](#listsymbolsresponse)
+  - [ListTypeAliasesResponse](#listtypealiasesresponse)
+  - [ListTypeEnumMembersResponse](#listtypeenummembersresponse)
+  - [ListTypeEnumsResponse](#listtypeenumsresponse)
+  - [ListTypeMembersResponse](#listtypemembersresponse)
+  - [ListTypeUnionsResponse](#listtypeunionsresponse)
+  - [ListTypesResponse](#listtypesresponse)
+  - [ListXrefsResponse](#listxrefsresponse)
+  - [OpenProgramResponse](#openprogramresponse)
+  - [PatchBytesBatchResponse](#patchbytesbatchresponse)
+  - [ReadBytesResponse](#readbytesresponse)
+  - [RenameDataItemResponse](#renamedataitemresponse)
+  - [RenameFunctionLocalResponse](#renamefunctionlocalresponse)
+  - [RenameFunctionParameterResponse](#renamefunctionparameterresponse)
+  - [RenameFunctionResponse](#renamefunctionresponse)
+  - [RenameSymbolResponse](#renamesymbolresponse)
+  - [RenameTypeEnumMemberResponse](#renametypeenummemberresponse)
+  - [RenameTypeMemberResponse](#renametypememberresponse)
+  - [RenameTypeResponse](#renametyperesponse)
+  - [RevisionResponse](#revisionresponse)
+  - [SaveProgramResponse](#saveprogramresponse)
+  - [SetCommentResponse](#setcommentresponse)
+  - [SetFunctionLocalTypeResponse](#setfunctionlocaltyperesponse)
+  - [SetFunctionParameterTypeResponse](#setfunctionparametertyperesponse)
+  - [SetFunctionSignatureResponse](#setfunctionsignatureresponse)
+  - [SetTypeAliasTargetResponse](#settypealiastargetresponse)
+  - [SetTypeEnumMemberCommentResponse](#settypeenummembercommentresponse)
+  - [SetTypeEnumMemberValueResponse](#settypeenummembervalueresponse)
+  - [SetTypeMemberCommentResponse](#settypemembercommentresponse)
+  - [SetTypeMemberTypeResponse](#settypemembertyperesponse)
+  - [ShutdownResponse](#shutdownresponse)
+  - [WriteBytesResponse](#writebytesresponse)
+- [Supported enums](#supported-enums)
+  - [CommentKind](#commentkind)
+  - [DecompileLocalKind](#decompilelocalkind)
+  - [DecompileTokenKind](#decompiletokenkind)
+  - [ShutdownPolicy](#shutdownpolicy)
+- [Native-only schemas](#native-only-schemas)
+  - [AddBookmarkResponse](#addbookmarkresponse)
+  - [AddBreakpointResponse](#addbreakpointresponse)
+  - [AnalysisJobRecord](#analysisjobrecord)
+  - [AnalyzerPatternMatch](#analyzerpatternmatch)
+  - [BookmarkRecord](#bookmarkrecord)
+  - [BreakpointRecord](#breakpointrecord)
+  - [CancelAnalysisResponse](#cancelanalysisresponse)
+  - [CloseProjectResponse](#closeprojectresponse)
+  - [CreateFunctionTagResponse](#createfunctiontagresponse)
+  - [CreateMemoryBlockResponse](#creatememoryblockresponse)
+  - [CreateMemoryBlockSpec](#creatememoryblockspec)
+  - [DeleteBookmarkResponse](#deletebookmarkresponse)
+  - [DeleteBreakpointResponse](#deletebreakpointresponse)
+  - [DeleteFunctionTagResponse](#deletefunctiontagresponse)
+  - [DeleteTypeEnumResponse](#deletetypeenumresponse)
+  - [DominatorRecord](#dominatorrecord)
+  - [FunctionFrameRecord](#functionframerecord)
+  - [FunctionTagMappingRecord](#functiontagmappingrecord)
+  - [FunctionTagRecord](#functiontagrecord)
+  - [GetPcodeResponse](#getpcoderesponse)
+  - [ImportProgramRequest](#importprogramrequest)
+  - [ImportProgramResponse](#importprogramresponse)
+  - [InstructionOperandRecord](#instructionoperandrecord)
+  - [ListAnalysisJobsResponse](#listanalysisjobsresponse)
+  - [ListBookmarksResponse](#listbookmarksresponse)
+  - [ListBreakpointsResponse](#listbreakpointsresponse)
+  - [ListDominatorsResponse](#listdominatorsresponse)
+  - [ListFunctionFramesResponse](#listfunctionframesresponse)
+  - [ListFunctionTagMappingsResponse](#listfunctiontagmappingsresponse)
+  - [ListFunctionTagsResponse](#listfunctiontagsresponse)
+  - [ListInstructionOperandsResponse](#listinstructionoperandsresponse)
+  - [ListLoopsResponse](#listloopsresponse)
+  - [ListPostDominatorsResponse](#listpostdominatorsresponse)
+  - [ListProgramOptionsResponse](#listprogramoptionsresponse)
+  - [ListProjectFilesRequest](#listprojectfilesrequest)
+  - [ListProjectFilesResponse](#listprojectfilesresponse)
+  - [ListSwitchTablesResponse](#listswitchtablesresponse)
+  - [ListTransactionsResponse](#listtransactionsresponse)
+  - [LoaderArg](#loaderarg)
+  - [LoopRecord](#looprecord)
+  - [MoveMemoryBlockResponse](#movememoryblockresponse)
+  - [OpenProjectRequest](#openprojectrequest)
+  - [OpenProjectResponse](#openprojectresponse)
+  - [ParseDeclarationsResponse](#parsedeclarationsresponse)
+  - [PcodeOpRecord](#pcodeoprecord)
+  - [PcodeRecord](#pcoderecord)
+  - [PostDominatorRecord](#postdominatorrecord)
+  - [ProgramOptionRecord](#programoptionrecord)
+  - [ProjectFile](#projectfile)
+  - [RemoveMemoryBlockResponse](#removememoryblockresponse)
+  - [SetBreakpointConditionResponse](#setbreakpointconditionresponse)
+  - [SetBreakpointEnabledResponse](#setbreakpointenabledresponse)
+  - [SetBreakpointGroupResponse](#setbreakpointgroupresponse)
+  - [SetBreakpointKindResponse](#setbreakpointkindresponse)
+  - [SetBreakpointSizeResponse](#setbreakpointsizeresponse)
+  - [SetMemoryBlockAttributesResponse](#setmemoryblockattributesresponse)
+  - [SetMemoryBlockAttributesSpec](#setmemoryblockattributesspec)
+  - [SetProgramOptionResponse](#setprogramoptionresponse)
+  - [StackVariableRecord](#stackvariablerecord)
+  - [StartAnalysisResponse](#startanalysisresponse)
+  - [SwitchCaseRecord](#switchcaserecord)
+  - [SwitchTableRecord](#switchtablerecord)
+  - [TagFunctionResponse](#tagfunctionresponse)
+  - [TransactionRecord](#transactionrecord)
+  - [UntagFunctionResponse](#untagfunctionresponse)
+  - [VarnodeRecord](#varnoderecord)
+- [Native-only enums](#native-only-enums)
+  - [PcodeMaturity](#pcodematurity)
 
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| updated | bool | native schema: bool; no supported Lua conversion | false | false |
+## Records and result values
 
-## AddBreakpointResponse
-
-Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| updated | bool | native schema: bool; no supported Lua conversion | false | false |
-
-## AddPerfBenchmarkResponse
-
-Included operation/factory schema. Reachability: included.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| added | bool | boolean (preserve false) | false | false |
-
-## AddTypeEnumMemberResponse
-
-Included operation/factory schema. Reachability: included.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| updated | bool | boolean (preserve false) | false | false |
-
-## AddTypeMemberResponse
-
-Included operation/factory schema. Reachability: included.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| updated | bool | boolean (preserve false) | false | false |
-
-## AnalysisJobRecord
-
-Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| job_id | std::uint64_t | native schema: std::uint64_t; no supported Lua conversion | false | 0 |
-| mode | std::string | native schema: std::string; no supported Lua conversion | false | empty |
-| state | std::string | native schema: std::string; no supported Lua conversion | false | empty |
-| started_unix_ms | std::int64_t | native schema: std::int64_t; no supported Lua conversion | false | 0 |
-| ended_unix_ms | std::int64_t | native schema: std::int64_t; no supported Lua conversion | false | 0 |
-| elapsed_ms | std::uint64_t | native schema: std::uint64_t; no supported Lua conversion | false | 0 |
-| message | std::string | native schema: std::string; no supported Lua conversion | false | empty |
-
-## AnalyzerPatternMatch
-
-Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| pattern | std::string | native schema: std::string; no supported Lua conversion | false | empty |
-| enabled | bool | native schema: bool; no supported Lua conversion | false | false |
-| options | std::vector<std::string> | native schema: std::vector<std::string>; no supported Lua conversion | false | empty |
-
-## ApplyDataTypeResponse
-
-Included operation/factory schema. Reachability: included.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| updated | bool | boolean (preserve false) | false | false |
-| data_type | std::string | Lua string (no transcoding) | false | empty |
-
-## BasicBlockRecord
+### BasicBlockRecord
 
 Included operation/factory schema. Reachability: included.
 
@@ -93,40 +196,7 @@ Included operation/factory schema. Reachability: included.
 | in_degree | std::uint32_t | checked Lua integer (std::uint32_t) | false | 0 |
 | out_degree | std::uint32_t | checked Lua integer (std::uint32_t) | false | 0 |
 
-## BookmarkRecord
-
-Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| address | std::uint64_t | native schema: std::uint64_t; no supported Lua conversion | false | 0 |
-| type | std::string | native schema: std::string; no supported Lua conversion | false | empty |
-| category | std::string | native schema: std::string; no supported Lua conversion | false | empty |
-| comment | std::string | native schema: std::string; no supported Lua conversion | false | empty |
-
-## BreakpointRecord
-
-Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| address | std::uint64_t | native schema: std::uint64_t; no supported Lua conversion | false | 0 |
-| enabled | bool | native schema: bool; no supported Lua conversion | false | false |
-| kind | std::string | native schema: std::string; no supported Lua conversion | false | empty |
-| size | std::uint64_t | native schema: std::uint64_t; no supported Lua conversion | false | 0 |
-| condition | std::string | native schema: std::string; no supported Lua conversion | false | empty |
-| group | std::string | native schema: std::string; no supported Lua conversion | false | empty |
-
-## BytePatch
-
-Included operation/factory schema. Reachability: included.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| address | std::uint64_t | exact UInt64 | false | 0 |
-| data | std::vector<std::uint8_t> | binary Lua string (length preserving) | false | empty |
-
-## CFGEdgeRecord
+### CFGEdgeRecord
 
 Included operation/factory schema. Reachability: included.
 
@@ -137,15 +207,7 @@ Included operation/factory schema. Reachability: included.
 | dst_block_start | std::uint64_t | exact UInt64 | false | 0 |
 | edge_kind | std::string | Lua string (no transcoding) | false | empty |
 
-## CancelAnalysisResponse
-
-Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| cancelled | bool | native schema: bool; no supported Lua conversion | false | false |
-
-## Capability
+### Capability
 
 Included operation/factory schema. Reachability: included.
 
@@ -155,32 +217,7 @@ Included operation/factory schema. Reachability: included.
 | status | std::string | Lua string (no transcoding) | false | empty |
 | note | std::string | Lua string (no transcoding) | false | empty |
 
-## ClearPerfBenchmarksResponse
-
-Included operation/factory schema. Reachability: included.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| cleared | bool | boolean (preserve false) | false | false |
-| removed_count | std::uint32_t | checked Lua integer (std::uint32_t) | false | 0 |
-
-## CloseProgramResponse
-
-Included operation/factory schema. Reachability: included.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| closed | bool | boolean (preserve false) | false | false |
-
-## CloseProjectResponse
-
-Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| closed | bool | native schema: bool; no supported Lua conversion | false | false |
-
-## CommentRecord
+### CommentRecord
 
 Included operation/factory schema. Reachability: included.
 
@@ -190,63 +227,7 @@ Included operation/factory schema. Reachability: included.
 | kind | CommentKind | enum [CommentKind](#commentkind): "unspecified", "eol", "pre", "post", "plate", "repeatable"; unknown values remain Lua integers | false | CommentKind::kUnspecified |
 | text | std::string | Lua string (no transcoding) | false | empty |
 
-## CreateFunctionTagResponse
-
-Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| created | bool | native schema: bool; no supported Lua conversion | false | false |
-
-## CreateMemoryBlockResponse
-
-Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| created | bool | native schema: bool; no supported Lua conversion | false | false |
-| block | MemoryBlockRecord | native schema: MemoryBlockRecord; no supported Lua conversion | false | no explicit initializer; inspect construction |
-
-## CreateMemoryBlockSpec
-
-Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| name | std::string | native schema: std::string; no supported Lua conversion | false | empty |
-| start_address | std::uint64_t | native schema: std::uint64_t; no supported Lua conversion | false | 0 |
-| size | std::uint64_t | native schema: std::uint64_t; no supported Lua conversion | false | 0 |
-| is_read | bool | native schema: bool; no supported Lua conversion | false | true |
-| is_write | bool | native schema: bool; no supported Lua conversion | false | true |
-| is_execute | bool | native schema: bool; no supported Lua conversion | false | false |
-| initialized | bool | native schema: bool; no supported Lua conversion | false | false |
-| overlay | bool | native schema: bool; no supported Lua conversion | false | false |
-
-## CreateTypeAliasResponse
-
-Included operation/factory schema. Reachability: included.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| updated | bool | boolean (preserve false) | false | false |
-
-## CreateTypeEnumResponse
-
-Included operation/factory schema. Reachability: included.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| updated | bool | boolean (preserve false) | false | false |
-
-## CreateTypeResponse
-
-Included operation/factory schema. Reachability: included.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| updated | bool | boolean (preserve false) | false | false |
-
-## DataItemRecord
+### DataItemRecord
 
 Included operation/factory schema. Reachability: included.
 
@@ -259,7 +240,7 @@ Included operation/factory schema. Reachability: included.
 | size | std::uint64_t | exact UInt64 | false | 0 |
 | value_repr | std::string | Lua string (no transcoding) | false | empty |
 
-## DecompilationRecord
+### DecompilationRecord
 
 Included operation/factory schema. Reachability: included.
 
@@ -275,7 +256,7 @@ Included operation/factory schema. Reachability: included.
 | locals | std::vector<DecompileLocalRecord> | dense 1-based array of table model [DecompileLocalRecord](#decompilelocalrecord) | false | empty |
 | tokens | std::vector<DecompileTokenRecord> | dense 1-based array of table model [DecompileTokenRecord](#decompiletokenrecord) | false | empty |
 
-## DecompileLocalRecord
+### DecompileLocalRecord
 
 Included operation/factory schema. Reachability: included.
 
@@ -288,7 +269,7 @@ Included operation/factory schema. Reachability: included.
 | storage | std::string | Lua string (no transcoding) | false | empty |
 | ordinal | int | checked Lua integer (int) | false | -1 |
 
-## DecompileTokenRecord
+### DecompileTokenRecord
 
 Included operation/factory schema. Reachability: included.
 
@@ -302,7 +283,7 @@ Included operation/factory schema. Reachability: included.
 | var_type | std::string | Lua string (no transcoding) | false | empty |
 | var_storage | std::string | Lua string (no transcoding) | false | empty |
 
-## DefinedStringRecord
+### DefinedStringRecord
 
 Included operation/factory schema. Reachability: included.
 
@@ -314,140 +295,7 @@ Included operation/factory schema. Reachability: included.
 | data_type | std::string | Lua string (no transcoding) | false | empty |
 | encoding | std::string | Lua string (no transcoding) | false | empty |
 
-## DeleteBookmarkResponse
-
-Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| deleted | bool | native schema: bool; no supported Lua conversion | false | false |
-
-## DeleteBreakpointResponse
-
-Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| deleted | bool | native schema: bool; no supported Lua conversion | false | false |
-
-## DeleteCommentResponse
-
-Included operation/factory schema. Reachability: included.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| deleted | bool | boolean (preserve false) | false | false |
-
-## DeleteDataItemResponse
-
-Included operation/factory schema. Reachability: included.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| deleted | bool | boolean (preserve false) | false | false |
-
-## DeleteFunctionTagResponse
-
-Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| deleted | bool | native schema: bool; no supported Lua conversion | false | false |
-
-## DeletePerfBenchmarkResponse
-
-Included operation/factory schema. Reachability: included.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| deleted | bool | boolean (preserve false) | false | false |
-
-## DeleteSymbolResponse
-
-Included operation/factory schema. Reachability: included.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| deleted | bool | boolean (preserve false) | false | false |
-| deleted_count | std::uint32_t | checked Lua integer (std::uint32_t) | false | 0 |
-
-## DeleteTypeAliasResponse
-
-Included operation/factory schema. Reachability: included.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| deleted | bool | boolean (preserve false) | false | false |
-
-## DeleteTypeEnumMemberResponse
-
-Included operation/factory schema. Reachability: included.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| deleted | bool | boolean (preserve false) | false | false |
-
-## DeleteTypeEnumResponse
-
-Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| deleted | bool | native schema: bool; no supported Lua conversion | false | false |
-
-## DeleteTypeMemberResponse
-
-Included operation/factory schema. Reachability: included.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| deleted | bool | boolean (preserve false) | false | false |
-
-## DeleteTypeResponse
-
-Included operation/factory schema. Reachability: included.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| deleted | bool | boolean (preserve false) | false | false |
-
-## DiscardProgramResponse
-
-Included operation/factory schema. Reachability: included.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| discarded | bool | boolean (preserve false) | false | false |
-
-## DominatorRecord
-
-Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| function_entry | std::uint64_t | native schema: std::uint64_t; no supported Lua conversion | false | 0 |
-| block_address | std::uint64_t | native schema: std::uint64_t; no supported Lua conversion | false | 0 |
-| idom_address | std::uint64_t | native schema: std::uint64_t; no supported Lua conversion | false | 0 |
-| depth | std::uint32_t | native schema: std::uint32_t; no supported Lua conversion | false | 0 |
-| is_entry | bool | native schema: bool; no supported Lua conversion | false | false |
-
-## FunctionFrameRecord
-
-Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| function_entry | std::uint64_t | native schema: std::uint64_t; no supported Lua conversion | false | 0 |
-| frame_size | std::int64_t | native schema: std::int64_t; no supported Lua conversion | false | 0 |
-| local_size | std::int64_t | native schema: std::int64_t; no supported Lua conversion | false | 0 |
-| parameter_size | std::int64_t | native schema: std::int64_t; no supported Lua conversion | false | 0 |
-| parameter_offset | std::int64_t | native schema: std::int64_t; no supported Lua conversion | false | 0 |
-| return_address_offset | std::int64_t | native schema: std::int64_t; no supported Lua conversion | false | 0 |
-| grows_negative | bool | native schema: bool; no supported Lua conversion | false | false |
-| stack_pointer_register | std::string | native schema: std::string; no supported Lua conversion | false | empty |
-| stack_variables | std::vector<StackVariableRecord> | native schema: std::vector<StackVariableRecord>; no supported Lua conversion | false | empty |
-
-## FunctionRecord
+### FunctionRecord
 
 Included operation/factory schema. Reachability: included.
 
@@ -463,7 +311,7 @@ Included operation/factory schema. Reachability: included.
 | is_thunk | bool | boolean (preserve false) | false | false |
 | parameter_count | std::uint32_t | checked Lua integer (std::uint32_t) | false | 0 |
 
-## FunctionSignatureRecord
+### FunctionSignatureRecord
 
 Included operation/factory schema. Reachability: included.
 
@@ -477,89 +325,7 @@ Included operation/factory schema. Reachability: included.
 | calling_convention | std::string | Lua string (no transcoding) | false | empty |
 | parameters | std::vector<ParameterRecord> | dense 1-based array of table model [ParameterRecord](#parameterrecord) | false | empty |
 
-## FunctionTagMappingRecord
-
-Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| function_entry | std::uint64_t | native schema: std::uint64_t; no supported Lua conversion | false | 0 |
-| tag_name | std::string | native schema: std::string; no supported Lua conversion | false | empty |
-
-## FunctionTagRecord
-
-Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| name | std::string | native schema: std::string; no supported Lua conversion | false | empty |
-| comment | std::string | native schema: std::string; no supported Lua conversion | false | empty |
-
-## GetCommentsResponse
-
-Included operation/factory schema. Reachability: included.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| comments | std::vector<CommentRecord> | dense 1-based array of table model [CommentRecord](#commentrecord) | false | empty |
-
-## GetDecompilationResponse
-
-Included operation/factory schema. Reachability: included.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| decompilation | std::optional<DecompilationRecord> | optional table model [DecompilationRecord](#decompilationrecord) (absence=nil) | true | absent |
-
-## GetFunctionResponse
-
-Included operation/factory schema. Reachability: included.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| function | std::optional<FunctionRecord> | optional table model [FunctionRecord](#functionrecord) (absence=nil) | true | absent |
-
-## GetFunctionSignatureResponse
-
-Included operation/factory schema. Reachability: included.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| signature | std::optional<FunctionSignatureRecord> | optional table model [FunctionSignatureRecord](#functionsignaturerecord) (absence=nil) | true | absent |
-
-## GetInstructionResponse
-
-Included operation/factory schema. Reachability: included.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| instruction | std::optional<InstructionRecord> | optional table model [InstructionRecord](#instructionrecord) (absence=nil) | true | absent |
-
-## GetPcodeResponse
-
-Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| pcode | std::optional<PcodeRecord> | native schema: std::optional<PcodeRecord>; no supported Lua conversion | true | absent |
-
-## GetSymbolResponse
-
-Included operation/factory schema. Reachability: included.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| symbol | std::optional<SymbolRecord> | optional table model [SymbolRecord](#symbolrecord) (absence=nil) | true | absent |
-
-## GetTypeResponse
-
-Included operation/factory schema. Reachability: included.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| type | std::optional<TypeRecord> | optional table model [TypeRecord](#typerecord) (absence=nil) | true | absent |
-
-## HealthStatus
+### HealthStatus
 
 Included operation/factory schema. Reachability: included.
 
@@ -572,47 +338,7 @@ Included operation/factory schema. Reachability: included.
 | modification_number | std::uint64_t | exact UInt64 | false | 0 |
 | warnings | std::vector<std::string> | dense 1-based array of Lua string (no transcoding) | false | empty |
 
-## ImportProgramRequest
-
-Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| source_path | std::string | native schema: std::string; no supported Lua conversion | false | empty |
-| project_folder_path | std::string | native schema: std::string; no supported Lua conversion | false | empty |
-| program_name | std::string | native schema: std::string; no supported Lua conversion | false | empty |
-| overwrite | bool | native schema: bool; no supported Lua conversion | false | false |
-| analyze | bool | native schema: bool; no supported Lua conversion | false | false |
-| language_id | std::string | native schema: std::string; no supported Lua conversion | false | empty |
-| compiler_spec_id | std::string | native schema: std::string; no supported Lua conversion | false | empty |
-| loader_class | std::string | native schema: std::string; no supported Lua conversion | false | empty |
-| loader_args | std::vector<LoaderArg> | native schema: std::vector<LoaderArg>; no supported Lua conversion | false | empty |
-| analyzers_off | std::vector<std::string> | native schema: std::vector<std::string>; no supported Lua conversion | false | empty |
-| analyzers_on | std::vector<std::string> | native schema: std::vector<std::string>; no supported Lua conversion | false | empty |
-
-## ImportProgramResponse
-
-Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| program_paths | std::vector<std::string> | native schema: std::vector<std::string>; no supported Lua conversion | false | empty |
-| primary_program_path | std::string | native schema: std::string; no supported Lua conversion | false | empty |
-| analyzer_matches | std::vector<AnalyzerPatternMatch> | native schema: std::vector<AnalyzerPatternMatch>; no supported Lua conversion | false | empty |
-
-## InstructionOperandRecord
-
-Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| address | std::uint64_t | native schema: std::uint64_t; no supported Lua conversion | false | 0 |
-| operand_index | std::uint32_t | native schema: std::uint32_t; no supported Lua conversion | false | 0 |
-| text | std::string | native schema: std::string; no supported Lua conversion | false | empty |
-| type_name | std::string | native schema: std::string; no supported Lua conversion | false | empty |
-| ref_type | std::string | native schema: std::string; no supported Lua conversion | false | empty |
-
-## InstructionRecord
+### InstructionRecord
 
 Included operation/factory schema. Reachability: included.
 
@@ -624,305 +350,7 @@ Included operation/factory schema. Reachability: included.
 | disassembly | std::string | Lua string (no transcoding) | false | empty |
 | length | std::uint32_t | checked Lua integer (std::uint32_t) | false | 0 |
 
-## ListAnalysisJobsResponse
-
-Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| jobs | std::vector<AnalysisJobRecord> | native schema: std::vector<AnalysisJobRecord>; no supported Lua conversion | false | empty |
-
-## ListBasicBlocksResponse
-
-Included operation/factory schema. Reachability: included.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| blocks | std::vector<BasicBlockRecord> | dense 1-based array of table model [BasicBlockRecord](#basicblockrecord) | false | empty |
-
-## ListBookmarksResponse
-
-Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| bookmarks | std::vector<BookmarkRecord> | native schema: std::vector<BookmarkRecord>; no supported Lua conversion | false | empty |
-
-## ListBreakpointsResponse
-
-Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| breakpoints | std::vector<BreakpointRecord> | native schema: std::vector<BreakpointRecord>; no supported Lua conversion | false | empty |
-
-## ListCFGEdgesResponse
-
-Included operation/factory schema. Reachability: included.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| edges | std::vector<CFGEdgeRecord> | dense 1-based array of table model [CFGEdgeRecord](#cfgedgerecord) | false | empty |
-
-## ListDataItemsResponse
-
-Included operation/factory schema. Reachability: included.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| data_items | std::vector<DataItemRecord> | dense 1-based array of table model [DataItemRecord](#dataitemrecord) | false | empty |
-
-## ListDecompilationsResponse
-
-Included operation/factory schema. Reachability: included.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| decompilations | std::vector<DecompilationRecord> | dense 1-based array of table model [DecompilationRecord](#decompilationrecord) | false | empty |
-
-## ListDefinedStringsResponse
-
-Included operation/factory schema. Reachability: included.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| strings | std::vector<DefinedStringRecord> | dense 1-based array of table model [DefinedStringRecord](#definedstringrecord) | false | empty |
-
-## ListDominatorsResponse
-
-Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| dominators | std::vector<DominatorRecord> | native schema: std::vector<DominatorRecord>; no supported Lua conversion | false | empty |
-
-## ListFunctionFramesResponse
-
-Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| frames | std::vector<FunctionFrameRecord> | native schema: std::vector<FunctionFrameRecord>; no supported Lua conversion | false | empty |
-
-## ListFunctionSignaturesResponse
-
-Included operation/factory schema. Reachability: included.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| signatures | std::vector<FunctionSignatureRecord> | dense 1-based array of table model [FunctionSignatureRecord](#functionsignaturerecord) | false | empty |
-
-## ListFunctionTagMappingsResponse
-
-Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| mappings | std::vector<FunctionTagMappingRecord> | native schema: std::vector<FunctionTagMappingRecord>; no supported Lua conversion | false | empty |
-
-## ListFunctionTagsResponse
-
-Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| tags | std::vector<FunctionTagRecord> | native schema: std::vector<FunctionTagRecord>; no supported Lua conversion | false | empty |
-
-## ListFunctionsResponse
-
-Included operation/factory schema. Reachability: included.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| functions | std::vector<FunctionRecord> | dense 1-based array of table model [FunctionRecord](#functionrecord) | false | empty |
-
-## ListInstructionOperandsResponse
-
-Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| operands | std::vector<InstructionOperandRecord> | native schema: std::vector<InstructionOperandRecord>; no supported Lua conversion | false | empty |
-
-## ListInstructionsResponse
-
-Included operation/factory schema. Reachability: included.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| instructions | std::vector<InstructionRecord> | dense 1-based array of table model [InstructionRecord](#instructionrecord) | false | empty |
-
-## ListLoopsResponse
-
-Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| loops | std::vector<LoopRecord> | native schema: std::vector<LoopRecord>; no supported Lua conversion | false | empty |
-
-## ListMemoryBlocksResponse
-
-Included operation/factory schema. Reachability: included.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| blocks | std::vector<MemoryBlockRecord> | dense 1-based array of table model [MemoryBlockRecord](#memoryblockrecord) | false | empty |
-
-## ListPerfBenchmarksResponse
-
-Included operation/factory schema. Reachability: included.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| records | std::vector<PerfBenchmarkRecord> | dense 1-based array of table model [PerfBenchmarkRecord](#perfbenchmarkrecord) | false | empty |
-
-## ListPostDominatorsResponse
-
-Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| post_dominators | std::vector<PostDominatorRecord> | native schema: std::vector<PostDominatorRecord>; no supported Lua conversion | false | empty |
-
-## ListProgramOptionsResponse
-
-Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| options | std::vector<ProgramOptionRecord> | native schema: std::vector<ProgramOptionRecord>; no supported Lua conversion | false | empty |
-
-## ListProjectFilesRequest
-
-Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| include_folders | bool | native schema: bool; no supported Lua conversion | false | false |
-| programs_only | bool | native schema: bool; no supported Lua conversion | false | false |
-
-## ListProjectFilesResponse
-
-Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| files | std::vector<ProjectFile> | native schema: std::vector<ProjectFile>; no supported Lua conversion | false | empty |
-
-## ListSwitchTablesResponse
-
-Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| switch_tables | std::vector<SwitchTableRecord> | native schema: std::vector<SwitchTableRecord>; no supported Lua conversion | false | empty |
-
-## ListSymbolsResponse
-
-Included operation/factory schema. Reachability: included.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| symbols | std::vector<SymbolRecord> | dense 1-based array of table model [SymbolRecord](#symbolrecord) | false | empty |
-
-## ListTransactionsResponse
-
-Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| transactions | std::vector<TransactionRecord> | native schema: std::vector<TransactionRecord>; no supported Lua conversion | false | empty |
-
-## ListTypeAliasesResponse
-
-Included operation/factory schema. Reachability: included.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| aliases | std::vector<TypeAliasRecord> | dense 1-based array of table model [TypeAliasRecord](#typealiasrecord) | false | empty |
-
-## ListTypeEnumMembersResponse
-
-Included operation/factory schema. Reachability: included.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| members | std::vector<TypeEnumMemberRecord> | dense 1-based array of table model [TypeEnumMemberRecord](#typeenummemberrecord) | false | empty |
-
-## ListTypeEnumsResponse
-
-Included operation/factory schema. Reachability: included.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| enums | std::vector<TypeEnumRecord> | dense 1-based array of table model [TypeEnumRecord](#typeenumrecord) | false | empty |
-
-## ListTypeMembersResponse
-
-Included operation/factory schema. Reachability: included.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| members | std::vector<TypeMemberRecord> | dense 1-based array of table model [TypeMemberRecord](#typememberrecord) | false | empty |
-
-## ListTypeUnionsResponse
-
-Included operation/factory schema. Reachability: included.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| unions | std::vector<TypeUnionRecord> | dense 1-based array of table model [TypeUnionRecord](#typeunionrecord) | false | empty |
-
-## ListTypesResponse
-
-Included operation/factory schema. Reachability: included.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| types | std::vector<TypeRecord> | dense 1-based array of table model [TypeRecord](#typerecord) | false | empty |
-
-## ListXrefsResponse
-
-Included operation/factory schema. Reachability: included.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| xrefs | std::vector<XrefRecord> | dense 1-based array of table model [XrefRecord](#xrefrecord) | false | empty |
-
-## LoaderArg
-
-Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| name | std::string | native schema: std::string; no supported Lua conversion | false | empty |
-| value | std::string | native schema: std::string; no supported Lua conversion | false | empty |
-
-## LocalClientOptions
-
-Included operation/factory schema. Reachability: included.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| ghidra_root | std::string | Lua string (no transcoding) | false | empty |
-| state_path | std::string | Lua string (no transcoding) | false | empty |
-| default_arch | std::string | Lua string (no transcoding) | false | empty |
-| pool_size | int | checked Lua integer (int) | false | 1 |
-
-## LoopRecord
-
-Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| function_entry | std::uint64_t | native schema: std::uint64_t; no supported Lua conversion | false | 0 |
-| header_address | std::uint64_t | native schema: std::uint64_t; no supported Lua conversion | false | 0 |
-| back_edge_source | std::uint64_t | native schema: std::uint64_t; no supported Lua conversion | false | 0 |
-| loop_kind | std::string | native schema: std::string; no supported Lua conversion | false | empty |
-| block_count | std::uint32_t | native schema: std::uint32_t; no supported Lua conversion | false | 0 |
-| depth | std::uint32_t | native schema: std::uint32_t; no supported Lua conversion | false | 0 |
-
-## MemoryBlockRecord
+### MemoryBlockRecord
 
 Included operation/factory schema. Reachability: included and excluded.
 
@@ -940,68 +368,7 @@ Included operation/factory schema. Reachability: included and excluded.
 | source_name | std::string | Lua string (no transcoding) | false | empty |
 | comment | std::string | Lua string (no transcoding) | false | empty |
 
-## MoveMemoryBlockResponse
-
-Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| moved | bool | native schema: bool; no supported Lua conversion | false | false |
-| block | MemoryBlockRecord | native schema: MemoryBlockRecord; no supported Lua conversion | false | no explicit initializer; inspect construction |
-
-## OpenProgramRequest
-
-Included operation/factory schema. Reachability: included.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| project_path | std::string | Lua string (no transcoding) | false | empty |
-| project_name | std::string | Lua string (no transcoding) | false | empty |
-| program_path | std::string | Lua string (no transcoding) | false | empty |
-| read_only | bool | boolean (preserve false) | false | false |
-| language_id | std::string | Lua string (no transcoding) | false | empty |
-| compiler_spec_id | std::string | Lua string (no transcoding) | false | empty |
-| format | std::string | Lua string (no transcoding) | false | empty |
-| base_address | std::uint64_t | exact UInt64 | false | 0 |
-
-## OpenProgramResponse
-
-Included operation/factory schema. Reachability: included.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| program_name | std::string | Lua string (no transcoding) | false | empty |
-| language_id | std::string | Lua string (no transcoding) | false | empty |
-| compiler_spec | std::string | Lua string (no transcoding) | false | empty |
-| image_base | std::uint64_t | exact UInt64 | false | 0 |
-| md5 | std::string | Lua string (no transcoding) | false | empty |
-| sha256 | std::string | Lua string (no transcoding) | false | empty |
-| executable_format | std::string | Lua string (no transcoding) | false | empty |
-| entry_point | std::uint64_t | exact UInt64 | false | 0 |
-| has_entry_point | bool | boolean (preserve false) | false | false |
-
-## OpenProjectRequest
-
-Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| project_path | std::string | native schema: std::string; no supported Lua conversion | false | empty |
-| project_name | std::string | native schema: std::string; no supported Lua conversion | false | empty |
-| create | bool | native schema: bool; no supported Lua conversion | false | false |
-| read_only | bool | native schema: bool; no supported Lua conversion | false | false |
-
-## OpenProjectResponse
-
-Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| project_path | std::string | native schema: std::string; no supported Lua conversion | false | empty |
-| project_name | std::string | native schema: std::string; no supported Lua conversion | false | empty |
-| created | bool | native schema: bool; no supported Lua conversion | false | false |
-
-## ParameterRecord
+### ParameterRecord
 
 Included operation/factory schema. Reachability: included.
 
@@ -1014,52 +381,7 @@ Included operation/factory schema. Reachability: included.
 | is_auto_parameter | bool | boolean (preserve false) | false | false |
 | is_forced_indirect | bool | boolean (preserve false) | false | false |
 
-## ParseDeclarationsResponse
-
-Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| types_created | int | native schema: int; no supported Lua conversion | false | 0 |
-| type_names | std::vector<std::string> | native schema: std::vector<std::string>; no supported Lua conversion | false | empty |
-| errors | std::vector<std::string> | native schema: std::vector<std::string>; no supported Lua conversion | false | empty |
-
-## PatchBytesBatchResponse
-
-Included operation/factory schema. Reachability: included.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| patch_count | std::uint32_t | checked Lua integer (std::uint32_t) | false | 0 |
-| bytes_written | std::uint32_t | checked Lua integer (std::uint32_t) | false | 0 |
-
-## PcodeOpRecord
-
-Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| seq | std::uint64_t | native schema: std::uint64_t; no supported Lua conversion | false | 0 |
-| op | std::string | native schema: std::string; no supported Lua conversion | false | empty |
-| addr | std::uint64_t | native schema: std::uint64_t; no supported Lua conversion | false | 0 |
-| has_address | bool | native schema: bool; no supported Lua conversion | false | false |
-| has_output | bool | native schema: bool; no supported Lua conversion | false | false |
-| output | VarnodeRecord | native schema: VarnodeRecord; no supported Lua conversion | false | no explicit initializer; inspect construction |
-| inputs | std::vector<VarnodeRecord> | native schema: std::vector<VarnodeRecord>; no supported Lua conversion | false | empty |
-
-## PcodeRecord
-
-Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| function_entry_address | std::uint64_t | native schema: std::uint64_t; no supported Lua conversion | false | 0 |
-| ops | std::vector<PcodeOpRecord> | native schema: std::vector<PcodeOpRecord>; no supported Lua conversion | false | empty |
-| completed | bool | native schema: bool; no supported Lua conversion | false | false |
-| error_message | std::string | native schema: std::string; no supported Lua conversion | false | empty |
-| maturity | PcodeMaturity | native schema: PcodeMaturity; no supported Lua conversion | false | PcodeMaturity::High |
-
-## PerfBenchmarkRecord
+### PerfBenchmarkRecord
 
 Included operation/factory schema. Reachability: included.
 
@@ -1076,356 +398,7 @@ Included operation/factory schema. Reachability: included.
 | regression_pct | double | Lua number (native double; lua_Number precision/runtime qualification required) | false | 0.0 |
 | status | std::string | Lua string (no transcoding) | false | empty |
 
-## PostDominatorRecord
-
-Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| function_entry | std::uint64_t | native schema: std::uint64_t; no supported Lua conversion | false | 0 |
-| block_address | std::uint64_t | native schema: std::uint64_t; no supported Lua conversion | false | 0 |
-| ipdom_address | std::uint64_t | native schema: std::uint64_t; no supported Lua conversion | false | 0 |
-| depth | std::uint32_t | native schema: std::uint32_t; no supported Lua conversion | false | 0 |
-| is_exit | bool | native schema: bool; no supported Lua conversion | false | false |
-
-## ProgramOptionRecord
-
-Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| category | std::string | native schema: std::string; no supported Lua conversion | false | empty |
-| name | std::string | native schema: std::string; no supported Lua conversion | false | empty |
-| value | std::string | native schema: std::string; no supported Lua conversion | false | empty |
-| type | std::string | native schema: std::string; no supported Lua conversion | false | empty |
-| description | std::string | native schema: std::string; no supported Lua conversion | false | empty |
-| default_value | std::string | native schema: std::string; no supported Lua conversion | false | empty |
-| settable | bool | native schema: bool; no supported Lua conversion | false | false |
-| allowed_values | std::vector<std::string> | native schema: std::vector<std::string>; no supported Lua conversion | false | empty |
-
-## ProjectFile
-
-Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| path | std::string | native schema: std::string; no supported Lua conversion | false | empty |
-| name | std::string | native schema: std::string; no supported Lua conversion | false | empty |
-| folder_path | std::string | native schema: std::string; no supported Lua conversion | false | empty |
-| content_type | std::string | native schema: std::string; no supported Lua conversion | false | empty |
-| domain_object_class | std::string | native schema: std::string; no supported Lua conversion | false | empty |
-| is_folder | bool | native schema: bool; no supported Lua conversion | false | false |
-| is_program | bool | native schema: bool; no supported Lua conversion | false | false |
-
-## ReadBytesResponse
-
-Included operation/factory schema. Reachability: included.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| data | std::vector<std::uint8_t> | binary Lua string (length preserving) | false | empty |
-
-## RemoveMemoryBlockResponse
-
-Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| removed | bool | native schema: bool; no supported Lua conversion | false | false |
-
-## RenameDataItemResponse
-
-Included operation/factory schema. Reachability: included.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| updated | bool | boolean (preserve false) | false | false |
-| name | std::string | Lua string (no transcoding) | false | empty |
-
-## RenameFunctionLocalResponse
-
-Included operation/factory schema. Reachability: included.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| updated | bool | boolean (preserve false) | false | false |
-| local_id | std::string | Lua string (no transcoding) | false | empty |
-| name | std::string | Lua string (no transcoding) | false | empty |
-
-## RenameFunctionParameterResponse
-
-Included operation/factory schema. Reachability: included.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| updated | bool | boolean (preserve false) | false | false |
-| name | std::string | Lua string (no transcoding) | false | empty |
-
-## RenameFunctionResponse
-
-Included operation/factory schema. Reachability: included.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| renamed | bool | boolean (preserve false) | false | false |
-| name | std::string | Lua string (no transcoding) | false | empty |
-
-## RenameSymbolResponse
-
-Included operation/factory schema. Reachability: included.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| renamed | bool | boolean (preserve false) | false | false |
-| name | std::string | Lua string (no transcoding) | false | empty |
-
-## RenameTypeEnumMemberResponse
-
-Included operation/factory schema. Reachability: included.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| updated | bool | boolean (preserve false) | false | false |
-
-## RenameTypeMemberResponse
-
-Included operation/factory schema. Reachability: included.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| updated | bool | boolean (preserve false) | false | false |
-
-## RenameTypeResponse
-
-Included operation/factory schema. Reachability: included.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| updated | bool | boolean (preserve false) | false | false |
-| name | std::string | Lua string (no transcoding) | false | empty |
-
-## RevisionResponse
-
-Included operation/factory schema. Reachability: included.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| program_id | std::uint64_t | exact UInt64 | false | 0 |
-| modification_number | std::uint64_t | exact UInt64 | false | 0 |
-| program_path | std::string | Lua string (no transcoding) | false | empty |
-| file_id | std::string | Lua string (no transcoding) | false | empty |
-| file_version | std::int32_t | checked Lua integer (std::int32_t) | false | 0 |
-| file_last_modified_time | std::int64_t | checked Lua integer (std::int64_t) | false | 0 |
-
-## SaveProgramResponse
-
-Included operation/factory schema. Reachability: included.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| saved | bool | boolean (preserve false) | false | false |
-
-## SetBreakpointConditionResponse
-
-Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| updated | bool | native schema: bool; no supported Lua conversion | false | false |
-
-## SetBreakpointEnabledResponse
-
-Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| updated | bool | native schema: bool; no supported Lua conversion | false | false |
-
-## SetBreakpointGroupResponse
-
-Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| updated | bool | native schema: bool; no supported Lua conversion | false | false |
-
-## SetBreakpointKindResponse
-
-Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| updated | bool | native schema: bool; no supported Lua conversion | false | false |
-
-## SetBreakpointSizeResponse
-
-Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| updated | bool | native schema: bool; no supported Lua conversion | false | false |
-
-## SetCommentResponse
-
-Included operation/factory schema. Reachability: included.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| updated | bool | boolean (preserve false) | false | false |
-
-## SetFunctionLocalTypeResponse
-
-Included operation/factory schema. Reachability: included.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| updated | bool | boolean (preserve false) | false | false |
-| local_id | std::string | Lua string (no transcoding) | false | empty |
-| data_type | std::string | Lua string (no transcoding) | false | empty |
-
-## SetFunctionParameterTypeResponse
-
-Included operation/factory schema. Reachability: included.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| updated | bool | boolean (preserve false) | false | false |
-| data_type | std::string | Lua string (no transcoding) | false | empty |
-
-## SetFunctionSignatureResponse
-
-Included operation/factory schema. Reachability: included.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| updated | bool | boolean (preserve false) | false | false |
-| function_name | std::string | Lua string (no transcoding) | false | empty |
-| prototype | std::string | Lua string (no transcoding) | false | empty |
-
-## SetMemoryBlockAttributesResponse
-
-Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| updated | bool | native schema: bool; no supported Lua conversion | false | false |
-| block | MemoryBlockRecord | native schema: MemoryBlockRecord; no supported Lua conversion | false | no explicit initializer; inspect construction |
-
-## SetMemoryBlockAttributesSpec
-
-Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| address | std::uint64_t | native schema: std::uint64_t; no supported Lua conversion | false | 0 |
-| name | std::optional<std::string> | native schema: std::optional<std::string>; no supported Lua conversion | true | absent |
-| is_read | std::optional<bool> | native schema: std::optional<bool>; no supported Lua conversion | true | absent |
-| is_write | std::optional<bool> | native schema: std::optional<bool>; no supported Lua conversion | true | absent |
-| is_execute | std::optional<bool> | native schema: std::optional<bool>; no supported Lua conversion | true | absent |
-| end_address | std::optional<std::uint64_t> | native schema: std::optional<std::uint64_t>; no supported Lua conversion | true | absent |
-
-## SetProgramOptionResponse
-
-Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| applied | bool | native schema: bool; no supported Lua conversion | false | false |
-| previous_value | std::string | native schema: std::string; no supported Lua conversion | false | empty |
-
-## SetTypeAliasTargetResponse
-
-Included operation/factory schema. Reachability: included.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| updated | bool | boolean (preserve false) | false | false |
-
-## SetTypeEnumMemberCommentResponse
-
-Included operation/factory schema. Reachability: included.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| updated | bool | boolean (preserve false) | false | false |
-
-## SetTypeEnumMemberValueResponse
-
-Included operation/factory schema. Reachability: included.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| updated | bool | boolean (preserve false) | false | false |
-
-## SetTypeMemberCommentResponse
-
-Included operation/factory schema. Reachability: included.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| updated | bool | boolean (preserve false) | false | false |
-
-## SetTypeMemberTypeResponse
-
-Included operation/factory schema. Reachability: included.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| updated | bool | boolean (preserve false) | false | false |
-
-## ShutdownResponse
-
-Included operation/factory schema. Reachability: included.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| accepted | bool | boolean (preserve false) | false | false |
-
-## StackVariableRecord
-
-Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| var_id | std::string | native schema: std::string; no supported Lua conversion | false | empty |
-| name | std::string | native schema: std::string; no supported Lua conversion | false | empty |
-| data_type | std::string | native schema: std::string; no supported Lua conversion | false | empty |
-| stack_offset | std::int64_t | native schema: std::int64_t; no supported Lua conversion | false | 0 |
-| size | std::uint32_t | native schema: std::uint32_t; no supported Lua conversion | false | 0 |
-| is_parameter | bool | native schema: bool; no supported Lua conversion | false | false |
-| first_use_offset | std::int32_t | native schema: std::int32_t; no supported Lua conversion | false | 0 |
-| source_type | std::string | native schema: std::string; no supported Lua conversion | false | empty |
-
-## StartAnalysisResponse
-
-Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| job | AnalysisJobRecord | native schema: AnalysisJobRecord; no supported Lua conversion | false | no explicit initializer; inspect construction |
-
-## SwitchCaseRecord
-
-Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| value | std::int64_t | native schema: std::int64_t; no supported Lua conversion | false | 0 |
-| target_address | std::uint64_t | native schema: std::uint64_t; no supported Lua conversion | false | 0 |
-
-## SwitchTableRecord
-
-Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| function_entry | std::uint64_t | native schema: std::uint64_t; no supported Lua conversion | false | 0 |
-| switch_address | std::uint64_t | native schema: std::uint64_t; no supported Lua conversion | false | 0 |
-| case_count | std::uint32_t | native schema: std::uint32_t; no supported Lua conversion | false | 0 |
-| cases | std::vector<SwitchCaseRecord> | native schema: std::vector<SwitchCaseRecord>; no supported Lua conversion | false | empty |
-| default_address | std::uint64_t | native schema: std::uint64_t; no supported Lua conversion | false | 0 |
-
-## SymbolRecord
+### SymbolRecord
 
 Included operation/factory schema. Reachability: included.
 
@@ -1443,26 +416,7 @@ Included operation/factory schema. Reachability: included.
 | is_dynamic | bool | boolean (preserve false) | false | false |
 | is_external_entry_point | bool | boolean (preserve false) | false | false |
 
-## TagFunctionResponse
-
-Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| updated | bool | native schema: bool; no supported Lua conversion | false | false |
-
-## TransactionRecord
-
-Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| position | std::uint32_t | native schema: std::uint32_t; no supported Lua conversion | false | 0 |
-| name | std::string | native schema: std::string; no supported Lua conversion | false | empty |
-| kind | std::string | native schema: std::string; no supported Lua conversion | false | empty |
-| open_subtransactions | std::vector<std::string> | native schema: std::vector<std::string>; no supported Lua conversion | false | empty |
-
-## TypeAliasRecord
+### TypeAliasRecord
 
 Included operation/factory schema. Reachability: included.
 
@@ -1474,7 +428,7 @@ Included operation/factory schema. Reachability: included.
 | target_type | std::string | Lua string (no transcoding) | false | empty |
 | declaration | std::string | Lua string (no transcoding) | false | empty |
 
-## TypeEnumMemberRecord
+### TypeEnumMemberRecord
 
 Included operation/factory schema. Reachability: included.
 
@@ -1488,7 +442,7 @@ Included operation/factory schema. Reachability: included.
 | value | std::int64_t | checked Lua integer (std::int64_t) | false | 0 |
 | comment | std::string | Lua string (no transcoding) | false | empty |
 
-## TypeEnumRecord
+### TypeEnumRecord
 
 Included operation/factory schema. Reachability: included.
 
@@ -1501,7 +455,7 @@ Included operation/factory schema. Reachability: included.
 | is_signed | bool | boolean (preserve false) | false | false |
 | declaration | std::string | Lua string (no transcoding) | false | empty |
 
-## TypeMemberRecord
+### TypeMemberRecord
 
 Included operation/factory schema. Reachability: included.
 
@@ -1517,7 +471,7 @@ Included operation/factory schema. Reachability: included.
 | size | std::uint64_t | exact UInt64 | false | 0 |
 | comment | std::string | Lua string (no transcoding) | false | empty |
 
-## TypeRecord
+### TypeRecord
 
 Included operation/factory schema. Reachability: included.
 
@@ -1534,7 +488,7 @@ Included operation/factory schema. Reachability: included.
 | source_archive | std::string | Lua string (no transcoding) | false | empty |
 | universal_id | std::string | Lua string (no transcoding) | false | empty |
 
-## TypeUnionRecord
+### TypeUnionRecord
 
 Included operation/factory schema. Reachability: included.
 
@@ -1546,34 +500,7 @@ Included operation/factory schema. Reachability: included.
 | size | std::uint64_t | exact UInt64 | false | 0 |
 | declaration | std::string | Lua string (no transcoding) | false | empty |
 
-## UntagFunctionResponse
-
-Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| updated | bool | native schema: bool; no supported Lua conversion | false | false |
-
-## VarnodeRecord
-
-Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| space | std::string | native schema: std::string; no supported Lua conversion | false | empty |
-| offset | std::uint64_t | native schema: std::uint64_t; no supported Lua conversion | false | 0 |
-| size | std::uint32_t | native schema: std::uint32_t; no supported Lua conversion | false | 0 |
-| kind | std::string | native schema: std::string; no supported Lua conversion | false | empty |
-
-## WriteBytesResponse
-
-Included operation/factory schema. Reachability: included.
-
-| Field | Native type | Lua | Optional | Native default |
-| --- | --- | --- | --- | --- |
-| bytes_written | std::uint32_t | checked Lua integer (std::uint32_t) | false | 0 |
-
-## XrefRecord
+### XrefRecord
 
 Included operation/factory schema. Reachability: included.
 
@@ -1594,33 +521,1292 @@ Included operation/factory schema. Reachability: included.
 | to_function_address | std::uint64_t | exact UInt64 | false | 0 |
 | to_function_name | std::string | Lua string (no transcoding) | false | empty |
 
-## CommentKind
+## Requests options and input items
+
+### BytePatch
+
+Included operation/factory schema. Reachability: included.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| address | std::uint64_t | exact UInt64 | false | 0 |
+| data | std::vector<std::uint8_t> | binary Lua string (length preserving) | false | empty |
+
+### LocalClientOptions
+
+Included operation/factory schema. Reachability: included.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| ghidra_root | std::string | Lua string (no transcoding) | false | empty |
+| state_path | std::string | Lua string (no transcoding) | false | empty |
+| default_arch | std::string | Lua string (no transcoding) | false | empty |
+| pool_size | int | checked Lua integer (int) | false | 1 |
+
+### OpenProgramRequest
+
+Included operation/factory schema. Reachability: included.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| project_path | std::string | Lua string (no transcoding) | false | empty |
+| project_name | std::string | Lua string (no transcoding) | false | empty |
+| program_path | std::string | Lua string (no transcoding) | false | empty |
+| read_only | bool | boolean (preserve false) | false | false |
+| language_id | std::string | Lua string (no transcoding) | false | empty |
+| compiler_spec_id | std::string | Lua string (no transcoding) | false | empty |
+| format | std::string | Lua string (no transcoding) | false | empty |
+| base_address | std::uint64_t | exact UInt64 | false | 0 |
+
+## Response envelopes
+
+### AddPerfBenchmarkResponse
+
+Included operation/factory schema. Reachability: included.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| added | bool | boolean (preserve false) | false | false |
+
+### AddTypeEnumMemberResponse
+
+Included operation/factory schema. Reachability: included.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| updated | bool | boolean (preserve false) | false | false |
+
+### AddTypeMemberResponse
+
+Included operation/factory schema. Reachability: included.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| updated | bool | boolean (preserve false) | false | false |
+
+### ApplyDataTypeResponse
+
+Included operation/factory schema. Reachability: included.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| updated | bool | boolean (preserve false) | false | false |
+| data_type | std::string | Lua string (no transcoding) | false | empty |
+
+### ClearPerfBenchmarksResponse
+
+Included operation/factory schema. Reachability: included.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| cleared | bool | boolean (preserve false) | false | false |
+| removed_count | std::uint32_t | checked Lua integer (std::uint32_t) | false | 0 |
+
+### CloseProgramResponse
+
+Included operation/factory schema. Reachability: included.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| closed | bool | boolean (preserve false) | false | false |
+
+### CreateTypeAliasResponse
+
+Included operation/factory schema. Reachability: included.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| updated | bool | boolean (preserve false) | false | false |
+
+### CreateTypeEnumResponse
+
+Included operation/factory schema. Reachability: included.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| updated | bool | boolean (preserve false) | false | false |
+
+### CreateTypeResponse
+
+Included operation/factory schema. Reachability: included.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| updated | bool | boolean (preserve false) | false | false |
+
+### DeleteCommentResponse
+
+Included operation/factory schema. Reachability: included.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| deleted | bool | boolean (preserve false) | false | false |
+
+### DeleteDataItemResponse
+
+Included operation/factory schema. Reachability: included.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| deleted | bool | boolean (preserve false) | false | false |
+
+### DeletePerfBenchmarkResponse
+
+Included operation/factory schema. Reachability: included.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| deleted | bool | boolean (preserve false) | false | false |
+
+### DeleteSymbolResponse
+
+Included operation/factory schema. Reachability: included.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| deleted | bool | boolean (preserve false) | false | false |
+| deleted_count | std::uint32_t | checked Lua integer (std::uint32_t) | false | 0 |
+
+### DeleteTypeAliasResponse
+
+Included operation/factory schema. Reachability: included.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| deleted | bool | boolean (preserve false) | false | false |
+
+### DeleteTypeEnumMemberResponse
+
+Included operation/factory schema. Reachability: included.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| deleted | bool | boolean (preserve false) | false | false |
+
+### DeleteTypeMemberResponse
+
+Included operation/factory schema. Reachability: included.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| deleted | bool | boolean (preserve false) | false | false |
+
+### DeleteTypeResponse
+
+Included operation/factory schema. Reachability: included.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| deleted | bool | boolean (preserve false) | false | false |
+
+### DiscardProgramResponse
+
+Included operation/factory schema. Reachability: included.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| discarded | bool | boolean (preserve false) | false | false |
+
+### GetCommentsResponse
+
+Included operation/factory schema. Reachability: included.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| comments | std::vector<CommentRecord> | dense 1-based array of table model [CommentRecord](#commentrecord) | false | empty |
+
+### GetDecompilationResponse
+
+Included operation/factory schema. Reachability: included.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| decompilation | std::optional<DecompilationRecord> | optional table model [DecompilationRecord](#decompilationrecord) (absence=nil) | true | absent |
+
+### GetFunctionResponse
+
+Included operation/factory schema. Reachability: included.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| function | std::optional<FunctionRecord> | optional table model [FunctionRecord](#functionrecord) (absence=nil) | true | absent |
+
+### GetFunctionSignatureResponse
+
+Included operation/factory schema. Reachability: included.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| signature | std::optional<FunctionSignatureRecord> | optional table model [FunctionSignatureRecord](#functionsignaturerecord) (absence=nil) | true | absent |
+
+### GetInstructionResponse
+
+Included operation/factory schema. Reachability: included.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| instruction | std::optional<InstructionRecord> | optional table model [InstructionRecord](#instructionrecord) (absence=nil) | true | absent |
+
+### GetSymbolResponse
+
+Included operation/factory schema. Reachability: included.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| symbol | std::optional<SymbolRecord> | optional table model [SymbolRecord](#symbolrecord) (absence=nil) | true | absent |
+
+### GetTypeResponse
+
+Included operation/factory schema. Reachability: included.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| type | std::optional<TypeRecord> | optional table model [TypeRecord](#typerecord) (absence=nil) | true | absent |
+
+### ListBasicBlocksResponse
+
+Included operation/factory schema. Reachability: included.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| blocks | std::vector<BasicBlockRecord> | dense 1-based array of table model [BasicBlockRecord](#basicblockrecord) | false | empty |
+
+### ListCFGEdgesResponse
+
+Included operation/factory schema. Reachability: included.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| edges | std::vector<CFGEdgeRecord> | dense 1-based array of table model [CFGEdgeRecord](#cfgedgerecord) | false | empty |
+
+### ListDataItemsResponse
+
+Included operation/factory schema. Reachability: included.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| data_items | std::vector<DataItemRecord> | dense 1-based array of table model [DataItemRecord](#dataitemrecord) | false | empty |
+
+### ListDecompilationsResponse
+
+Included operation/factory schema. Reachability: included.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| decompilations | std::vector<DecompilationRecord> | dense 1-based array of table model [DecompilationRecord](#decompilationrecord) | false | empty |
+
+### ListDefinedStringsResponse
+
+Included operation/factory schema. Reachability: included.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| strings | std::vector<DefinedStringRecord> | dense 1-based array of table model [DefinedStringRecord](#definedstringrecord) | false | empty |
+
+### ListFunctionSignaturesResponse
+
+Included operation/factory schema. Reachability: included.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| signatures | std::vector<FunctionSignatureRecord> | dense 1-based array of table model [FunctionSignatureRecord](#functionsignaturerecord) | false | empty |
+
+### ListFunctionsResponse
+
+Included operation/factory schema. Reachability: included.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| functions | std::vector<FunctionRecord> | dense 1-based array of table model [FunctionRecord](#functionrecord) | false | empty |
+
+### ListInstructionsResponse
+
+Included operation/factory schema. Reachability: included.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| instructions | std::vector<InstructionRecord> | dense 1-based array of table model [InstructionRecord](#instructionrecord) | false | empty |
+
+### ListMemoryBlocksResponse
+
+Included operation/factory schema. Reachability: included.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| blocks | std::vector<MemoryBlockRecord> | dense 1-based array of table model [MemoryBlockRecord](#memoryblockrecord) | false | empty |
+
+### ListPerfBenchmarksResponse
+
+Included operation/factory schema. Reachability: included.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| records | std::vector<PerfBenchmarkRecord> | dense 1-based array of table model [PerfBenchmarkRecord](#perfbenchmarkrecord) | false | empty |
+
+### ListSymbolsResponse
+
+Included operation/factory schema. Reachability: included.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| symbols | std::vector<SymbolRecord> | dense 1-based array of table model [SymbolRecord](#symbolrecord) | false | empty |
+
+### ListTypeAliasesResponse
+
+Included operation/factory schema. Reachability: included.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| aliases | std::vector<TypeAliasRecord> | dense 1-based array of table model [TypeAliasRecord](#typealiasrecord) | false | empty |
+
+### ListTypeEnumMembersResponse
+
+Included operation/factory schema. Reachability: included.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| members | std::vector<TypeEnumMemberRecord> | dense 1-based array of table model [TypeEnumMemberRecord](#typeenummemberrecord) | false | empty |
+
+### ListTypeEnumsResponse
+
+Included operation/factory schema. Reachability: included.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| enums | std::vector<TypeEnumRecord> | dense 1-based array of table model [TypeEnumRecord](#typeenumrecord) | false | empty |
+
+### ListTypeMembersResponse
+
+Included operation/factory schema. Reachability: included.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| members | std::vector<TypeMemberRecord> | dense 1-based array of table model [TypeMemberRecord](#typememberrecord) | false | empty |
+
+### ListTypeUnionsResponse
+
+Included operation/factory schema. Reachability: included.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| unions | std::vector<TypeUnionRecord> | dense 1-based array of table model [TypeUnionRecord](#typeunionrecord) | false | empty |
+
+### ListTypesResponse
+
+Included operation/factory schema. Reachability: included.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| types | std::vector<TypeRecord> | dense 1-based array of table model [TypeRecord](#typerecord) | false | empty |
+
+### ListXrefsResponse
+
+Included operation/factory schema. Reachability: included.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| xrefs | std::vector<XrefRecord> | dense 1-based array of table model [XrefRecord](#xrefrecord) | false | empty |
+
+### OpenProgramResponse
+
+Included operation/factory schema. Reachability: included.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| program_name | std::string | Lua string (no transcoding) | false | empty |
+| language_id | std::string | Lua string (no transcoding) | false | empty |
+| compiler_spec | std::string | Lua string (no transcoding) | false | empty |
+| image_base | std::uint64_t | exact UInt64 | false | 0 |
+| md5 | std::string | Lua string (no transcoding) | false | empty |
+| sha256 | std::string | Lua string (no transcoding) | false | empty |
+| executable_format | std::string | Lua string (no transcoding) | false | empty |
+| entry_point | std::uint64_t | exact UInt64 | false | 0 |
+| has_entry_point | bool | boolean (preserve false) | false | false |
+
+### PatchBytesBatchResponse
+
+Included operation/factory schema. Reachability: included.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| patch_count | std::uint32_t | checked Lua integer (std::uint32_t) | false | 0 |
+| bytes_written | std::uint32_t | checked Lua integer (std::uint32_t) | false | 0 |
+
+### ReadBytesResponse
+
+Included operation/factory schema. Reachability: included.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| data | std::vector<std::uint8_t> | binary Lua string (length preserving) | false | empty |
+
+### RenameDataItemResponse
+
+Included operation/factory schema. Reachability: included.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| updated | bool | boolean (preserve false) | false | false |
+| name | std::string | Lua string (no transcoding) | false | empty |
+
+### RenameFunctionLocalResponse
+
+Included operation/factory schema. Reachability: included.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| updated | bool | boolean (preserve false) | false | false |
+| local_id | std::string | Lua string (no transcoding) | false | empty |
+| name | std::string | Lua string (no transcoding) | false | empty |
+
+### RenameFunctionParameterResponse
+
+Included operation/factory schema. Reachability: included.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| updated | bool | boolean (preserve false) | false | false |
+| name | std::string | Lua string (no transcoding) | false | empty |
+
+### RenameFunctionResponse
+
+Included operation/factory schema. Reachability: included.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| renamed | bool | boolean (preserve false) | false | false |
+| name | std::string | Lua string (no transcoding) | false | empty |
+
+### RenameSymbolResponse
+
+Included operation/factory schema. Reachability: included.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| renamed | bool | boolean (preserve false) | false | false |
+| name | std::string | Lua string (no transcoding) | false | empty |
+
+### RenameTypeEnumMemberResponse
+
+Included operation/factory schema. Reachability: included.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| updated | bool | boolean (preserve false) | false | false |
+
+### RenameTypeMemberResponse
+
+Included operation/factory schema. Reachability: included.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| updated | bool | boolean (preserve false) | false | false |
+
+### RenameTypeResponse
+
+Included operation/factory schema. Reachability: included.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| updated | bool | boolean (preserve false) | false | false |
+| name | std::string | Lua string (no transcoding) | false | empty |
+
+### RevisionResponse
+
+Included operation/factory schema. Reachability: included.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| program_id | std::uint64_t | exact UInt64 | false | 0 |
+| modification_number | std::uint64_t | exact UInt64 | false | 0 |
+| program_path | std::string | Lua string (no transcoding) | false | empty |
+| file_id | std::string | Lua string (no transcoding) | false | empty |
+| file_version | std::int32_t | checked Lua integer (std::int32_t) | false | 0 |
+| file_last_modified_time | std::int64_t | checked Lua integer (std::int64_t) | false | 0 |
+
+### SaveProgramResponse
+
+Included operation/factory schema. Reachability: included.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| saved | bool | boolean (preserve false) | false | false |
+
+### SetCommentResponse
+
+Included operation/factory schema. Reachability: included.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| updated | bool | boolean (preserve false) | false | false |
+
+### SetFunctionLocalTypeResponse
+
+Included operation/factory schema. Reachability: included.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| updated | bool | boolean (preserve false) | false | false |
+| local_id | std::string | Lua string (no transcoding) | false | empty |
+| data_type | std::string | Lua string (no transcoding) | false | empty |
+
+### SetFunctionParameterTypeResponse
+
+Included operation/factory schema. Reachability: included.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| updated | bool | boolean (preserve false) | false | false |
+| data_type | std::string | Lua string (no transcoding) | false | empty |
+
+### SetFunctionSignatureResponse
+
+Included operation/factory schema. Reachability: included.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| updated | bool | boolean (preserve false) | false | false |
+| function_name | std::string | Lua string (no transcoding) | false | empty |
+| prototype | std::string | Lua string (no transcoding) | false | empty |
+
+### SetTypeAliasTargetResponse
+
+Included operation/factory schema. Reachability: included.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| updated | bool | boolean (preserve false) | false | false |
+
+### SetTypeEnumMemberCommentResponse
+
+Included operation/factory schema. Reachability: included.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| updated | bool | boolean (preserve false) | false | false |
+
+### SetTypeEnumMemberValueResponse
+
+Included operation/factory schema. Reachability: included.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| updated | bool | boolean (preserve false) | false | false |
+
+### SetTypeMemberCommentResponse
+
+Included operation/factory schema. Reachability: included.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| updated | bool | boolean (preserve false) | false | false |
+
+### SetTypeMemberTypeResponse
+
+Included operation/factory schema. Reachability: included.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| updated | bool | boolean (preserve false) | false | false |
+
+### ShutdownResponse
+
+Included operation/factory schema. Reachability: included.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| accepted | bool | boolean (preserve false) | false | false |
+
+### WriteBytesResponse
+
+Included operation/factory schema. Reachability: included.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| bytes_written | std::uint32_t | checked Lua integer (std::uint32_t) | false | 0 |
+
+## Supported enums
+
+### CommentKind
 
 enum CommentKind: "unspecified", "eol", "pre", "post", "plate", "repeatable"; unknown values remain Lua integers
 
 Native values: `kUnspecified = 0, kEol = 1, kPre = 2, kPost = 3, kPlate = 4, kRepeatable = 5,`. Reachability: included.
 
-## DecompileLocalKind
+### DecompileLocalKind
 
 enum DecompileLocalKind: "unspecified", "param", "local", "temp"; unknown values remain Lua integers
 
 Native values: `kUnspecified = 0, kParam = 1, kLocal = 2, kTemp = 3,`. Reachability: included.
 
-## DecompileTokenKind
+### DecompileTokenKind
 
 enum DecompileTokenKind: "unspecified", "keyword", "comment", "type", "function", "variable", "const", "parameter", "global", "default", "error", "special"; unknown values remain Lua integers
 
 Native values: `kUnspecified = 0, kKeyword = 1, kComment = 2, kType = 3, kFunction = 4, kVariable = 5, kConst = 6, kParameter = 7, kGlobal = 8, kDefault = 9, kError = 10, kSpecial = 11,`. Reachability: included.
 
-## PcodeMaturity
-
-Native-only enum; no supported Lua conversion claim.
-
-Native values: `High = 0, Raw = 1`. Reachability: excluded only.
-
-## ShutdownPolicy
+### ShutdownPolicy
 
 enum ShutdownPolicy: "save", "discard" (request strings only)
 
 Native values: `kUnspecified = 0, kSave = 1, kDiscard = 2, kNone = 3,`. Reachability: included and excluded.
+
+## Native-only schemas
+
+### AddBookmarkResponse
+
+Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| updated | bool | native schema: bool; no supported Lua conversion | false | false |
+
+### AddBreakpointResponse
+
+Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| updated | bool | native schema: bool; no supported Lua conversion | false | false |
+
+### AnalysisJobRecord
+
+Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| job_id | std::uint64_t | native schema: std::uint64_t; no supported Lua conversion | false | 0 |
+| mode | std::string | native schema: std::string; no supported Lua conversion | false | empty |
+| state | std::string | native schema: std::string; no supported Lua conversion | false | empty |
+| started_unix_ms | std::int64_t | native schema: std::int64_t; no supported Lua conversion | false | 0 |
+| ended_unix_ms | std::int64_t | native schema: std::int64_t; no supported Lua conversion | false | 0 |
+| elapsed_ms | std::uint64_t | native schema: std::uint64_t; no supported Lua conversion | false | 0 |
+| message | std::string | native schema: std::string; no supported Lua conversion | false | empty |
+
+### AnalyzerPatternMatch
+
+Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| pattern | std::string | native schema: std::string; no supported Lua conversion | false | empty |
+| enabled | bool | native schema: bool; no supported Lua conversion | false | false |
+| options | std::vector<std::string> | native schema: std::vector<std::string>; no supported Lua conversion | false | empty |
+
+### BookmarkRecord
+
+Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| address | std::uint64_t | native schema: std::uint64_t; no supported Lua conversion | false | 0 |
+| type | std::string | native schema: std::string; no supported Lua conversion | false | empty |
+| category | std::string | native schema: std::string; no supported Lua conversion | false | empty |
+| comment | std::string | native schema: std::string; no supported Lua conversion | false | empty |
+
+### BreakpointRecord
+
+Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| address | std::uint64_t | native schema: std::uint64_t; no supported Lua conversion | false | 0 |
+| enabled | bool | native schema: bool; no supported Lua conversion | false | false |
+| kind | std::string | native schema: std::string; no supported Lua conversion | false | empty |
+| size | std::uint64_t | native schema: std::uint64_t; no supported Lua conversion | false | 0 |
+| condition | std::string | native schema: std::string; no supported Lua conversion | false | empty |
+| group | std::string | native schema: std::string; no supported Lua conversion | false | empty |
+
+### CancelAnalysisResponse
+
+Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| cancelled | bool | native schema: bool; no supported Lua conversion | false | false |
+
+### CloseProjectResponse
+
+Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| closed | bool | native schema: bool; no supported Lua conversion | false | false |
+
+### CreateFunctionTagResponse
+
+Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| created | bool | native schema: bool; no supported Lua conversion | false | false |
+
+### CreateMemoryBlockResponse
+
+Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| created | bool | native schema: bool; no supported Lua conversion | false | false |
+| block | MemoryBlockRecord | native schema: MemoryBlockRecord; no supported Lua conversion | false | no explicit initializer; inspect construction |
+
+### CreateMemoryBlockSpec
+
+Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| name | std::string | native schema: std::string; no supported Lua conversion | false | empty |
+| start_address | std::uint64_t | native schema: std::uint64_t; no supported Lua conversion | false | 0 |
+| size | std::uint64_t | native schema: std::uint64_t; no supported Lua conversion | false | 0 |
+| is_read | bool | native schema: bool; no supported Lua conversion | false | true |
+| is_write | bool | native schema: bool; no supported Lua conversion | false | true |
+| is_execute | bool | native schema: bool; no supported Lua conversion | false | false |
+| initialized | bool | native schema: bool; no supported Lua conversion | false | false |
+| overlay | bool | native schema: bool; no supported Lua conversion | false | false |
+
+### DeleteBookmarkResponse
+
+Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| deleted | bool | native schema: bool; no supported Lua conversion | false | false |
+
+### DeleteBreakpointResponse
+
+Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| deleted | bool | native schema: bool; no supported Lua conversion | false | false |
+
+### DeleteFunctionTagResponse
+
+Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| deleted | bool | native schema: bool; no supported Lua conversion | false | false |
+
+### DeleteTypeEnumResponse
+
+Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| deleted | bool | native schema: bool; no supported Lua conversion | false | false |
+
+### DominatorRecord
+
+Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| function_entry | std::uint64_t | native schema: std::uint64_t; no supported Lua conversion | false | 0 |
+| block_address | std::uint64_t | native schema: std::uint64_t; no supported Lua conversion | false | 0 |
+| idom_address | std::uint64_t | native schema: std::uint64_t; no supported Lua conversion | false | 0 |
+| depth | std::uint32_t | native schema: std::uint32_t; no supported Lua conversion | false | 0 |
+| is_entry | bool | native schema: bool; no supported Lua conversion | false | false |
+
+### FunctionFrameRecord
+
+Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| function_entry | std::uint64_t | native schema: std::uint64_t; no supported Lua conversion | false | 0 |
+| frame_size | std::int64_t | native schema: std::int64_t; no supported Lua conversion | false | 0 |
+| local_size | std::int64_t | native schema: std::int64_t; no supported Lua conversion | false | 0 |
+| parameter_size | std::int64_t | native schema: std::int64_t; no supported Lua conversion | false | 0 |
+| parameter_offset | std::int64_t | native schema: std::int64_t; no supported Lua conversion | false | 0 |
+| return_address_offset | std::int64_t | native schema: std::int64_t; no supported Lua conversion | false | 0 |
+| grows_negative | bool | native schema: bool; no supported Lua conversion | false | false |
+| stack_pointer_register | std::string | native schema: std::string; no supported Lua conversion | false | empty |
+| stack_variables | std::vector<StackVariableRecord> | native schema: std::vector<StackVariableRecord>; no supported Lua conversion | false | empty |
+
+### FunctionTagMappingRecord
+
+Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| function_entry | std::uint64_t | native schema: std::uint64_t; no supported Lua conversion | false | 0 |
+| tag_name | std::string | native schema: std::string; no supported Lua conversion | false | empty |
+
+### FunctionTagRecord
+
+Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| name | std::string | native schema: std::string; no supported Lua conversion | false | empty |
+| comment | std::string | native schema: std::string; no supported Lua conversion | false | empty |
+
+### GetPcodeResponse
+
+Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| pcode | std::optional<PcodeRecord> | native schema: std::optional<PcodeRecord>; no supported Lua conversion | true | absent |
+
+### ImportProgramRequest
+
+Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| source_path | std::string | native schema: std::string; no supported Lua conversion | false | empty |
+| project_folder_path | std::string | native schema: std::string; no supported Lua conversion | false | empty |
+| program_name | std::string | native schema: std::string; no supported Lua conversion | false | empty |
+| overwrite | bool | native schema: bool; no supported Lua conversion | false | false |
+| analyze | bool | native schema: bool; no supported Lua conversion | false | false |
+| language_id | std::string | native schema: std::string; no supported Lua conversion | false | empty |
+| compiler_spec_id | std::string | native schema: std::string; no supported Lua conversion | false | empty |
+| loader_class | std::string | native schema: std::string; no supported Lua conversion | false | empty |
+| loader_args | std::vector<LoaderArg> | native schema: std::vector<LoaderArg>; no supported Lua conversion | false | empty |
+| analyzers_off | std::vector<std::string> | native schema: std::vector<std::string>; no supported Lua conversion | false | empty |
+| analyzers_on | std::vector<std::string> | native schema: std::vector<std::string>; no supported Lua conversion | false | empty |
+
+### ImportProgramResponse
+
+Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| program_paths | std::vector<std::string> | native schema: std::vector<std::string>; no supported Lua conversion | false | empty |
+| primary_program_path | std::string | native schema: std::string; no supported Lua conversion | false | empty |
+| analyzer_matches | std::vector<AnalyzerPatternMatch> | native schema: std::vector<AnalyzerPatternMatch>; no supported Lua conversion | false | empty |
+
+### InstructionOperandRecord
+
+Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| address | std::uint64_t | native schema: std::uint64_t; no supported Lua conversion | false | 0 |
+| operand_index | std::uint32_t | native schema: std::uint32_t; no supported Lua conversion | false | 0 |
+| text | std::string | native schema: std::string; no supported Lua conversion | false | empty |
+| type_name | std::string | native schema: std::string; no supported Lua conversion | false | empty |
+| ref_type | std::string | native schema: std::string; no supported Lua conversion | false | empty |
+
+### ListAnalysisJobsResponse
+
+Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| jobs | std::vector<AnalysisJobRecord> | native schema: std::vector<AnalysisJobRecord>; no supported Lua conversion | false | empty |
+
+### ListBookmarksResponse
+
+Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| bookmarks | std::vector<BookmarkRecord> | native schema: std::vector<BookmarkRecord>; no supported Lua conversion | false | empty |
+
+### ListBreakpointsResponse
+
+Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| breakpoints | std::vector<BreakpointRecord> | native schema: std::vector<BreakpointRecord>; no supported Lua conversion | false | empty |
+
+### ListDominatorsResponse
+
+Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| dominators | std::vector<DominatorRecord> | native schema: std::vector<DominatorRecord>; no supported Lua conversion | false | empty |
+
+### ListFunctionFramesResponse
+
+Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| frames | std::vector<FunctionFrameRecord> | native schema: std::vector<FunctionFrameRecord>; no supported Lua conversion | false | empty |
+
+### ListFunctionTagMappingsResponse
+
+Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| mappings | std::vector<FunctionTagMappingRecord> | native schema: std::vector<FunctionTagMappingRecord>; no supported Lua conversion | false | empty |
+
+### ListFunctionTagsResponse
+
+Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| tags | std::vector<FunctionTagRecord> | native schema: std::vector<FunctionTagRecord>; no supported Lua conversion | false | empty |
+
+### ListInstructionOperandsResponse
+
+Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| operands | std::vector<InstructionOperandRecord> | native schema: std::vector<InstructionOperandRecord>; no supported Lua conversion | false | empty |
+
+### ListLoopsResponse
+
+Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| loops | std::vector<LoopRecord> | native schema: std::vector<LoopRecord>; no supported Lua conversion | false | empty |
+
+### ListPostDominatorsResponse
+
+Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| post_dominators | std::vector<PostDominatorRecord> | native schema: std::vector<PostDominatorRecord>; no supported Lua conversion | false | empty |
+
+### ListProgramOptionsResponse
+
+Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| options | std::vector<ProgramOptionRecord> | native schema: std::vector<ProgramOptionRecord>; no supported Lua conversion | false | empty |
+
+### ListProjectFilesRequest
+
+Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| include_folders | bool | native schema: bool; no supported Lua conversion | false | false |
+| programs_only | bool | native schema: bool; no supported Lua conversion | false | false |
+
+### ListProjectFilesResponse
+
+Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| files | std::vector<ProjectFile> | native schema: std::vector<ProjectFile>; no supported Lua conversion | false | empty |
+
+### ListSwitchTablesResponse
+
+Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| switch_tables | std::vector<SwitchTableRecord> | native schema: std::vector<SwitchTableRecord>; no supported Lua conversion | false | empty |
+
+### ListTransactionsResponse
+
+Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| transactions | std::vector<TransactionRecord> | native schema: std::vector<TransactionRecord>; no supported Lua conversion | false | empty |
+
+### LoaderArg
+
+Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| name | std::string | native schema: std::string; no supported Lua conversion | false | empty |
+| value | std::string | native schema: std::string; no supported Lua conversion | false | empty |
+
+### LoopRecord
+
+Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| function_entry | std::uint64_t | native schema: std::uint64_t; no supported Lua conversion | false | 0 |
+| header_address | std::uint64_t | native schema: std::uint64_t; no supported Lua conversion | false | 0 |
+| back_edge_source | std::uint64_t | native schema: std::uint64_t; no supported Lua conversion | false | 0 |
+| loop_kind | std::string | native schema: std::string; no supported Lua conversion | false | empty |
+| block_count | std::uint32_t | native schema: std::uint32_t; no supported Lua conversion | false | 0 |
+| depth | std::uint32_t | native schema: std::uint32_t; no supported Lua conversion | false | 0 |
+
+### MoveMemoryBlockResponse
+
+Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| moved | bool | native schema: bool; no supported Lua conversion | false | false |
+| block | MemoryBlockRecord | native schema: MemoryBlockRecord; no supported Lua conversion | false | no explicit initializer; inspect construction |
+
+### OpenProjectRequest
+
+Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| project_path | std::string | native schema: std::string; no supported Lua conversion | false | empty |
+| project_name | std::string | native schema: std::string; no supported Lua conversion | false | empty |
+| create | bool | native schema: bool; no supported Lua conversion | false | false |
+| read_only | bool | native schema: bool; no supported Lua conversion | false | false |
+
+### OpenProjectResponse
+
+Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| project_path | std::string | native schema: std::string; no supported Lua conversion | false | empty |
+| project_name | std::string | native schema: std::string; no supported Lua conversion | false | empty |
+| created | bool | native schema: bool; no supported Lua conversion | false | false |
+
+### ParseDeclarationsResponse
+
+Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| types_created | int | native schema: int; no supported Lua conversion | false | 0 |
+| type_names | std::vector<std::string> | native schema: std::vector<std::string>; no supported Lua conversion | false | empty |
+| errors | std::vector<std::string> | native schema: std::vector<std::string>; no supported Lua conversion | false | empty |
+
+### PcodeOpRecord
+
+Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| seq | std::uint64_t | native schema: std::uint64_t; no supported Lua conversion | false | 0 |
+| op | std::string | native schema: std::string; no supported Lua conversion | false | empty |
+| addr | std::uint64_t | native schema: std::uint64_t; no supported Lua conversion | false | 0 |
+| has_address | bool | native schema: bool; no supported Lua conversion | false | false |
+| has_output | bool | native schema: bool; no supported Lua conversion | false | false |
+| output | VarnodeRecord | native schema: VarnodeRecord; no supported Lua conversion | false | no explicit initializer; inspect construction |
+| inputs | std::vector<VarnodeRecord> | native schema: std::vector<VarnodeRecord>; no supported Lua conversion | false | empty |
+
+### PcodeRecord
+
+Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| function_entry_address | std::uint64_t | native schema: std::uint64_t; no supported Lua conversion | false | 0 |
+| ops | std::vector<PcodeOpRecord> | native schema: std::vector<PcodeOpRecord>; no supported Lua conversion | false | empty |
+| completed | bool | native schema: bool; no supported Lua conversion | false | false |
+| error_message | std::string | native schema: std::string; no supported Lua conversion | false | empty |
+| maturity | PcodeMaturity | native schema: PcodeMaturity; no supported Lua conversion | false | PcodeMaturity::High |
+
+### PostDominatorRecord
+
+Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| function_entry | std::uint64_t | native schema: std::uint64_t; no supported Lua conversion | false | 0 |
+| block_address | std::uint64_t | native schema: std::uint64_t; no supported Lua conversion | false | 0 |
+| ipdom_address | std::uint64_t | native schema: std::uint64_t; no supported Lua conversion | false | 0 |
+| depth | std::uint32_t | native schema: std::uint32_t; no supported Lua conversion | false | 0 |
+| is_exit | bool | native schema: bool; no supported Lua conversion | false | false |
+
+### ProgramOptionRecord
+
+Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| category | std::string | native schema: std::string; no supported Lua conversion | false | empty |
+| name | std::string | native schema: std::string; no supported Lua conversion | false | empty |
+| value | std::string | native schema: std::string; no supported Lua conversion | false | empty |
+| type | std::string | native schema: std::string; no supported Lua conversion | false | empty |
+| description | std::string | native schema: std::string; no supported Lua conversion | false | empty |
+| default_value | std::string | native schema: std::string; no supported Lua conversion | false | empty |
+| settable | bool | native schema: bool; no supported Lua conversion | false | false |
+| allowed_values | std::vector<std::string> | native schema: std::vector<std::string>; no supported Lua conversion | false | empty |
+
+### ProjectFile
+
+Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| path | std::string | native schema: std::string; no supported Lua conversion | false | empty |
+| name | std::string | native schema: std::string; no supported Lua conversion | false | empty |
+| folder_path | std::string | native schema: std::string; no supported Lua conversion | false | empty |
+| content_type | std::string | native schema: std::string; no supported Lua conversion | false | empty |
+| domain_object_class | std::string | native schema: std::string; no supported Lua conversion | false | empty |
+| is_folder | bool | native schema: bool; no supported Lua conversion | false | false |
+| is_program | bool | native schema: bool; no supported Lua conversion | false | false |
+
+### RemoveMemoryBlockResponse
+
+Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| removed | bool | native schema: bool; no supported Lua conversion | false | false |
+
+### SetBreakpointConditionResponse
+
+Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| updated | bool | native schema: bool; no supported Lua conversion | false | false |
+
+### SetBreakpointEnabledResponse
+
+Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| updated | bool | native schema: bool; no supported Lua conversion | false | false |
+
+### SetBreakpointGroupResponse
+
+Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| updated | bool | native schema: bool; no supported Lua conversion | false | false |
+
+### SetBreakpointKindResponse
+
+Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| updated | bool | native schema: bool; no supported Lua conversion | false | false |
+
+### SetBreakpointSizeResponse
+
+Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| updated | bool | native schema: bool; no supported Lua conversion | false | false |
+
+### SetMemoryBlockAttributesResponse
+
+Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| updated | bool | native schema: bool; no supported Lua conversion | false | false |
+| block | MemoryBlockRecord | native schema: MemoryBlockRecord; no supported Lua conversion | false | no explicit initializer; inspect construction |
+
+### SetMemoryBlockAttributesSpec
+
+Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| address | std::uint64_t | native schema: std::uint64_t; no supported Lua conversion | false | 0 |
+| name | std::optional<std::string> | native schema: std::optional<std::string>; no supported Lua conversion | true | absent |
+| is_read | std::optional<bool> | native schema: std::optional<bool>; no supported Lua conversion | true | absent |
+| is_write | std::optional<bool> | native schema: std::optional<bool>; no supported Lua conversion | true | absent |
+| is_execute | std::optional<bool> | native schema: std::optional<bool>; no supported Lua conversion | true | absent |
+| end_address | std::optional<std::uint64_t> | native schema: std::optional<std::uint64_t>; no supported Lua conversion | true | absent |
+
+### SetProgramOptionResponse
+
+Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| applied | bool | native schema: bool; no supported Lua conversion | false | false |
+| previous_value | std::string | native schema: std::string; no supported Lua conversion | false | empty |
+
+### StackVariableRecord
+
+Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| var_id | std::string | native schema: std::string; no supported Lua conversion | false | empty |
+| name | std::string | native schema: std::string; no supported Lua conversion | false | empty |
+| data_type | std::string | native schema: std::string; no supported Lua conversion | false | empty |
+| stack_offset | std::int64_t | native schema: std::int64_t; no supported Lua conversion | false | 0 |
+| size | std::uint32_t | native schema: std::uint32_t; no supported Lua conversion | false | 0 |
+| is_parameter | bool | native schema: bool; no supported Lua conversion | false | false |
+| first_use_offset | std::int32_t | native schema: std::int32_t; no supported Lua conversion | false | 0 |
+| source_type | std::string | native schema: std::string; no supported Lua conversion | false | empty |
+
+### StartAnalysisResponse
+
+Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| job | AnalysisJobRecord | native schema: AnalysisJobRecord; no supported Lua conversion | false | no explicit initializer; inspect construction |
+
+### SwitchCaseRecord
+
+Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| value | std::int64_t | native schema: std::int64_t; no supported Lua conversion | false | 0 |
+| target_address | std::uint64_t | native schema: std::uint64_t; no supported Lua conversion | false | 0 |
+
+### SwitchTableRecord
+
+Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| function_entry | std::uint64_t | native schema: std::uint64_t; no supported Lua conversion | false | 0 |
+| switch_address | std::uint64_t | native schema: std::uint64_t; no supported Lua conversion | false | 0 |
+| case_count | std::uint32_t | native schema: std::uint32_t; no supported Lua conversion | false | 0 |
+| cases | std::vector<SwitchCaseRecord> | native schema: std::vector<SwitchCaseRecord>; no supported Lua conversion | false | empty |
+| default_address | std::uint64_t | native schema: std::uint64_t; no supported Lua conversion | false | 0 |
+
+### TagFunctionResponse
+
+Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| updated | bool | native schema: bool; no supported Lua conversion | false | false |
+
+### TransactionRecord
+
+Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| position | std::uint32_t | native schema: std::uint32_t; no supported Lua conversion | false | 0 |
+| name | std::string | native schema: std::string; no supported Lua conversion | false | empty |
+| kind | std::string | native schema: std::string; no supported Lua conversion | false | empty |
+| open_subtransactions | std::vector<std::string> | native schema: std::vector<std::string>; no supported Lua conversion | false | empty |
+
+### UntagFunctionResponse
+
+Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| updated | bool | native schema: bool; no supported Lua conversion | false | false |
+
+### VarnodeRecord
+
+Native-only schema; no supported Lua conversion claim. Reachability: excluded only.
+
+| Field | Native type | Lua | Optional | Native default |
+| --- | --- | --- | --- | --- |
+| space | std::string | native schema: std::string; no supported Lua conversion | false | empty |
+| offset | std::uint64_t | native schema: std::uint64_t; no supported Lua conversion | false | 0 |
+| size | std::uint32_t | native schema: std::uint32_t; no supported Lua conversion | false | 0 |
+| kind | std::string | native schema: std::string; no supported Lua conversion | false | empty |
+
+## Native-only enums
+
+### PcodeMaturity
+
+Native-only enum; no supported Lua conversion claim.
+
+Native values: `High = 0, Raw = 1`. Reachability: excluded only.
 

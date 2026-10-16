@@ -32,3 +32,63 @@ for _,item in ipairs{{'src/slice_convert.hpp','DecompileLocalKind'},{'src/slice_
 end
 U.run{'lua5.4','scripts/render-fields.lua','--check'}
 print('Field scalar/model/enum, recursive reachability, native-only, converter spelling/fallback and fresh rendering PASS')
+-- Exercise the owning renderer, not a parallel classification implementation.
+local R=require('render-fields')
+local groups=R.partition(d)
+local seen,total={},0
+for i,names in ipairs(groups) do
+ local previous
+ for _,name in ipairs(names) do
+  assert(not seen[name] and (not previous or previous<name),'partition duplicate/order')
+  seen[name]=i; previous=name; total=total+1
+ end
+end
+local expected=0
+for name in pairs(d.types) do expected=expected+1; assert(seen[name]) end
+for name in pairs(d.enums) do expected=expected+1; assert(seen[name]) end
+assert(total==expected)
+assert(seen.HealthStatus==1 and seen.Capability==1 and seen.BytePatch==2)
+assert(seen.LocalClientOptions==2 and seen.PcodeRecord==5 and seen.PcodeMaturity==6)
+local actual={}
+for name in text:gmatch('\n### ([%w_]+)\n') do
+ assert(not actual[name],'duplicate rendered model'); actual[name]=true
+end
+for name in pairs(seen) do assert(actual[name],'missing rendered model '..name) end
+local cursor=1
+for _,names in ipairs(groups) do
+ for _,name in ipairs(names) do
+  local start,finish=text:find('\n### '..name..'\n',cursor,true)
+  assert(start,'rendered partition order '..name); cursor=finish+1
+  assert(text:find('['..name..'](#'..name:lower()..')',1,true),'missing index '..name)
+ end
+end
+-- Nested model and enum links must all resolve to unique emitted headings.
+for target in text:gmatch('%]%(%#([%w_]+)%)') do
+ local found=false
+ for name in pairs(actual) do if name:lower()==target then found=true end end
+ assert(found,'broken nested/index link '..target)
+end
+local function reject(change,needle)
+ local copy=require('tool_json').decode(U.read'api/coverage.json')
+ change(copy)
+ local ok,err=pcall(R.render,copy)
+ assert(not ok and tostring(err):find(needle,1,true),tostring(err))
+end
+reject(function(c) c.types.FunctionRecord.lua_scope='unknown' end,'unknown scope')
+reject(function(c) c.enums.CommentKind.lua_scope=nil end,'unknown scope')
+reject(function(c) c.types.Unassigned={lua_scope='included'} end,'unassigned included model')
+reject(function(c) c.enums.FunctionRecord={lua_scope='included'} end,'duplicate model')
+reject(function(c) c.types.HealthStatus.lua_scope='native-only' end,'wrong exception partition')
+reject(function(c) c.types.Capability=nil end,'wrong exception partition')
+reject(function(c) c.types.BytePatch.lua_scope='native-only' end,'wrong exception partition')
+local copy=require('tool_json').decode(U.read'api/coverage.json')
+copy.types.NativeLookingRecord={lua_scope='native-only',fields={},operation_reachability='test only'}
+copy.enums.NativeLookingEnum={lua_scope='native-only',values='test',operation_reachability='test only'}
+local native=R.partition(copy)
+local function contains(names,name) for _,n in ipairs(names) do if n==name then return true end end end
+assert(contains(native[5],'NativeLookingRecord') and contains(native[6],'NativeLookingEnum'))
+-- Freshness comparison is exact; field changes cannot retain old output.
+copy=require('tool_json').decode(U.read'api/coverage.json')
+copy.types.FunctionRecord.fields[1].native_default='sensitivity marker'
+assert(R.render(copy)~=text,'field change must invalidate freshness')
+print('Scope-first exhaustive renderer partition, exceptions, ordered index, nested links and rejection sensitivity PASS')
