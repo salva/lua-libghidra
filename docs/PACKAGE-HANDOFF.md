@@ -21,7 +21,7 @@ coordination remain separate.
   completeness and immutable historical M3 manual/runtime evidence separation.
 
 Use fresh caller-selected directories. See `PACKAGE-FOUNDATION.md` for complete
-local CMake/LuaRocks inputs and generator decision request. Configuration never
+local CMake/LuaRocks inputs and resolved narrow source-generator approval. Configuration never
 fetches dependencies. Optional refresh tooling is explicit, not install behavior.
 
 ## Existing local installed artifacts

@@ -1,17 +1,29 @@
 # Installed core qualification — current evidence, not release approval
 
-Foundation `2abb88c`, Linux x86-64 ordinary C-built Lua 5.4/64-bit integers,
+Current package foundation `04eb4e2` (earlier clean evidence at `2abb88c`), Linux x86-64 ordinary C-built Lua 5.4/64-bit integers,
 authorized patched native-local engine only. The current [API](API.md),
 [field manifest](../api/FIELDS.md), [notices](NOTICES.md) and installed examples
 are local handoff artifacts. Independent review and M5 approval are not inferred.
 
 ## Applicable evidence and its limits
 
+Current applicability: changed M4 adapters are not the pre-M4 wrapper.
+M4 independent review v6 at `595b77c` traces protected request/converter copying,
+post-Lua-phase owner rechecks and extended fault/exception/finalizer/read-order
+coverage, plus ordinary and wrapper/host ASan/LSan/UBSan evidence. Its historical
+pending-policy disposition is superseded only by explicit YES/19d0945 below.
+Current foundation 04eb4e2 rebuilt owner.cpp and the SDK module; the rebuilt
+installed primary `work:///cards/card-e-a/processes/proc-1abfafa389c2/stdout.log`
+confirms real core ELF/project, standalone/static/shared hosts, lifecycle/pages/
+mutation/persistence, constructor/cache and runtime-absence regressions. This is
+current exercised evidence, not an assertion that old adapters remained unchanged.
+
+
 | Gate | Evidence and disposition |
 | --- | --- |
-| Existing installed CMake runtime, standalone/static/shared hosts | `bash tests/installed-qualification.sh build`, exit 0 at unchanged 2abb88c in this card's red node. Real ELF and analyzed project, exact values/lifecycle/process exclusion, both views, M3 core pages/iterators, persistence, conditional populated CFG, both installed examples. No second VM; $ORIGIN shared process guard. This is not fresh-install evidence. |
-| Earlier source/SDK host closure | M1-BOUNDARY integrated current-source report, source ab03d37: 18/18 source and 17/17 SDK tests, installed standalone/static/shared profiles. Wrapper runtime unchanged by this documentation batch; provenance and detailed limits retained there. |
-| Wrapper safety | M1-BOUNDARY all-frame audit and M1-OWNERSHIP wrapper fault/reentry/exception evidence, M3-CORE request/conversion/iterator follow-through. Dependency-internal allocation recovery excluded by operator a0289f5, not wrapper safety. No claim of instrumented dependency internals. Current broader rerun: `ctest --test-dir build --output-on-failure` 18/18 (10.67s); `bash tests/wrapper-sanitize.sh "$PWD/.cache/native-sdk-patched"` 18/18 (27.93s), ASan/LSan/UBSan wrapper/host instrumentation with unchanged precompiled dependencies and system Lua. |
+| Historical installed CMake runtime, standalone/static/shared hosts | `bash tests/installed-qualification.sh build`, exit 0 at unchanged 2abb88c in this card's red node. Real ELF and analyzed project, exact values/lifecycle/process exclusion, both views, M3 core pages/iterators, persistence, conditional populated CFG, both installed examples. No second VM; $ORIGIN shared process guard. This is not fresh-install evidence. |
+| Earlier source/SDK host closure | M1-BOUNDARY integrated current-source report, source ab03d37: 18/18 source and 17/17 SDK tests, installed standalone/static/shared profiles. Historical source/SDK closure only; current changed-wrapper applicability is reconciled above. Provenance and detailed limits retained there. |
+| Wrapper safety | M1-BOUNDARY all-frame audit and M1-OWNERSHIP wrapper fault/reentry/exception evidence, M3-CORE request/conversion/iterator follow-through. Dependency-internal allocation recovery excluded by operator a0289f5, not wrapper safety. No claim of instrumented dependency internals. Historical pre-M4 broader rerun (not sufficient alone for current adapters): `ctest --test-dir build --output-on-failure` 18/18 (10.67s); `bash tests/wrapper-sanitize.sh "$PWD/.cache/native-sdk-patched"` 18/18 (27.93s), ASan/LSan/UBSan wrapper/host instrumentation with unchanged precompiled dependencies and system Lua. |
 | Native roots/cache profiles | NATIVE-READINESS and native-patched-qualification.log retain actual external valid/missing/unreadable and embedded cold/warm/unwritable outcomes. Native-only success does not qualify all installed Lua constructor paths: installed Lua qualification is now recorded below. |
 | Package foundation | PACKAGE-FOUNDATION/HANDOFF record source/SDK/LuaRocks local installs, offline source-input overrides, installed closure and tooling cutover provenance. These remain distinct from final runtime-absence qualification. |
 | Tooling migration | 2abb88c retires owned Python tools/tests, replacing them with Lua source-driven inventory/completeness/semantic regressions. api/README documents the current entry points and immutable history separation. The remaining upstream embedding exception is external, not permission to reintroduce a Python oracle. |
@@ -81,7 +93,11 @@ sysfs/exact route-line assertion; both corrected at the test primitive.
 
 Earlier source/offline installs and real seeded category/conditional CFG tests,
 whole-archive/PIC/no-second-VM and wrapper fault/sanitizer evidence above remain
-applicable: product/runtime inputs unchanged. Fresh SDK-backed package qualification
+applicable to unchanged locked dependencies and package mechanics, not unchanged
+adapters. Current M4 safety and rebuilt installed core evidence above cover the
+changed wrapper. Earlier clean tests remain historical; source configuration
+invoked the unchanged generator with 385 files up-to-date, not fresh regeneration.
+Fresh SDK-backed package qualification
 plus both installed host matrices close independent runtime engineering evidence;
 they do not claim all dependency builds were offline or every native producer works.
 Independent review and the explicitly separated external decisions remain.
@@ -91,10 +107,13 @@ blocks/CFG/xrefs/types, union/signature practical producers and saved=true categ
 loss. Unknown findings are not automatically upstream. No upstream repair campaign
 or new dependency patch is authorized.
 
-Source installation remains conditional on an explicit operator decision about
-unchanged upstream build-time embed_specs.py (Python >=3.10 + stdlib/zlib), or
-separately authorized qualified replacement. This does not block independent
-runtime/docs work and is not implicitly approved by local build success.
+Operator YES/19d0945 approves ONLY unchanged pinned `cpp/embed_specs.py` via
+`cpp/cmake/EmbedSpecs.cmake`, Python >=3.10 stdlib zlib/XML during native
+SOURCE builds only. This excludes upstream Python bindings, owned Python tools/tests/parity,
+SDK consumers and Lua runtime. No replacement, patch or new distribution rights.
+Interpreter/module identities and pinned generator hashes are recorded in
+[evidence/source-generator-qualification.txt](evidence/source-generator-qualification.txt).
+B1 is closed; no new external generator decision is required.
 Corresponding-source delivery/combined linked-license compliance and any eventual
 distribution form still need resolution before conveyance; see NOTICES. Planning
 license disposition is not legal clearance or new rights. No push, publication,

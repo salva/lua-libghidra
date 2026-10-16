@@ -83,7 +83,10 @@ binaries or source are included when they are not. The local install deliberatel
 ships retained notices and accounting rather than fetching source or publishing.
 No new permission to distribute linked dependencies is granted.
 
-The unchanged upstream build-time embed_specs.py exception remains an explicit
-operator decision; no Python bindings are used. Installed SDK/runtime paths need
-neither that generator nor Python. Source installation policy remains conditional,
-not silently approved by successful local tests. No push or publication authorized.
+Operator YES/19d0945 approves ONLY unchanged pinned `cpp/embed_specs.py` via
+`cpp/cmake/EmbedSpecs.cmake`, Python >=3.10 stdlib zlib/XML during native
+SOURCE builds only. This excludes upstream Python bindings, owned Python tools/tests/parity,
+SDK consumers and Lua runtime. No replacement, patch or new distribution rights.
+Interpreter/module identities and pinned generator hashes are recorded in
+[evidence/source-generator-qualification.txt](evidence/source-generator-qualification.txt).
+No push or publication authorized; pre-conveyance obligations above remain.
