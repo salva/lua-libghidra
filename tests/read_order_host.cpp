@@ -92,6 +92,30 @@ int main() {
   lua_gc(L,LUA_GCCOLLECT);
  }
  std::puts("Native factory first 16 allocation faults: structured exception and fresh-owner recovery PASS");
+ // Sweep Lua setup/publication/error exits of the real factory. An owner may
+ // already have been published when pcall's result adjustment allocates.
+ unsigned factory_oom=0,factory_tail=0;
+ for(size_t point=1;point<=512;++point) {
+  lua_pushcfunction(L,factory); lua_pushvalue(L,1);
+  allocator.calls=allocator.refused=0; allocator.fail=point;
+  int result=lua_pcall(L,1,2,0);
+  allocator.fail=SIZE_MAX;
+  if(allocator.refused) {
+   ++factory_oom; assert(result==LUA_ERRMEM); lua_pop(L,1);
+  } else {
+   ++factory_tail; assert(result==LUA_OK && lua_isuserdata(L,-2));
+   lua_pop(L,2); // Deliberately GC-only release of successful publication.
+  }
+  lua_gc(L,LUA_GCCOLLECT);
+  lua_pushcfunction(L,factory); lua_pushvalue(L,1);
+  assert(lua_pcall(L,1,2,0)==LUA_OK && lua_isuserdata(L,-2));
+  lua_getfield(L,-2,"close"); lua_pushvalue(L,-3);
+  assert(lua_pcall(L,1,1,0)==LUA_OK && lua_toboolean(L,-1)); lua_pop(L,3);
+  lua_gc(L,LUA_GCCOLLECT);
+  if(factory_tail) break;
+ }
+ assert(factory_oom>1 && factory_tail==1);
+ std::printf("Factory Lua OOM: %u reached, success tail, GC-only publication release and fresh-owner recovery PASS\n",factory_oom);
  assert(lua_pcall(L,0,1,0)==LUA_OK && lua_isuserdata(L,-1));
  int owner=lua_gettop(L);
  const lua_Integer sizes[]={0,INT32_MAX,lua_Integer(INT32_MAX)+1,UINT32_MAX};

@@ -355,3 +355,21 @@ RUNPATH and no liblua dependency; binary inputs were unchanged for this extensio
 This adds integrated installed analyzed-Session lifecycle coverage beyond loading
 the facade only; it does not qualify all build modes/source rebuilds, full
 installed closure or sanitizer/frame safety.
+
+### Direct factory Lua allocation denial and GC-only release
+
+`read_bytes_dispatch_order` also sweeps persistent Lua growth refusal during
+protected direct `local_client()` calls, up to the first measured no-refusal
+success tail (ceiling 512). Every actual refusal must produce LUA_ERRMEM; the
+success tail must return an owner. All returned owners are dropped without
+explicit close and collected; after every fault/tail a fresh owner must construct
+and explicitly close. The Lua allocator must still balance to zero at state
+close. Three repetitions reached two refusal thresholds each then a success tail.
+This separately tests direct factory setup/publication recovery, rather than
+inferring it from a combined require/Session script. It does not identify exact
+allocation instructions or guarantee a refusal occurs after native publication;
+that success branch has no allocating Lua API after transfer. GC-only success
+release is directly exercised. Native constructor heap/destructor attribution,
+allocator-driven finalizer reentrancy and error-conversion factory faults remain
+separate requirements. Run `cmake --build build --target read_order_host -j4`
+and `ctest --test-dir build -R '^read_bytes_dispatch_order$' --repeat until-fail:3 -V`.
