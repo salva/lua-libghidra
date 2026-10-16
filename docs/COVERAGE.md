@@ -97,3 +97,10 @@ Python's narrower facade may be consulted during development; it is neither the
 full native inventory nor authority for native architecture detection. Python
 parity/reconciliation is not a completion or release gate. Preserve useful
 existing comparisons as development evidence without depending on Python bindings.
+
+## Implemented M3 adapter batch (not complete qualification)
+
+All core lowlevel adapters now exist. See [M3 core grammar/complete-field mapping,
+real evidence and remaining gates](M3-CORE.md). Existing source-accounting and
+unqualified runtime slots above are not retroactively marked passed: populated
+subtype, iterator/persistence and independent-review gates remain open.

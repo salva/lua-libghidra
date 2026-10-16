@@ -290,7 +290,7 @@ int main() {
  std::printf("GetCapabilities Lua conversion OOM: %u reached, success tail, native block/byte balance PASS\n",lua_reached);
  lua_gc(L,LUA_GCRESTART);
  }
- // New adapters have only scalar/Page requests, no allocating request copies.
+ // M2 scalar requests and M3 text/byte requests share the protected boundary.
  // Warm dependencies normally, then sweep ONLY Lua result/error allocations.
  lua_pushvalue(L,owner); lua_setglobal(L,"c");
  assert(luaL_dostring(L,
@@ -299,7 +299,18 @@ int main() {
  const char* paths[]={
   "return c:get_function(0x401106)", "return c:list_functions{limit=2}",
   "return c:get_instruction(0x401106)", "return c:list_instructions{range_start=0x401106,limit=2}",
-  "return c:get_decompilation(0x401106)"};
+  "return c:get_decompilation(0x401106)",
+  "return c:discard_program()", "return c:rename_function(0x401106,'m3_boundary')",
+  "return c:list_basic_blocks{limit=2}", "return c:list_cfg_edges{limit=2}",
+  "return c:get_symbol(0x401106)", "return c:list_symbols{limit=2}",
+  "return c:rename_symbol(0x401106,'m3_boundary')", "return c:list_xrefs{limit=2}",
+  "return c:list_memory_blocks{limit=2}", "return c:write_bytes(0x404010,'a\\0b')",
+  "return c:get_type('int')", "return c:list_types('',{limit=2})",
+  "return c:list_type_aliases('',{limit=2})", "return c:list_type_unions('',{limit=2})",
+  "return c:list_type_enums('',{limit=2})", "return c:list_type_enum_members('missing',{limit=2})",
+  "return c:list_type_members('missing',{limit=2})", "return c:get_function_signature(0x401106)",
+  "return c:list_function_signatures{limit=2}", "return c:get_comments{limit=2}",
+  "return c:list_defined_strings{limit=2}"};
  for(const char* source:paths) {
   unsigned refused=0; bool tail=false;
   for(size_t point=1;point<=512;++point) {
@@ -322,7 +333,7 @@ int main() {
    boundary_fault=0;
    assert(luaL_dostring(L,source)==LUA_OK); lua_settop(L,owner);
   }
-  std::printf("M2 adapter Lua result refusal (%u points), three boundary exceptions and retry PASS: %s\n",refused,source);
+  std::printf("M2/M3 adapter Lua result refusal (%u points), three boundary exceptions and retry PASS: %s\n",refused,source);
  }
  lua_close(L); assert(allocator.bytes==0);
 }

@@ -5,6 +5,22 @@
 #include <libghidra/models.hpp>
 namespace llg::slice {
 namespace c = libghidra::client;
+inline void value(lua_State*,const c::BasicBlockRecord&);
+inline void value(lua_State*,const c::CFGEdgeRecord&);
+inline void value(lua_State*,const c::SymbolRecord&);
+inline void value(lua_State*,const c::XrefRecord&);
+inline void value(lua_State*,const c::MemoryBlockRecord&);
+inline void value(lua_State*,const c::TypeRecord&);
+inline void value(lua_State*,const c::TypeAliasRecord&);
+inline void value(lua_State*,const c::TypeUnionRecord&);
+inline void value(lua_State*,const c::TypeEnumRecord&);
+inline void value(lua_State*,const c::TypeEnumMemberRecord&);
+inline void value(lua_State*,const c::TypeMemberRecord&);
+inline void value(lua_State*,const c::ParameterRecord&);
+inline void value(lua_State*,const c::FunctionSignatureRecord&);
+inline void value(lua_State*,const c::CommentRecord&);
+inline void value(lua_State*,const c::DefinedStringRecord&);
+
 inline void value(lua_State* L,const c::FunctionRecord& v) {
  lua_createtable(L,0,10);
 #define F(x) field(L,#x,v.x)

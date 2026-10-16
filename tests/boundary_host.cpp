@@ -1,6 +1,6 @@
 // MIT Copyright 2026 Salvador Fandiño.
 #include "boundary.hpp"
-#include "slice_convert.hpp"
+#include "core_convert.hpp"
 #include <cstdlib>
 #include <cstdio>
 #include <cassert>
@@ -78,6 +78,57 @@ static int slice_detached(lua_State* L) {
  if(rc) return lua_error(L);
  return 1;
 }
+// Full core detached converters are qualified independently of producer availability.
+struct CoreOwned {
+ static inline int live=0;
+ libghidra::client::BasicBlockRecord r0;
+ libghidra::client::CFGEdgeRecord r1;
+ libghidra::client::SymbolRecord r2;
+ libghidra::client::XrefRecord r3;
+ libghidra::client::MemoryBlockRecord r4;
+ libghidra::client::TypeRecord r5;
+ libghidra::client::TypeAliasRecord r6;
+ libghidra::client::TypeUnionRecord r7;
+ libghidra::client::TypeEnumRecord r8;
+ libghidra::client::TypeEnumMemberRecord r9;
+ libghidra::client::TypeMemberRecord r10;
+ libghidra::client::ParameterRecord r11;
+ libghidra::client::FunctionSignatureRecord r12;
+ libghidra::client::CommentRecord r13;
+ libghidra::client::DefinedStringRecord r14;
+ CoreOwned() {
+  ++live; r0.function_entry=UINT64_MAX; r2.name=std::string("a\0b",3);
+  r9.ordinal=UINT64_MAX; r9.value=INT64_MIN; r10.offset=-1;
+  r12.parameters.push_back(r11); r13.kind=static_cast<libghidra::client::CommentKind>(99);
+ }
+ ~CoreOwned() { --live; }
+};
+static int core_convert(lua_State* L) {
+ const auto* p=static_cast<CoreOwned*>(lua_touserdata(L,1));
+ lua_createtable(L,0,15);
+ llg::slice::value(L,p->r0); lua_setfield(L,-2,"r0");
+ llg::slice::value(L,p->r1); lua_setfield(L,-2,"r1");
+ llg::slice::value(L,p->r2); lua_setfield(L,-2,"r2");
+ llg::slice::value(L,p->r3); lua_setfield(L,-2,"r3");
+ llg::slice::value(L,p->r4); lua_setfield(L,-2,"r4");
+ llg::slice::value(L,p->r5); lua_setfield(L,-2,"r5");
+ llg::slice::value(L,p->r6); lua_setfield(L,-2,"r6");
+ llg::slice::value(L,p->r7); lua_setfield(L,-2,"r7");
+ llg::slice::value(L,p->r8); lua_setfield(L,-2,"r8");
+ llg::slice::value(L,p->r9); lua_setfield(L,-2,"r9");
+ llg::slice::value(L,p->r10); lua_setfield(L,-2,"r10");
+ llg::slice::value(L,p->r11); lua_setfield(L,-2,"r11");
+ llg::slice::value(L,p->r12); lua_setfield(L,-2,"r12");
+ llg::slice::value(L,p->r13); lua_setfield(L,-2,"r13");
+ llg::slice::value(L,p->r14); lua_setfield(L,-2,"r14");
+ return 1;
+}
+static int core_detached(lua_State* L) {
+ int rc; luaL_checkstack(L,32,"core stack");
+ { CoreOwned p; rc=llg::protected_convert(L,core_convert,&p); }
+ if(rc) return lua_error(L);
+ return 1;
+}
 static int exercise(lua_State* L) {
     luaL_requiref(L, "libghidra._native", luaopen_libghidra__native, 0); lua_pop(L, 1);
     lua_pushcfunction(L, detached); lua_setglobal(L, "detached");
@@ -115,6 +166,11 @@ static void edge_sweeps() {
   "return n._validate_page{range_start='0xffffffffffffffff',range_end=0,limit=1,offset=0}",
   "local x,e=n._validate_read_size(-1); assert(x==nil and e.operation=='read_bytes')",
   "return detached()",
+  "local v=core_detached(); collectgarbage(); assert(v.r0.function_entry==u); "
+  "assert(v.r2.name=='a\\0b' and v.r2.is_primary==false); "
+  "assert(v.r9.ordinal==u and v.r9.value==math.mininteger and v.r10.offset==-1); "
+  "assert(v.r12.has_var_args==false and v.r12.parameters[1].ordinal==0); "
+  "assert(v.r13.kind==99 and v.r14.length==0)",
   "local v=slice_detached(); assert(v.dec.completed==false and v.dec.is_fallback==true); "
   "assert(v.dec.pseudocode=='a\\0b' and v.dec.error_message=='diagnostic'); "
   "assert(v.fn.entry_address:decimal()=='18446744073709551615' and v.fn.is_thunk==false and v.fn.parameter_count==0); "
@@ -130,16 +186,17 @@ static void edge_sweeps() {
    luaL_openlibs(L); luaL_requiref(L,"libghidra._native",luaopen_libghidra__native,0); lua_setglobal(L,"n");
    lua_pushcfunction(L,detached); lua_setglobal(L,"detached");
    lua_pushcfunction(L,slice_detached); lua_setglobal(L,"slice_detached");
+   lua_pushcfunction(L,core_detached); lua_setglobal(L,"core_detached");
    assert(luaL_dostring(L,"u=assert(n.u64('18446744073709551615')); z=assert(n.u64(0))")==LUA_OK);
    assert(luaL_loadstring(L,source)==LUA_OK);
    a.calls=a.refused=0; a.fail=point;
    int rc=lua_pcall(L,0,LUA_MULTRET,0); a.fail=SIZE_MAX;
    if(a.refused) { ++hits; assert(rc==LUA_ERRMEM); }
    else { assert(rc==LUA_OK && a.calls<point); tail=true; }
-   assert(Owned::live==0 && SliceOwned::live==0);
+   assert(Owned::live==0 && SliceOwned::live==0 && CoreOwned::live==0);
    lua_settop(L,0);
    // Retry on SAME ordinary Lua VM after every actual error.
-   assert(luaL_dostring(L,source)==LUA_OK); assert(Owned::live==0 && SliceOwned::live==0);
+   assert(luaL_dostring(L,source)==LUA_OK); assert(Owned::live==0 && SliceOwned::live==0 && CoreOwned::live==0);
    lua_close(L); assert(a.bytes==0);
    if(tail) break;
   }

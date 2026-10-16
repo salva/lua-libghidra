@@ -6,8 +6,22 @@ function Session:native() return self._owner end
 function Session:close() return self._owner:close() end
 Session.__close = Session.close
 for _, name in ipairs{'get_status','get_capabilities','get_revision','open_program',
-                       'close_program','shutdown'} do
+                       'shutdown'} do
   Session[name] = function(self, ...) return self._owner[name](self._owner, ...) end
+end
+-- Stricter convenience policy; native() remains faithful to CloseProgram.
+function Session:close_program(options)
+  if type(options)=='table' and rawget(options,'policy')=='save' and
+     not self._owner:_has_state_path() then
+    -- Validate all other arguments through native only on allowed dispatches.
+    for k in next, options do
+      if k~='policy' then
+        return nil, {code='INVALID_ARGUMENT',message='unknown close option',operation='close_program',backend='binding'}
+      end
+    end
+    return nil, {code='NO_STATE_PATH',message='save-close requires state_path',operation='close_program',backend='binding'}
+  end
+  return self._owner:close_program(options)
 end
 function Session:read_bytes(...)
   local response, err = self._owner:read_bytes(...)
@@ -15,7 +29,10 @@ function Session:read_bytes(...)
   return response.data, nil, response
 end
 -- All reads use the owning native dispatch and detached converter.
-for _, name in ipairs{'list_functions','list_instructions'} do
+for _, name in ipairs{'list_functions','list_instructions','save_program','rename_function','rename_symbol',
+  'write_bytes','list_basic_blocks','list_cfg_edges','list_symbols','list_xrefs',
+  'list_memory_blocks','list_types','list_type_aliases','list_type_unions','list_type_enums',
+  'list_type_enum_members','list_type_members','list_function_signatures','get_comments'} do
   Session[name] = function(self, ...) return self._owner[name](self._owner, ...) end
 end
 local function unwrap(self, name, key, ...)
@@ -27,6 +44,9 @@ local function unwrap(self, name, key, ...)
   return response[key], nil, response
 end
 function Session:get_function(address) return unwrap(self,'get_function','function',address) end
+function Session:get_symbol(address) return unwrap(self,'get_symbol','symbol',address) end
+function Session:get_type(path) return unwrap(self,'get_type','type',path) end
+function Session:get_function_signature(address) return unwrap(self,'get_function_signature','signature',address) end
 function Session:get_instruction(address) return unwrap(self,'get_instruction','instruction',address) end
 function Session:get_decompilation(address, options)
   if options ~= nil and (type(options) ~= 'table' or next(options) ~= nil) then
