@@ -107,3 +107,13 @@ Its stable location is
 [99-MASTER-PLAN.md](../../../development/plans/package-fixes-2026-10-16/99-MASTER-PLAN.md).
 It is currently a draft index and will carry the final sequence and handoff;
 historical `docs/PLAN.md` is not being repurposed as the new execution contract.
+
+### Current independent review status
+
+- A boundaries: drafts complete; fresh independent Astra review underway.
+- B documentation: drafts complete; fresh independent Astra review underway.
+- C regressions: analysis, design and plan independently approved with no required
+  changes; [review](C-DESIGN-PLAN-REVIEW-r1.md). Approval is of the plan, not results
+  from unimplemented tests or permission to implement.
+- Master plan: separate Astra synthesis underway; final fresh independent review
+  follows reconciliation of component reviews.
