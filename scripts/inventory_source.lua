@@ -41,7 +41,8 @@ function M.body(source,signature)
  local code=M.mask(source,true); local candidates={}; local cursor=1
  while true do
   local start,finish=source:find(signature,cursor,true); if not start then break end; cursor=finish+1
-  if code:sub(start,start):match('%S') then
+  local first=signature:find('%S') or 1
+  if code:sub(start+first-1,start+first-1):match('%S') then
    local opening=code:find('{',finish+1,true)
    if opening and not code:sub(finish+1,opening-1):find('[;}]') then candidates[#candidates+1]={start,opening} end
   end

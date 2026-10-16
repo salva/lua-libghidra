@@ -1,7 +1,7 @@
 -- MIT Copyright 2026 Salvador Fandiño. Native-only inventory assembly.
 local U,S=require('tool_util'),require('inventory_source')
 local M={}
-function M.inventory(source)
+function M.inventory(source,fingerprint)
  local data={format=1,qualification='native grammar extraction only; semantic reviews and runtime qualification separate',sources={},types={},enums={},declarations={},implementations={}}
  local function read(path)
   data.sources[path]=U.hash(source..'/'..path)
@@ -18,6 +18,7 @@ function M.inventory(source)
  end
  local path='cpp/src/local_client.cpp'
  data.implementations=S.implementations(path,read(path))
+ data.page_wrapper_reviews=require('inventory_pages').review(U.read(source..'/'..path),fingerprint)
  for name,impl in pairs(data.implementations) do
   local d=assert(data.declarations[name],'undeclared local override '..name)
   assert(impl.response_type==d.response_type,'override response differs '..name)

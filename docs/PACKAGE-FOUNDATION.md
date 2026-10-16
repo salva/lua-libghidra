@@ -163,3 +163,22 @@ M0 evidence invariant is no longer valid for the M3-updated ledger: the Lua
 validator preserves the exact scoped M3 evidence labels, including the special
 success-empty union limitation, rather than erasing runtime evidence or claiming
 unobserved populated producers. Generator/semantic-helper migration remains open.
+
+Lua native artifact generation now includes all 18 LocalClient page-wrapper
+branch reviews and exact body SHA256/citations. Run:
+
+```sh
+lua5.4 scripts/inventory-api.lua PINNED_SOURCE FRESH_NATIVE_JSON
+lua5.4 tests/tooling_pages.lua [PINNED_SOURCE]
+lua5.4 tests/tooling_page_artifact.lua FRESH_NATIVE_JSON
+```
+
+Reviews assert loaded guards, unchanged revision, no wrapper catch, slicing and
+conversion order, serial/parallel aggregation and future error propagation,
+member normalization, instruction scan bound, signature post-page filtering,
+xref same-instance dispatch and leaf-index selection. Mutated-source tests alter
+these branches (including presence-preserving order changes) and must fail. These
+are source accounting, not new native runtime positives or iterator enablement.
+The CLI removes its adjacent body-hash scratch file after success/failure; output
+is still a native artifact, not the complete semantic coverage generator. Adapter,
+request-field and remaining response/mutation semantic helpers still need porting.
