@@ -107,7 +107,7 @@ function M.header(path,raw)
   end
  end
  if filename~='api.hpp' and filename~='http.hpp' and filename~='headless.hpp' then
-  for start,response,name,args in s:gmatch('()virtual%s+StatusOr<(.-)>%s+([%w_]+)%((.-)%)%s*=%s*0%s*;') do
+  for start,response,name,args in s:gmatch('()virtual%s+StatusOr<([^;{}]-)>%s+([%w_]+)%((.-)%)%s*=%s*0%s*;') do
    assert(not declarations[name],'duplicate declaration '..name)
    declarations[name]={source=cite(path,raw,start),response_type=M.norm(response),arguments=M.norm(args)}
   end
@@ -116,7 +116,7 @@ function M.header(path,raw)
 end
 function M.implementations(path,raw)
  local code=M.mask(raw,true); local result={}
- for start,response,name,args,opening in code:gmatch('()StatusOr<(.-)>%s+([%w_]+)%((.-)%)%s*override%s*(){') do
+ for start,response,name,args,opening in code:gmatch('()StatusOr<([^;{}]-)>%s+([%w_]+)%((.-)%)%s*override%s*(){') do
   assert(not result[name],'duplicate implementation '..name)
   local ending=M.closing(code,opening,'{','}')
   result[name]={source=cite(path,raw,start),response_type=M.norm(response),arguments=M.norm(args),body=raw:sub(opening+1,ending-1)}

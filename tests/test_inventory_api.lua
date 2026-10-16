@@ -63,3 +63,17 @@ end
 local native=clone(ledger); native.python=nil; native.python_reconciliation=nil
 assert(C.validate(native).included_operations==70)
 print('Lua cross-ledger expansions/counts/false-evidence/excluded-surface corruption and no Python research dependency PASS')
+-- Regression: a StatusOr<T>::FromValue expression before another method must
+-- never become part of that method's response type.
+local methods=S.implementations('fixture.cpp',[[
+StatusOr<A> First(int x) override { return StatusOr<A>::FromValue(x); }
+StatusOr<B> Second(int) override { return StatusOr<B>::FromValue(0); }
+]])
+assert(methods.First.response_type=='A' and methods.Second.response_type=='B')
+local assembled=require('inventory_native').inventory(source)
+assert(assembled.sources['cpp/src/local_client.cpp']==U.hash(source..'/cpp/src/local_client.cpp'))
+assert(assembled.implementations.ListLeafFunctions.response_type=='ListFunctionsResponse')
+assert(assembled.implementations.DeleteTypeAlias.arguments:find('alias_name',1,true))
+assert(assembled.implementations.ListDecompilations.arguments:match('int$'))
+assert(assembled.python==nil and assembled.python_reconciliation==nil)
+print('Native-only assembly/default closure/source hashes/return-expression regression PASS')
