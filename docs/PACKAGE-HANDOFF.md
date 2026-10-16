@@ -1,5 +1,10 @@
 # Local foundation qualification handoff — not shipping approval
 
+Current full-tier qualification and exact local route applicability are maintained
+in [INSTALLED-FULL](INSTALLED-FULL.md) and [FULL-CROSSWALK](FULL-CROSSWALK.md).
+The foundation artifacts and incremental source observations below retain their
+historical scope; they are not a substitute for clean full installed evidence.
+
 For [[card:card-e-a]], supported Linux x86-64 ordinary C-built PUC Lua 5.4 only.
 No HTTP/SWIG/upstream Python-binding dependency or parity gate. No permission to
 publish, distribute linked dependencies or push. Original MIT wrapper does not

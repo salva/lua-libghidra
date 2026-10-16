@@ -5,6 +5,10 @@ authorized patched native-local engine only. The current [API](API.md),
 [field manifest](../api/FIELDS.md), [notices](NOTICES.md) and installed examples
 are local handoff artifacts. Independent review and M5 approval are not inferred.
 
+See [full installed qualification and local handoff](INSTALLED-FULL.md) for the
+current full-tier route matrix and [operation/field crosswalk](FULL-CROSSWALK.md).
+Historical core evidence below is not promoted into full acceptance.
+
 ## Applicable evidence and its limits
 
 Current applicability: changed M4 adapters are not the pre-M4 wrapper.

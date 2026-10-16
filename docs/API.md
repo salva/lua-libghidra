@@ -97,7 +97,10 @@ real native behavior. Independent review and operator decisions remain required.
 The writer implementation now exposes all full-tier methods through lowlevel and
 Session native(). See [M4 exact grammar, dispatch/field mapping and bounded
 qualification](M4-FULL.md). This extends the core surface; it does not upgrade
-historical core evidence or grant M5/release approval. No new facade convenience
+historical core evidence or grant M5/release approval. Current full qualification and route applicability are indexed in
+[INSTALLED-FULL](INSTALLED-FULL.md) and [FULL-CROSSWALK](FULL-CROSSWALK.md),
+without promoting historical core or generated source slots into acceptance.
+No new facade convenience
 or iterator is enabled.
 
 M4 writer qualification now includes the full operation negative/dispatch matrix

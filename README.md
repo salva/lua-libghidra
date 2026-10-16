@@ -2,9 +2,11 @@
 
 Native local Lua bindings for [libghidra by Elias Bachaalany](https://github.com/0xeb/libghidra).
 This original wrapper and its AI-assisted documentation are informed by upstream
-API, documentation and source review. Both Lua surfaces and core adapters are
-implemented; bounded real installed runtime evidence exists, but M5 release
-acceptance and publication are not approved. See [current qualification](docs/INSTALLED-CORE.md).
+API, documentation and source review. Both Lua surfaces and full native-local
+adapters are implemented. Local installed qualification and artifact applicability
+are in [full qualification](docs/INSTALLED-FULL.md) and the
+[operation/field crosswalk](docs/FULL-CROSSWALK.md); historical core evidence is
+retained separately. M5 independent acceptance and publication are not approved.
 Upstream is not represented as endorsing this project.
 
 - [Core API reference](docs/API.md), [field manifest](api/FIELDS.md), and
