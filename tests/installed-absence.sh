@@ -31,12 +31,16 @@ done
 ! grep -qE 'eth[0-9]|en[[:alnum:]]+:' /proc/net/dev
 [[ $(wc -l </proc/net/route) -le 1 ]]
 printf 'isolated network and unusable Python/Java executables + masked runtime trees PASS\n'
+# No current-directory module fallback: every Lua suite selects installed paths.
+mkdir "$work/run"
+cd "$work/run"
 for host in /usr/bin/lua5.4 "$root/build/boundary_static_host" "$root/build/boundary_shared_host"; do
  printf 'installed runtime host=%s prefix=%s\n' "$host" "$prefix"
- for test in installed_owner m2_slice m3_core m3_iterators; do
+ for test in installed_owner m2_slice m3_core m3_iterators m4_full_reproducer m4_services m4_contract; do
   "$host" "$root/tests/$test.lua" "$prefix" "$root"
  done
 done
 /usr/bin/lua5.4 "$root/tests/m3_persistence.lua" "$prefix" "$root" "$work"
-printf 'installed standalone/static/shared real core runtime absence PASS\n'
+/usr/bin/lua5.4 "$root/tests/m4_persistence.lua" "$prefix" "$root" "$work"
+printf 'installed standalone/static/shared real core+full runtime absence PASS\n'
 ISOLATED
