@@ -26,10 +26,10 @@ repair campaign. Prior milestone approval does not replace fresh inspection.
 - [x] API semantics, Lua ergonomics, conversions, iteration and persistence.
 - [x] Build/install/package reproducibility and dependency/VM closure.
 - [x] User documentation, navigation and historical separation.
-- [ ] Test quality, blind spots and reproducibility of qualification claims.
-- [ ] Dependency integrity, license/notices and source/shipping claims (not legal clearance).
-- [ ] Reconcile overlapping/unsupported findings and perform bounded validation.
-- [ ] Consolidate stable per-issue inventory and a prioritized correction proposal.
+- [x] Test quality, blind spots and reproducibility of qualification claims.
+- [x] Dependency integrity, license/notices and source/shipping claims (not legal clearance).
+- [x] Reconcile overlapping/unsupported findings and perform bounded validation.
+- [x] Consolidate stable per-issue inventory; correction proposal in progress.
 - [ ] Design confirmed issues using separate Astra writer/reviewer sessions.
 - [ ] Produce a sequenced implementation plan and self-contained Saivage handoff.
 - [ ] Report outcome; obtain approval before implementation or Saivage submission.
@@ -66,3 +66,38 @@ Dimension reports and consolidated findings are added as they complete.
   files. Packaging/documentation overlaps will be consolidated, not counted twice.
 - [Baseline execution](07-BASELINE-VALIDATION.md): existing configured build and
   registered tests passed 18/18; broader qualification was not rerun.
+
+## Stable issue inventory
+
+| ID | Issue | Severity | Transversality |
+| --- | --- | --- | --- |
+| [F01](F01-facade-reopen-policy.md) | Facade reopen option policy | Medium | API |
+| [F02](F02-shutdown-surface.md) | Shutdown surface disposition | Low | API/docs |
+| [F03](F03-lua-host-abi.md) | Lua host/header ABI rejection | Medium | Build/native boundary |
+| [F04](F04-installed-document-closure.md) | Installed document link closure | Medium | Docs/package/tests |
+| [F05](F05-user-install-workpaths.md) | Harness-dependent user install paths | Medium | User docs |
+| [F06](F06-documentation-audiences.md) | Manual/history separation and currentness | Medium | Documentation |
+| [F07](F07-field-representation.md) | Generated scalar/enum wording | Low | Tooling/reference |
+| [F08](F08-integration-selection.md) | Silent integration selection | Medium | Test drivers |
+| [F09](F09-specialist-state-oracles.md) | Mutation/persistence state oracles | Medium | Tests/claims |
+| [F10](F10-leaf-function-oracle.md) | Lua leaf-function semantic oracle | Medium | Tests |
+| [F11](F11-runtime-identity.md) | Compiler/runtime identity wording | Low | Notices |
+| [F12](F12-bundled-zlib-notice.md) | Exact bundled-zlib notice reference | Low | Notices/install |
+| [F13](F13-harness-independent-deliverable.md) | No Saivage references in final package docs except creation credit | Owner requirement | Package docs |
+
+F06 consolidates related documentation symptoms rather than treating each page
+as a separate repair project. These are provisional dispositions for design;
+static gaps are not reproduced product failures. Dependency DEP-01 overlaps F06;
+it is not counted again. F13 records the operator's additional delivery condition,
+not an independently discovered defect. There are twelve consolidated findings
+(eight medium, four low) plus that owner requirement.
+
+## Design/planning batches
+
+Three independent Astra authors will develop analysis, alternatives and executable
+plans for coherent groups: A (F01–F03, native/facade boundaries), B (F04–F07,
+F11–F13, docs/tooling/package audience), C (F08–F10, test selection and assertions).
+Each group's design and plan receive a separate fresh Astra reviewer. The combined
+metaplan/handoff then receives another fresh independent Astra review. Maximum
+two correction rounds; unresolved objections are reported, not called approved.
+No implementation or submission is authorized by completion of these documents.
