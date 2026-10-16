@@ -10,8 +10,8 @@ new dependency patches or upstream repair work is part of this design.
 ## 1. Session opening: one facade key policy, one native parser
 
 Retain `Session:open_program(program_options)`. Remove it from the unconditional
-[forwarding list](/lua/libghidra/init.lua#L8) and implement a small explicit wrapper.
-Extract the [factory's key check](/lua/libghidra/init.lua#L105) into a private
+[forwarding list](../../../../../lua/libghidra/init.lua#L8) and implement a small explicit wrapper.
+Extract the [factory's key check](../../../../../lua/libghidra/init.lua#L105) into a private
 helper accepting a program table and error-operation name. Use `type`, `next`
 and `rawget` as appropriate; do not invoke `pairs`, `__index` or `__pairs`.
 Use fixed diagnostics for unknown keys; do not call `tostring` on an arbitrary
@@ -30,7 +30,7 @@ program table or unknown program option; exact wording is not a compatibility
 contract. Outer factory keys remain `client` and `program` only.
 
 The helper validates only facade table/key policy. Native
-[field parsing](/src/owner.cpp#L387) remains authoritative for types, NULs, exact
+[field parsing](../../../../../src/owner.cpp#L387) remains authoritative for types, NULs, exact
 UInt64 conversion, nonempty path requirement and native defaults. No copied
 option table, synthetic native read-only enforcement or duplicated C++ grammar.
 
@@ -42,7 +42,7 @@ option table, synthetic native read-only enforcement or duplicated C++ grammar.
 
 Valid-grammar calls on an owner-closed Session reach native dispatch and return
 `CLOSED`. Invalid keys may return `INVALID_ARGUMENT` first, consistent with
-[native parse-before-owner-validation](/src/owner.cpp#L495). Reopen is mutable
+[native parse-before-owner-validation](../../../../../src/owner.cpp#L495). Reopen is mutable
 context replacement, not a new owner. Preserve historical detached factory
 metadata. Policy rejection leaves generation and current program unchanged;
 every actually dispatched open retains native generation invalidation, including
@@ -54,8 +54,8 @@ or introducing a generic policy registry. This addresses the two actual callers.
 ## 2. Session shutdown: retained convenience with close/save precondition
 
 Retain `Session:shutdown(options)` as an intentional facade convenience. Remove
-it from [bulk forwarding](/lua/libghidra/init.lua#L8). Factor the existing
-[close-program policy](/lua/libghidra/init.lua#L13) into a private helper used by
+it from [bulk forwarding](../../../../../lua/libghidra/init.lua#L8). Factor the existing
+[close-program policy](../../../../../lua/libghidra/init.lua#L13) into a private helper used by
 `close_program` and `shutdown`, with the operation name supplied explicitly.
 This helper is limited to these two policy-identical lifecycle operations.
 
@@ -68,7 +68,7 @@ Contract for both methods:
    or generation change occurs. Use operation `shutdown` or `close_program` in
    the error; do not report all such errors as close_program.
 3. Otherwise forward to the exact original native method. Preserve the existing
-   [_has_state_path behavior](/src/owner.cpp#L140): closed owners defer to native
+   [_has_state_path behavior](../../../../../src/owner.cpp#L140): closed owners defer to native
    dispatch, so valid save requests return `CLOSED`, not `NO_STATE_PATH`.
    Malformed options can still fail before owner checks.
 4. `close_program` returns the native `{closed=...}` envelope; `shutdown` returns
@@ -112,7 +112,7 @@ distinct from compile-profile and selected-host ABI diagnostics. Log resolved ex
 include path and header version/profile. Never silently substitute ambient
 headers when an explicit directory is missing or incompatible.
 
-[LuaRocks build command](/lua-libghidra-scm-1.rockspec#L15) must pass its resolved
+[LuaRocks build command](../../../../../lua-libghidra-scm-1.rockspec#L15) must pass its resolved
 `$(LUA)` and `$(LUA_INCDIR)` as quoted extra build-driver arguments. The driver
 validates nonempty values and forwards them as `-DLUA_EXECUTABLE=...` and
 `-DLLG_LUA_INCLUDE_DIR=...`. Verify the installed LuaRocks variable names by a
@@ -120,7 +120,7 @@ real explicit-prefix build; an unexpanded variable is an error, not a fallback.
 Install phase continues to install the already configured build. Direct driver
 callers/tests must be updated for the explicit build arguments.
 
-Extend [header checks](/cmake/Binding.cmake#L6) to require version 504, a signed
+Extend [header checks](../../../../../cmake/Binding.cmake#L6) to require version 504, a signed
 eight-byte `lua_Integer` and `lua_Number` of C++ type `double` with eight-byte
 size. Do not accept same-sized but different floating types. Ensure checks rerun
 when executable/header selection changes (do not reuse the current unkeyed
@@ -161,7 +161,7 @@ a substitute. Retain an independent no-overrides system-default build as well.
 ### Real module entry contract
 
 Make `luaL_checkversion(L)` the first operation in
-[llg::module](/src/boundary.cpp#L185), covering both the exported luaopen entry
+[llg::module](../../../../../src/boundary.cpp#L185), covering both the exported luaopen entry
 and test hosts that call this function directly. At this point there must be
 no automatic C++ owner, lock, string, exception object, metatable creation or
 userdata publication. Lua's standard version/numeric-size mismatch raises a Lua
@@ -186,7 +186,7 @@ later be loaded by a different host. `luaL_checkversion` checks Lua's supported
 version/numeric-size contract; it does not prove arbitrary custom ABIs safe.
 Header restrictions and the stated qualified profile bound that claim.
 
-Keep [no-liblua module linking](/cmake/Binding.cmake#L19), whole-archive native
+Keep [no-liblua module linking](../../../../../cmake/Binding.cmake#L19), whole-archive native
 registration, shared guard SONAME and `$ORIGIN` unchanged. Never solve mismatch
 by linking/bundling another VM. Keep source/SDK generator separation unchanged.
 

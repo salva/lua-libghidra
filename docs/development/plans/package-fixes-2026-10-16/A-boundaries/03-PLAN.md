@@ -51,19 +51,19 @@ environment with its own absolute paths and do not assume harness variables.
 
 Edits:
 
-1. In [init.lua](/lua/libghidra/init.lua#L8), replace only the open_program and
+1. In [init.lua](../../../../../lua/libghidra/init.lua#L8), replace only the open_program and
    shutdown bulk aliases with explicit wrappers. Extract one private six-key
    program validator reused by factory open. Preserve
-   [protected publication](/lua/libghidra/init.lua#L93).
+   [protected publication](../../../../../lua/libghidra/init.lua#L93).
 2. Extract the existing close_program precondition into a private helper for
    exactly close_program/shutdown. Preserve unknown-key validation, operation
-   names and [_has_state_path closed-owner behavior](/src/owner.cpp#L140).
+   names and [_has_state_path closed-owner behavior](../../../../../src/owner.cpp#L140).
    Do not change C++ dispatch, generations, flags or native persistence behavior.
 3. Add `tests/facade_boundaries.lua`, installed-only, arguments `PREFIX ROOT WORK`.
    Require existing fixtures explicitly and fail if missing. Use unique temporary
    state files below WORK; leave input fixtures untouched. Include clear per-case
    diagnostics. Reuse existing installed path setup from
-   [m2_slice.lua](/tests/m2_slice.lua#L3), not a second fixture loader framework.
+   [m2_slice.lua](../../../../../tests/m2_slice.lua#L3), not a second fixture loader framework.
 
 Required assertions:
 
@@ -84,7 +84,7 @@ Required assertions:
 | Closed owner | Valid Session shutdown(save) and reopen return CLOSED; malformed arguments retain validation precedence; binding close is idempotent and frees the client slot |
 
 Use the authored ELF and project routes and explicit x86/gcc hints as in
-[existing lifecycle coverage](/tests/m2_slice.lua#L86). Do not introduce an
+[existing lifecycle coverage](../../../../../tests/m2_slice.lua#L86). Do not introduce an
 all-operation abstraction or extend persistence categories owned by C.
 
 ## 2. Host ABI batch (F03)
@@ -92,10 +92,10 @@ all-operation abstraction or extend persistence categories owned by C.
 Edits:
 
 1. Put `luaL_checkversion(L)` first in
-   [llg::module](/src/boundary.cpp#L185). Inspect all frames from exported entry
+   [llg::module](../../../../../src/boundary.cpp#L185). Inspect all frames from exported entry
    and direct test calls: only trivial locals may precede/contain this raising
    check. No metatable, native object, lock or C++ owner may precede it.
-2. In [Binding.cmake](/cmake/Binding.cmake#L2), accept `LLG_LUA_INCLUDE_DIR` and
+2. In [Binding.cmake](../../../../../cmake/Binding.cmake#L2), accept `LLG_LUA_INCLUDE_DIR` and
    `LUA_EXECUTABLE`, default explicitly to ordinary system selection, enforce
    504/signed-int64/double headers, and invalidate compatibility check cache on
    changed inputs. Default header selection searches pkg-config include search
@@ -109,10 +109,10 @@ Edits:
    true on compatibility; retain useful diagnostics on missing files, symbols or
    numeric mismatch. Retain the built probe at `BUILD/lua-abi-probe.so` for direct
    rejection tests. Run this with BUILD_TESTING both on and off.
-4. Extend [rockspec](/lua-libghidra-scm-1.rockspec#L15) build arguments with selected
-   `$(LUA)` and `$(LUA_INCDIR)`; extend [driver](/scripts/luarocks-build.lua#L17)
+4. Extend [rockspec](../../../../../lua-libghidra-scm-1.rockspec#L15) build arguments with selected
+   `$(LUA)` and `$(LUA_INCDIR)`; extend [driver](../../../../../scripts/luarocks-build.lua#L17)
    to validate/forward them. Update direct driver invocations in
-   [package-foundation.sh](/tests/package-foundation.sh#L11) so absent/ambiguous
+   [package-foundation.sh](../../../../../tests/package-foundation.sh#L11) so absent/ambiguous
    SDK/input tests still test that condition rather than failing on new arguments.
 5. Add `tests/lua_abi_rejection.lua`, arguments `BUILD`, for the §3a int64/float
    PUC 5.4.6 host. Assert `_VERSION=='Lua 5.4'`, `string.packsize('j')==8` and

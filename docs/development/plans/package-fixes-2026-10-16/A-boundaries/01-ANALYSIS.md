@@ -19,19 +19,19 @@ profile. No HTTP, SWIG, additional VM, new dependency patches or upstream repair
 campaign. Preserve the unchanged upstream source-build spec generator exception:
 Python >=3.10 plus stdlib zlib/XML at build time only; SDK-consumer and installed
 runtime paths do not acquire a Python dependency. These boundaries originate in
-[SPEC](/docs/SPEC.md#L8), not in the age of a particular build recipe.
+[SPEC](../../../../../docs/SPEC.md#L8), not in the age of a particular build recipe.
 
 ## F01 — Two facade paths implement different opening policies
 
 ### Reachable behavior
 
-[Session forwarding](/lua/libghidra/init.lua#L8) includes `open_program` without
-validation. [Factory open](/lua/libghidra/init.lua#L99) validates the outer table
+[Session forwarding](../../../../../lua/libghidra/init.lua#L8) includes `open_program` without
+validation. [Factory open](../../../../../lua/libghidra/init.lua#L99) validates the outer table
 and permits exactly six program keys before constructing a client. The native
-[parser](/src/owner.cpp#L387) accepts those six plus `read_only` and `project_name`;
-the [request copy](/src/owner.cpp#L531) and [dispatch](/src/owner.cpp#L606) forward
+[parser](../../../../../src/owner.cpp#L387) accepts those six plus `read_only` and `project_name`;
+the [request copy](../../../../../src/owner.cpp#L531) and [dispatch](../../../../../src/owner.cpp#L606) forward
 them to libghidra. The pin ignores those two options, as specified in
-[the facade contract](/docs/SPEC.md#L223).
+[the facade contract](../../../../../docs/SPEC.md#L223).
 
 An existing-owner probe observed factory rejection and Session reopen success for
 the same options containing `read_only=true` and `project_name='ignored'`. This is
@@ -59,12 +59,12 @@ release an existing Session owner.
 
 ### Reachable behavior
 
-[The same forwarding list](/lua/libghidra/init.lua#L8) exposes Session shutdown.
-[Close-program convenience](/lua/libghidra/init.lua#L13) rejects save without a
+[The same forwarding list](../../../../../lua/libghidra/init.lua#L8) exposes Session shutdown.
+[Close-program convenience](../../../../../lua/libghidra/init.lua#L13) rejects save without a
 state path; shutdown does not. Native
-[policy parsing](/src/owner.cpp#L394) requires `save` or `discard`, and
-[dispatch](/src/owner.cpp#L611) preserves distinct `closed` and `accepted` flags.
-[SPEC's table](/docs/SPEC.md#L212) instead assigns shutdown exclusively to the
+[policy parsing](../../../../../src/owner.cpp#L394) requires `save` or `discard`, and
+[dispatch](../../../../../src/owner.cpp#L611) preserves distinct `closed` and `accepted` flags.
+[SPEC's table](../../../../../docs/SPEC.md#L212) instead assigns shutdown exclusively to the
 native escape hatch. Exposure of the Session method was observed. No data-loss
 experiment or additional upstream shutdown failure is established by that fact.
 
@@ -72,7 +72,7 @@ The concrete risk is a caller assuming two convenience close operations share
 the same protection against empty-state-path save. Successful native acceptance
 is not proof of persistence. Native shutdown logically closes program access;
 it does not terminate a service, release the client slot, or unload retained
-engines ([lifecycle contract](/docs/SPEC.md#L184)).
+engines ([lifecycle contract](../../../../../docs/SPEC.md#L184)).
 
 ### Owner need, compatibility and alternatives
 
@@ -94,12 +94,12 @@ decision, not removal of code to make historical documentation appear correct.
 
 ## F03 — Header selection does not establish the loading host ABI
 
-[CMake discovery](/cmake/Binding.cmake#L2) uses ambient `pkg-config lua5.4` and
-asserts only version 504 and an eight-byte integer. [LuaRocks](/lua-libghidra-scm-1.rockspec#L15)
-invokes its selected interpreter, but [the driver](/scripts/luarocks-build.lua#L22)
+[CMake discovery](../../../../../cmake/Binding.cmake#L2) uses ambient `pkg-config lua5.4` and
+asserts only version 504 and an eight-byte integer. [LuaRocks](../../../../../lua-libghidra-scm-1.rockspec#L15)
+invokes its selected interpreter, but [the driver](../../../../../scripts/luarocks-build.lua#L22)
 passes neither that interpreter nor its headers to CMake. Test-host discovery
-occurs only with [BUILD_TESTING](/cmake/Binding.cmake#L36).
-[Module entry](/src/boundary.cpp#L185) immediately publishes metatables without
+occurs only with [BUILD_TESTING](../../../../../cmake/Binding.cmake#L36).
+[Module entry](../../../../../src/boundary.cpp#L185) immediately publishes metatables without
 `luaL_checkversion`.
 
 This is a static validation gap, not a reproduced crash. Existing ordinary
@@ -162,17 +162,17 @@ it should become an explicit default rather than a hidden constraint.
 
 Retain safeguards that still protect reachable paths:
 
-* [Factory protected publication](/lua/libghidra/init.lua#L93) closes a newly
+* [Factory protected publication](../../../../../lua/libghidra/init.lua#L93) closes a newly
   allocated owner when Lua publication raises; helper extraction must preserve it.
-* [Raw native parsing and post-Lua recheck](/src/owner.cpp#L377) avoid metamethod
+* [Raw native parsing and post-Lua recheck](../../../../../src/owner.cpp#L377) avoid metamethod
   defaults and stale owners after allocation-driven finalization.
-* [Native generation increment](/src/owner.cpp#L537) invalidates iterators even
+* [Native generation increment](../../../../../src/owner.cpp#L537) invalidates iterators even
   when a dispatched lifecycle operation fails. Lua policy rejection must not
   manufacture generation changes or cached program state.
-* [Owner release](/src/owner.cpp#L121) and the
-  [shared process guard](/cmake/Binding.cmake#L25) preserve one live native client
+* [Owner release](../../../../../src/owner.cpp#L121) and the
+  [shared process guard](../../../../../cmake/Binding.cmake#L25) preserve one live native client
   across ordinary module copies and independent states.
-* [Host-only Lua linkage](/cmake/Binding.cmake#L19) and trivial Lua error frames
+* [Host-only Lua linkage](../../../../../cmake/Binding.cmake#L19) and trivial Lua error frames
   remain essential. The new ABI check must run before C++ owners/locks exist.
 
 Do not reopen dependency-internal OOM work, broaden concurrency, add a persistence

@@ -17,20 +17,20 @@ new fixtures and a new test framework are outside these corrections.
 
 ## F08: implicit integration selection
 
-[The driver](/tests/installed-qualification.sh#L5) builds and installs into a
+[The driver](../../../../../tests/installed-qualification.sh#L5) builds and installs into a
 build-local prefix, executes standalone/static/shared services, then conditionally
 selects document mutation probes, persistence, populated conditional CFG and
 profiles/runtime absence based on `SAIVAGE_CARD_WORK_ROOT`. An ordinary successful
 invocation silently omits those groups. Its intermediate PASS line is narrower
 than full qualification, but there is no final selection summary.
 
-[CTest registration](/cmake/Binding.cmake#L35) covers boundary/ownership and a
+[CTest registration](../../../../../cmake/Binding.cmake#L35) covers boundary/ownership and a
 native-seeded core test, not the complete installed M2/M3/M4 suites. The recorded
-[18/18 baseline](/docs/history/reviews/package-audit-2026-10-16/07-BASELINE-VALIDATION.md#L3)
+[18/18 baseline](../../../../../docs/history/reviews/package-audit-2026-10-16/07-BASELINE-VALIDATION.md#L3)
 is credible within that scope, not a clean build or full integration result.
 
-Additional hidden inputs matter: [absence](/tests/installed-absence.sh#L37) uses
-`root/build` hosts irrespective of the selected build directory; [profiles](/tests/installed-profiles.sh#L10)
+Additional hidden inputs matter: [absence](../../../../../tests/installed-absence.sh#L37) uses
+`root/build` hosts irrespective of the selected build directory; [profiles](../../../../../tests/installed-profiles.sh#L10)
 hard-codes the external spec tree. Profiles require non-root permission semantics;
 absence needs working user/mount/network namespaces. Neither may become an
 automatic success-shaped skip.
@@ -42,15 +42,15 @@ for discoverability. Do not duplicate selection in CTest or write a scheduler.
 
 ## F09: acknowledgements are not observable changes
 
-[Services](/tests/m4_services.lua#L26) reads a member before mutation, then largely
+[Services](../../../../../tests/m4_services.lua#L26) reads a member before mutation, then largely
 checks flags for member/alias/enum edits and deletion. Parameter retyping is
 currently int-to-int. Local response fields echo the request without a fresh
-decompilation readback. [Persistence](/tests/m4_persistence.lua#L20) saves many
+decompilation readback. [Persistence](../../../../../tests/m4_persistence.lua#L20) saves many
 acknowledged writes and then asserts absence/reset without proving the corresponding
 state existed before save. The overlay read is stronger, but currently occurs
 after save; move/add the prerequisite read before save too.
 
-Public readback fields already exist in [core conversion](/src/core_convert.hpp#L79):
+Public readback fields already exist in [core conversion](../../../../../src/core_convert.hpp#L79):
 alias target, member identity/name/type/comment, enum member value/comment,
 signature parameters. No production API addition is required for these probes.
 The pinned native client unconditionally acknowledges type-member and enum-member
@@ -68,10 +68,10 @@ never add a conditional assertion that passes whether the write worked or not.
 
 ## F10: nonempty is not a leaf oracle
 
-[The Lua positive](/tests/m4_services.lua#L15) accepts any nonempty project result.
-[The authored native probe](/tests/project_probe.cpp#L19) already fixes the range
+[The Lua positive](../../../../../tests/m4_services.lua#L15) accepts any nonempty project result.
+[The authored native probe](../../../../../tests/project_probe.cpp#L19) already fixes the range
 `0x401106..0x40113f`, exact leaves `0x401106` and `0x40113c`, and excludes caller
-`main` at `0x40111f`; [fixture provenance](/tests/fixtures/README.md#L30) explains
+`main` at `0x40111f`; [fixture provenance](../../../../../tests/fixtures/README.md#L30) explains
 the analyzed reference index. A native result alone does not test Lua forwarding,
 conversion or pagination.
 

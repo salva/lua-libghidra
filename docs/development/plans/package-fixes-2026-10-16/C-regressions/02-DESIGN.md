@@ -130,8 +130,8 @@ does not recurse. Direct invocation remains the primary documented interface.
 
 ## Observable specialist sequences
 
-Strengthen [services](/tests/m4_services.lua#L26) and
-[persistence](/tests/m4_persistence.lua#L20) on both binary/project routes. Keep
+Strengthen [services](../../../../../tests/m4_services.lua#L26) and
+[persistence](../../../../../tests/m4_persistence.lua#L20) on both binary/project routes. Keep
 assertions local and keyed by native identity, never array index alone. Member
 and enum ordinals are UInt64; parameter ordinals are Lua integers. Use `.hex()`
 or exact UInt64 comparison for identities; never float conversion.
@@ -184,7 +184,7 @@ shell/absent-category expectations only where those prerequisites support them.
 
 ## Exact leaf oracle
 
-In the project arm of [services](/tests/m4_services.lua#L15), use the existing
+In the project arm of [services](../../../../../tests/m4_services.lua#L15), use the existing
 authored fixture and `n:list_leaf_functions` with range `0x401106..0x40113f`:
 
 1. limit 100, offset 0 returns exactly two entries, in order, with UInt64 hex
@@ -197,7 +197,7 @@ authored fixture and `n:list_leaf_functions` with range `0x401106..0x40113f`:
    pagination and does not assume a zero-end sentinel for leaves.
 
 Retain raw ELF `NOT_SUPPORTED`. Expectations are authored constants from
-[the native probe](/tests/project_probe.cpp#L19), not values sampled from a second
+[the native probe](../../../../../tests/project_probe.cpp#L19), not values sampled from a second
 call to the same adapter. No iterator or facade convenience is added.
 
 ## Ownership of documentation changes

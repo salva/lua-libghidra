@@ -8,11 +8,11 @@ local Lua/C++ tests, no SWIG/HTTP, unchanged pinned dependency inputs and the na
 approved upstream source-generator exception. No new framework, fixtures, upstream
 repairs, exhaustive engine faults or runtime-control work is part of this plan.
 
-Read the [design](/docs/development/plans/package-fixes-2026-10-16/C-regressions/02-DESIGN.md#L1)
+Read the [design](../../../../../docs/development/plans/package-fixes-2026-10-16/C-regressions/02-DESIGN.md#L1)
 before editing. Inspect the worktree and preserve other groups' work. Use a
 configured supported testing build and ordinary non-root qualification environment;
 missing prerequisites block full integration rather than reducing its selection.
-The recorded [18/18 result](/docs/history/reviews/package-audit-2026-10-16/07-BASELINE-VALIDATION.md#L3)
+The recorded [18/18 result](../../../../../docs/history/reviews/package-audit-2026-10-16/07-BASELINE-VALIDATION.md#L3)
 is reusable boundary baseline evidence only.
 
 ## Batches and dependencies
@@ -68,7 +68,7 @@ usage/prerequisite failures from a child-test failure. No automatic fallback.
 Files: `tests/m4_services.lua`, `tests/m4_persistence.lua`. Against the pinned real
 backend, add the design's create/read/edit/read/delete/absent sequences and exact
 pre-save snapshots. Use existing method grammars and field names in
-[conversion](/src/core_convert.hpp#L79). Investigate one bounded observation per
+[conversion](../../../../../src/core_convert.hpp#L79). Investigate one bounded observation per
 uncertain category rather than adding blind assertions or repeatedly rebuilding
 the engine. Freeze supported-change assertions or deterministic limitation checks
 based on that evidence; do not permit both outcomes at runtime. Keep profile labels
@@ -85,8 +85,8 @@ a never-observable category as lost on reload.
 File: `tests/m4_services.lua`, after batch 2 to avoid competing edits. Insert exact
 two-leaf identity/order, caller exclusion, limit-one offsets including exhaustion,
 singleton ranges and shortened-range tests. Keep raw-ELF NOT_SUPPORTED. Reference
-existing [probe](/tests/project_probe.cpp#L19) and
-[fixture source facts](/tests/fixtures/README.md#L30); no manifest/schema expansion
+existing [probe](../../../../../tests/project_probe.cpp#L19) and
+[fixture source facts](../../../../../tests/fixtures/README.md#L30); no manifest/schema expansion
 is required for three constants.
 
 ### 4. Bounded sensitivity checks and handoff
@@ -195,12 +195,12 @@ SDK/engine/Lua identities, fixture hash check, selected groups and modes, suppor
 state changes versus acknowledgement-only cases, and pre-save/reopen outcomes.
 B applies it to the replacement/current equivalents of:
 
-* [M4 qualification prose](/docs/M4-FULL.md#L197): only attribute loss to observable
+* [M4 qualification prose](../../../../../docs/M4-FULL.md#L197): only attribute loss to observable
   pre-save state; distinguish missing member from isolated comment persistence.
-* [GetRevision crosswalk row](/docs/FULL-CROSSWALK.md#L40): remove citations to
+* [GetRevision crosswalk row](../../../../../docs/FULL-CROSSWALK.md#L40): remove citations to
   tests that do not call get_revision; do not invent a new revision test merely
   to rescue the citation.
-* [Enum claims](/docs/FULL-CROSSWALK.md#L107): width evidence does not prove ignored
+* [Enum claims](../../../../../docs/FULL-CROSSWALK.md#L107): width evidence does not prove ignored
   signedness. Add a direct justified readback only if this bounded work establishes
   it; otherwise narrow the text.
 * Current developer testing guide: full/reduced command signatures, namespace and
