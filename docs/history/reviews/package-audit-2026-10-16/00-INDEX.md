@@ -30,7 +30,7 @@ repair campaign. Prior milestone approval does not replace fresh inspection.
 - [x] Dependency integrity, license/notices and source/shipping claims (not legal clearance).
 - [x] Reconcile overlapping/unsupported findings and perform bounded validation.
 - [x] Consolidate stable per-issue inventory; correction proposal in progress.
-- [ ] Design confirmed issues using separate Astra writer/reviewer sessions.
+- [x] Design confirmed issues using separate Astra writer/reviewer sessions.
 - [ ] Produce a sequenced implementation plan and self-contained Saivage handoff.
 - [ ] Report outcome; obtain approval before implementation or Saivage submission.
 
@@ -112,17 +112,16 @@ historical `docs/PLAN.md` is not being repurposed as the new execution contract.
 
 ### Current independent review status
 
-- A boundaries: independent review requested corrections to header discovery and
-  executable selected-host/negative-ABI validation. Author revision underway;
-  [review](A-DESIGN-PLAN-REVIEW-r1.md).
-- B documentation: independent review requested precise manifest propagation and
-  document-probe caller integration with C. Author revision underway;
-  [review](B-DESIGN-PLAN-REVIEW-r1.md).
-- C regressions: analysis, design and plan independently approved with no required
-  changes; [review](C-DESIGN-PLAN-REVIEW-r1.md). Approval is of the plan, not results
-  from unimplemented tests or permission to implement.
-- Master plan: initial draft complete; author integrating the website track.
-  Final fresh independent review follows reconciliation of component reviews.
-- D website: draft complete; fresh independent Astra reviewer assessing the
-  architecture and Pandoc/Lua versus Jekyll/LDoc fit. No publication or repository
-  settings changes are authorized.
+- A boundaries: revised analysis/design/plan independently approved;
+  [final component review](A-DESIGN-PLAN-REVIEW-r2.md).
+- B documentation and C regressions: shared manifest/checker/caller interfaces
+  reconciled and both tracks independently approved;
+  [final joint review](BC-DESIGN-PLAN-REVIEW-r2.md).
+- D website: revised analysis/design/plan independently approved, retaining
+  Pandoc/Lua after LDoc/Jekyll comparison;
+  [final component review](D-DESIGN-PLAN-REVIEW-r2.md).
+- Master plan: author reconciling the final approved component contracts before
+  a fresh independent review of the whole sequence and handoff.
+
+These approvals concern proposed documents, not results from unimplemented tests
+or permission to execute, deploy, publish, push or change repository settings.
