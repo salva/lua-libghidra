@@ -160,3 +160,31 @@ with zero measured Lua bytes. Existing combined module/setup sweep remains.
 The test conversion owner's constructed/destroyed counters must match, giving
 semantic destruction evidence for that wrapper-owned fixture, not engine objects.
 No Lua source parsing allocations are counted as these selected runtime edges.
+
+## Wrapper ASan/UBSan qualification profile
+
+Run `bash tests/wrapper-sanitize.sh [absolute-installed-sdk-prefix]` (default
+`.cache/native-sdk-patched`). Builds Debug wrapper, shared process guard and C/C++
+hosts with GCC address/undefined sanitizers and frame pointers in ignored
+`build/wrapper-sanitize`. Leak detection and sanitizer halt-on-error are enabled;
+no suppressions or excluded tests. Runtime libraries are preloaded ONLY for test
+execution so the ordinary system lua5.4 executable can load the sanitized module.
+The existing whole-archive installed SDK stays unchanged. Lua is ordinary C-built
+5.4.6 (system shared library or system static archive), NOT a C++ exception VM.
+
+Observed full suite: 17/17 passes, 13.94s, no ASan/LSan/UBSan diagnostic. Exercises
+real production Lua module and native owner paths, independent-state guard,
+analyzed Session/alias/close failure fixtures, wrapper C++/Lua allocation refusal,
+helper/setup/detached cleanup, explicit reentry and loaded-copy exclusion. A prior
+focused five-host run also passed with leak detection, and an independently
+configured full wrapper-sanitizer build passed 17/17 (14.20s).
+
+Instrumentation covers wrapper/guard/host source, not precompiled SDK, protobuf,
+Abseil, engine or system Lua implementation. LSan tracks intercepted process
+allocations but reachable upstream globals do not establish leak freedom;
+ordinary new overrides in the read-order host have their separately documented
+coverage limits. Thus this is broader **wrapper** sanitizer/runtime evidence,
+not whole-dependency internal UBSan coverage or exhaustive schedule proof. No
+internal OOM issues were reinvestigated or declared repaired. Actual
+allocation-triggered per-edge finalizer revalidation remains a separate gap;
+explicit-GC success under sanitizers does not close it.
