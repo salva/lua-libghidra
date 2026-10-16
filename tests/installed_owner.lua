@@ -23,4 +23,32 @@ for i=1,8 do
   assert(fresh:get_status()); assert(fresh:close())
   collectgarbage('collect')
 end
+-- arg[2] is an authored fixture root only, never a Lua module search path.
+local root = assert(arg[2], 'authored fixture root required')
+local program = {project_path=root .. '/tests/fixtures/project/authored.gpr',
+                 program_path=root .. '/tests/fixtures/inputs/authored.elf'}
+for i=1,3 do
+  local session, err, opened = facade.open{program=program}
+  assert(session, err and err.message)
+  local alias = session:native()
+  assert(alias:get_status().ok and type(opened.has_entry_point)=='boolean')
+  local generation = alias:_generation()
+  local data, failure, envelope = session:read_bytes(0x401106,1)
+  assert(type(data)=='string' and #data==1 and failure==nil and envelope.data==data)
+  local direct = assert(alias:read_bytes(0x401106,1))
+  assert(direct.data==data)
+  assert(session:close_program{policy='discard'}.closed)
+  assert(alias:_generation()==generation:add(1))
+  local absent, e = session:read_bytes(0,0)
+  assert(absent==nil and e.code=='NO_PROGRAM')
+  assert(alias:open_program(program))
+  assert(alias:_generation()==generation:add(2))
+  assert(session:read_bytes(0x401106,1)==data)
+  -- Session collection must not destroy a retained native alias.
+  session=nil; collectgarbage('collect')
+  assert(alias:get_status().ok)
+  assert(alias:close())
+  local fresh = assert(low.local_client()); assert(fresh:close())
+end
+print('installed existing-VM analyzed Session, detached bytes and shared aliases PASS')
 print('installed existing-VM values, owner exclusion, native errors and lifecycle PASS')

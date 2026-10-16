@@ -338,14 +338,20 @@ close/CLOSED and fresh-owner reuse eight times. Run from repository root:
 cmake --build build -j4
 prefix="$SAIVAGE_CARD_WORK_ROOT/installed-owner-qualification"
 cmake --install build --prefix "$prefix"
-build/boundary_static_host tests/installed_owner.lua "$prefix" unused
-build/boundary_shared_host tests/installed_owner.lua "$prefix" unused
+build/boundary_static_host tests/installed_owner.lua "$prefix" "$PWD"
+build/boundary_shared_host tests/installed_owner.lua "$prefix" "$PWD"
 ```
 
-The final `unused` argument satisfies the existing embedded-host argc contract;
-it is not a second module search path. Both ordinary C-built hosts use their
-already-created Lua state. Three runs per host passed. Installed module readelf
-shows guard SONAME dependency, `$ORIGIN` RUNPATH and no liblua dependency. This
-adds integrated installed lifecycle coverage beyond the former native-load
-one-liner; it does not qualify analyzed-program Session behavior, all build
-modes/source rebuilds, full installed closure or sanitizer/frame safety.
+The final argument supplies only the authored project/ELF fixture root, not a
+module search path. Both ordinary C-built hosts use their already-created Lua
+state. In addition to eight unloaded-owner rounds, three analyzed Session rounds
+compare facade detached byte strings/envelopes against the native alias, discard
+and reopen through opposite views, check shared generation and Session visibility,
+and collect the Session while retaining a usable native alias. The ELF/project
+are existing authored fixtures; runtime does not invoke Java or Python.
+Three runs per host passed (six total), each including all three Session rounds.
+Installed module readelf previously showed guard SONAME dependency, `$ORIGIN`
+RUNPATH and no liblua dependency; binary inputs were unchanged for this extension.
+This adds integrated installed analyzed-Session lifecycle coverage beyond loading
+the facade only; it does not qualify all build modes/source rebuilds, full
+installed closure or sanitizer/frame safety.
