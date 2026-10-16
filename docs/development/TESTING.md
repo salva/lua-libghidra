@@ -43,8 +43,9 @@ Select actual registered tests; do not invent names. Read
 Authored ELF arithmetic and bytes plus analyzed-project reference data provide
 semantic oracles. Fixture generation uses Java/Ghidra only as development tools.
 Do not probe guessed/extreme addresses or allocate huge buffers for boundary
-validation. Legacy example tours are not a safe blanket execution command; use
-selected safe regressions rather than the absent-function extreme-address lookup.
+validation. Source-only fixture tours live under `tests/examples`; the installed
+example runner executes these safe lifecycle/envelope/invalidation regressions
+against the selected installed modules alongside the two public task scripts.
 
 A native SDK build is distinct from wrapper installation. After verified input
 preparation, with fresh SDK_WORK and SDK:
@@ -75,9 +76,12 @@ bash tests/installed-qualification.sh --build "$BUILD" --prefix "$OTHER_FRESH_PR
 Full selects closure/services/examples/documents/mutation/persistence/branch/
 profiles/absence. Reduced explicitly omits mutation/persistence/branch/profiles/
 absence and is **not full qualification**. Both perform pristine source and
-installed document checks. Do not execute the legacy example group containing
-the unsafe absent-function lookup; it needs the safe example migration before
-selection. Do not claim either driver mode passed merely from reading its source.
+installed document checks. The examples group invokes `tests/installed-examples.sh`
+with the selected build's Lua executable, resolved deployed module directories
+and installed example root. It checks public tasks and source-only safe regressions;
+external-spec checks run when the external root is supplied, otherwise they are
+explicitly omitted. Do not claim either driver mode passed merely from reading
+its source.
 
 Document-only checks use the producing build's exported manifest, never an
 inferred sibling manifest. All arguments are absolute; fresh work must not exist:

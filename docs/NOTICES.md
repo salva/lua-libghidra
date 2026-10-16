@@ -49,7 +49,7 @@ The selected engine patch `bfd-sleigh-target-autodetect`, SHA256
 The [patch lock](../native-patched.lock.json) records the selected profile.
 Source uses local_whole; SDK consumption uses WHOLE_ARCHIVE rather than a bare
 local archive. Incorporated archives require PIC. Do not substitute arbitrary
-static system BFD archives. See [installation](EXAMPLES.md) for input selection,
+static system BFD archives. See [installation](INSTALL.md) for input selection,
 SDK requirements and the distinction between preparation and disconnected builds.
 
 ## Bundled zlib source
