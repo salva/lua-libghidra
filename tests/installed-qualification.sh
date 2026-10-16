@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # MIT Copyright 2026 Salvador Fandiño.
-# Explicit installed qualification. Document integration lands with B in batch 5.
+# Explicit installed qualification using the selected build document export.
 set -euo pipefail
 root=$(cd "$(dirname "$0")/.." && pwd)
 usage() { echo 'Usage: installed-qualification.sh --build DIR --prefix DIR --work-root DIR [--mode full|reduced] [--external-specs DIR]'; }
@@ -88,7 +88,32 @@ for example in first_slice core_mutation; do
  lua5.4 "$prefix/share/libghidra/examples/$example.lua"
 done
 echo 'COMPLETE examples'
-# Deliberate stage boundary, not a compatibility adapter or success-shaped skip.
-# B's manifest export/checker and C's exact new document callers land together.
 group=pristine-documents
-prerequisite "batch-5 document caller integration not landed; retained run=$run"
+document_root="$prefix/share/doc/lua-libghidra"
+lua5.4 "$root/tests/installed_documents.lua" source "$root" "$manifest"
+lua5.4 "$root/tests/installed_documents.lua" installed "$document_root" "$root" "$manifest"
+echo 'COMPLETE pristine-documents'
+if [[ $mode == reduced ]]; then
+ echo 'REDUCED CHECKS PASS — full integration NOT QUALIFIED'
+ exit 0
+fi
+group=document-mutations
+mkdir "$run/documents"
+bash "$root/tests/installed-documents.sh" "$document_root" "$root" "$manifest" "$run/documents/probes"
+echo 'COMPLETE document-mutations'
+group=persistence
+mkdir "$run/persistence"
+for test in m3_persistence m4_persistence; do lua5.4 "$root/tests/$test.lua" "$prefix" "$root" "$run/persistence"; done
+echo 'COMPLETE persistence'
+group=branch
+mkdir "$run/branch"
+cc -O0 -g -fno-pie -no-pie -fcf-protection=branch "$root/tests/fixtures/branch.c" -o "$run/branch/branch.elf"
+lua5.4 "$root/tests/m3_branch.lua" "$prefix" "$run/branch/branch.elf"
+echo 'COMPLETE branch'
+group=profiles
+bash "$root/tests/installed-profiles.sh" "$prefix" "$run/profiles" "$external_specs"
+echo 'COMPLETE profiles'
+group=absence
+bash "$root/tests/installed-absence.sh" "$prefix" "$run/absence" "$build"
+echo 'COMPLETE absence'
+printf 'FULL INTEGRATION PASS prefix=%s run=%s\n' "$prefix" "$run"
