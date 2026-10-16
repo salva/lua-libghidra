@@ -127,6 +127,44 @@ local function api_contract(api)
   end
   for name in op.response.native_type:gmatch('[%w_]+') do model(name) end
  end end
+ -- Exact adjacent result semantics must agree with both the ledger envelope
+ -- and actual publication primitive, not merely contain the right model links.
+ local fields={get_function='function',get_instruction='instruction',get_symbol='symbol',
+  list_functions='functions',list_instructions='instructions',list_basic_blocks='blocks',
+  list_cfg_edges='edges',list_symbols='symbols',list_xrefs='xrefs',list_types='types',
+  list_type_aliases='aliases',list_type_unions='unions',list_type_enums='enums'}
+ local kinds={}; local kind=0
+ for name in registered:gmatch('"([%w_]+)"') do kinds[name]=kind; kind=kind+1 end
+ local publication=assert(source:match('(case 0:.-)int dispatch%('))
+ for name,field in pairs(fields) do
+  local optional=name:match('^get_')~=nil
+  local expected=(optional and 'optional '..field or field..' array')..'.'
+  assert(entries[name]:match('Result fields: ([^\n]+)')==expected,
+   'incorrect exact API result '..name)
+  local body=assert(publication:match('case '..kinds[name]..':(.-)break;'))
+  local primitive=optional and 'optional' or 'array'
+  assert(body:find('slice::'..primitive..'(L,"'..field..'",',1,true),
+   'converter result drift '..name)
+  local op
+  for _,o in ipairs(d.operations) do if o.lowlevel==name then op=o end end
+  local model=d.types[assert(op).response.native_type]
+  assert(model and #model.fields==1 and model.fields[1].name==field,
+   'envelope result drift '..name)
+ end
+ local discard=entries.discard_program
+ assert(discard:find('Requires live owner; no open program prerequisite.',1,true),
+  'incorrect discard prerequisite')
+ for _,fact in ipairs{'before opening a program','after logical program closure',
+   'discarded=true','invalidates iterators','No rollback'} do
+  assert(discard:find(fact,1,true),'missing discard semantics '..fact)
+ end
+ assert(source:find('case 13: take(p,client->DiscardProgram(),p.core_13); break;',1,true))
+ -- Existing native source session tests cover its unconditional acknowledgment;
+ -- also guard the binding's owner gate and pre-dispatch invalidation ordering.
+ local gate=assert(source:find('if(!s || !s->p || !s->p->client) { seterror(p,"CLOSED","owner closed");',1,true))
+ local invalidation=assert(source:find('kind==13',gate,true))
+ local dispatch=assert(source:find('case 13: take(p,client->DiscardProgram()',invalidation,true))
+ assert(gate<invalidation and invalidation<dispatch)
  linked(entries.patch_bytes_batch,'BytePatch')
  linked(entries.add_perf_benchmark,'PerfBenchmarkRecord')
  assert(not entries.iter_instructions and not entries.iter_types and not entries.iter_function_signatures)
@@ -135,7 +173,32 @@ local api=U.read'docs/API.md'
 api_contract(api)
 for _,mutation in ipairs{
  function(t) return t:gsub('### get_function\n','### removed_function\n',1) end,
+ function(t) return t:gsub('Result fields: optional function%.','Result fields: optional function/instruction/symbol.',1) end,
+ function(t) return t:gsub('Result fields: blocks array%.','Result fields: blocks / edges array.',1) end,
+ function(t) return t:gsub('Requires live owner; no open program prerequisite%.', 'Requires live owner and open program.') end,
+ function(t) return t:gsub('discarded=true','discarded=false') end,
  function(t) return t:gsub('%]%(%../api/FIELDS%.md#healthstatus%)','](../api/FIELDS.md#absent)',1) end,
  function(t) return t:gsub('%]%(%../api/FIELDS%.md#bytepatch%)','](../api/FIELDS.md#absent)',1) end,
 } do assert(not pcall(api_contract,mutation(api)),'API contract corruption accepted') end
-print('Actual 70 native methods, helpers, surfaces, envelope/nested/input links and corruption sensitivity PASS')
+-- Every originally conflated summary must independently reject its old family.
+for _,case in ipairs{
+ {'get_function','optional function/instruction/symbol.'},
+ {'get_instruction','optional function/instruction/symbol.'},
+ {'get_symbol','optional function/instruction/symbol.'},
+ {'list_functions','functions / instructions array.'},
+ {'list_instructions','functions / instructions array.'},
+ {'list_basic_blocks','blocks / edges array.'}, {'list_cfg_edges','blocks / edges array.'},
+ {'list_symbols','symbols / xrefs array.'}, {'list_xrefs','symbols / xrefs array.'},
+ {'list_types','types / aliases / unions / enums array.'},
+ {'list_type_aliases','types / aliases / unions / enums array.'},
+ {'list_type_unions','types / aliases / unions / enums array.'},
+ {'list_type_enums','types / aliases / unions / enums array.'},
+} do
+ local first=assert(api:find('\n### '..case[1]..'\n',1,true))
+ local prefix=api:sub(1,first-1)
+ local changed,n=api:sub(first):gsub('(Result fields: )[^\n]+',function(label)
+  return label..case[2]
+ end,1)
+ assert(n==1 and not pcall(api_contract,prefix..changed),'old family accepted '..case[1])
+end
+print('Actual 70 native methods/helpers, model links, 13 exact converter/envelope results, owner-only discard and corruption sensitivity PASS')

@@ -239,11 +239,12 @@ Requires construction state_path; saved=true is not complete category persistenc
 
 ### discard_program
 
-**lowlevel** — `discard_program()`. Requires live owner and open program. Dispatched mutation/lifecycle invalidates iterators even on failure/partial effect; validation-only failure does not.
+**lowlevel** — `discard_program()`. Requires live owner; no open program prerequisite. Dispatched mutation/lifecycle invalidates iterators even on failure/partial effect; validation-only failure does not.
 
 Lowlevel result: [DiscardProgramResponse](../api/FIELDS.md#discardprogramresponse). Result fields: discarded:boolean.
 
-Acknowledgment only: does not revert mutations or byte overlay. No rollback. See [ownership/persistence limits](#ownership-persistence-and-effective-limits).
+Owner-only discarded=true acknowledgment, usable before opening a program and
+after logical program closure. Does not revert mutations or byte overlay. No rollback. See [ownership/persistence limits](#ownership-persistence-and-effective-limits).
 
 
 ## Functions and decompilation
@@ -252,7 +253,7 @@ Acknowledgment only: does not revert mutations or byte overlay. No rollback. See
 
 **both** — `get_function(address)`. Requires live owner and open program. Read-only dispatch; no iterator invalidation.
 
-Lowlevel result: [GetFunctionResponse](../api/FIELDS.md#getfunctionresponse). Session returns `response['function']`, nil, complete response; optional absence is nil,NOT_FOUND,response. Nested values: [FunctionRecord](../api/FIELDS.md#functionrecord). Result fields: optional function/instruction/symbol.
+Lowlevel result: [GetFunctionResponse](../api/FIELDS.md#getfunctionresponse). Session returns `response['function']`, nil, complete response; optional absence is nil,NOT_FOUND,response. Nested values: [FunctionRecord](../api/FIELDS.md#functionrecord). Result fields: optional function.
 
 Session returns response['function']; `function` is a Lua keyword. Discovery is lazy; absence does not imply no code. See [ownership/persistence limits](#ownership-persistence-and-effective-limits).
 
@@ -260,7 +261,7 @@ Session returns response['function']; `function` is a Lua keyword. Discovery is 
 
 **both** — `list_functions(range_page)`. Requires live owner and open program. Read-only dispatch; no iterator invalidation.
 
-Lowlevel result: [ListFunctionsResponse](../api/FIELDS.md#listfunctionsresponse). Session retains the complete result unchanged. Nested values: [FunctionRecord](../api/FIELDS.md#functionrecord). Result fields: functions / instructions array.
+Lowlevel result: [ListFunctionsResponse](../api/FIELDS.md#listfunctionsresponse). Session retains the complete result unchanged. Nested values: [FunctionRecord](../api/FIELDS.md#functionrecord). Result fields: functions array.
 
 Omitted/nil page uses [range/count defaults and compound bounds](#values-and-validation). See [ownership/persistence limits](#ownership-persistence-and-effective-limits).
 
@@ -276,7 +277,7 @@ See [ownership/persistence limits](#ownership-persistence-and-effective-limits).
 
 **both** — `list_basic_blocks(range_page)`. Requires live owner and open program. Read-only dispatch; no iterator invalidation.
 
-Lowlevel result: [ListBasicBlocksResponse](../api/FIELDS.md#listbasicblocksresponse). Session retains the complete result unchanged. Nested values: [BasicBlockRecord](../api/FIELDS.md#basicblockrecord). Result fields: blocks / edges array.
+Lowlevel result: [ListBasicBlocksResponse](../api/FIELDS.md#listbasicblocksresponse). Session retains the complete result unchanged. Nested values: [BasicBlockRecord](../api/FIELDS.md#basicblockrecord). Result fields: blocks array.
 
 Omitted/nil page uses [range/count defaults and compound bounds](#values-and-validation). See [ownership/persistence limits](#ownership-persistence-and-effective-limits).
 
@@ -284,7 +285,7 @@ Omitted/nil page uses [range/count defaults and compound bounds](#values-and-val
 
 **both** — `list_cfg_edges(range_page)`. Requires live owner and open program. Read-only dispatch; no iterator invalidation.
 
-Lowlevel result: [ListCFGEdgesResponse](../api/FIELDS.md#listcfgedgesresponse). Session retains the complete result unchanged. Nested values: [CFGEdgeRecord](../api/FIELDS.md#cfgedgerecord). Result fields: blocks / edges array.
+Lowlevel result: [ListCFGEdgesResponse](../api/FIELDS.md#listcfgedgesresponse). Session retains the complete result unchanged. Nested values: [CFGEdgeRecord](../api/FIELDS.md#cfgedgerecord). Result fields: edges array.
 
 Omitted/nil page uses [range/count defaults and compound bounds](#values-and-validation). See [ownership/persistence limits](#ownership-persistence-and-effective-limits).
 
@@ -375,7 +376,7 @@ local_id is stable id from decompilation, not an array index. True-local char re
 
 **both** — `get_instruction(address)`. Requires live owner and open program. Read-only dispatch; no iterator invalidation.
 
-Lowlevel result: [GetInstructionResponse](../api/FIELDS.md#getinstructionresponse). Session returns `response.instruction`, nil, complete response; optional absence is nil,NOT_FOUND,response. Nested values: [InstructionRecord](../api/FIELDS.md#instructionrecord). Result fields: optional function/instruction/symbol.
+Lowlevel result: [GetInstructionResponse](../api/FIELDS.md#getinstructionresponse). Session returns `response.instruction`, nil, complete response; optional absence is nil,NOT_FOUND,response. Nested values: [InstructionRecord](../api/FIELDS.md#instructionrecord). Result fields: optional instruction.
 
 Use a caller-confirmed mapped instruction entry with complete bytes; exact UInt64 alone does not prove safety. See [ownership/persistence limits](#ownership-persistence-and-effective-limits).
 
@@ -383,7 +384,7 @@ Use a caller-confirmed mapped instruction entry with complete bytes; exact UInt6
 
 **both** — `list_instructions(range_page)`. Requires live owner and open program. Read-only dispatch; no iterator invalidation.
 
-Lowlevel result: [ListInstructionsResponse](../api/FIELDS.md#listinstructionsresponse). Session retains the complete result unchanged. Nested values: [InstructionRecord](../api/FIELDS.md#instructionrecord). Result fields: functions / instructions array.
+Lowlevel result: [ListInstructionsResponse](../api/FIELDS.md#listinstructionsresponse). Session retains the complete result unchanged. Nested values: [InstructionRecord](../api/FIELDS.md#instructionrecord). Result fields: instructions array.
 
 Omitted/nil page uses [range/count defaults and compound bounds](#values-and-validation). Decodes linearly from range_start until first gap, not mapped-region enumeration; default zero start can return empty despite code elsewhere. See [ownership/persistence limits](#ownership-persistence-and-effective-limits).
 
@@ -458,7 +459,7 @@ See [ownership/persistence limits](#ownership-persistence-and-effective-limits).
 
 **both** — `get_symbol(address)`. Requires live owner and open program. Read-only dispatch; no iterator invalidation.
 
-Lowlevel result: [GetSymbolResponse](../api/FIELDS.md#getsymbolresponse). Session returns `response.symbol`, nil, complete response; optional absence is nil,NOT_FOUND,response. Nested values: [SymbolRecord](../api/FIELDS.md#symbolrecord). Result fields: optional function/instruction/symbol.
+Lowlevel result: [GetSymbolResponse](../api/FIELDS.md#getsymbolresponse). Session returns `response.symbol`, nil, complete response; optional absence is nil,NOT_FOUND,response. Nested values: [SymbolRecord](../api/FIELDS.md#symbolrecord). Result fields: optional symbol.
 
 See [ownership/persistence limits](#ownership-persistence-and-effective-limits).
 
@@ -466,7 +467,7 @@ See [ownership/persistence limits](#ownership-persistence-and-effective-limits).
 
 **both** — `list_symbols(range_page)`. Requires live owner and open program. Read-only dispatch; no iterator invalidation.
 
-Lowlevel result: [ListSymbolsResponse](../api/FIELDS.md#listsymbolsresponse). Session retains the complete result unchanged. Nested values: [SymbolRecord](../api/FIELDS.md#symbolrecord). Result fields: symbols / xrefs array.
+Lowlevel result: [ListSymbolsResponse](../api/FIELDS.md#listsymbolsresponse). Session retains the complete result unchanged. Nested values: [SymbolRecord](../api/FIELDS.md#symbolrecord). Result fields: symbols array.
 
 Omitted/nil page uses [range/count defaults and compound bounds](#values-and-validation). See [ownership/persistence limits](#ownership-persistence-and-effective-limits).
 
@@ -490,7 +491,7 @@ name_filter is required but ignored upstream; address selects deletion. Named da
 
 **both** — `list_xrefs(range_page)`. Requires live owner and open program. Read-only dispatch; no iterator invalidation.
 
-Lowlevel result: [ListXrefsResponse](../api/FIELDS.md#listxrefsresponse). Session retains the complete result unchanged. Nested values: [XrefRecord](../api/FIELDS.md#xrefrecord). Result fields: symbols / xrefs array.
+Lowlevel result: [ListXrefsResponse](../api/FIELDS.md#listxrefsresponse). Session retains the complete result unchanged. Nested values: [XrefRecord](../api/FIELDS.md#xrefrecord). Result fields: xrefs array.
 
 Omitted/nil page uses [range/count defaults and compound bounds](#values-and-validation). See [ownership/persistence limits](#ownership-persistence-and-effective-limits).
 
@@ -616,7 +617,7 @@ findByName input: returned name works; leading-slash path_name is not normalized
 
 **both** — `list_type_aliases(query:string, count_page)`. Requires live owner and open program. Read-only dispatch; no iterator invalidation.
 
-Lowlevel result: [ListTypeAliasesResponse](../api/FIELDS.md#listtypealiasesresponse). Session retains the complete result unchanged. Nested values: [TypeAliasRecord](../api/FIELDS.md#typealiasrecord). Result fields: types / aliases / unions / enums array.
+Lowlevel result: [ListTypeAliasesResponse](../api/FIELDS.md#listtypealiasesresponse). Session retains the complete result unchanged. Nested values: [TypeAliasRecord](../api/FIELDS.md#typealiasrecord). Result fields: aliases array.
 
 Omitted/nil page uses [range/count defaults and compound bounds](#values-and-validation). See [ownership/persistence limits](#ownership-persistence-and-effective-limits).
 
@@ -632,7 +633,7 @@ Omitted/nil page uses [range/count defaults and compound bounds](#values-and-val
 
 **both** — `list_type_enums(query:string, count_page)`. Requires live owner and open program. Read-only dispatch; no iterator invalidation.
 
-Lowlevel result: [ListTypeEnumsResponse](../api/FIELDS.md#listtypeenumsresponse). Session retains the complete result unchanged. Nested values: [TypeEnumRecord](../api/FIELDS.md#typeenumrecord). Result fields: types / aliases / unions / enums array.
+Lowlevel result: [ListTypeEnumsResponse](../api/FIELDS.md#listtypeenumsresponse). Session retains the complete result unchanged. Nested values: [TypeEnumRecord](../api/FIELDS.md#typeenumrecord). Result fields: enums array.
 
 Omitted/nil page uses [range/count defaults and compound bounds](#values-and-validation). See [ownership/persistence limits](#ownership-persistence-and-effective-limits).
 
@@ -648,7 +649,7 @@ Omitted/nil page uses [range/count defaults and compound bounds](#values-and-val
 
 **both** — `list_type_unions(query:string, count_page)`. Requires live owner and open program. Read-only dispatch; no iterator invalidation.
 
-Lowlevel result: [ListTypeUnionsResponse](../api/FIELDS.md#listtypeunionsresponse). Session retains the complete result unchanged. Nested values: [TypeUnionRecord](../api/FIELDS.md#typeunionrecord). Result fields: types / aliases / unions / enums array.
+Lowlevel result: [ListTypeUnionsResponse](../api/FIELDS.md#listtypeunionsresponse). Session retains the complete result unchanged. Nested values: [TypeUnionRecord](../api/FIELDS.md#typeunionrecord). Result fields: unions array.
 
 Omitted/nil page uses [range/count defaults and compound bounds](#values-and-validation). See [ownership/persistence limits](#ownership-persistence-and-effective-limits).
 
@@ -656,7 +657,7 @@ Omitted/nil page uses [range/count defaults and compound bounds](#values-and-val
 
 **both** — `list_types(query:string, count_page)`. Requires live owner and open program. Read-only dispatch; no iterator invalidation.
 
-Lowlevel result: [ListTypesResponse](../api/FIELDS.md#listtypesresponse). Session retains the complete result unchanged. Nested values: [TypeRecord](../api/FIELDS.md#typerecord). Result fields: types / aliases / unions / enums array.
+Lowlevel result: [ListTypesResponse](../api/FIELDS.md#listtypesresponse). Session retains the complete result unchanged. Nested values: [TypeRecord](../api/FIELDS.md#typerecord). Result fields: types array.
 
 Omitted/nil page uses [range/count defaults and compound bounds](#values-and-validation). See [ownership/persistence limits](#ownership-persistence-and-effective-limits).
 
