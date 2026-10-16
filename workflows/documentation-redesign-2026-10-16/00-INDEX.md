@@ -1,0 +1,33 @@
+# Documentation redesign — working index
+
+Scope and owner conditions: [requirements](00-REQUIREMENTS.md). Baseline `4dffcb1`.
+All files here are working documents, excluded from main docs/package/site.
+
+## Workflow
+
+- [x] Confirm clean stable baseline and stopped runtime; resolve Astra model.
+- [x] Record owner conditions and subsystem/issue map.
+- [ ] Astra author: current-state analysis, design alternatives and selected design.
+- [ ] Separate Astra analyst: bounded example-origin assessment for the designer.
+- [ ] Fresh independent Astra design/analysis review and bounded corrections.
+- [ ] Astra author: self-contained sequenced replacement plan and planner handoff.
+- [ ] Fresh independent Astra plan/handoff review and bounded corrections.
+- [ ] Commit accepted artifacts and notify the main planner through Analyst.
+- [ ] Report adoption receipt; leave execution stopped unless Run is authorized.
+
+Use up to two correction rounds per reviewed document group. Unresolved required
+changes are explicit blockers, not implicit approval. Do not implement during
+planning, push, publish, alter deployment/config/prompts or change runtime files.
+
+## Issues and dimensions
+
+| ID | Issue/condition | Importance | Transversality |
+| --- | --- | --- | --- |
+| [R01](R01-reading-path-and-reference.md) | Reader journey, domain API navigation, supported records | High | User/reference/generation/site |
+| [R02](R02-authority-and-working-documents.md) | Current guides versus history and working documents | High | Docs/package/operator handoff |
+| [R03](R03-independent-examples.md) | Independent task-first Lua examples | High | Examples/guides/tests/site |
+| [R04](R04-artifact-and-stage-integration.md) | One content authority, artifact closure and pending website integration | High | Manifests/checks/site/planning |
+
+These are redesign dimensions, not a new claim that each current component is
+broken. They form one coherent design with an ordered plan, not four independent
+implementations of overlapping document trees.
