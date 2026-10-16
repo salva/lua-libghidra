@@ -28,3 +28,8 @@ fingerprints/defaults, never execute Python or require upstream Python binding.
 `coverage.md` remains chronological research history, not regeneration directions.
 Current requirements and real Lua/native evidence remain authoritative. No runtime
 acceptance is gained or lost by source-ledger format migration.
+
+M4 implemented call grammar and request/response/dispatch disposition is maintained
+in [M4-FULL](../docs/M4-FULL.md), supplementing the source-generated field facts.
+Do not infer full qualification from the generated proposal names or from method
+availability alone; service/runtime evidence and limitations remain separate.

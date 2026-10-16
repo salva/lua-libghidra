@@ -55,9 +55,10 @@ int main() {
  "local v,e=c:read_bytes(0,0)", "local v,e=c:open_program{program_path='absent'}",
  "local v,e=c:get_function(0)", "local v,e=c:list_functions{limit=2}",
  "local v,e=c:get_instruction(0)", "local v,e=c:list_instructions{limit=2}",
- "local v,e=c:get_decompilation(0)"};
- const char* recheck_names[]={"read_bytes","open_program","get_function","list_functions","get_instruction","list_instructions","get_decompilation"};
- for(int mode=0;mode<7;++mode) {
+ "local v,e=c:get_decompilation(0)", "local v,e=c:create_type('x','struct',0)",
+ "local v,e=c:patch_bytes_batch{{address=0,data='x'}}", "local v,e=c:add_perf_benchmark{bench_id='x'}"};
+ const char* recheck_names[]={"read_bytes","open_program","get_function","list_functions","get_instruction","list_instructions","get_decompilation","create_type","patch_bytes_batch","add_perf_benchmark"};
+ for(int mode=0;mode<10;++mode) {
   run(L,"c=assert(n.local_client()); collectgarbage('stop'); hits=0; completed=0; finalizer_ok=false; finalizer_error=nil; "
         "do local owner=c; local f=setmetatable({}, {__gc=function() "
         "hits=hits+1; finalizer_ok,finalizer_error=pcall(function() "

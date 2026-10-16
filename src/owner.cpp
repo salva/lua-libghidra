@@ -347,13 +347,24 @@ struct PatchInvalid {};
 struct PatchRead { std::vector<c::BytePatch>* patches; size_t count; bool failed=false; bool invalid=false; };
 int read_patches(lua_State* L) {
  PatchRead* r=static_cast<PatchRead*>(lua_touserdata(L,2));
+ uint64_t total=0;
+ if(lua_rawlen(L,1)!=r->count) { r->invalid=true; return 0; }
+ const char* const keys[]={"address","data",nullptr};
+ lua_pushnil(L);
+ while(lua_next(L,1)) {
+  bool valid=lua_isinteger(L,-2) && lua_tointeger(L,-2)>=1 && static_cast<uint64_t>(lua_tointeger(L,-2))<=r->count;
+  lua_pop(L,1); if(!valid) { r->invalid=true; return 0; }
+ }
  // All Lua access has trivial locals. Native allocations are caught before
  // returning to Lua; the outer vector owns every partially copied element.
  for(size_t i=0;i<r->count;++i) {
-  lua_rawgeti(L,1,i+1); int t=lua_gettop(L); uint64_t addr=0; const char* data=nullptr; size_t n=0;
+  lua_rawgeti(L,1,i+1); int t=lua_gettop(L);
+  if(!known_keys(L,t,keys)) { r->invalid=true; return 0; }
+  uint64_t addr=0; const char* data=nullptr; size_t n=0;
   lua_pushliteral(L,"address"); lua_rawget(L,t); bool valid=read_u64(L,-1,&addr); lua_pop(L,1);
   lua_pushliteral(L,"data"); lua_rawget(L,t); valid=valid && read_text(L,-1,&data,&n) && n<=INT_MAX;
-  if(!valid) { r->invalid=true; return 0; }
+  total+=n;
+  if(!valid || total>UINT32_MAX) { r->invalid=true; return 0; }
   bool failed=false;
   try { r->patches->push_back({addr,{}}); r->patches->back().data.assign(reinterpret_cast<const uint8_t*>(data),reinterpret_cast<const uint8_t*>(data)+n); }
   catch(...) { failed=true; }

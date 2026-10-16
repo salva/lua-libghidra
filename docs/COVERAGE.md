@@ -107,3 +107,11 @@ All core lowlevel adapters now exist. See [M3 core grammar/complete-field mappin
 real evidence and remaining gates](M3-CORE.md). Existing source-accounting and
 unqualified runtime slots above are not retroactively marked passed: populated
 subtype, iterator/persistence and independent-review gates remain open.
+
+## M4 writer implementation
+
+All full-tier adapters are now implemented at the shared dispatch primitive;
+[full grammar/field/disposition supplement](M4-FULL.md) records exact mappings,
+real installed service coverage, limitations and remaining qualification. Existing
+generated runtime slots are not rewritten as passes. Surface availability is not
+by itself full runtime acceptance or independent review.

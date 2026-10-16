@@ -91,3 +91,11 @@ and [api/README](../api/README.md); they are not generation inputs or new accept
 Current installed evidence and remaining gates are summarized in
 [qualification](INSTALLED-CORE.md). Source/converter coverage alone does not prove
 real native behavior. Independent review and operator decisions remain required.
+
+## Full-tier native adapter extension
+
+The writer implementation now exposes all full-tier methods through lowlevel and
+Session native(). See [M4 exact grammar, dispatch/field mapping and bounded
+qualification](M4-FULL.md). This extends the core surface; it does not upgrade
+historical core evidence or grant M5/release approval. No new facade convenience
+or iterator is enabled.
