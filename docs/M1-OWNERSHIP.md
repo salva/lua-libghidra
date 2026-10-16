@@ -455,3 +455,31 @@ before calling this an engine leak rather than retained process state. This is
 not semantic destructor accounting or an exhaustive sweep: the first failing
 gate stops before measured success tail. Reproduce with
 `cmake --build build --target read_order_host -j4 && ctest --test-dir build -R '^read_bytes_dispatch_order$' -V`.
+
+#### Repair investigation: threshold 602 is reachable upstream global state
+
+GDB on the task-owned host attributes the last successful 91-byte allocation to
+`ghidra::FileManage::addDir2Path`, via `SleighArchitecture::scanForSleighDirectories`,
+`startDecompilerLibrary`, `Decompiler`, `DecompilerPool`, `CreateLocalClient` and
+the real Lua owner factory. The subsequent refused allocation requests 181 bytes
+in the SAME addDir2Path frame. Pinned engine source first pushes the path string
+into pathlist, then appends the separator. The latter allocation throws after the
+vector already owns the original string. `SleighArchitecture::specpaths` is a
+process-global FileManage and shutdown does not clear it.
+
+At the abort GDB inspected that global's last std::string: length/capacity 90,
+its data still points at the 91-byte allocation (the test allocator header
+contains 0x5b). Its text is the embedded-cache 6502 languages directory, without
+the final slash. This is reachable partially modified upstream global state,
+not demonstrated lost ownership in the wrapper or a skipped Handle destructor.
+It also explains why merely warming one construction cannot make all later
+factory baselines stationary: every scan appends paths to the same global.
+
+The failing balance assertion remains intact. This attribution does NOT waive
+the required fault/lifetime gate or authorize an engine patch. Next repair must
+separate attributable process-global state from per-attempt owned storage using
+real pinned types/symbols (not a guessed-layout production shim), and check path
+validity/recovery; alternatively an engine-owner-approved transaction/cleanup
+change would need its existing authority and locked patch process. No upstream
+source or installed SDK was changed during this investigation. A debugger exit
+0 after SIGABRT is diagnostic success only, not test success.
