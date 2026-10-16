@@ -12,8 +12,8 @@ All files here are working documents, excluded from main docs/package/site.
 - [x] Fresh independent Astra design/analysis review and bounded corrections.
 - [x] Astra author: self-contained sequenced replacement plan and planner handoff.
 - [x] Fresh independent Astra plan/handoff review and bounded corrections.
-- [ ] Commit accepted artifacts and notify the main planner through Analyst.
-- [ ] After accepted design/plan and planner notice, use operator-authorized Run.
+- [x] Commit accepted artifacts and notify the main planner through Analyst.
+- [x] After accepted design/plan and planner notice, use operator-authorized Run.
 - [ ] Verify fresh owning-chain execution and report adoption/resume receipts.
 
 Use up to two correction rounds per reviewed document group. Unresolved required
@@ -44,7 +44,8 @@ implementations of overlapping document trees.
   [final design review](reviews/DESIGN-REVIEW-r2.md).
 - [Plan](04-PLAN.md) and [owning-planner handoff](05-PLANNER-HANDOFF.md): independently
   approved; [final plan review](reviews/PLAN-REVIEW-r2.md). The readiness gate is
-  satisfied; notification, adoption and resume receipts are pending. Approval of
+  satisfied; notification and resume succeeded, owning-stage adoption verification
+  is pending. [Control/execution evidence](06-ADOPTION-RESUME.md). Approval of
   future tests is not a claim they have been implemented or passed.
 - [Example assessment](03-EXAMPLE-ASSESSMENT.md): no distinctive upstream adaptation
   established, composition origin unknown; public fixture-demo selection must be
