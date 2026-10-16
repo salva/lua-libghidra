@@ -55,3 +55,25 @@ for group,key in pairs{container_reviews='container_result_review',performance_r
 end
 assert(artifact.session_reviews.CloseHelper and artifact.session_reviews.OpenProgram)
 print('24 container and four performance body fingerprints match retained review; session reviews present PASS')
+for name,r in pairs(assert(artifact.special_reviews)) do assert(r.body_sha256==ops[name].special_result_review.body_sha256,'special fingerprint mismatch '..name) end
+local p=assert(artifact.producer_reviews)
+for name,key in pairs{ListBasicBlocks='CFG',ListCFGEdges='CFG',ListXrefs='Xrefs',GetDecompilation='SingleDecompilation',ListDecompilations='BatchDecompilation'} do
+ local found=false
+ for _,old in ipairs(ops[name].record_field_reviews) do if old.model==((name=='ListBasicBlocks' and 'BasicBlockRecord') or (name=='ListCFGEdges' and 'CFGEdgeRecord') or (name=='ListXrefs' and 'XrefRecord') or 'DecompilationRecord') then assert(old.body_sha256==p[key].body_sha256,'record fingerprint mismatch '..name); found=true end end
+ assert(found,'record family missing '..name)
+end
+assert(p.Extraction.combined_locals_extraction_sha256==ops.GetDecompilation.decompilation_extraction_review.body_sha256)
+print('Graph/decompilation/local/special exact producer fingerprints match retained source reviews PASS')
+local matched=0
+for _,r in pairs(artifact.record_reviews) do
+ local found=false
+ for _,op in pairs(ops) do for _,old in ipairs(op.record_field_reviews or {}) do if old.method==r.method and old.model==r.model then
+  assert(r.body_sha256==old.body_sha256 and r.line==old.line,'record fingerprint/citation mismatch '..r.method)
+  local expected={}; for _,f in ipairs(old.default_only_fields) do expected[f]=true end
+  for f in pairs(r.default_only) do assert(expected[f],'record default mismatch '..f); expected[f]=nil end; assert(next(expected)==nil)
+  found=true
+ end end end
+ assert(found,'unmatched producer '..r.method); matched=matched+1
+end
+assert(matched==15)
+print('All 15 record producer/default fingerprints match retained reviews PASS')

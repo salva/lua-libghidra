@@ -250,3 +250,17 @@ qualification. Logical close resets adapters, not engines/owner; failed save
 precedes reset, and discard acknowledgement is not rollback. Remaining migration
 is nested record/graph/decompilation/special-result producers and full coverage
 assembly, not direct-input or container closure. Native artifact remains partial.
+
+Nested producer migration now includes graph/block/xref branch assignments,
+single/batch decompilation success/failure defaults, local collection/extraction,
+four special result paths and 15 ordinary/signature/parameter producer contracts.
+Run `lua5.4 tests/tooling_producers.lua`, `tests/tooling_special.lua` and
+`tests/tooling_records.lua` (each accepts optional pinned source directory).
+These tests mutate actual producer branches/fields, not a mandatory Python oracle.
+Exact body/default fingerprints are compared with retained review history as an
+additional regression only. Inclusive block stop, heuristic edge kinds, subset
+xref flags/defaults, empty unreachable tokens, signed ordinals, opaque local IDs,
+synthetic type paths and non-durable enumeration IDs remain explicit. No graph
+completeness, new union/signature producer or runtime success is inferred.
+Full semantic-output assembly/replacement of the old owned entry points remains
+open: generated native artifacts still say partial and do not replace coverage.json.
