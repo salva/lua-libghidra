@@ -116,6 +116,37 @@ int main() {
  }
  assert(factory_oom>1 && factory_tail==1);
  std::printf("Factory Lua OOM: %u reached, success tail, GC-only publication release and fresh-owner recovery PASS\n",factory_oom);
+ // Combine real native factory refusal with Lua failure converting its error.
+ unsigned dual_reached=0,dual_tail=0;
+ for(size_t point=1;point<=512;++point) {
+  lua_pushcfunction(L,factory); lua_pushvalue(L,1);
+  allocator.calls=allocator.refused=0; allocator.fail=point;
+  attempts=denied=0; deny_after=1; watching=deny=true;
+  int result=lua_pcall(L,1,2,0);
+  watching=deny=false; allocator.fail=SIZE_MAX;
+  if(allocator.refused) {
+   assert(result==LUA_ERRMEM); lua_pop(L,1);
+   if(denied) ++dual_reached; // Exclude Lua setup failures before native entry.
+  } else {
+   ++dual_tail;
+   assert(denied>0 && result==LUA_OK && lua_isnil(L,-2) && lua_istable(L,-1));
+   lua_getfield(L,-1,"code");
+   assert(std::string_view(lua_tostring(L,-1))=="NATIVE_EXCEPTION"); lua_pop(L,1);
+   lua_getfield(L,-1,"operation");
+   assert(std::string_view(lua_tostring(L,-1))=="local_client"); lua_pop(L,1);
+   lua_getfield(L,-1,"backend");
+   assert(std::string_view(lua_tostring(L,-1))=="binding"); lua_pop(L,3);
+  }
+  lua_gc(L,LUA_GCCOLLECT);
+  lua_pushcfunction(L,factory); lua_pushvalue(L,1);
+  assert(lua_pcall(L,1,2,0)==LUA_OK && lua_isuserdata(L,-2));
+  lua_getfield(L,-2,"close"); lua_pushvalue(L,-3);
+  assert(lua_pcall(L,1,1,0)==LUA_OK && lua_toboolean(L,-1)); lua_pop(L,3);
+  lua_gc(L,LUA_GCCOLLECT);
+  if(dual_tail) break;
+ }
+ assert(dual_reached>1 && dual_tail==1);
+ std::printf("Factory dual fault: %u actual native+Lua refusals, structured tail and fresh-owner recovery PASS\n",dual_reached);
  assert(lua_pcall(L,0,1,0)==LUA_OK && lua_isuserdata(L,-1));
  int owner=lua_gettop(L);
  const lua_Integer sizes[]={0,INT32_MAX,lua_Integer(INT32_MAX)+1,UINT32_MAX};

@@ -373,3 +373,18 @@ release is directly exercised. Native constructor heap/destructor attribution,
 allocator-driven finalizer reentrancy and error-conversion factory faults remain
 separate requirements. Run `cmake --build build --target read_order_host -j4`
 and `ctest --test-dir build -R '^read_bytes_dispatch_order$' --repeat until-fail:3 -V`.
+
+### Native factory exception plus Lua error-conversion OOM
+
+The direct factory host also persistently refuses ordinary C++ allocation from
+its first attempted allocation while sweeping Lua growth refusal through the
+first successful structured-error tail. Lua-only setup denials are checked as
+LUA_ERRMEM but excluded from the dual-fault count; at least two iterations must
+actually observe BOTH native and Lua refusal. The no-Lua-refusal tail must report
+NATIVE_EXCEPTION/local_client/binding with actual native refusal. After each
+iteration both allocators are restored, GC runs, and fresh real construction and
+close must succeed. Three focused repetitions each reached ten dual-fault points.
+This tests protected conversion/rethrow on a failed factory (separate from the
+GetCapabilities dual fault). First native allocation refusal does not demonstrate
+deep engine initialization, semantic destructor counting or heap balance; those
+remain open. Reproduce via the read_bytes_dispatch_order focused command above.
