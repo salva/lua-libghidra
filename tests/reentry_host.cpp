@@ -2,6 +2,7 @@
 #include <lua.hpp>
 #include <cassert>
 #include <cstdio>
+#include <cstring>
 extern "C" int luaopen_libghidra__native(lua_State*);
 static bool natural=false;
 static unsigned natural_phase=0, natural_hits=0;
@@ -72,15 +73,51 @@ int main() {
    int rc=lua_pcall(L,2,2,0); natural_phase=2;
    if(rc) std::fprintf(stderr,"natural GC %s: %s\n",method,lua_tostring(L,-1));
    assert(rc==LUA_OK);
+   // Keep actual detached result rooted while checking finalizer completion.
+   lua_pushvalue(L,-2); lua_setglobal(L,"result");
+   lua_pushvalue(L,-1); lua_setglobal(L,"result_error");
    lua_pop(L,2);
    lua_getglobal(L,"finalizer_phase"); observed=lua_tointeger(L,-1)==(method[0]=='_'?1:3); lua_pop(L,1);
-   if(observed) run(L,"assert(hits==1 and completed==1); assert(finalizer_ok,finalizer_error)");
+   if(observed) {
+    run(L,"assert(hits==1 and completed==1); assert(finalizer_ok,finalizer_error); assert(result_error==nil)");
+    if(method[0]=='_') run(L,"assert(result:decimal()=='0')");
+    else if(!std::strcmp(method,"get_status")) run(L,"assert(result.ok==true and result.host_mode=='local'); assert(type(result.service_name)=='string')");
+    else if(!std::strcmp(method,"get_revision")) run(L,"assert(result.modification_number:decimal()=='0')");
+    else run(L,"assert(type(result)=='table' and #result>0); for _,v in ipairs(result) do assert(type(v.id)=='string' and type(v.status)=='string') end");
+    run(L,"local v,e=c:get_status(); assert(v==nil and e.code=='CLOSED'); "
+          "assert(c:_generation():decimal()=='1'); local fresh=assert(n.local_client()); assert(fresh:close()); "
+          "collectgarbage('collect'); assert(result~=nil)");
+   }
    run(L,"c:close(); c=nil; collectgarbage('collect')");
    if(observed) std::printf("allocation-driven real finalizer during %s: close/reconstruct completed PASS\n",method);
   }
   assert(observed);
  }
- assert(natural_hits>=4);
+ // Factory userdata allocation is before native ownership publication. A
+ // pending finalizer may construct/close another owner there; the outer owner
+ // must publish normally afterwards without inheriting the competitor's slot.
+ bool factory_observed=false;
+ for(int debt=1;debt<=128 && !factory_observed;debt*=2) {
+  natural_phase=0;
+  run(L,"result=nil; result_error=nil; finalizer_phase=0; collectgarbage('collect'); "
+        "collectgarbage('incremental',100,1000,0); collectgarbage('stop'); hits=0; completed=0; "
+        "do local f=setmetatable({}, {__gc=function() "
+        "finalizer_phase=mark_finalizer(); hits=hits+1; finalizer_ok,finalizer_error=pcall(function() "
+        "local competitor=assert(n.local_client()); assert(competitor:close()); completed=completed+1 end) end}) end");
+  for(int i=0;i<debt;++i) { lua_newtable(L); lua_pop(L,1); }
+  lua_pushcfunction(L,natural_call); lua_getglobal(L,"n");
+  lua_getfield(L,-1,"local_client"); lua_remove(L,-2); lua_pushnil(L);
+  assert(lua_pcall(L,2,2,0)==LUA_OK); natural_phase=2;
+  lua_pushvalue(L,-2); lua_setglobal(L,"published"); lua_pop(L,2);
+  lua_getglobal(L,"finalizer_phase"); factory_observed=lua_tointeger(L,-1)==1; lua_pop(L,1);
+  if(factory_observed) run(L,"assert(hits==1 and completed==1); assert(finalizer_ok,finalizer_error); "
+        "assert(published:get_status().ok); local v,e=n.local_client(); assert(v==nil and e.code=='CLIENT_IN_USE'); "
+        "assert(published:close()); assert(published:close()); published=nil; collectgarbage('collect'); "
+        "local fresh=assert(n.local_client()); assert(fresh:close())");
+  else run(L,"if published then published:close() end; published=nil; collectgarbage('collect')");
+ }
+ assert(factory_observed && natural_hits>=5);
+ std::puts("allocation-driven factory prepublication finalizer: competing owner close, publication/exclusion/reuse PASS");
  lua_close(L);
  std::puts("deterministic pre-recheck real GC: close/reconstruct finalizer and CLOSED revalidation PASS");
 }

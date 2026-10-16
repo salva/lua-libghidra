@@ -560,3 +560,28 @@ close all parsing/stack-growth/factory publication edges or attribute the exact
 allocation instruction within conversion. Those remain explicit coverage gaps;
 this is not exhaustive per-edge scheduling proof. Whole ordinary and wrapper
 ASan/UBSan suites pass with these additional cases.
+
+### Reentrant detached-state and factory prepublication assertions
+
+Natural-conversion cases now keep the returned detached result rooted and check
+nil error, status true/local/service string, revision modification zero,
+capability id/status strings, or generation snapshot zero as appropriate. After
+the finalizer's close/replacement completes, original receiver must return CLOSED,
+its generation must be one, and a fresh owner must be constructible/closable.
+The detached value stays rooted through further collection. Thus LUA_OK alone is
+no longer the conversion-state oracle (not all response fields are asserted).
+
+A related natural-GC factory case now queues a finalizer that constructs/closes
+a competing real client before outer factory publication. Empty options are
+rooted, GC restarted only at call entry. Required in-call finalizer marker plus
+exactly-one hit/inner-pcall/completion confirms real scheduling. Outer published
+owner must then be usable, exclude another factory with CLIENT_IN_USE, close
+twice, collect and permit fresh reuse. No collector step/collect inside call.
+Current source's only GC-checking allocation on this empty-options successful
+factory path is null Slot userdata creation before native ownership; publication
+itself has no allocating Lua API. This is source-supported prepublication
+attribution, not an exact allocation-PC trace or an injected postpublication edge.
+
+Parsing/stack-growth-specific scheduling remains a residual coverage question;
+these tests do not manufacture product allocations to claim those edges exercised.
+Both complete ordinary and sanitizer suites were rerun on this fixture.
