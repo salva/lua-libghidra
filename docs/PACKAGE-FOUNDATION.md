@@ -199,3 +199,11 @@ fingerprint qualification checks also compare status and adapter-page body hashe
 against retained source reviews. Native factory checks do not replace existing
 binding owner/failure cleanup tests. These additions still do not complete request,
 remaining response/mutation/container or complete coverage-ledger generation.
+
+Native generation now records all 20 nested request fields (open/benchmark/batch
+patch), ignored inputs, range zero-end normalization, query substring and page
+length/offset domains. `lua5.4 tests/tooling_requests.lua [PINNED_SOURCE]` mutates
+actual consumers, including ignored-argument drift, query forwarding and range
+normalization. Remaining direct arguments are explicitly emitted as unreviewed
+(currently 83), not silently blessed. This is still partial semantic migration;
+request presence/defaults must not be inferred from native initializer defaults.
